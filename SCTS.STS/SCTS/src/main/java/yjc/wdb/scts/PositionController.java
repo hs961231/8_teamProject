@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -15,11 +16,12 @@ public class PositionController {
 
 	@Inject
 	PositionService service;
-	
+
 	// 안드로이드에서 비콘정보 전송
 	@RequestMapping(value="/setPositionData")
-	public void setPositionData(HttpServletRequest request, PositionVO vo) throws Exception{
+	public void setPositionData(HttpServletRequest request,@ModelAttribute PositionVO vo) throws Exception{
 		// 안드로이드에서 넘어온 정보판별
+		
 		// 디비에 저장
 		service.insertPosition(vo);
 	}

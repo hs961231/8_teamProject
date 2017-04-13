@@ -13,16 +13,16 @@ public class PositionDAOImpl implements PositionDAO{
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String NAMESPACE ="yjc.wdb.PositionMapper";
+	private static final String NAMESPACE ="yjc.wdb.mapper.positionmapper";
 	
 	@Override
 	public void insertPosition(PositionVO vo) throws Exception {
-		sqlSession.insert(NAMESPACE+"insertPosition", vo);
+		sqlSession.insert(NAMESPACE+".insertPosition", vo);
 	}
 
 	@Override
 	public PositionVO selectPosition() throws Exception {
-		return sqlSession.selectOne(NAMESPACE+"selectPosition");
+		return sqlSession.selectOne(NAMESPACE+".selectPosition");
 	}
 
 }

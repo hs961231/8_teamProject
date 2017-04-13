@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="yjc.wdb.PositionMapper">
+<mapper namespace="yjc.wdb.mapper.positionmapper">
 
 	<insert id="insertPosition">
 		insert into tbl_position (major, minor, currentTime, stayTime)

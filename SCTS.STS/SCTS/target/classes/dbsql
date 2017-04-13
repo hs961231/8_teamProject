@@ -1,0 +1,7 @@
+create table tbl_position (
+	num int AUTO_INCREMENT primary key,
+	major int,
+	minor int,
+	currenttime date,
+	staytime int
+);
