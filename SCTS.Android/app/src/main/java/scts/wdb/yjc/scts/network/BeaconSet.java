@@ -16,12 +16,12 @@ public class BeaconSet extends AsyncTask<String, String, String> {
         super.onPreExecute();
     }
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(String... json) {
         // 되는 코드임.
         //HttpClient.Builder http = new HttpClient.Builder("POST", "http://172.19.2.122:8080/scts/android");
         // 실제 서버구동후 테스트 할 부분
         HttpClient.Builder http = new HttpClient.Builder("POST", "http://106.249.38.69:8080/SCTS/android");
-        //http.addOrReplace("json", json[0]);
+        http.addOrReplace("json", json[0]);
 
         // HTTP 요청 전송
         HttpClient post = http.create();

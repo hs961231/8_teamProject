@@ -21,12 +21,6 @@ public class BeaconTimeData {
         // 시간 셋팅
         currentTime = new Timestamp(cal.getTimeInMillis());
     }
-    public BeaconTimeData(int major, int minor) {
-        this();
-
-        this.major = major;
-        this.minor = minor;
-    }
 
     public int getMajor() {
         return major;
@@ -44,18 +38,12 @@ public class BeaconTimeData {
         this.minor = minor;
     }
 
-    public void setStayTimeMil(int stayTimeMil) {
-        this.stayTimeMil = stayTimeMil;
-    }
-
-    /*
     public void setStayTimeMil() {
         Calendar cal = Calendar.getInstance();
 
         // 현재시간 - 감지된 시간을 해서 머문 시간을 구함
         stayTimeMil = (int) (cal.getTimeInMillis() - currentTime.getTime());
     }
-    */
 
     public Timestamp getCurrentTime() {
         return currentTime;
