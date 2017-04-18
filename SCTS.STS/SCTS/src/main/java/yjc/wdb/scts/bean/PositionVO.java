@@ -1,13 +1,14 @@
 package yjc.wdb.scts.bean;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class PositionVO {
-	private int		num;
-	private int		major;
-	private int		minor;
-	private Date	currentTime;
-	private int		stayTime;
+	private int			num;
+	private int			major;
+	private int			minor;
+	private Timestamp	currentTime;
+	private int			stayTime;
 	
 	public int getNum() {
 		return num;
@@ -27,10 +28,10 @@ public class PositionVO {
 	public void setMinor(int minor) {
 		this.minor = minor;
 	}
-	public Date getCurrentTime() {
+	public Timestamp getCurrentTime() {
 		return currentTime;
 	}
-	public void setCurrentTime(Date currentTime) {
+	public void setCurrentTime(Timestamp currentTime) {
 		this.currentTime = currentTime;
 	}
 	public int getStayTime() {

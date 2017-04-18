@@ -11,15 +11,18 @@ public class BeaconTimeData {
     private int major;
     private int minor;
     private Timestamp currentTime;
-    private int stayTimeMil;
+    private int stayTime;
 
     // 초기 객체 생성시 현재 시간 입력
     public BeaconTimeData() {
+
         // (1) Calendar객체를 얻는다.
         Calendar cal = Calendar.getInstance();
 
         // 시간 셋팅
         currentTime = new Timestamp(cal.getTimeInMillis());
+
+        //currentTime = new Date( new java.util.Date().getTime() );
     }
     public BeaconTimeData(int major, int minor) {
         this();
@@ -44,8 +47,9 @@ public class BeaconTimeData {
         this.minor = minor;
     }
 
-    public void setStayTimeMil(int stayTimeMil) {
-        this.stayTimeMil = stayTimeMil;
+    public void setStayTime(int stayTimeMil) {
+        this.stayTime = stayTimeMil;
+
     }
 
     /*
@@ -61,7 +65,7 @@ public class BeaconTimeData {
         return currentTime;
     }
 
-    public int getStayTimeMil() {
-        return stayTimeMil;
+    public int getStayTime() {
+        return stayTime;
     }
 }

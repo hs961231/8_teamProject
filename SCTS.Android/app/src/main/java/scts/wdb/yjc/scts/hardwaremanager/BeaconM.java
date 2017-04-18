@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.Gson;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import scts.wdb.yjc.scts.bean.BeaconTimeData;
+import scts.wdb.yjc.scts.network.send.BeaconSet;
 
 import static android.content.ContentValues.TAG;
 
@@ -100,10 +102,17 @@ public class BeaconM{
                     }
                     if(stayTimeMil != 0) {
                         // 비콘 타임데이터에 머문 시간 저장
-                        beaconTimeData.setStayTimeMil( stayTimeMil );
+                        beaconTimeData.setStayTime( stayTimeMil/1000 );
                         stayTimeMil = 0;
+
                         // 서버로 전송시키는 부분 코딩해야함
-                        Log.d(TAG, "logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
+                        String json = new Gson().toJson(beaconTimeData);
+
+                        Log.d(TAG, "logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
+
+
+                        BeaconSet networkTask = new BeaconSet();
+                        networkTask.execute(json);
                     }
                 }
                 // 그 전에 감지된 비콘과 같다
@@ -131,10 +140,12 @@ public class BeaconM{
                     }
                     if(stayTimeMil != 0) {
                         // 비콘 타임데이터에 머문 시간 저장
-                        beaconTimeData.setStayTimeMil( stayTimeMil );
+                        beaconTimeData.setStayTime( stayTimeMil/1000 );
                         stayTimeMil = 0;
                         // 서버로 전송시키는 부분 코딩해야함
-                        Log.d(TAG, "logic: 움직였는데 비콘감지 안됨 서버 전송 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
+                        String json = new Gson().toJson(beaconTimeData);
+
+                        Log.d(TAG, "logic: 움직였는데 비콘감지 안됨 서버 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
                     }
                 }
             }

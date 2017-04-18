@@ -2,20 +2,11 @@ package scts.wdb.yjc.scts;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.SystemRequirementsChecker;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
 import scts.wdb.yjc.scts.hardwaremanager.SensorM;
-import scts.wdb.yjc.scts.network.TestNetworkTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,10 +29,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         /******************************************************* 가속도 센서 활용 테스트 **********************************************************************/
         sensorM = new SensorM(this);
 
         /******************************************************* 네트워크 통신 테스트 **********************************************************************/
+        /*
         // http 서버 통신 테스트용 클릭 이벤트
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
 
@@ -78,12 +71,13 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<tvArray.length; i++) {
             tvArray[i] = (TextView) findViewById(R.id.txt1+i);
         }
-        /***************************************************** 비콘 관련 ****************************************************************/
+        *//***************************************************** 비콘 관련 ****************************************************************//*
         // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
         beaconM = new BeaconM(new BeaconManager(this), sensorM);
 
         // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
-        beaconM.BeaconSetListner(tvArray);
+        beaconM.BeaconSetListner(tvArray);*/
+
     }
 
 
@@ -91,12 +85,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // 블루투스 권한 및 활성화 코드드
-        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+        //SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
         // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
         //m_sensor_manager.registerListener(this, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
-        sensorM.sensorStart();
 
+        // 센서 시작
+        sensorM.sensorStart();
         // 비콘 감지 시작
         beaconM.BeaconConnect();
     }
