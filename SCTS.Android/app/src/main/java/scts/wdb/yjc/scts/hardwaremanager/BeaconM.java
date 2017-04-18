@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
-import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.Gson;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -105,19 +105,23 @@ public class BeaconM{
                         beaconTimeData.setStayTime( stayTimeMil/1000 );
                         stayTimeMil = 0;
 
-                        // 서버로 전송시키는 부분 코딩해야함
-                        String json = new Gson().toJson(beaconTimeData);
+                        // 서버로 전송시키기 위해 비콘 감지 데이터를 json형태 문자열로 변환
+                        String json = new GsonBuilder()
+                                .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+                                .create()
+                                .toJson(beaconTimeData);
 
+                        // 제이슨 형태 확인
                         Log.d(TAG, "logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
 
-
+                        // 서버로 전송시킴
                         BeaconSet networkTask = new BeaconSet();
                         networkTask.execute(json);
                     }
                 }
                 // 그 전에 감지된 비콘과 같다
                 else {
-                    ;                   if(currentTime != null) {
+;                   if(currentTime != null) {
                         Calendar cal = Calendar.getInstance();
                         stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
                         currentTime = null;
@@ -142,10 +146,19 @@ public class BeaconM{
                         // 비콘 타임데이터에 머문 시간 저장
                         beaconTimeData.setStayTime( stayTimeMil/1000 );
                         stayTimeMil = 0;
-                        // 서버로 전송시키는 부분 코딩해야함
-                        String json = new Gson().toJson(beaconTimeData);
 
-                        Log.d(TAG, "logic: 움직였는데 비콘감지 안됨 서버 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
+                        // 서버로 전송시키기 위해 비콘 감지 데이터를 json형태 문자열로 변환
+                        String json = new GsonBuilder()
+                                .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+                                .create()
+                                .toJson(beaconTimeData);
+
+                        // 제이슨 형태 확인
+                        Log.d(TAG, "logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
+
+                        // 서버로 전송시킴
+                        BeaconSet networkTask = new BeaconSet();
+                        networkTask.execute(json);
                     }
                 }
             }

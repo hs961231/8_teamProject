@@ -2,11 +2,24 @@ package scts.wdb.yjc.scts;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.SystemRequirementsChecker;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import scts.wdb.yjc.scts.bean.BeaconTimeData;
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
 import scts.wdb.yjc.scts.hardwaremanager.SensorM;
+import scts.wdb.yjc.scts.network.send.BeaconSet;
+import scts.wdb.yjc.scts.network.send.TestNetworkTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,11 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /******************************************************* 가속도 센서 활용 테스트 **********************************************************************/
+        /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
         sensorM = new SensorM(this);
 
-        /******************************************************* 네트워크 통신 테스트 **********************************************************************/
-        /*
+        /****************************************************** 네트워크 통신 테스트 *********************************************************************/
         // http 서버 통신 테스트용 클릭 이벤트
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
 
@@ -71,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<tvArray.length; i++) {
             tvArray[i] = (TextView) findViewById(R.id.txt1+i);
         }
-        *//***************************************************** 비콘 관련 ****************************************************************//*
+        /**************************************************** 비콘 관련 ***************************************************************/
         // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
         beaconM = new BeaconM(new BeaconManager(this), sensorM);
 
         // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
-        beaconM.BeaconSetListner(tvArray);*/
+        beaconM.BeaconSetListner(tvArray);
 
     }
 
@@ -85,17 +97,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // 블루투스 권한 및 활성화 코드드
-        //SystemRequirementsChecker.checkWithDefaultDialogs(this);
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
         // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
         //m_sensor_manager.registerListener(this, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
 
-        // 센서 시작
         sensorM.sensorStart();
         // 비콘 감지 시작
         beaconM.BeaconConnect();
     }
 
+    protected void test() {
+
+        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                BeaconTimeData beaconTimeData = new BeaconTimeData(444, 5555);
+                //String json = new Gson().toJson(beaconTimeData);
+
+                String json = new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+                        .create()
+                        .toJson(beaconTimeData);
+
+                BeaconSet test = new BeaconSet();
+
+                Log.d(TAG, "Time: " + beaconTimeData.getCurrentTime().getTime() );
+
+                Log.d(TAG, "onClick: " + json);
+                test.execute(json);
+            }
+        });
+    }
 
 
 }
