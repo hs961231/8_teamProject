@@ -1,5 +1,7 @@
 package yjc.wdb.scts.DAO;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -18,6 +20,12 @@ public class Loc_infoDAOImpl implements Loc_InfoDAO {
 	@Override
 	public void insertLog_info(Loc_info loc_info) throws Exception {
 		sqlSession.insert(namespace+".insertLoc_info", loc_info);
+	}
+
+	@Override
+	public List<Loc_info> Loc_info_List() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace+".Loc_info_List");
 	}
 
 }

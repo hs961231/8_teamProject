@@ -5,3 +5,14 @@ create table tbl_position (
 	currenttime date,
 	staytime int
 );
+
+CREATE TABLE `customer` (
+   `customer_id` VARCHAR(50) NOT NULL,
+   `customer_pw` VARCHAR(50) NULL DEFAULT NULL,
+   PRIMARY KEY (`customer_id`)
+);
+
+CREATE TABLE `loc_info` (
+   `user_id` VARCHAR(50) NULL DEFAULT NULL,
+   `user_pw` VARCHAR(50) NULL DEFAULT NULL
+);

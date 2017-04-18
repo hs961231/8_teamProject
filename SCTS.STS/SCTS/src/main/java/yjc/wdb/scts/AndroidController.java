@@ -1,5 +1,7 @@
 package yjc.wdb.scts;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import yjc.wdb.scts.bean.Customer;
 import yjc.wdb.scts.bean.Loc_info;
+import yjc.wdb.scts.service.CustomerService;
 import yjc.wdb.scts.service.Loc_infoService;
 
 @Controller
@@ -21,14 +25,17 @@ public class AndroidController {
 	@Inject
 	private Loc_infoService service;
 	
+	@Inject
+	private CustomerService customerService;
+	
 	@RequestMapping(value="/android")
-	public String AndroidTest(HttpServletRequest request, Model model){
+	public String AndroidTest(HttpServletRequest request){
 
 		String json = request.getParameter("json");
 
 		System.out.println(json);
 		
-		JSONParser jsonParser = new JSONParser();
+		/*JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject;
 		try {
 			jsonObject = (JSONObject) jsonParser.parse(json);
@@ -49,9 +56,31 @@ public class AndroidController {
 			e.printStackTrace();
 		}
 		
-	
+	*/
 		return "android";
 	}
 
+	@RequestMapping("/android2")
+	public @ResponseBody JSONArray WebToAndroid(HttpServletRequest request) throws Exception{
+		JSONArray jsonArray = new JSONArray();
+		
+		List<Loc_info> list = service.Loc_info_List();
+		JSONObject jsonObject;
+		for(int i=0; i<list.size(); i++){
+			 jsonObject = new JSONObject();
+			 jsonObject.put("user_id", list.get(i).getUser_id());
+			 jsonArray.add(jsonObject);
+		}
+		
+		return jsonArray;
+	}
+	
+	@RequestMapping("/checkCustomer")
+	public @ResponseBody int checkCustomer(Customer customer, HttpServletRequest request) throws Exception{
+		
+		int checkUser = customerService.checkCustomer(customer);
+		return checkUser;
+	}
+	
 
 }

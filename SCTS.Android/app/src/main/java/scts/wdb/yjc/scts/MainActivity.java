@@ -1,5 +1,8 @@
 package scts.wdb.yjc.scts;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText user_pw_input; // 서버 통신 테스트용 패스워드 입력 칸
     private String user_id;          // 입력된 아이디
     private String user_pw;          // 입력된 비밀번호
+    SharedPreferences sp;
 
     // 센서 관련 로직 클래스
     private SensorM sensorM;
@@ -42,6 +46,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /****************************************************** 로그인 세션 생성하는법 *********************************************************************/
+
+        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+
+                user_id_input = (EditText) findViewById(R.id.userId);
+                user_id = user_id_input.getText().toString();
+                user_pw_input = (EditText) findViewById(R.id.userPw);
+                user_pw = user_pw_input.getText().toString();
+
+
+                sp = getSharedPreferences("test", 0);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("customer_id", user_id);
+                editor.commit();
+
+
+
+                JSONObject  jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("user_id", user_id);
+                    jsonObject.put("user_pw", user_pw);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String json = jsonObject.toString();
+
+
+
+                NetworkTask networkTask = new NetworkTask();
+                networkTask.execute(json);
+
+
+            }
+        });
+
+
+
 
         /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
         sensorM = new SensorM(this);
@@ -131,5 +178,61 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private class NetworkTask extends AsyncTask<String, String, String> {
+
+        protected  void onPreExcute(){
+
+            super.onPreExecute();
+        }
+
+
+
+
+        @Override
+        protected String doInBackground(String... json) {
+
+
+            HttpClient.Builder http = new HttpClient.Builder("GET", "http://106.249.38.66:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw );
+            http.addOrReplace("json", json[0]);
+
+            // HTTP 요청 전송
+            HttpClient post = http.create();
+
+            post.request();
+
+
+
+            // 응답 상태코드 가져오기
+            int statusCode = post.getHttpStatusCode();
+
+            // 응답 본문 가져오기
+            String body = post.getBody();
+
+
+            return body;
+        }
+
+        protected void onPostExecute(String s){
+
+            Log.i("JSON/RESULT", s);
+
+            if(s.equals("1")){
+
+                String str = sp.getString("customer_id", "");
+                if(str.equals(user_id)){
+                    Intent intent = new Intent(getApplicationContext(), WebViewTest.class);
+                    startActivity(intent);
+                }else{
+                    setContentView(R.layout.activity_main);
+                }
+
+
+            }else{
+                Toast.makeText(getApplicationContext(), "로그인 실패!!!!", Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+    }
 
 }
