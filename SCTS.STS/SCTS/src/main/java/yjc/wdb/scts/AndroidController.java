@@ -14,9 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import yjc.wdb.scts.bean.Customer;
+import yjc.wdb.scts.bean.User;
 import yjc.wdb.scts.bean.Loc_info;
-import yjc.wdb.scts.service.CustomerService;
+import yjc.wdb.scts.service.UserService;
 import yjc.wdb.scts.service.Loc_infoService;
 
 @Controller
@@ -26,17 +26,21 @@ public class AndroidController {
 	private Loc_infoService service;
 	
 	@Inject
-	private CustomerService customerService;
+	private UserService customerService;
 	
-	@RequestMapping(value="/android")
-	public String AndroidTest(HttpServletRequest request){
-
+	
+	@RequestMapping("/checkUser")
+	public @ResponseBody String checkCustomer(HttpServletRequest request) throws Exception{
+		
 		String json = request.getParameter("json");
 
 		System.out.println(json);
 		
-		/*JSONParser jsonParser = new JSONParser();
+		JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject;
+		
+		
+		
 		try {
 			jsonObject = (JSONObject) jsonParser.parse(json);
 			Loc_info loc_info = new Loc_info();
@@ -48,6 +52,24 @@ public class AndroidController {
 			
 			service.insertLoc_info(loc_info);
 			
+			User user = new User();
+			user.setUser_id((String) jsonObject.get("user_id"));
+			user.setUser_pw((String) jsonObject.get("user_pw"));
+			
+			int checkUser = customerService.checkCustomer(user);
+			
+			System.out.println(checkUser);
+			
+			JSONObject jsonObject2  = new JSONObject();
+			jsonObject2.put("checkUser", checkUser);
+			
+			
+			String json2 = jsonObject2.toString();
+			
+			System.out.println(json2);
+			
+			return json2;
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,30 +78,8 @@ public class AndroidController {
 			e.printStackTrace();
 		}
 		
-	*/
-		return "android";
-	}
-
-	@RequestMapping("/android2")
-	public @ResponseBody JSONArray WebToAndroid(HttpServletRequest request) throws Exception{
-		JSONArray jsonArray = new JSONArray();
 		
-		List<Loc_info> list = service.Loc_info_List();
-		JSONObject jsonObject;
-		for(int i=0; i<list.size(); i++){
-			 jsonObject = new JSONObject();
-			 jsonObject.put("user_id", list.get(i).getUser_id());
-			 jsonArray.add(jsonObject);
-		}
-		
-		return jsonArray;
-	}
-	
-	@RequestMapping("/checkCustomer")
-	public @ResponseBody int checkCustomer(Customer customer, HttpServletRequest request) throws Exception{
-		
-		int checkUser = customerService.checkCustomer(customer);
-		return checkUser;
+		return null;
 	}
 	
 
