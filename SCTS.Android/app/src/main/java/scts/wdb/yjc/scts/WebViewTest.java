@@ -39,12 +39,12 @@ public class WebViewTest extends AppCompatActivity {
 
 
         SharedPreferences sp = getSharedPreferences("test",  0);
-        String str = sp.getString("customer_id", "");
+        String str = sp.getString("user_id", "");
 
         textView = (TextView) findViewById(R.id.textView);
         textView.setText(str);
 
-        Log.i("customer_id", str);
+        Log.i("user_id", str);
 
 
 

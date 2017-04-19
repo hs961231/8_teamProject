@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.JsonObject;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText user_pw_input; // 서버 통신 테스트용 패스워드 입력 칸
     private String user_id;          // 입력된 아이디
     private String user_pw;          // 입력된 비밀번호
-    SharedPreferences sp;
+    SharedPreferences sp;            // 세션 유지하기위한 preference
+
 
     // 센서 관련 로직 클래스
     private SensorM sensorM;
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                 sp = getSharedPreferences("test", 0);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("customer_id", user_id);
+                editor.putString("user_id", user_id);
                 editor.commit();
 
 
@@ -78,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
                 String json = jsonObject.toString();
 
-
-
                 NetworkTask networkTask = new NetworkTask();
                 networkTask.execute(json);
 
@@ -87,63 +89,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /***************************************************** 회원가입 화면 전환 ****************************************************************/
 
+        findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Join.class);
+                startActivity(intent);
+            }
+        });
 
 
         /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
-        sensorM = new SensorM(this);
-
-        /****************************************************** 네트워크 통신 테스트 *********************************************************************/
-        // http 서버 통신 테스트용 클릭 이벤트
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+   /*     sensorM = new SensorM(this);
 
 
-            @Override
-            public void onClick(View v) {
-
-                user_id_input = (EditText) findViewById(R.id.userId);
-                user_id = user_id_input.getText().toString();
-                user_pw_input = (EditText) findViewById(R.id.userPw);
-                user_pw = user_pw_input.getText().toString();
-
-
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("user_id", user_id);
-                    jsonObject.put("user_pw", user_pw);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                String json = jsonObject.toString();
-
-                // 네트워크 연결
-                TestNetworkTask networkTask = new TestNetworkTask();
-                networkTask.execute(json);
-
-                Toast.makeText(getApplicationContext(), user_id + " " + user_pw, Toast.LENGTH_LONG).show();
-
-            }
-        });
 
         // 텍스트 뷰 어레이 설정
         for(int i=0; i<tvArray.length; i++) {
             tvArray[i] = (TextView) findViewById(R.id.txt1+i);
         }
-        /**************************************************** 비콘 관련 ***************************************************************/
+        *//**************************************************** 비콘 관련 ***************************************************************//*
         // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
         beaconM = new BeaconM(new BeaconManager(this), sensorM);
 
         // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
-        beaconM.BeaconSetListner(tvArray);
+        beaconM.BeaconSetListner(tvArray);*/
+
 
     }
 
 
-    @Override
+/*    @Override
     protected void onResume() {
         super.onResume();
-        // 블루투스 권한 및 활성화 코드드
+       *//* // 블루투스 권한 및 활성화 코드드
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
         // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
@@ -151,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
 
         sensorM.sensorStart();
         // 비콘 감지 시작
-        beaconM.BeaconConnect();
-    }
+        beaconM.BeaconConnect();*//*
+    }*/
 
-    protected void test() {
+  /*  protected void test() {
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 test.execute(json);
             }
         });
-    }
+    }*/
 
     private class NetworkTask extends AsyncTask<String, String, String> {
 
@@ -192,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... json) {
 
 
-            HttpClient.Builder http = new HttpClient.Builder("GET", "http://106.249.38.66:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw );
+            HttpClient.Builder http = new HttpClient.Builder("POST", "http://106.249.38.66:8080/scts/checkUser");
             http.addOrReplace("json", json[0]);
 
             // HTTP 요청 전송
@@ -216,20 +196,36 @@ public class MainActivity extends AppCompatActivity {
 
             Log.i("JSON/RESULT", s);
 
-            if(s.equals("1")){
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
 
-                String str = sp.getString("customer_id", "");
-                if(str.equals(user_id)){
-                    Intent intent = new Intent(getApplicationContext(), WebViewTest.class);
-                    startActivity(intent);
+                Log.i("json", jsonObject.get("checkUser").toString());
+
+
+                if(jsonObject.get("checkUser").toString().equals("1")){
+
+
+                    String str = sp.getString("customer_id", "");
+                    if(str.equals(user_id)){
+                        Intent intent = new Intent(getApplicationContext(), WebViewTest.class);
+                        startActivity(intent);
+                    }else{
+                        setContentView(R.layout.activity_main);
+                    }
+
                 }else{
-                    setContentView(R.layout.activity_main);
+                    Toast.makeText(getApplicationContext(), "로그인 실패!!!!", Toast.LENGTH_LONG).show();
                 }
 
-
-            }else{
-                Toast.makeText(getApplicationContext(), "로그인 실패!!!!", Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
+
+
+
+
 
         }
 
