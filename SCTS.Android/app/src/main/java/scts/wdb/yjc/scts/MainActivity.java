@@ -185,14 +185,15 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
-
-
-
         @Override
         protected String doInBackground(String... json) {
 
-
-            HttpClient.Builder http = new HttpClient.Builder("GET", "http://106.249.38.66:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw );
+            // 노트북 테스트용 주소, ip가 와이파이 잡을때마다 달라지기 때문에 체크하고 주소 바꿔줘야함
+            HttpClient.Builder http = new HttpClient.Builder("GET", "http://172.19.2.176:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw);
+            // 실제 서버구동시 사용하는 주소
+            //HttpClient.Builder http = new HttpClient.Builder("POST", "http://zseil.cafe24.com/SCTS/setPositionData");
+            // 정혜수 테스트용 주소
+            //HttpClient.Builder http = new HttpClient.Builder("GET", "http://106.249.38.66:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw );
             http.addOrReplace("json", json[0]);
 
             // HTTP 요청 전송
