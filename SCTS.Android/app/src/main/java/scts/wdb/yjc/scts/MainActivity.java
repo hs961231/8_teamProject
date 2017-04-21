@@ -7,25 +7,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.SystemRequirementsChecker;
-import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
-import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.JsonObject;
-import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.JsonParser;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import scts.wdb.yjc.scts.bean.BeaconTimeData;
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
 import scts.wdb.yjc.scts.hardwaremanager.SensorM;
-import scts.wdb.yjc.scts.network.send.BeaconSet;
-import scts.wdb.yjc.scts.network.send.TestNetworkTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -168,17 +158,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... json) {
 
-<<<<<<< HEAD
             // 노트북 테스트용 주소, ip가 와이파이 잡을때마다 달라지기 때문에 체크하고 주소 바꿔줘야함
-            HttpClient.Builder http = new HttpClient.Builder("GET", "http://172.19.2.176:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw);
+            //HttpClient.Builder http = new HttpClient.Builder("GET", "http://172.19.2.176:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw);
             // 실제 서버구동시 사용하는 주소
             //HttpClient.Builder http = new HttpClient.Builder("POST", "http://zseil.cafe24.com/SCTS/setPositionData");
             // 정혜수 테스트용 주소
             //HttpClient.Builder http = new HttpClient.Builder("GET", "http://106.249.38.66:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw );
-=======
 
             HttpClient.Builder http = new HttpClient.Builder("POST", "http://106.249.38.66:8080/scts/checkUser");
->>>>>>> origin/master
+
             http.addOrReplace("json", json[0]);
 
             // HTTP 요청 전송
