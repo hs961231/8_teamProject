@@ -1,5 +1,7 @@
 package yjc.wdb.scts;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,85 +13,101 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import yjc.wdb.scts.bean.Customer;
-import yjc.wdb.scts.bean.Loc_info;
-import yjc.wdb.scts.service.CustomerService;
-import yjc.wdb.scts.service.Loc_infoService;
+import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.bean.PositionVO;
+import yjc.wdb.scts.service.UserService;
+import yjc.wdb.scts.service.PositionService;
 
 @Controller
+@RequestMapping("/android")
 public class AndroidController {
-
-	@Inject
-	private Loc_infoService service;
 	
 	@Inject
-	private CustomerService customerService;
+	private UserService userService;
 	
-	@RequestMapping(value="/android")
-	public String AndroidTest(HttpServletRequest request){
-
-		String json = request.getParameter("json");
-
-		System.out.println(json);
+	@Inject
+	PositionService positionService;
+	
+	// 안드로이드에서 전송되는 로그인 정보를 저장
+	@RequestMapping(value="/androidLogin")
+	@ResponseBody
+	public String androidLogin(HttpServletRequest request) throws Exception{
 		
-		/*JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObject;
+		// 에러 방지하기 위해 추가함
+		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
+		String str = request.getParameter("UserVO");
+		if(str == null) {
+			return "ERROR";
+		}
 		
+		JSONObject userJson = (JSONObject) new JSONParser().parse( str );
+		
+		UserVO user = new UserVO();
 		try {
-			jsonObject = (JSONObject) jsonParser.parse(json);
-			Loc_info loc_info = new Loc_info();
-			loc_info.setUser_id((String)jsonObject.get("user_id"));
-			loc_info.setUser_pw((String) jsonObject.get("user_pw"));
-			
-			System.out.println(loc_info.getUser_id());
-			System.out.println(loc_info.getUser_pw());
-			
-			service.insertLoc_info(loc_info);
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    
+		    user.setUser_id( userJson.get("user_id").toString() );
+		    user.setUser_pw( userJson.get("user_pw").toString() );
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			// TODO: handle exception
 			e.printStackTrace();
 		}
 		
-	*/
-		return "android";
-	}
-
-	@RequestMapping("/android2")
-	public @ResponseBody JSONArray WebToAndroid(HttpServletRequest request) throws Exception{
-		JSONArray jsonArray = new JSONArray();
+		if(userService.loginUser(user) == 1)
+			return "SUCCESS";
+		else
+			return "ERROR";
 		
-		List<Loc_info> list = service.Loc_info_List();
-		JSONObject jsonObject;
-		for(int i=0; i<list.size(); i++){
-			 jsonObject = new JSONObject();
-			 jsonObject.put("user_id", list.get(i).getUser_id());
-			 jsonArray.add(jsonObject);
+	}
+	
+
+	// 안드로이드에서 비콘정보 전송
+	@RequestMapping(value="/setPositionData")
+	@ResponseBody
+	public String setPositionData(HttpServletRequest request) throws Exception{
+
+		// 에러 방지하기 위해 추가함
+		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
+		String str = request.getParameter("PositionVO");
+		if(str == null) {
+			return "ERROR";
 		}
 		
-		return jsonArray;
-	}
-	
-	@RequestMapping("/checkCustomer")
-	public @ResponseBody int checkCustomer(Customer customer, HttpServletRequest request) throws Exception{
-		System.out.println("아이디 = " + customer.getCustomer_id() + "비밀번호" + customer.getCustomer_pw());
-		int checkUser = customerService.checkCustomer(customer);
-		return checkUser;
-	}
-	
-	@RequestMapping("/checkUser")
-	public @ResponseBody String checkUser(Loc_info vo, HttpServletRequest request) throws Exception{
-		System.out.println("리퀘스트 = " + request.getParameter("json"));
-		System.out.println("유저쪽 아이디 = " + vo.getUser_id() + "비밀번호" + vo.getUser_pw());
-		//int checkUser = customerService.checkCustomer(vo);
-		return "1";
-	}
-	
+		// 넘어온 문자열을 json 객체로 변환
+		JSONObject positionJson = (JSONObject) new JSONParser().parse( str );
+		
+		PositionVO position = new PositionVO();
+		try {
+			// 문자열 형태의 날짜시간 값을 timestamp값으로 변환
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+		    java.util.Date parsedDate = dateFormat.parse( (String) positionJson.get("currentTime") );
+		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+		    
+		    // vo객체에 값 저장
+		    position.setCurrentTime( timestamp );
+		    position.setMajor( Integer.parseInt(positionJson.get("major").toString() ) );
+		    position.setMinor( Integer.parseInt(positionJson.get("minor").toString() ) );
+		    position.setStayTime( Integer.parseInt(positionJson.get("stayTime").toString() ) );
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
+		// 디비에 저장
+		positionService.insertPosition(position);
+		
+		return "SUCCESS";
+	}
+	
+	// 디비에 있는 비콘정보를 안드로이드로 넘겨줌
+	@RequestMapping(value="/getPositionData")
+	@ResponseBody
+	public PositionVO getPositionData(HttpServletRequest request) throws Exception{
+		// 디비에서 비콘정보 빼서 바로 리턴
+		return positionService.selectPosition();
+	}
+	
 }

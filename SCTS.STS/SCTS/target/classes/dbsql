@@ -6,6 +6,11 @@ create table tbl_position (
 	staytime int
 );
 
+create table tbl_user(
+	user_id varchar(50),
+	user_pw varchar(50)
+);
+
 CREATE TABLE `customer` (
    `customer_id` VARCHAR(50) NOT NULL,
    `customer_pw` VARCHAR(50) NULL DEFAULT NULL,

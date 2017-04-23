@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,42 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /****************************************************** 로그인 세션 생성하는법 *********************************************************************/
-
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-
-                user_id_input = (EditText) findViewById(R.id.userId);
-                user_id = user_id_input.getText().toString();
-                user_pw_input = (EditText) findViewById(R.id.userPw);
-                user_pw = user_pw_input.getText().toString();
-
-
-                sp = getSharedPreferences("test", 0);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("user_id", user_id);
-                editor.commit();
-
-
-
-                JSONObject  jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("user_id", user_id);
-                    jsonObject.put("user_pw", user_pw);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                String json = jsonObject.toString();
-
-                NetworkTask networkTask = new NetworkTask();
-                networkTask.execute(json);
-
-
-            }
-        });
+        loginButton();
 
         /***************************************************** 회원가입 화면 전환 ****************************************************************/
 
@@ -148,6 +112,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }*/
 
+    public void loginButton() {
+
+        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+
+                user_id_input = (EditText) findViewById(R.id.userId);
+                user_id = user_id_input.getText().toString();
+                user_pw_input = (EditText) findViewById(R.id.userPw);
+                user_pw = user_pw_input.getText().toString();
+
+
+                sp = getSharedPreferences("test", 0);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("user_id", user_id);
+                editor.commit();
+
+
+                JSONObject  jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("user_id", user_id);
+                    jsonObject.put("user_pw", user_pw);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String json = jsonObject.toString();
+
+                // 네트워크 연결 후 서버 전송
+                NetworkTask networkTask = new NetworkTask();
+                networkTask.execute(json);
+
+            }
+        });
+    }
+
+    // 로그인 세션 관련 네트워크 통신
     private class NetworkTask extends AsyncTask<String, String, String> {
 
         protected  void onPreExcute(){
@@ -158,15 +161,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... json) {
             // bean 안에 있는 ip 셋팅 정보를 꼭 바꾸도록 할 것
-            HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "checkUser");
+            HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "androidLogin");
 
-            http.addOrReplace("json", json[0]);
+            http.addOrReplace("UserVO", json[0]);
 
             // HTTP 요청 전송
             HttpClient post = http.create();
 
             post.request();
-
 
 
             // 응답 상태코드 가져오기
@@ -180,6 +182,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String s){
+            // db에 저장된 유저 정보를 성공적으로 조회햇음
+            if(s.equals("SUCCESS")) {
+                // 프리퍼런스 설정
+                sp = getSharedPreferences("test", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("user_id", user_id);
+                editor.commit();
+
+                // 로그인 완료 및 웹뷰 창 띄우기 등등 처리해야함
+
+                // 디버깅용
+                Log.d(TAG, "프리퍼런스 설정 완료");
+                Log.d(TAG, "저장된 아이디 : " + sp.getString("user_id",""));
+            }
+            // 저장된 유저 정보가 없을 때
+            else {
+                // 실제 로그인 실패햇을때 아이디 비밀번호 틀렷다는 창을 보여줘야하는 부분을 코딩해야함
+
+                // 디버깅용
+                Log.d(TAG, "로그인 실패함");
+                Log.d(TAG, "입력 아이디 : " + user_id);
+            }
+
+            /**************************** 그전 로그인 세션 생성 ***********************/
+/*
 
             Log.i("JSON/RESULT", s);
 
@@ -208,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+*/
+
 
 
         }

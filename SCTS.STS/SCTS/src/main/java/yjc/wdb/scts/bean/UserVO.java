@@ -1,6 +1,7 @@
 package yjc.wdb.scts.bean;
 
-public class Loc_info {
+public class UserVO {
+	
 	private String user_id;
 	private String user_pw;
 	
@@ -17,6 +18,4 @@ public class Loc_info {
 		this.user_pw = user_pw;
 	}
 	
-	
-
 }
