@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import scts.wdb.yjc.scts.HttpClient;
+import scts.wdb.yjc.scts.bean.IPSetting;
 
 /**
  * Created by JYH on 2017-04-06.
@@ -17,10 +18,8 @@ public class TestNetworkTask extends AsyncTask<String, String, String> {
     }
     @Override
     protected String doInBackground(String... json) {
-        // 되는 코드임.
-        //HttpClient.Builder http = new HttpClient.Builder("POST", "http://172.19.2.122:8080/scts/android");
-        // 실제 서버구동후 테스트 할 부분
-        HttpClient.Builder http = new HttpClient.Builder("POST", "http://zseil.cafe24.com/SCTS/android");
+        // bean 안에 있는 ip 셋팅 정보를 꼭 바꾸도록 할 것
+        HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "android");
 
         //http.addOrReplace("json", json[0]);
 

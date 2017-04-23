@@ -14,6 +14,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import scts.wdb.yjc.scts.bean.IPSetting;
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
 import scts.wdb.yjc.scts.hardwaremanager.SensorM;
 
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private String user_id;          // 입력된 아이디
     private String user_pw;          // 입력된 비밀번호
     SharedPreferences sp;            // 세션 유지하기위한 preference
-
 
     // 센서 관련 로직 클래스
     private SensorM sensorM;
@@ -157,15 +157,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... json) {
-
-            // 노트북 테스트용 주소, ip가 와이파이 잡을때마다 달라지기 때문에 체크하고 주소 바꿔줘야함
-            //HttpClient.Builder http = new HttpClient.Builder("GET", "http://172.19.2.176:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw);
-            // 실제 서버구동시 사용하는 주소
-            //HttpClient.Builder http = new HttpClient.Builder("POST", "http://zseil.cafe24.com/SCTS/setPositionData");
-            // 정혜수 테스트용 주소
-            //HttpClient.Builder http = new HttpClient.Builder("GET", "http://106.249.38.66:8080/scts/checkCustomer?customer_id="+user_id+"&customer_pw="+user_pw );
-
-            HttpClient.Builder http = new HttpClient.Builder("POST", "http://106.249.38.66:8080/scts/checkUser");
+            // bean 안에 있는 ip 셋팅 정보를 꼭 바꾸도록 할 것
+            HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "checkUser");
 
             http.addOrReplace("json", json[0]);
 
@@ -215,10 +208,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
-
 
 
         }

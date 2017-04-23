@@ -33,9 +33,6 @@ public class PositionController {
 	// 안드로이드에서 비콘정보 전송
 	@RequestMapping(value="/setPositionData")
 	@ResponseBody
-	//public String setPositionData(HttpServletRequest request,@ModelAttribute PositionVO vo) throws Exception{
-	//public String setPositionData(HttpServletRequest request, @RequestBody Map<String, Object> positionJson) throws Exception{	
-	//public String setPositionData(HttpServletRequest request) throws Exception{
 	public String setPositionData(HttpServletRequest request) throws Exception{
 		// 넘어온 문자열을 json 객체로 변환
 		JSONObject positionJson = (JSONObject) new JSONParser().parse( request.getParameter("PositionVO") );

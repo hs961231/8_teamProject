@@ -37,6 +37,7 @@ public class AndroidController {
 		
 		/*JSONParser jsonParser = new JSONParser();
 		JSONObject jsonObject;
+		
 		try {
 			jsonObject = (JSONObject) jsonParser.parse(json);
 			Loc_info loc_info = new Loc_info();
@@ -77,9 +78,17 @@ public class AndroidController {
 	
 	@RequestMapping("/checkCustomer")
 	public @ResponseBody int checkCustomer(Customer customer, HttpServletRequest request) throws Exception{
-		
+		System.out.println("아이디 = " + customer.getCustomer_id() + "비밀번호" + customer.getCustomer_pw());
 		int checkUser = customerService.checkCustomer(customer);
 		return checkUser;
+	}
+	
+	@RequestMapping("/checkUser")
+	public @ResponseBody String checkUser(Loc_info vo, HttpServletRequest request) throws Exception{
+		System.out.println("리퀘스트 = " + request.getParameter("json"));
+		System.out.println("유저쪽 아이디 = " + vo.getUser_id() + "비밀번호" + vo.getUser_pw());
+		//int checkUser = customerService.checkCustomer(vo);
+		return "1";
 	}
 	
 
