@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,16 +192,22 @@ public class MainActivity extends AppCompatActivity {
                 editor.commit();
 
                 // 로그인 완료 및 웹뷰 창 띄우기 등등 처리해야함
+                // 현재 단순히 웹뷰만 띄움
+                Intent intent = new Intent(getApplicationContext(), WebViewTest.class);
+                startActivity(intent);
 
                 // 디버깅용
+                Toast.makeText(getApplicationContext(), "로그인 성공!!!!" + "저장된 아이디 : " + sp.getString("user_id",""), Toast.LENGTH_LONG).show();
                 Log.d(TAG, "프리퍼런스 설정 완료");
                 Log.d(TAG, "저장된 아이디 : " + sp.getString("user_id",""));
+
             }
             // 저장된 유저 정보가 없을 때
             else {
                 // 실제 로그인 실패햇을때 아이디 비밀번호 틀렷다는 창을 보여줘야하는 부분을 코딩해야함
 
                 // 디버깅용
+                Toast.makeText(getApplicationContext(), "로그인 실패!!!!" + "입력 아이디 : " + user_id, Toast.LENGTH_LONG).show();
                 Log.d(TAG, "로그인 실패함");
                 Log.d(TAG, "입력 아이디 : " + user_id);
             }
