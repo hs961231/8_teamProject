@@ -18,23 +18,27 @@
 	</select>
 
 	<!-- 나이 연령대에 따른 존 지나간 횟수 구분할 db쿼리문 작성 -->
-	<select id="" resultType="">
-	
+	<select id="a1" resultType="PositionVO">
+		select *
+		from tbl_position
 	</select>
 	
 	<!-- 방문율 전체 고객들중, 또는 매장에 방문한 고객들 중에서 해당 존을 지나간 퍼센테이지를 구하여 받아올 쿼리문 -->
-	<select id="" resultType="">
-	
+	<select id="a2" resultType="PositionVO">
+		select *
+		from tbl_position
 	</select>
 	
 	<!-- 해당 존에서 고객들이 평균적으로 머무는 시간을 구하여 반환할 수 있는 쿼리문 -->
-	<select id="" resultType="">
-	
+	<select id="a3" resultType="PositionVO">
+		select *
+		from tbl_position
 	</select>
 	
 	<!-- 날짜 별로 해당 존에 방문하는 고객들의 수를 반환하는 쿼리문 -->
-	<select id="" resultType="">
-	
+	<select id="a4" resultType="PositionVO">
+		select *
+		from tbl_position
 	</select>
 	
 </mapper>
