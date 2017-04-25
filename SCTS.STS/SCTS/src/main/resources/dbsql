@@ -1,23 +1,26 @@
-create table tbl_position (
-	num int AUTO_INCREMENT primary key,
-	major int,
-	minor int,
-	currenttime date,
-	staytime int
+create table position (
+   major int,
+   minor int,
+   user_id varchar(50),
+   current_timedate timestamp,
+   stay_time int
 );
 
-create table tbl_user(
-	user_id varchar(50),
-	user_pw varchar(50)
+create table user(
+   user_id varchar(50) primary key,
+   user_pw varchar(50),
+   age int,
+   gender varchar(2)
 );
 
-CREATE TABLE `customer` (
-   `customer_id` VARCHAR(50) NOT NULL,
-   `customer_pw` VARCHAR(50) NULL DEFAULT NULL,
-   PRIMARY KEY (`customer_id`)
+create table coupon (
+   coupon_id int auto_increment primary key,
+   coupon_name varchar(50),
+   coupon_content varchar(300)
 );
 
-CREATE TABLE `loc_info` (
-   `user_id` VARCHAR(50) NULL DEFAULT NULL,
-   `user_pw` VARCHAR(50) NULL DEFAULT NULL
-);
+create table tile(
+   major int,
+   minor int,
+   tile_name varchar(50)
+)

@@ -36,6 +36,13 @@ public class HomeController {
 		return "home";
 	}
 
+	@RequestMapping(value="")
+	public void asd() {
+		
+	}
+	
+/***************************************** 디자인 관련 웹 페이지들 ***************************************************/
+
 	@RequestMapping(value="index")
 	public String index() {
 		return "NiceAdmin/index";
