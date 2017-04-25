@@ -1,5 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +36,7 @@
     <p class="text-404">404</p>
 
     <h2>Aww Snap!</h2>
-    <p>Something went wrong or that page doesn’t exist yet. <br><a href="index.html">Return Home</a></p>
+    <p>Something went wrong or that page doesn’t exist yet. <br><a href="index">Return Home</a></p>
   </div>
   <div class="credits">
     <!-- 
