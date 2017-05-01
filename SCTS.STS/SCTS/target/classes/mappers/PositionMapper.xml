@@ -31,7 +31,7 @@
 	
 	<!-- 해당 존에서 고객들이 평균적으로 머무는 시간을 구하여 반환할 수 있는 쿼리문 -->
 	<select id="avgStay" resultType="java.util.HashMap">
-		select major, minor, avg(stay_time), count(*)
+		select major, minor, avg(stay_time) avg, count(*) cnt
 		from position
 		group by major, minor;
 	</select>

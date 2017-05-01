@@ -3,6 +3,8 @@ package yjc.wdb.scts;
 import java.security.Provider.Service;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -57,9 +59,15 @@ public class HomeController {
 		
 	}
 	
+	/** 2017_05_01 구현
+	 * 각 타일 ( 메이저, 마이너 )에서의 고객들의 평균 머문 시간과, 몇명이 머물럿는지 데이터를 뽑아오는 것
+	 * 해당 jsp페이지에서 정상적으로 출력되는 것 확인 햇음.
+	 */
 	@RequestMapping(value="avgStayTest")
 	public String avgStayTest(Model model) throws Exception{
-		model.addAttribute(service.avgStay());
+		List<HashMap<String, String>> list = service.avgStay();
+		System.out.println(list.toString());
+		model.addAttribute("list", list);
 		return "avgStayTest";
 	}
 	
