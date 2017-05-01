@@ -1,5 +1,6 @@
 package yjc.wdb.scts;
 
+import java.security.Provider.Service;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.service.UserService;
 
 import yjc.wdb.scts.service.PositionService;
 
@@ -20,6 +25,9 @@ import yjc.wdb.scts.service.PositionService;
  */
 @Controller
 public class HomeController {
+	
+	@Inject
+	private UserService userService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -102,10 +110,39 @@ public class HomeController {
 		return "NiceAdmin/grids";
 	}
 
-	@RequestMapping(value="login")
-	public String login() {
+	@RequestMapping(value="login", method=RequestMethod.GET)
+	public String loginForm() {
 		return "NiceAdmin/login";
 	}
+	
+	@RequestMapping(value="login", method=RequestMethod.POST)
+	public @ResponseBody String login(UserVO user) throws Exception{
+		
+		int loginUser = userService.loginUser(user);
+		
+		return ""+loginUser;
+	}
+	
+	@RequestMapping(value="signUp", method=RequestMethod.GET)
+	public String signUpForm() {
+		return "NiceAdmin/signUp";
+	}
+	
+	@RequestMapping(value="signUp", method=RequestMethod.POST)
+	public @ResponseBody String signUp(UserVO user) throws Exception{
+		userService.registerUser(user);
+		int checkUser = userService.checkUser(user.getUser_id());
+		return ""+checkUser;
+	}
+	
+	@RequestMapping(value="checkUser", method=RequestMethod.GET)
+	public @ResponseBody String checkUser(String user_id) throws Exception{
+		
+		int checkUser = userService.checkUser(user_id);
+		return ""+checkUser;
+	}
+	
+	
 
 	@RequestMapping(value="profile")
 	public String profile() {

@@ -18,4 +18,15 @@ public class UserServiceImpl implements UserService {
 		return dao.loginUser(user);
 	}
 
+	@Override
+	public void registerUser(UserVO user) throws Exception {
+		dao.registerUser(user);
+	}
+
+	@Override
+	public int checkUser(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.checkUser(id);
+	}
+
 }
