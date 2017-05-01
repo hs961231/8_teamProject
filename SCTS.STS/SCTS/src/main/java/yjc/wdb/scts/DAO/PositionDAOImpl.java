@@ -1,5 +1,9 @@
 package yjc.wdb.scts.DAO;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -13,7 +17,7 @@ public class PositionDAOImpl implements PositionDAO{
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String NAMESPACE ="yjc.wdb.mapper.positionmapper";
+	private static final String NAMESPACE ="yjc.wdb.mapper.PositionMapper";
 	
 	@Override
 	public void insertPosition(PositionVO vo) throws Exception {
@@ -23,6 +27,12 @@ public class PositionDAOImpl implements PositionDAO{
 	@Override
 	public PositionVO selectPosition() throws Exception {
 		return sqlSession.selectOne(NAMESPACE+".selectPosition");
+	}
+
+	@Override
+	public List<HashMap<String, String>> avgStay() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".avgStay");
 	}
 
 }

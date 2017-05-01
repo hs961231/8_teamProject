@@ -67,12 +67,12 @@ public class BeaconM{
                     currentNearBeacon = list.get(0);
                 else
                     currentNearBeacon = null;
-                logic();
+                logic(tvArray);
             }
         });
     }
 
-    public void logic() {
+    public void logic(TextView tvArray[]) {
 
         Log.d(TAG, "logic: MoveChk = " + sensorM.getMoveChk());
         /********************************************************** 움직일 경우 **********************************************************/
@@ -99,6 +99,7 @@ public class BeaconM{
                         stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
                         currentTime = null;
                         Log.d(TAG, "logic: 움직였는데 다른비콘 감지 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
+                        tvArray[0].setText("logic: 움직였는데 다른비콘 감지 stayTimeMil = " + stayTimeMil);
                     }
                     if(stayTimeMil != 0) {
                         // 비콘 타임데이터에 머문 시간 저장
@@ -113,7 +114,7 @@ public class BeaconM{
 
                         // 제이슨 형태 확인
                         Log.d(TAG, "logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
-
+                        tvArray[0].setText("logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json);
                         // 서버로 전송시킴
                         BeaconSet networkTask = new BeaconSet();
                         networkTask.execute(json);
@@ -126,6 +127,7 @@ public class BeaconM{
                         stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
                         currentTime = null;
                         Log.d(TAG, "logic: 움직였는데 그전과 같은 비콘 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
+                        tvArray[0].setText("logic: 움직였는데 그전과 같은 비콘 stayTimeMil = " + stayTimeMil);
                     }
                 }
 
@@ -141,6 +143,7 @@ public class BeaconM{
                         stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
                         currentTime = null;
                         Log.d(TAG, "logic: 움직였는데 비콘 감지 안됨 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
+                        tvArray[0].setText("logic: 움직였는데 비콘 감지 안됨 stayTimeMil = " + stayTimeMil);
                     }
                     if(stayTimeMil != 0) {
                         // 비콘 타임데이터에 머문 시간 저장
@@ -155,6 +158,7 @@ public class BeaconM{
 
                         // 제이슨 형태 확인
                         Log.d(TAG, "logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json); // 디버깅용 시스템 로그
+                        tvArray[0].setText("logic: 움직였는데 다른비콘 감지 서버로 전송 stayTimeMil = " + json);
 
                         // 서버로 전송시킴
                         BeaconSet networkTask = new BeaconSet();

@@ -4,12 +4,16 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import yjc.wdb.scts.service.PositionService;
 
 /**
  * Handles requests for the application home page.
@@ -22,6 +26,10 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	
+	@Inject
+	PositionService service;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -36,9 +44,15 @@ public class HomeController {
 		return "home";
 	}
 
-	@RequestMapping(value="")
-	public void asd() {
+	@RequestMapping(value="test1")
+	public void agebase_page() {
 		
+	}
+	
+	@RequestMapping(value="avgStayTest")
+	public String avgStayTest(Model model) throws Exception{
+		model.addAttribute(service.avgStay());
+		return "avgStayTest";
 	}
 	
 /***************************************** 디자인 관련 웹 페이지들 ***************************************************/

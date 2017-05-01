@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
   
-  <mapper namespace="yjc.wdb.scts.usermapper">
+  <mapper namespace="yjc.wdb.scts.UserMapper">
   
   <select id="loginUser" resultType="int">
     select count(*) 

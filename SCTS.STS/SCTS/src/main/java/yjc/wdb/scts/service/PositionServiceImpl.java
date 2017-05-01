@@ -1,5 +1,9 @@
 package yjc.wdb.scts.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -24,5 +28,10 @@ public class PositionServiceImpl implements PositionService{
 		return dao.selectPosition();
 	}
 	
-	
+
+	@Override
+	public List<HashMap<String, String>> avgStay() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.avgStay();
+	}
 }

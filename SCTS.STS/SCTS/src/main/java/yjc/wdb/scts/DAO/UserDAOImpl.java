@@ -10,7 +10,7 @@ import yjc.wdb.scts.bean.UserVO;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-	private static String namespace ="yjc.wdb.scts.usermapper";
+	private static String namespace ="yjc.wdb.scts.UserMapper";
 	
 	@Inject
 	private SqlSession sqlSession;

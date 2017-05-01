@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.SystemRequirementsChecker;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
-   /*     sensorM = new SensorM(this);
+        sensorM = new SensorM(this);
 
 
 
@@ -64,21 +67,21 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<tvArray.length; i++) {
             tvArray[i] = (TextView) findViewById(R.id.txt1+i);
         }
-        *//**************************************************** 비콘 관련 ***************************************************************//*
+        /*************************************************** 비콘 관련 **************************************************************/
         // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
         beaconM = new BeaconM(new BeaconManager(this), sensorM);
 
         // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
-        beaconM.BeaconSetListner(tvArray);*/
+        beaconM.BeaconSetListner(tvArray);
 
 
     }
 
 
-/*    @Override
+    @Override
     protected void onResume() {
         super.onResume();
-       *//* // 블루투스 권한 및 활성화 코드드
+        // 블루투스 권한 및 활성화 코드드
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
 
         // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
@@ -86,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
         sensorM.sensorStart();
         // 비콘 감지 시작
-        beaconM.BeaconConnect();*//*
-    }*/
+        beaconM.BeaconConnect();
+    }
 
   /*  protected void test() {
 

@@ -353,7 +353,7 @@
                       </a>
                   </li>
                   <li>                     
-                      <a class="" href="chart-chartjs">
+                      <a class="" href="chart_chartjs">
                           <i class="icon_piechart"></i>
                           <span>Charts</span>
                           
