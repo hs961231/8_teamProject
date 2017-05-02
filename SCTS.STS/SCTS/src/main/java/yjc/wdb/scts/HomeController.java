@@ -30,6 +30,8 @@ public class HomeController {
 	
 	@Inject
 	private UserService userService;
+	@Inject
+	PositionService positionService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -37,8 +39,6 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	
-	@Inject
-	PositionService service;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -65,12 +65,27 @@ public class HomeController {
 	 */
 	@RequestMapping(value="avgStayTest")
 	public String avgStayTest(Model model) throws Exception{
-		List<HashMap<String, String>> list = service.avgStay();
-		System.out.println(list.toString());
+		List<HashMap<String, String>> list = positionService.avgStay();
+		logger.debug(list.toString());
 		model.addAttribute("list", list);
 		return "avgStayTest";
 	}
-	
+
+	@RequestMapping(value="visit_countTest")
+	public String visit_countTest(Model model) throws Exception{
+		List<HashMap<String, String>> list = positionService.visit_count();
+		logger.debug(list.toString());
+		model.addAttribute("list", list);
+		return "visit_countTest";
+	}
+
+	@RequestMapping(value="probabilityTest")
+	public String probabilityTest(Model model) throws Exception{
+		List<HashMap<String, String>> list = positionService.probability();
+		logger.debug(list.toString());
+		model.addAttribute("list", list);
+		return "probabilityTest";
+	}
 /***************************************** 디자인 관련 웹 페이지들 ***************************************************/
 
 	@RequestMapping(value="index")

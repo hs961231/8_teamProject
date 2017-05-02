@@ -34,4 +34,16 @@ public class PositionServiceImpl implements PositionService{
 		// TODO Auto-generated method stub
 		return dao.avgStay();
 	}
+
+	@Override
+	public List<HashMap<String, String>> visit_count() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.visit_count();
+	}
+
+	@Override
+	public List<HashMap<String, String>> probability() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.probability();
+	}
 }

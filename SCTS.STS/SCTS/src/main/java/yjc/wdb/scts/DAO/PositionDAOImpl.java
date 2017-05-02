@@ -35,4 +35,16 @@ public class PositionDAOImpl implements PositionDAO{
 		return sqlSession.selectList(NAMESPACE+".avgStay");
 	}
 
+	@Override
+	public List<HashMap<String, String>> visit_count() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".visit_count");
+	}
+
+	@Override
+	public List<HashMap<String, String>> probability() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".probability");
+	}
+
 }

@@ -4,26 +4,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>visit_countTest</title>
 </head>
 <body>
 	<table class="table table-bordered">
 		<tr>
+			<th>나이</th>
 			<th>타일이름</th>
 			<th>메이저</th>
 			<th>마이너</th>
-			<th>평균머문시간</th>
-			<th>방문횟수</th>
+			<th>방문횟수(1인 1방문 기준)</th>
 		</tr>
 		
 		<c:forEach items="${ list }" var="vo">
 		
 			<tr>
+				<td>${ vo.get("age") }</td>
 				<td>${ vo.get("tile_name") }</td>
 				<td>${ vo.get("major") }</td>
 				<td>${ vo.get("minor") }</td>
-				<td>${ vo.get("avg") }</td>
-				<td>${ vo.get("cnt") }</td>
+				<td>${ vo.get("visit_count") }</td>
 			</tr>
 			
 		</c:forEach>
