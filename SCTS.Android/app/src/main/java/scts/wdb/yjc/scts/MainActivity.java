@@ -11,9 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.SystemRequirementsChecker;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
-        sensorM = new SensorM(this);
+//        sensorM = new SensorM(this);
 
 
 
@@ -69,28 +66,28 @@ public class MainActivity extends AppCompatActivity {
         }*/
         /*************************************************** 비콘 관련 **************************************************************/
         // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
-        beaconM = new BeaconM(new BeaconManager(this), sensorM);
-
-        // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
-        beaconM.BeaconSetListner(tvArray);
+//        beaconM = new BeaconM(new BeaconManager(this), sensorM);
+//
+//        // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
+//        beaconM.BeaconSetListner(tvArray);
 
 
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // 블루투스 권한 및 활성화 코드드
-        SystemRequirementsChecker.checkWithDefaultDialogs(this);
-
-        // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
-        //m_sensor_manager.registerListener(this, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
-
-        sensorM.sensorStart();
-        // 비콘 감지 시작
-        beaconM.BeaconConnect();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        // 블루투스 권한 및 활성화 코드드
+//        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+//
+//        // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
+//        //m_sensor_manager.registerListener(this, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
+//
+//        sensorM.sensorStart();
+//        // 비콘 감지 시작
+//        beaconM.BeaconConnect();
+//    }
 
   /*  protected void test() {
 

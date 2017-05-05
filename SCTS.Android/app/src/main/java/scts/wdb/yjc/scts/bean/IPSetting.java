@@ -12,8 +12,8 @@ package scts.wdb.yjc.scts.bean;
 public class IPSetting {
 
     // selectMode 변수의 값만 바꿈으로서 서버에 연결할 ip 값을 바꿔줌
-    // 0 = 서버용 , 1 = 정영화, 2 = 정혜수,
-    public final static int selectMode = 1;
+    // 0 = 서버용 , 1 = 정영화, 2,3 = 정혜수,
+    public final static int selectMode = 3;
 
     public static String getIpAddress() {
         String str = "http://";
@@ -31,6 +31,10 @@ public class IPSetting {
 
             case 2: // 정혜수
                 str += "106.249.38.66:8080/";
+                break;
+
+            case 3: // 정혜수 집 컴터
+                str += "192.168.219.168:8080/";
                 break;
 
             default : // 서버용

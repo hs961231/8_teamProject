@@ -21,9 +21,9 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".Join" />
-        <activity android:name=".WebViewTest" />
+        <activity android:name=".MainActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Join" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".WebViewTest" android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
