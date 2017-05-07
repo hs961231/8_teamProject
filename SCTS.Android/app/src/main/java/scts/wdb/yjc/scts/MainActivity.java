@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // 로그인 완료 및 웹뷰 창 띄우기 등등 처리해야함
                 // 현재 단순히 웹뷰만 띄움
-                Intent intent = new Intent(getApplicationContext(), WebViewTest.class);
+                Intent intent = new Intent(getApplicationContext(), WebViewMain.class);
                 startActivity(intent);
 
                 // 디버깅용
