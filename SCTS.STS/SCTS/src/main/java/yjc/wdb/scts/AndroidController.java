@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.UserVO;
@@ -108,6 +109,42 @@ public class AndroidController {
 	public PositionVO getPositionData(HttpServletRequest request) throws Exception{
 		// 디비에서 비콘정보 빼서 바로 리턴
 		return positionService.selectPosition();
+	}
+	
+	// 회원가입
+	
+	@RequestMapping(value="checkUser", method=RequestMethod.POST)
+	public @ResponseBody String checkUser(String user_id, HttpServletRequest request) throws Exception{
+		System.out.print(request.getParameter("user_id"));
+		int checkUser = userService.checkUser(user_id);
+		return ""+checkUser;
+	}
+	
+	@RequestMapping(value="signUp", method=RequestMethod.POST)
+	public @ResponseBody String signUp(HttpServletRequest request) throws Exception{
+		
+		System.out.println(request.getParameter("json"));
+		String str = request.getParameter("json");
+		JSONObject joinJSON = (JSONObject) new JSONParser().parse(str);
+		
+		UserVO user = new UserVO();
+		user.setUser_id(joinJSON.get("user_id").toString());
+		user.setUser_pw((String) joinJSON.get("user_pw").toString());
+		user.setAge(Integer.parseInt(joinJSON.get("age").toString()));
+		user.setGender(joinJSON.get("gender").toString());
+		
+		
+		System.out.println(user.getUser_id());
+		System.out.println(user.getUser_pw());
+		System.out.println(user.getAge());
+		System.out.println(user.getGender());
+		
+		userService.registerUser(user);
+		
+		
+		
+		int checkUser = userService.checkUser(user.getUser_id());
+		return ""+checkUser;
 	}
 	
 }

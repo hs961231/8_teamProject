@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=350 height=495 initial-scale=1">
+    <title>index</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <style>
+        body{
+            background:#FFFFF6;
+           
+        }
+        #MoveInfo{
+            width: 97%;
+            background-color: #202B37;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #MemberInfo{
+            
+            text-align: left;
+            padding-top: 5px;
+            padding-left: 30px;
+        }
+        #pointInfo{
+            text-align: right;
+            padding-top: 10px;
+             padding-bottom: 2px;
+            padding-right: 30px;
+            padding-left: 10px;
+        }
+        #shoppingTime{
+        
+            float: left;
+            text-align: left;
+            font-size: 15px;
+        }
+        #point{
+           
+            font-size: 30px;
+            font-weight: bold;
+        }
+        #couponBasket{
+            width: 45%;
+            height: 125px;
+            border: 1px solid black;
+            float: left;
+            margin-right: 7%;
+            margin-bottom: 30px;
+            text-align: center;
+            
+        }
+        #purchaseList{
+            width: 45%;
+            height: 125px;
+            border: 1px solid black;
+               float: left;
+                text-align: center;
+        }
+        #pointList{
+             width: 45%;
+            height: 125px;
+            border: 1px solid black;
+               float: left;
+               margin-right: 7%;
+                text-align: center;
+        }
+        #list{
+             width: 45%;
+            height: 125px;
+            border: 1px solid black;
+               float: left;
+                text-align: center;
+        }
+        img{
+            margin-top: 10px;
+            width: 60px;
+            height: 60px;
+        }
+    </style>
+    <script>
+       
+    function hi(){
+         sampleAndroid.sampleAction("안드로이드 테스트");
+
+    }
+
+    hi();
+
+
+    </script>
+</head>
+<body>
+<div id="MoveInfo">
+    <div id="MemberInfo">
+        <h2>  님, </h2>
+        <h2>행복한 시간 보내세요!</h2>
+    </div>
+    <div id="pointInfo">
+        <span id="shoppingTime"> 쇼핑한 시간 : 00:00 </span>
+        <span id="point">0P</span>
+    </div>
+</div>
+<div>
+    <div id="couponBasket">
+        <img src="img/coupon.png">
+        <h4>쿠폰바구니</h4>
+    </div>
+    <div id="purchaseList">
+        <img src="img/list.png">
+        <h4>구매내역</h4>
+    </div>
+    <div id="pointList">
+
+    </div>
+    <div id="list">
+
+    </div>
+</div>
+
+<script>
+     $(function(){
+        $("#couponBasket").click(function(){
+            window.location.href = "couponList.html";
+        });        
+    });
+</script>
+
+
+
+</body>
+</html>
