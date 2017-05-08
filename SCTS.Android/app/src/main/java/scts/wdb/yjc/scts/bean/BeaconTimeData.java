@@ -10,8 +10,9 @@ import java.util.Calendar;
 public class BeaconTimeData {
     private int major;
     private int minor;
-    private Timestamp currentTime;
-    private int stayTime;
+    private String user_id;
+    private Timestamp current_Timedate;
+    private int stay_Time;
 
     // 초기 객체 생성시 현재 시간 입력
     public BeaconTimeData() {
@@ -20,7 +21,7 @@ public class BeaconTimeData {
         Calendar cal = Calendar.getInstance();
 
         // 시간 셋팅
-        currentTime = new Timestamp(cal.getTimeInMillis());
+        current_Timedate = new Timestamp(cal.getTimeInMillis());
 
         //currentTime = new Date( new java.util.Date().getTime() );
     }
@@ -47,8 +48,12 @@ public class BeaconTimeData {
         this.minor = minor;
     }
 
-    public void setStayTime(int stayTimeMil) {
-        this.stayTime = stayTimeMil;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setStay_Time(int stay_Time) {
+        this.stay_Time = stay_Time;
 
     }
 
@@ -62,10 +67,10 @@ public class BeaconTimeData {
     */
 
     public Timestamp getCurrentTime() {
-        return currentTime;
+        return current_Timedate;
     }
 
-    public int getStayTime() {
-        return stayTime;
+    public int getStay_Time() {
+        return stay_Time;
     }
 }

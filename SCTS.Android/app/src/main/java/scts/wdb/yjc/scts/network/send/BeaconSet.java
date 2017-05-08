@@ -21,8 +21,6 @@ public class BeaconSet extends AsyncTask<String, String, String> {
         // bean 안에 있는 ip 셋팅 정보를 꼭 바꾸도록 할 것
         HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "setPositionData");
 
-        // http.addOrReplace("json", json[0]);
-
         http.addOrReplace("PositionVO", params[0]);
         /*
         for(int i=0; i<params.length; i++) {

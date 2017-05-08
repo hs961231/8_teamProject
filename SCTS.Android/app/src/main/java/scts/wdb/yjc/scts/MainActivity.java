@@ -8,15 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.estimote.sdk.SystemRequirementsChecker;
+import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import scts.wdb.yjc.scts.bean.BeaconTimeData;
 import scts.wdb.yjc.scts.bean.IPSetting;
-import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
-import scts.wdb.yjc.scts.hardwaremanager.SensorM;
+import scts.wdb.yjc.scts.network.send.BeaconSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,14 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private String user_pw;          // 입력된 비밀번호
     SharedPreferences sp;            // 세션 유지하기위한 preference
 
-    // 센서 관련 로직 클래스
-    private SensorM sensorM;
-
-    // 비콘 관련 로직 클래스
-    private BeaconM beaconM;
-
-    //    private TextView tvId;
-    private TextView tvArray[] = new TextView [4];  // 디버깅용 텍스트뷰 어레이
     final String TAG = "디버깅";
 
     @Override
@@ -42,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /****************************************************** 로그인 세션 생성하는법 *********************************************************************/
+        //test();
         loginButton();
 
         /***************************************************** 회원가입 화면 전환 ****************************************************************/
@@ -54,49 +49,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
-//        sensorM = new SensorM(this);
-
-
-
- /*       // 텍스트 뷰 어레이 설정
-        for(int i=0; i<tvArray.length; i++) {
-            tvArray[i] = (TextView) findViewById(R.id.txt1+i);
-        }*/
-        /*************************************************** 비콘 관련 **************************************************************/
-        // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
-//        beaconM = new BeaconM(new BeaconManager(this), sensorM);
-//
-//        // 비콘의 리스너를 등록함 ( 시작은 onResume에서 커넥트로 시작해줌 )
-//        beaconM.BeaconSetListner(tvArray);
-
-
     }
 
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        // 블루투스 권한 및 활성화 코드드
-//        SystemRequirementsChecker.checkWithDefaultDialogs(this);
-//
-//        // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
-//        //m_sensor_manager.registerListener(this, m_accelerometer, SensorManager.SENSOR_DELAY_UI);
-//
-//        sensorM.sensorStart();
-//        // 비콘 감지 시작
-//        beaconM.BeaconConnect();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 블루투스 권한 및 활성화 코드
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+    }
 
-  /*  protected void test() {
+  protected void test() {
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sp = getSharedPreferences("test", 0);
+                String str = sp.getString("user_id", "");
 
                 BeaconTimeData beaconTimeData = new BeaconTimeData(444, 5555);
-                //String json = new Gson().toJson(beaconTimeData);
+                beaconTimeData.setUser_id(str);
 
                 String json = new GsonBuilder()
                         .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
@@ -105,13 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
                 BeaconSet test = new BeaconSet();
 
-                Log.d(TAG, "Time: " + beaconTimeData.getCurrentTime().getTime() );
-
+                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onClick: " + json);
                 test.execute(json);
             }
         });
-    }*/
+    }
 
     public void loginButton() {
 
@@ -125,12 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 user_id = user_id_input.getText().toString();
                 user_pw_input = (EditText) findViewById(R.id.userPw);
                 user_pw = user_pw_input.getText().toString();
-
-
-                sp = getSharedPreferences("test", 0);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("user_id", user_id);
-                editor.commit();
 
 
                 JSONObject  jsonObject = new JSONObject();
@@ -211,39 +176,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "로그인 실패함");
                 Log.d(TAG, "입력 아이디 : " + user_id);
             }
-
-            /**************************** 그전 로그인 세션 생성 ***********************/
-/*
-
-            Log.i("JSON/RESULT", s);
-
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(s);
-
-                Log.i("json", jsonObject.get("checkUser").toString());
-
-
-                if(jsonObject.get("checkUser").toString().equals("1")){
-
-
-                    String str = sp.getString("customer_id", "");
-                    if(str.equals(user_id)){
-                        Intent intent = new Intent(getApplicationContext(), WebViewTest.class);
-                        startActivity(intent);
-                    }else{
-                        setContentView(R.layout.activity_main);
-                    }
-
-                }else{
-                    Toast.makeText(getApplicationContext(), "로그인 실패!!!!", Toast.LENGTH_LONG).show();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-*/
-
 
 
         }

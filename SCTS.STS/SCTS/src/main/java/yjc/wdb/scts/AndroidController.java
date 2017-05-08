@@ -11,6 +11,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,12 +34,13 @@ public class AndroidController {
 	
 	@Inject
 	PositionService positionService;
+
+	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
 	
 	// 안드로이드에서 전송되는 로그인 정보를 저장
 	@RequestMapping(value="/androidLogin")
 	@ResponseBody
 	public String androidLogin(HttpServletRequest request) throws Exception{
-		
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
 		String str = request.getParameter("UserVO");
@@ -69,7 +72,6 @@ public class AndroidController {
 	@RequestMapping(value="/setPositionData")
 	@ResponseBody
 	public String setPositionData(HttpServletRequest request) throws Exception{
-
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
 		String str = request.getParameter("PositionVO");
@@ -84,21 +86,27 @@ public class AndroidController {
 		try {
 			// 문자열 형태의 날짜시간 값을 timestamp값으로 변환
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
-		    java.util.Date parsedDate = dateFormat.parse( (String) positionJson.get("currentTime") );
+		    java.util.Date parsedDate = dateFormat.parse( (String) positionJson.get("current_Timedate") );
 		    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-		    
+
 		    // vo객체에 값 저장
-		    position.setCurrentTime( timestamp );
+		    position.setCurrent_Timedate( timestamp );
 		    position.setMajor( Integer.parseInt(positionJson.get("major").toString() ) );
 		    position.setMinor( Integer.parseInt(positionJson.get("minor").toString() ) );
-		    position.setStayTime( Integer.parseInt(positionJson.get("stayTime").toString() ) );
+		    position.setUser_id( positionJson.get("user_id").toString() );
+		    position.setStay_Time( Integer.parseInt(positionJson.get("stay_Time").toString() ) );
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			logger.debug("깨짐");
 		}
 
+		logger.debug(str);
+		logger.debug(position.toString());
+		
 		// 디비에 저장
 		positionService.insertPosition(position);
+		
 		
 		return "SUCCESS";
 	}

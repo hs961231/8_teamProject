@@ -13,9 +13,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.estimote.sdk.BeaconManager;
+
+import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
+import scts.wdb.yjc.scts.hardwaremanager.SensorM;
+
 public class WebViewMain extends AppCompatActivity {
 
     private WebView webView;
+
+    // 센서 관련 로직 클래스
+    private SensorM sensorM;
+    // 비콘 관련 로직 클래스
+    private BeaconM beaconM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +63,17 @@ public class WebViewMain extends AppCompatActivity {
         String str = sp.getString("user_id", "");
         Log.i("user_id", str);
 
+        /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
+        sensorM = new SensorM(this);
 
+        // 센서 값을 이 컨텍스트에서 받아볼 수 있도록 리스너를 등록한다.
+        sensorM.sensorStart();
+        /*************************************************** 비콘 관련 **************************************************************/
+        // 비콘 매니저를 생성해서 비콘 관리용 클래스에 넣어줌
+        beaconM = new BeaconM(new BeaconManager(this), sensorM);
+        beaconM.SetContext(this);
+        beaconM.BeaconSetListner();
+        beaconM.BeaconConnect();
     }
 
 
