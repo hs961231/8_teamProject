@@ -5,5 +5,8 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="PositionVO" type="yjc.wdb.scts.bean.PositionVO"></typeAlias>
+		<typeAlias alias="UserVO" type="yjc.wdb.scts.bean.UserVO"></typeAlias>
+		<typeAlias alias="EventVO" type="yjc.wdb.scts.bean.EventVO"></typeAlias>
+		<typeAlias alias="CouponVO" type="yjc.wdb.scts.bean.CouponVO"></typeAlias>
 	</typeAliases>
 </configuration>

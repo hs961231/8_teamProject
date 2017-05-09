@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=350 height=495 initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/IPSetting.js"></script>
+
+    <title>구매내역</title>
+     <style>
+       body{
+            background:#FFFFF6;
+        
+        }
+     
+        #title{
+             width: 97%;
+            background: #202B37;
+            height: 55px;
+            color: white;
+            margin-bottom: 5px;
+            
+        }
+        #title > img{
+            position: relative;
+            top: -5%;
+            left: 27%;
+            margin: 10px 5px 10px 0px;
+            float: left;
+        }
+        #title > h2{
+            position: relative;
+            left: 30%;
+            line-height: 50px;
+        }
+        #dateButton{
+          width: 97%;
+            background-color: #202B37;
+            text-align: center;
+            line-height: 40px;
+             height: 40px;
+        }
+        #dateButton > button{
+            width: 30%;
+            height: 30px;
+         
+          display: inline-block;
+            font-size: 15px;
+            background-color: white;
+            border:none;
+            border-radius: 3px;
+        }
+
+      
+
+    </style>
+    <script>
+        $(function(){
+                var title = $("#titleWrap");
+                $(window).on('scroll', function(){
+                var st = $(window).scrollTop();
+            
+                if(st >= 20){
+                    title.css("position", "fixed");
+                    title.css("top", "12%");
+                    $("#title > h2").css("line-height", "10px");
+                }else{
+                    title.css("position", "");
+                    title.css("top", "");
+                     $("#title > h2").css("line-height", "50px");
+                }
+
+            });
+        });
+       
+   </script>
+</head>
+<body>
+  <div id="titleWrap">
+    <div id="title">
+        <img src="img/list.png" width="40px" height="40px">
+        <h2>구매내역</h2>
+    </div>
+   
+     <div id="dateButton">
+        <button id="fifteen">15일</button>
+        <button id="month">1개월</button>
+        <button id="threeMonth">3개월</button>
+    </div>
+  </div>
+
+    <script>
+        $("#dateButton > button").click(function(){
+            $(this).css("background-color", "#FAE0D4");
+        
+            $(this).siblings().css("background-color", "white");
+            
+        });
+
+    </script>
+</body>
+</html>

@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.bean.CouponBasketVO;
+import yjc.wdb.scts.bean.CouponVO;
+import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.bean.PositionVO;
 import yjc.wdb.scts.service.UserService;
+import yjc.wdb.scts.service.CouponService;
+import yjc.wdb.scts.service.EventService;
 import yjc.wdb.scts.service.PositionService;
 
 @Controller
@@ -34,6 +39,12 @@ public class AndroidController {
 	
 	@Inject
 	PositionService positionService;
+	
+	@Inject
+	private EventService eventService;
+	
+	@Inject
+	private CouponService couponService;
 
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
 	
@@ -119,6 +130,8 @@ public class AndroidController {
 		return positionService.selectPosition();
 	}
 	
+	
+	
 	// 회원가입
 	
 	@RequestMapping(value="checkUser", method=RequestMethod.POST)
@@ -153,6 +166,81 @@ public class AndroidController {
 		
 		int checkUser = userService.checkUser(user.getUser_id());
 		return ""+checkUser;
+	}
+	
+	// 이벤트 보기
+	@RequestMapping(value="eventList", method=RequestMethod.GET)
+	public @ResponseBody String eventList(HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		List<EventVO> list = eventService.eventList();
+		JSONObject eventJson;
+		JSONObject event;
+		JSONArray eventArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			eventJson = new JSONObject();
+			eventJson.put("e_id", list.get(i).getE_id());
+			eventJson.put("e_name", list.get(i).getE_name());
+			eventJson.put("e_start", list.get(i).getE_start());
+			eventJson.put("e_end", list.get(i).getE_end());
+			
+			eventArray.add(eventJson);
+			
+			
+		}
+		
+		event = new JSONObject();
+		event.put("data", eventArray);
+		
+		String eventStr = event.toString();
+		
+		return callback+"("+eventStr+")";
+	}
+	
+	// 쿠폰 바구니에 담긴 쿠폰 보기
+	@RequestMapping(value="couponList", method=RequestMethod.GET)
+	public @ResponseBody String couponList(String user_id, HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		List<CouponVO> list = couponService.couponList(user_id);
+		JSONObject couponJson;
+		JSONObject coupon;
+		JSONArray couponArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			couponJson = new JSONObject();
+			couponJson.put("coupon_id", list.get(i).getCoupon_id());
+			couponJson.put("coupon_name", list.get(i).getCoupon_name());
+			couponJson.put("coupon_content", list.get(i).getCoupon_content());
+		
+			couponArray.add(couponJson);
+			
+			
+		}
+		
+		coupon = new JSONObject();
+		coupon.put("data", couponArray);
+		
+		
+		
+		return callback+"("+coupon+")";
+	}
+	
+	// 쿠폰 바구니에서 쿠폰 삭제
+	@RequestMapping(value="delCouponBasket", method=RequestMethod.GET)
+	public @ResponseBody String delCouponBasket(CouponBasketVO couponBasketVO, HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		couponService.delCouponBasket(couponBasketVO);
+		
+		// 이부분 더 생각 해보기
+		JSONObject coupon;
+		
+		coupon = new JSONObject();
+		coupon.put("result", "success");
+		
+
+		
+		return callback+"("+coupon+")";
 	}
 	
 }

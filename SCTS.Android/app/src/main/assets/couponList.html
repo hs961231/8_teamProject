@@ -2,11 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=350 height=495 initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/IPSetting.js"></script>
+    <title>쿠폰</title>
+    <style>
+       body{
+            background:#FFFFF6;
+           
+        }
+        #title{
+            
+          
+            width: 97%;
+            background: #202B37;
+            height: 55px;
+            color: white;
+            margin-bottom: 15px;
+        
+            
+        }
+        #title > img{
+            position: relative;
+            top: -5%;
+            left: 25%;
+            margin: 10px 5px 10px 0px;
+            float: left;
+        }
+        #title > h2{
+             position: relative;
+            left: 27%;
+            line-height: 50px;
+        }
+
+        .coupon{
+            width: 96%;
+            height: 125px;
+            border: 0.2px solid black;
+            margin-bottom: 10px;
+        }
+
+
+        .couponImg{
+            margin-left: 15px;
+            margin-top: 10px;
+            width: 75px;
+            height: 75px;
+            margin-right: 15px;
+            float: left;
+        }
+        .couponDel{
+            background: #FFA7A7;
+            margin-right: 15px;
+            margin-top: -10px;
+            border: none;
+            width: 70px;
+            height: 30px;
+            float: right;
+        }
+
+     
+  
+       
+    </style>
+    <script>
+
+    $(function(){
+
+        var id = sessionStorage.getItem("user_id");
+
+        $.ajax({
+            type:"GET",
+            url:IPSetting(3)+"couponList",
+            data:{
+                user_id : id
+            },
+            dataType:"jsonp",
+            success : function(data){
+               var length = data.data.length;
+           
+
+                    for(var i = 0; i<length; i++){
+
+                        var list = $("#list");
+
+                        list.append($('<div></div>').addClass("coupon").attr('data-id', data.data[i].coupon_id));
+                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<img />").attr("src", "img/coupon.png").addClass("couponImg"));
+                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<p></p>").text(data.data[i].coupon_name));
+                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<p></p>").text(data.data[i].coupon_content));
+                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<button></button>").addClass("couponDel").text("삭제"));
+
+                    }
+
+            }
+        });
+         
+    });
+       
+   </script>
 </head>
 <body>
-    쿠폰이다!!!
+
+<div></div>
+   <div id="title">
+     
+       <img src="img/coupon.png" width="40px" height="40px">
+       <h2>쿠폰 바구니</h2>
+    
+   </div>
+
+   <div id="list">
+
+
+   </div>
+
+   <script>
+    $(document.body).on("click", ".couponDel", function(){
+        var id = sessionStorage.getItem("user_id");
+        var coupon_id = $(this).parent().attr("data-id");
+        var removeTarget = $(this).parent();
+
+        $.ajax({
+            type :"GET",
+            url: IPSetting(3)+"delCouponBasket",
+            data: {
+                user_id : id,
+                coupon_id : coupon_id
+            },
+            dataType:"jsonp",
+            success: function(data){
+                if(data.result == "success"){
+                    removeTarget.remove();
+                }
+            }
+        })
+
+
+    });       
+   </script>
+
 </body>
 </html>

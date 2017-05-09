@@ -27,3 +27,17 @@ create table tile(
    minor int,
    tile_name varchar(50)
 )
+
+create table event(
+	e_id int auto_increment primary key,
+	e_name varchar(100),
+	e_start date,
+	e_end date
+);
+
+create table couponBasket(
+
+user_id varchar(50),
+coupon_id varchar(50)
+
+)

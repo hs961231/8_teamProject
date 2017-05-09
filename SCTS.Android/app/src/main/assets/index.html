@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=350 height=495 initial-scale=1">
+       <meta name="viewport" content="width=350 height=495 initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>index</title>
     <script src="js/jquery-3.2.1.min.js"></script>
     <style>
@@ -12,8 +13,11 @@
         }
         #MoveInfo{
             width: 97%;
+            padding-top: 10px;
             background-color: #202B37;
             border-radius: 10px;
+            font-size: 25px;
+            font-weight: bold;
             color: white;
             text-align: center;
             margin-bottom: 10px;
@@ -59,7 +63,7 @@
                float: left;
                 text-align: center;
         }
-        #pointList{
+        #eventList{
              width: 45%;
             height: 125px;
             border: 1px solid black;
@@ -80,14 +84,22 @@
             height: 60px;
         }
     </style>
+
     <script>
-       
+
+    function setId(id){
+        document.getElementById("name").innerHTML= id;
+    
+    }
+    
     function hi(){
-         sampleAndroid.sampleAction("안드로이드 테스트");
+         window.sampleAndroid.sampleAction("안드로이드 테스트");
 
     }
 
+
     hi();
+
 
 
     </script>
@@ -95,8 +107,8 @@
 <body>
 <div id="MoveInfo">
     <div id="MemberInfo">
-        <h2>  님, </h2>
-        <h2>행복한 시간 보내세요!</h2>
+        <span id="name">admin</span> 님,
+        <p>행복한 시간 보내세요!</p>
     </div>
     <div id="pointInfo">
         <span id="shoppingTime"> 쇼핑한 시간 : 00:00 </span>
@@ -112,8 +124,9 @@
         <img src="img/list.png">
         <h4>구매내역</h4>
     </div>
-    <div id="pointList">
-
+    <div id="eventList">
+        <img src="img/balloons.png">
+        <h4>이벤트</h4>
     </div>
     <div id="list">
 
@@ -123,8 +136,19 @@
 <script>
      $(function(){
         $("#couponBasket").click(function(){
+            var name = $("#name").text();
+            sessionStorage.setItem('user_id', name);
             window.location.href = "couponList.html";
-        });        
+        }); 
+
+         $("#purchaseList").click(function(){
+            window.location.href = "purchaseList.html";
+        });
+        
+        $("#eventList").click(function(){
+            window.location.href = "eventList.html";
+        });
+                    
     });
 </script>
 

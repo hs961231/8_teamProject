@@ -55,13 +55,16 @@ public class WebViewMain extends AppCompatActivity {
         webView.addJavascriptInterface(new JSObject(), "sampleAndroid");
 
 
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClientTest());
         webView.loadUrl("file:///android_asset/index.html");
+
 
 
         SharedPreferences sp = getSharedPreferences("test", 0);
         String str = sp.getString("user_id", "");
         Log.i("user_id", str);
+
+
 
         /****************************************************** 가속도 센서 활용 테스트 *********************************************************************/
         sensorM = new SensorM(this);
@@ -82,6 +85,22 @@ public class WebViewMain extends AppCompatActivity {
         public void sampleAction(String str) {
 
             Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+
+    class WebViewClientTest extends WebViewClient{
+        @Override
+        public void onPageFinished(WebView view, String url){
+
+            super.onPageFinished(view, url);
+
+            SharedPreferences sp = getSharedPreferences("test", 0);
+            String str = sp.getString("user_id", "");
+            Log.i("user_id", str);
+
+            webView.loadUrl("javascript:setId('"+str+"')");
 
         }
     }

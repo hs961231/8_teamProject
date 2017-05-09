@@ -10,15 +10,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.estimote.sdk.SystemRequirementsChecker;
-import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import scts.wdb.yjc.scts.bean.BeaconTimeData;
 import scts.wdb.yjc.scts.bean.IPSetting;
-import scts.wdb.yjc.scts.network.send.BeaconSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,37 +47,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // 블루투스 권한 및 활성화 코드
-        SystemRequirementsChecker.checkWithDefaultDialogs(this);
-    }
-
-  protected void test() {
-
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sp = getSharedPreferences("test", 0);
-                String str = sp.getString("user_id", "");
-
-                BeaconTimeData beaconTimeData = new BeaconTimeData(444, 5555);
-                beaconTimeData.setUser_id(str);
-
-                String json = new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
-                        .create()
-                        .toJson(beaconTimeData);
-
-                BeaconSet test = new BeaconSet();
-
-                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
-                Log.d(TAG, "onClick: " + json);
-                test.execute(json);
-            }
-        });
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        // 블루투스 권한 및 활성화 코드
+//        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+//    }
+//
+//  protected void test() {
+//
+//        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferences sp = getSharedPreferences("test", 0);
+//                String str = sp.getString("user_id", "");
+//
+//                BeaconTimeData beaconTimeData = new BeaconTimeData(444, 5555);
+//                beaconTimeData.setUser_id(str);
+//
+//                String json = new GsonBuilder()
+//                        .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+//                        .create()
+//                        .toJson(beaconTimeData);
+//
+//                BeaconSet test = new BeaconSet();
+//
+//                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+//                Log.d(TAG, "onClick: " + json);
+//                test.execute(json);
+//            }
+//        });
+//    }
 
     public void loginButton() {
 

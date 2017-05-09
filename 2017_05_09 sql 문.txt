@@ -1,0 +1,49 @@
+insert into coupon(coupon_name, coupon_content) values("cup","this is cup");
+insert into coupon(coupon_name, coupon_content) values("coffee", "this is coffee");
+insert into coupon(coupon_name, coupon_content) values("rice", "this is rice");
+insert into coupon(coupon_name, coupon_content) values("book", "this is book");
+insert into coupon(coupon_name, coupon_content) values("water", "handcream");
+insert into coupon(coupon_name, coupon_content) values("handcream", "this is hancream");
+
+
+create table event(
+	e_id int auto_increment primary key,
+	e_name varchar(100),
+	e_start date,
+	e_end date
+);
+
+
+insert into event(e_name, e_start, e_end) values("event1", "2017-05-09", "2017-05-15");
+insert into event(e_name, e_start, e_end) values("event2", "2017-05-20", "2017-05-25");
+insert into event(e_name, e_start, e_end) values("productEvent", "2017-05-15", "2017-05-20");
+insert into event(e_name, e_start, e_end) values("saleEvent", "2017-05-18", "2017-05-20");
+insert into event(e_name, e_start, e_end) values("event3", "2017-05-13", "2017-05-20");
+
+
+
+create table couponBasket(
+
+user_id varchar(50),
+coupon_id varchar(50)
+
+)
+
+insert into couponBasket values("admin", "1");
+
+insert into couponBasket values("admin", "2");
+
+insert into couponBasket values("admin", "3");
+
+insert into couponBasket values("admin", "4");
+
+insert into couponBasket values("admin", "5");
+
+insert into couponBasket values("admin", "6");
+
+
+select c.coupon_id, c.coupon_name, c.coupon_content
+from couponBasket cb, coupon c
+where cb.user_id = "asd" and  cb.coupon_id = c.coupon_id
+
+
