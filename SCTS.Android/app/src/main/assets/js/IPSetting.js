@@ -1,5 +1,6 @@
-function IPSetting(selectMode) {
+function IPSetting() {
   var str = "http://";
+        var selectMode = 1;
         var chk = 0;
 
         switch (selectMode) {
@@ -9,7 +10,7 @@ function IPSetting(selectMode) {
                 break;
 
             case 1: // 정영화
-                str += "172.19.2.114:8080/"; // 내꺼 아이피 wifi 잡을때마다 바뀜
+                str += "192.168.0.239:8080/"; // 내꺼 아이피 wifi 잡을때마다 바뀜
                 break;
 
             case 2: // 정혜수

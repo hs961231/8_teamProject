@@ -68,13 +68,13 @@
     </style>
     <script>
 
-    $(function(){
+    $(document).ready(function(){
 
         var id = sessionStorage.getItem("user_id");
 
         $.ajax({
             type:"GET",
-            url:IPSetting(3)+"couponList",
+            url:IPSetting()+"couponList",
             data:{
                 user_id : id
             },
@@ -125,7 +125,7 @@
 
         $.ajax({
             type :"GET",
-            url: IPSetting(3)+"delCouponBasket",
+            url: IPSetting()+"delCouponBasket",
             data: {
                 user_id : id,
                 coupon_id : coupon_id
