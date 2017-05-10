@@ -10,7 +10,7 @@ function IPSetting() {
                 break;
 
             case 1: // 정영화
-                str += "172.19.1.169:8080/"; // 내꺼 아이피 wifi 잡을때마다 바뀜
+                str += "192.168.0.239:8080/"; // 내꺼 아이피 wifi 잡을때마다 바뀜
                 break;
 
             case 2: // 정혜수
