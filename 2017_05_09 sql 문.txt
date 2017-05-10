@@ -40,6 +40,19 @@ insert into couponBasket values("admin", "4");
 insert into couponBasket values("admin", "5");
 
 insert into couponBasket values("admin", "6");
+)
+
+insert into couponBasket values("asd", "1");
+
+insert into couponBasket values("asd", "2");
+
+insert into couponBasket values("asd", "3");
+
+insert into couponBasket values("asd", "4");
+
+insert into couponBasket values("asd", "5");
+
+insert into couponBasket values("asd", "6");
 
 
 select c.coupon_id, c.coupon_name, c.coupon_content
