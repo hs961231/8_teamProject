@@ -1,12 +1,15 @@
 package scts.wdb.yjc.scts;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -26,6 +29,11 @@ public class WebViewMain extends AppCompatActivity {
     private SensorM sensorM;
     // 비콘 관련 로직 클래스
     private BeaconM beaconM;
+    private SharedPreferences sp;
+    private String str;
+    private SharedPreferences.Editor editor;
+
+    private final static String MAIN_URL = "file:///android_asset/index.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,20 +41,9 @@ public class WebViewMain extends AppCompatActivity {
         setContentView(R.layout.activity_web_view_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       /* toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.logo));*/
         toolbar.setLogo(R.drawable.logo);
 
-
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "로그아웃 넣을 거다!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        sp = getSharedPreferences("test", 0);
 
         webView = (WebView) findViewById(R.id.webView);
 
@@ -56,13 +53,7 @@ public class WebViewMain extends AppCompatActivity {
 
 
         webView.setWebViewClient(new WebViewClientTest());
-        webView.loadUrl("file:///android_asset/index.html");
-
-
-
-        SharedPreferences sp = getSharedPreferences("test", 0);
-        String str = sp.getString("user_id", "");
-        Log.i("user_id", str);
+        webView.loadUrl(MAIN_URL);
 
 
 
@@ -77,7 +68,44 @@ public class WebViewMain extends AppCompatActivity {
         beaconM.SetContext(this);
         beaconM.BeaconSetListner();
         beaconM.BeaconConnect();
+
+
+
     }
+
+    // 뒤로 가기 버튼
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+
+            webView.goBack();
+            return true;
+        }
+
+        if((keyCode == KeyEvent.KEYCODE_BACK) && (webView.canGoBack() == false)){
+
+            //다이아로그박스 출력
+            new AlertDialog.Builder(this)
+                    .setTitle("프로그램 종료")
+                    .setMessage("프로그램을 종료하시겠습니까?")
+                    .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            editor = sp.edit();
+                            editor.remove("user_id");
+
+                        }
+                    })
+                    .setNegativeButton("아니오",  null).show();
+
+
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
 
     class JSObject {
@@ -87,8 +115,9 @@ public class WebViewMain extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
 
         }
-    }
 
+
+    }
 
     class WebViewClientTest extends WebViewClient{
         @Override
@@ -96,9 +125,9 @@ public class WebViewMain extends AppCompatActivity {
 
             super.onPageFinished(view, url);
 
-            SharedPreferences sp = getSharedPreferences("test", 0);
-            String str = sp.getString("user_id", "");
-            Log.i("user_id", str);
+            sp = getSharedPreferences("test", 0);
+            str = sp.getString("user_id", "");
+
 
             webView.loadUrl("javascript:setId('"+str+"')");
 

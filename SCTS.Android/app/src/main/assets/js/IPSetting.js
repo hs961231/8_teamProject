@@ -1,6 +1,6 @@
 function IPSetting() {
   var str = "http://";
-        var selectMode = 1;
+        var selectMode = 2;
         var chk = 0;
 
         switch (selectMode) {
@@ -35,3 +35,4 @@ function IPSetting() {
 
         return str;
     }
+
