@@ -26,7 +26,7 @@ import yjc.wdb.scts.service.PositionService;
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping(value="/View")
+@RequestMapping(value="/view")
 public class TestViewController {
 	
 	@Inject

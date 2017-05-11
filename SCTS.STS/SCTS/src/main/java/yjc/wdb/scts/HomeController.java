@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.UserVO;
@@ -42,10 +45,23 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
-	public String loginPost(UserVO user) {
+	@ResponseBody
+	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
+		int chk = userService.loginUser(user);
 		
-		
-		
+		if(chk == 0)
+			return "error";
+		else if(chk == 1) {
+			session.setAttribute("user_id", user.getUser_id());
+			return "success";
+		}
+		else
+			return "error";
+	}
+	
+	@RequestMapping(value="mainPage", method=RequestMethod.GET)
+	public String mainPage(HttpServletRequest request, HttpSession session) {
+				
 		return "mainPage";
 	}
 	

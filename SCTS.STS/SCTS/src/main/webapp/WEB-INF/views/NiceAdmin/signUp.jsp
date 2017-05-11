@@ -8,26 +8,26 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="resources/img/favicon.png">
-	<script src="resources/js/jquery-3.2.1.min.js"></script>
+    <link rel="shortcut icon" href="/scts/resources/img/favicon.png">
+	<script src="/scts/resources/js/jquery-3.2.1.min.js"></script>
     <title>Login Page 2 | Creative - Bootstrap 3 Responsive Admin Template</title>
 
     <!-- Bootstrap CSS -->    
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/scts/resources/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="resources/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="/scts/resources/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="resources/css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="resources/css/font-awesome.css" rel="stylesheet" />
+    <link href="/scts/resources/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="/scts/resources/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom styles -->
-    <link href="resources/css/style.css" rel="stylesheet">
-    <link href="resources/css/style-responsive.css" rel="stylesheet" />
+    <link href="/scts/resources/css/style.css" rel="stylesheet">
+    <link href="/scts/resources/css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
-    <script src="resources/js/html5shiv.js"></script>
-    <script src="resources/js/respond.min.js"></script>
+    <script src="/scts/resources/js/html5shiv.js"></script>
+    <script src="/scts/resources/js/respond.min.js"></script>
     <![endif]-->
 </head>
 

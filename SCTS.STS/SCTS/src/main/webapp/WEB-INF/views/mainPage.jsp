@@ -10,37 +10,52 @@
 <meta name="author" content="GeeksLabs">
 <meta name="keyword"
 	content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-<link rel="shortcut icon" href="/scts/resources/img/favicon.png">
+<link rel="shortcut icon" href="resources/img/favicon.png">
 
-<title>Charts | Creative - Bootstrap 3 Responsive Admin Template</title>
+<title>Creative - Bootstrap Admin Template</title>
 
 <!-- Bootstrap CSS -->
-<link href="/scts/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
 <!-- bootstrap theme -->
-<link href="/scts/resources/css/bootstrap-theme.css" rel="stylesheet">
+<link href="resources/css/bootstrap-theme.css" rel="stylesheet">
 <!--external css-->
 <!-- font icon -->
-<link href="/scts/resources/css/elegant-icons-style.css"
+<link href="resources/css/elegant-icons-style.css" rel="stylesheet" />
+<link href="resources/css/font-awesome.min.css" rel="stylesheet" />
+<!-- full calendar css-->
+<link
+	href="resources/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
 	rel="stylesheet" />
-<link href="/scts/resources/css/font-awesome.min.css" rel="stylesheet" />
+<link href="resources/assets/fullcalendar/fullcalendar/fullcalendar.css"
+	rel="stylesheet" />
+<!-- easy pie chart-->
+<link
+	href="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css"
+	rel="stylesheet" type="text/css" media="screen" />
+<!-- owl carousel -->
+<link rel="stylesheet" href="resources/css/owl.carousel.css"
+	type="text/css">
+<link href="resources/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
 <!-- Custom styles -->
-<link href="/scts/resources/css/style.css" rel="stylesheet">
-<link href="/scts/resources/css/style-responsive.css" rel="stylesheet" />
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-<!--[if lt IE 9]>
-      <script src="/scts/resources/js/html5shiv.js"></script>
-      <script src="/scts/resources/js/respond.min.js"></script>
-      <script src="/scts/resources/js/lte-ie7.js"></script>
-    <![endif]-->
+<link rel="stylesheet" href="resources/css/fullcalendar.css">
+<link href="resources/css/widgets.css" rel="stylesheet">
+<link href="resources/css/style.css" rel="stylesheet">
+<link href="resources/css/style-responsive.css" rel="stylesheet" />
+<link href="resources/css/xcharts.min.css" rel=" stylesheet">
+<link href="resources/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+<!-- =======================================================
+        Theme Name: NiceAdmin
+        Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+        Author: BootstrapMade
+        Author URL: https://bootstrapmade.com
+    ======================================================= -->
 </head>
 
 <body>
 	<!-- container section start -->
 	<section id="container" class="">
-		<!--header start-->
 
-		<
+
 		<header class="header dark-bg">
 			<div class="toggle-nav">
 				<div class="icon-reorder tooltips"
@@ -50,7 +65,7 @@
 			</div>
 
 			<!--logo start-->
-			<a href="index" class="logo">Nice <span class="lite">Admin</span></a>
+			<a href="mainPage" class="logo">Team8 <span class="lite">3MS</span></a>
 			<!--logo end-->
 
 			<div class="nav search-row" id="top_menu">
@@ -72,12 +87,12 @@
 					<!-- task notificatoin start -->
 					<li id="task_notificatoin_bar" class="dropdown"><a
 						data-toggle="dropdown" class="dropdown-toggle" href="#"> <i
-							class="icon-task-l"></i> <span class="badge bg-important">5</span>
+							class="icon-task-l"></i> <span class="badge bg-important">6</span>
 					</a>
 						<ul class="dropdown-menu extended tasks-bar">
 							<div class="notify-arrow notify-arrow-blue"></div>
 							<li>
-								<p class="blue">You have 5 pending tasks</p>
+								<p class="blue">You have 6 pending letter</p>
 							</li>
 							<li><a href="#">
 									<div class="task-info">
@@ -159,28 +174,28 @@
 								<p class="blue">You have 5 new messages</p>
 							</li>
 							<li><a href="#"> <span class="photo"><img
-										alt="avatar" src="/scts/resources/img/avatar-mini.jpg"></span>
-									<span class="subject"> <span class="from">Greg
-											Martin</span> <span class="time">1 min</span>
+										alt="avatar" src="resources/img/avatar-mini.jpg"></span> <span
+									class="subject"> <span class="from">Greg Martin</span> <span
+										class="time">1 min</span>
 								</span> <span class="message"> I really like this admin panel. </span>
 							</a></li>
 							<li><a href="#"> <span class="photo"><img
-										alt="avatar" src="/scts/resources/img/avatar-mini2.jpg"></span>
-									<span class="subject"> <span class="from">Bob
-											Mckenzie</span> <span class="time">5 mins</span>
+										alt="avatar" src="resources/img/avatar-mini2.jpg"></span> <span
+									class="subject"> <span class="from">Bob Mckenzie</span>
+										<span class="time">5 mins</span>
 								</span> <span class="message"> Hi, What is next project plan? </span>
 							</a></li>
 							<li><a href="#"> <span class="photo"><img
-										alt="avatar" src="/scts/resources/img/avatar-mini3.jpg"></span>
-									<span class="subject"> <span class="from">Phillip
-											Park</span> <span class="time">2 hrs</span>
+										alt="avatar" src="resources/img/avatar-mini3.jpg"></span> <span
+									class="subject"> <span class="from">Phillip Park</span>
+										<span class="time">2 hrs</span>
 								</span> <span class="message"> I am like to buy this Admin
 										Template. </span>
 							</a></li>
 							<li><a href="#"> <span class="photo"><img
-										alt="avatar" src="/scts/resources/img/avatar-mini4.jpg"></span>
-									<span class="subject"> <span class="from">Ray
-											Munoz</span> <span class="time">1 day</span>
+										alt="avatar" src="resources/img/avatar-mini4.jpg"></span> <span
+									class="subject"> <span class="from">Ray Munoz</span> <span
+										class="time">1 day</span>
 								</span> <span class="message"> Icon fonts are great. </span>
 							</a></li>
 							<li><a href="#">See all messages</a></li>
@@ -218,8 +233,8 @@
 					<!-- user login dropdown start-->
 					<li class="dropdown"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#"> <span class="profile-ava">
-								<img alt="" src="/scts/resources/img/avatar1_small.jpg">
-						</span> <span class="username">Jenifer Smith</span> <b class="caret"></b>
+								<img alt="" src="resources/img/avatar1_small.jpg">
+						</span> <span class="username">${ user_id }</span> <b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu extended logout">
 							<div class="log-arrow-up"></div>
@@ -252,52 +267,33 @@
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="active"><a class="" href="index"> <i
+					<li class="active"><a class="" href="mainPage"> <i
 							class="icon_house_alt"></i> <span>Dashboard</span>
 					</a></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
-							class="icon_document_alt"></i> <span>Forms</span> <span
+							class="icon_document_alt"></i> <span>매장 관리</span> <span
 							class="menu-arrow arrow_carrot-right"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="form_component">Form Elements</a></li>
-							<li><a class="" href="form_validation">Form Validation</a></li>
+							<li><a class="" href="#">매장 등록</a></li>
+							<li><a class="" href="#">물품 등록</a></li>
+							<li><a class="" href="#">매출 관리</a></li>
+							<li><a class="" href="#">재고 관리</a></li>
 						</ul></li>
-					<li class="sub-menu"><a href="javascript:;" class=""> <i
-							class="icon_desktop"></i> <span>UI Fitures</span> <span
-							class="menu-arrow arrow_carrot-right"></span>
-					</a>
-						<ul class="sub">
-							<li><a class="" href="general">Components</a></li>
-							<li><a class="" href="buttons">Buttons</a></li>
-							<li><a class="" href="grids">Grids</a></li>
-						</ul></li>
-					<li><a class="" href="widgets"> <i class="icon_genius"></i>
-							<span>Widgets</span>
+
+					<li><a class="" href="#"> <i class="icon_genius"></i> <span>이벤트
+								관리</span>
 					</a></li>
-					<li><a class="" href="chart-chartjs"> <i
-							class="icon_piechart"></i> <span>Charts</span>
+
+					<li><a class="" href="#"> <i class="icon_piechart"></i> <span>쿠폰
+								관리</span>
 
 					</a></li>
 
-					<li class="sub-menu"><a href="javascript:;" class=""> <i
-							class="icon_table"></i> <span>Tables</span> <span
-							class="menu-arrow arrow_carrot-right"></span>
-					</a>
-						<ul class="sub">
-							<li><a class="" href="basic_table">Basic Table</a></li>
-						</ul></li>
+					<li><a class="" href="#"> <i class="icon_piechart"></i> <span>포스</span>
 
-					<li class="sub-menu"><a href="javascript:;" class=""> <i
-							class="icon_documents_alt"></i> <span>Pages</span> <span
-							class="menu-arrow arrow_carrot-right"></span>
-					</a>
-						<ul class="sub">
-							<li><a class="" href="profile">Profile</a></li>
-							<li><a class="" href="login"><span>Login Page</span></a></li>
-							<li><a class="" href="blank">Blank Page</a></li>
-							<li><a class="" href="404">404 Error</a></li>
-						</ul></li>
+					</a></li>
+
 
 				</ul>
 				<!-- sidebar menu end-->
@@ -305,130 +301,113 @@
 		</aside>
 		<!--sidebar end-->
 
-		<!--main content start-->
+		<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 여기위로는 공통으로 들어감 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+		<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 여기위로는 공통으로 들어감 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+		<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 여기위로는 공통으로 들어감 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+		<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 여기위로는 공통으로 들어감 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+		<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 여기위로는 공통으로 들어감 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+		<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 여기위로는 공통으로 들어감 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
 		<section id="main-content">
 			<section class="wrapper">
-				<div class="row">
-					<div class="col-lg-12">
-						<h3 class="page-header">
-							<i class="icon_piechart"></i> Chart
-						</h3>
-						<ol class="breadcrumb">
-							<li><i class="fa fa-home"></i><a href="index">Home</a></li>
-							<li><i class="icon_piechart"></i>Chart</li>
-
-						</ol>
-					</div>
-				</div>
-				<div class="row">
-					<!-- chart morris start -->
-					<div class="col-lg-12">
-						<section class="panel">
-							<header class="panel-heading">
-								<h3>
-									General Chart
-									</Char>
-							</header>
-							<div class="panel-body">
-								<div class="tab-pane" id="chartjs">
-									<div class="row">
-										<!-- Line -->
-										<div class="col-lg-6">
-											<section class="panel">
-												<header class="panel-heading"> Line </header>
-												<div class="panel-body text-center">
-													<canvas id="line" height="300" width="450"></canvas>
-												</div>
-											</section>
-										</div>
-										<!-- Bar -->
-										<div class="col-lg-6">
-											<section class="panel">
-												<header class="panel-heading"> Bar </header>
-												<div class="panel-body text-center">
-													<canvas id="bar" height="300" width="500"></canvas>
-												</div>
-											</section>
-										</div>
-									</div>
-									<div class="row">
-										<!-- Radar -->
-										<div class="col-lg-6">
-											<section class="panel">
-												<header class="panel-heading"> Radar </header>
-												<div class="panel-body text-center">
-													<canvas id="radar" height="300" width="400"></canvas>
-												</div>
-											</section>
-										</div>
-										<!-- Polar Area -->
-										<div class="col-lg-6">
-											<section class="panel">
-												<header class="panel-heading"> Polar Area </header>
-												<div class="panel-body text-center">
-													<canvas id="polarArea" height="300" width="400"></canvas>
-												</div>
-											</section>
-										</div>
-									</div>
-									<div class="row">
-
-										<!-- Pie -->
-										<div class="col-lg-6">
-											<section class="panel">
-												<header class="panel-heading"> Pie </header>
-												<div class="panel-body text-center">
-													<canvas id="pie" height="300" width="400"></canvas>
-												</div>
-											</section>
-										</div>
-										<!-- Doughnut -->
-										<div class="col-lg-6">
-											<section class="panel">
-												<header class="panel-heading"> Doughnut </header>
-												<div class="panel-body text-center">
-													<canvas id="doughnut" height="300" width="400"></canvas>
-												</div>
-											</section>
-										</div>
-									</div>
-								</div>
-							</div>
-					</div>
+				<%-- <jsp:include page="${ main_content }" /> --%>
+				<jsp:include page="event.jsp" />
 			</section>
-			</div>
-			<!-- chart morris start -->
-			</div>
 		</section>
-		<!--main content end-->
-		<div class="text-right">
-			<div class="credits">
-				<!-- 
-                    All the links in the footer should remain intact. 
-                    You can delete the links only if you purchased the pro version.
-                    Licensing information: https://bootstrapmade.com/license/
-                    Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-                -->
-				<a
-					href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business
-					Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-			</div>
-		</div>
+
 	</section>
-	<!-- container section end -->
+	<!-- container section start -->
+
 	<!-- javascripts -->
-	<script src="/scts/resources/js/jquery.js"></script>
-	<script src="/scts/resources/js/bootstrap.min.js"></script>
+	<script src="resources/js/jquery.js"></script>
+	<script src="resources/js/jquery-ui-1.10.4.min.js"></script>
+	<script type="text/javascript"
+		src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<!-- bootstrap -->
+	<script src="resources/js/bootstrap.min.js"></script>
 	<!-- nice scroll -->
-	<script src="/scts/resources/js/jquery.scrollTo.min.js"></script>
-	<script src="/scts/resources/js/jquery.nicescroll.js"
-		type="text/javascript"></script>
-	<!-- chartjs -->
-	<script src="/scts/resources/assets/chart-master/Chart.js"></script>
-	<!-- custom chart script for this page only-->
-	<script src="/scts/resources/js/chartjs-custom.js"></script>
+	<script src="resources/js/jquery.scrollTo.min.js"></script>
+	<script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
+	<!-- charts scripts -->
+	<script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
+	<script src="resources/js/jquery.sparkline.js" type="text/javascript"></script>
+	<script
+		src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+	<script src="resources/js/owl.carousel.js"></script>
+	<!-- jQuery full calendar -->
+	<script src="resources/js/fullcalendar.min.js"></script>
+	<!-- Full Google Calendar - Calendar -->
+	<script
+		src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+	<!--script for this page only-->
+	<script src="resources/js/calendar-custom.js"></script>
+	<script src="resources/js/jquery.rateit.min.js"></script>
+	<!-- custom select -->
+	<script src="resources/js/jquery.customSelect.min.js"></script>
+	<script src="resources/assets/chart-master/Chart.js"></script>
+
 	<!--custome script for all page-->
-	<script src="/scts/resources/js/scripts.js"></script>
+	<script src="resources/js/scripts.js"></script>
+	<!-- custom script for this page-->
+	<script src="resources/js/sparkline-chart.js"></script>
+	<script src="resources/js/easy-pie-chart.js"></script>
+	<script src="resources/js/jquery-jvectormap-1.2.2.min.js"></script>
+	<script src="resources/js/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="resources/js/xcharts.min.js"></script>
+	<script src="resources/js/jquery.autosize.min.js"></script>
+	<script src="resources/js/jquery.placeholder.min.js"></script>
+	<script src="resources/js/gdp-data.js"></script>
+	<script src="resources/js/morris.min.js"></script>
+	<script src="resources/js/sparklines.js"></script>
+	<script src="resources/js/charts.js"></script>
+	<script src="resources/js/jquery.slimscroll.min.js"></script>
+	<script>
+
+      //knob
+      $(function() {
+        $(".knob").knob({
+          'draw' : function () { 
+            $(this.i).val(this.cv + '%')
+          }
+        })
+      });
+
+      //carousel
+      $(document).ready(function() {
+          $("#owl-slider").owlCarousel({
+              navigation : true,
+              slideSpeed : 300,
+              paginationSpeed : 400,
+              singleItem : true
+
+          });
+      });
+
+      //custom select box
+
+      $(function(){
+          $('select.styled').customSelect();
+      });
+	  
+	  /* ---------- Map ---------- */
+	$(function(){
+	  $('#map').vectorMap({
+	    map: 'world_mill_en',
+	    series: {
+	      regions: [{
+	        values: gdpData,
+	        scale: ['#000', '#000'],
+	        normalizeFunction: 'polynomial'
+	      }]
+	    },
+		backgroundColor: '#eef3f7',
+	    onLabelShow: function(e, el, code){
+	      el.html(el.html()+' (GDP - '+gdpData[code]+')');
+	    }
+	  });
+	});
+
+  </script>
 
 </body>
 </html>

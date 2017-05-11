@@ -10,7 +10,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="resources/img/favicon.png">
 	<script src="resources/js/jquery-3.2.1.min.js"></script>
-    <title>Login Page 2 | Creative - Bootstrap 3 Responsive Admin Template</title>
+    <title>Login Page | Creative - Bootstrap 3 Responsive Admin Template</title>
 
     <!-- Bootstrap CSS -->    
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
@@ -90,26 +90,29 @@
 			if(!user_pw){
 				alert("비밀번호를 입력하세요");
 				$("#user_pw").focus();
-				
 			}
 			
 			isLogin = true;
 			
 			$.ajax({
 				type:"post",
-				url:"login",
+				url:"",
 				data: {
 					user_id : user_id,
 					user_pw : user_pw
 				},
 				success: function(data){
-					if(data == "0"){
+					if(data == "success"){
+						alert("로그인 성공!");
+						self.location = "mainPage";
+					}else{
 						alert("아이디나 비밀번호가 틀렸습니다.");
 						$("#user_id").focus();
-					}else{
-						alert("로그인 성공!");
-						self.location = "index";
 					}
+					isLogin = false;
+				},
+				error: function(data) {
+					isLogin = false;
 				}
 			});
 		});
