@@ -197,6 +197,25 @@ public class AndroidController {
 		return callback+"("+eventStr+")";
 	}
 	
+	@RequestMapping(value="eventOne", method=RequestMethod.GET)
+	public @ResponseBody String eventOne(String e_id, HttpServletRequest request) throws Exception{
+		
+		
+		String callback = request.getParameter("callback");
+		EventVO eventVO = eventService.eventOne(e_id);
+		
+		JSONObject eventJson = new JSONObject();
+		eventJson.put("e_id", eventVO.getE_id());
+		eventJson.put("e_name", eventVO.getE_name());
+		eventJson.put("e_start", eventVO.getE_start());
+		eventJson.put("e_end", eventVO.getE_end());
+		eventJson.put("e_content", eventVO.getE_content());
+		
+		
+		return callback + "(" + eventJson + ")";
+		
+	}
+	
 	// 쿠폰 바구니에 담긴 쿠폰 보기
 	@RequestMapping(value="couponList", method=RequestMethod.GET)
 	public @ResponseBody String couponList(String user_id, HttpServletRequest request) throws Exception{
@@ -242,5 +261,8 @@ public class AndroidController {
 		
 		return callback+"("+coupon+")";
 	}
+	
+	
+	
 	
 }

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/IPSetting.js"></script>
-    <title>이벤트</title>
+    <title>이벤트 상세내역</title>
     <style>
        body{
             background:#FFFFF6;
@@ -24,57 +24,85 @@
         #title > img{
             position: relative;
             top: -5%;
-            left: 30%;
+            left: 15%;
             margin: 10px 5px 10px 0px;
             float: left;
         }
         #title > h2{
              position: relative;
-            left: 33%;
+            left: 17%;
             line-height: 50px;
         }
-        .event{
+        .eventOne{
             width: 96%;
-            height: 100px;
+            height: 500px;
             border: 0.2px solid black;
             margin-bottom: 10px;
         }
+
         .eventDate{
             float: right;
             padding-right: 10%;
         }
+        .eventInfo{
+            height: 100px;
+        }
 
-        img{
+        hr{
+            width:95%;
+            text-align: center;
+        }
+
+        .eventImg{
             margin-top: 10px;
             margin-left: 10px;
+            width:50px;
+            height:50px;
             margin-right: 15px;
             float: left;
+        }
+
+        .eventContent{
+            
+            width: 95%;
+            height: 350px;
+            border: 1px solid black;
+            position: relative;
+            left: 2%;
+
+            overflow: scroll;
+           
         }
   
        
     </style>
      <script>
         $(function(){
-       
+            
+            var e_id =  sessionStorage.getItem("e_id");
 
             $.ajax({
                 type: "GET",
-                url: IPSetting()+"eventList",
+                url: IPSetting()+"eventOne",
+                data :{
+                    e_id : e_id
+                },
                 dataType:"jsonp",
                 success: function(data){
 
-                    var length = data.data.length;
+                    console.log(data);
 
-                    for(var i = 0; i<length; i++){
-
+            
                         var list = $("#list");
 
-                        list.append($('<div></div>').addClass("event").attr('data-id', data.data[i].e_id));
-                        $(".event[data-id="+data.data[i].e_id+"]").append($("<img />").attr("src", "img/calendar.png"));
-                        $(".event[data-id="+data.data[i].e_id+"]").append($("<p></p>").text(data.data[i].e_name));
-                        $(".event[data-id="+data.data[i].e_id+"]").append($("<p></p>").addClass("eventDate").text(data.data[i].e_start + "~" + data.data[i].e_end));
+                        list.append($('<div></div>').addClass("eventInfo").attr('data-id', data.e_id));
+                        $(".eventInfo[data-id="+data.e_id+"]").append($("<img />").attr("src", "img/list.png").addClass('eventImg'));
+                        $(".eventInfo[data-id="+data.e_id+"]").append($("<h2></h2>").text(data.e_name));
+                        $(".eventInfo[data-id="+data.e_id+"]").append($("<p></p>").addClass("eventDate").text(data.e_start + "~" + data.e_end));
+                        list.append($('<hr />'));
+                        list.append($('<div></div>').addClass('eventContent').text(data.e_content));
 
-                    }
+                
 
            
                 }
@@ -87,26 +115,12 @@
    <div id="title">
      
        <img src="img/balloons.png" width="40px" height="40px">
-       <h2>이벤트</h2>
+       <h2>이벤트 상세 내역</h2>
     
    </div>
 
-   <div id="list">
-
+   <div id="list" class="eventOne">
+        
     </div>
-
-    <script>
-        $(document.body).on("click", ".event", function(){
-            
-            var e_id = $(this).attr("data-id");
-    
-            sessionStorage.setItem("e_id", e_id);
-
-            window.location.href = "eventDetail.html";
-
-
-        });       
-    
-    </script>
 </body>
 </html>
