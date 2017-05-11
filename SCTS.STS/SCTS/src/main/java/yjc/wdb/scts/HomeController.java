@@ -35,28 +35,18 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
-	}
 
-	@RequestMapping(value="test1")
-	public void agebase_page() {
+	@RequestMapping(value="/", method=RequestMethod.GET)
+	public String login() {
+		return "login";
+	}
+	
+	@RequestMapping(value="/", method=RequestMethod.POST)
+	public String loginPost(UserVO user) {
 		
+		
+		
+		return "mainPage";
 	}
 	
 	/** 2017_05_01 구현
@@ -68,7 +58,7 @@ public class HomeController {
 		List<HashMap<String, String>> list = positionService.avgStay();
 		logger.debug(list.toString());
 		model.addAttribute("list", list);
-		return "avgStayTest";
+		return "test/avgStayTest";
 	}
 
 	@RequestMapping(value="visit_countTest")
@@ -76,7 +66,7 @@ public class HomeController {
 		List<HashMap<String, String>> list = positionService.visit_count();
 		logger.debug(list.toString());
 		model.addAttribute("list", list);
-		return "visit_countTest";
+		return "test/visit_countTest";
 	}
 
 	@RequestMapping(value="probabilityTest")
@@ -84,104 +74,7 @@ public class HomeController {
 		List<HashMap<String, String>> list = positionService.probability();
 		logger.debug(list.toString());
 		model.addAttribute("list", list);
-		return "probabilityTest";
+		return "test/probabilityTest";
 	}
-/***************************************** 디자인 관련 웹 페이지들 ***************************************************/
-
-	@RequestMapping(value="index")
-	public String index() {
-		return "NiceAdmin/index";
-	}
-
-	@RequestMapping(value="basic_table")
-	public String basic_table() {
-		return "NiceAdmin/basic_table";
-	}
-
-	@RequestMapping(value="blank")
-	public String blank() {
-		return "NiceAdmin/blank";
-	}
-
-	@RequestMapping(value="buttons")
-	public String buttons() {
-		return "NiceAdmin/buttons";
-	}
-
-	@RequestMapping(value="chart_chartjs")
-	public String chart_chartjs() {
-		return "NiceAdmin/chart_chartjs";
-	}
-
-	@RequestMapping(value="form_component")
-	public String form_component() {
-		return "NiceAdmin/form_component";
-	}
-
-	@RequestMapping(value="form_validation")
-	public String form_validation() {
-		return "NiceAdmin/form_validation";
-	}
-
-	@RequestMapping(value="general")
-	public String general() {
-		return "NiceAdmin/general";
-	}
-
-	@RequestMapping(value="grids")
-	public String grids() {
-		return "NiceAdmin/grids";
-	}
-
-	@RequestMapping(value="login", method=RequestMethod.GET)
-	public String loginForm() {
-		return "NiceAdmin/login";
-	}
-	
-	@RequestMapping(value="login", method=RequestMethod.POST)
-	public @ResponseBody String login(UserVO user) throws Exception{
-		
-		int loginUser = userService.loginUser(user);
-		
-		return ""+loginUser;
-	}
-	
-	@RequestMapping(value="signUp", method=RequestMethod.GET)
-	public String signUpForm() {
-		return "NiceAdmin/signUp";
-	}
-	
-	@RequestMapping(value="signUp", method=RequestMethod.POST)
-	public @ResponseBody String signUp(UserVO user) throws Exception{
-		userService.registerUser(user);
-		int checkUser = userService.checkUser(user.getUser_id());
-		return ""+checkUser;
-	}
-	
-	@RequestMapping(value="checkUser", method=RequestMethod.GET)
-	public @ResponseBody String checkUser(String user_id) throws Exception{
-		
-		int checkUser = userService.checkUser(user_id);
-		return ""+checkUser;
-	}
-	
-	
-
-	@RequestMapping(value="profile")
-	public String profile() {
-		return "NiceAdmin/profile";
-	}
-
-	@RequestMapping(value="widgets")
-	public String widgets() {
-		return "NiceAdmin/widgets";
-	}
-	
-	@RequestMapping(value="404")
-	public String errorPage() {
-		return "NiceAdmin/404";
-	}
-	
-	
 	
 }
