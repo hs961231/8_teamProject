@@ -71,7 +71,7 @@
                margin-right: 7%;
                 text-align: center;
         }
-        #list{
+        #recommendList{
              width: 45%;
             height: 125px;
             border: 1px solid black;
@@ -107,7 +107,7 @@
 <body>
 <div id="MoveInfo">
     <div id="MemberInfo">
-        <span id="name">admin</span> 님,
+        <span id="name">asd</span> 님,
         <p>행복한 시간 보내세요!</p>
     </div>
     <div id="pointInfo">
@@ -128,8 +128,9 @@
         <img src="img/balloons.png">
         <h4>이벤트</h4>
     </div>
-    <div id="list">
-
+    <div id="recommendList">
+        <img src="img/product.png">
+        <h4>추천상품</h4>
     </div>
 </div>
 
@@ -148,6 +149,12 @@
         $("#eventList").click(function(){
             window.location.href = "eventList.html";
         });
+
+        $("#recommendList").click(function(){
+            window.location.href = "recommendList.html";
+        });
+
+
                     
     });
 </script>

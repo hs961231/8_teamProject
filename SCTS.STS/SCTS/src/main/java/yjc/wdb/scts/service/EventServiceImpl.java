@@ -21,4 +21,10 @@ public class EventServiceImpl implements EventService {
 		return dao.eventList();
 	}
 
+	@Override
+	public EventVO eventOne(String e_id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.eventOne(e_id);
+	}
+
 }

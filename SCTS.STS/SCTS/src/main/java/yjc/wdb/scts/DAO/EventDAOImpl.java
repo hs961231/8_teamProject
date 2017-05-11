@@ -23,4 +23,10 @@ public class EventDAOImpl implements EventDAO {
 		return sql.selectList(NAMESPACE+".eventList");
 	}
 
+	@Override
+	public EventVO eventOne(String e_id) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE+".eventOne", e_id);
+	}
+
 }

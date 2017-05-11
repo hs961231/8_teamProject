@@ -30,9 +30,10 @@ create table tile(
 
 create table event(
 	e_id int auto_increment primary key,
-	e_name varchar(100),
-	e_start date,
-	e_end date
+	e_name varchar(100) not null,
+	e_start date not null,
+	e_end date not null,
+	e_content varchar(1000) not null
 );
 
 create table couponBasket(

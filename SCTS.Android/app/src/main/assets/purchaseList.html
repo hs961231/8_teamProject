@@ -57,21 +57,7 @@
     </style>
     <script>
         $(function(){
-                var title = $("#titleWrap");
-                $(window).on('scroll', function(){
-                var st = $(window).scrollTop();
             
-                if(st >= 20){
-                    title.css("position", "fixed");
-                    title.css("top", "12%");
-                    $("#title > h2").css("line-height", "10px");
-                }else{
-                    title.css("position", "");
-                    title.css("top", "");
-                     $("#title > h2").css("line-height", "50px");
-                }
-
-            });
         });
        
    </script>
@@ -88,6 +74,10 @@
         <button id="month">1개월</button>
         <button id="threeMonth">3개월</button>
     </div>
+
+
+     
+
   </div>
 
     <script>

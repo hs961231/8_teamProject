@@ -10,4 +10,8 @@
 	select * from event;
 </select>
 
+<select id="eventOne" resultType="EventVO">
+	select * from event where e_id = #{e_id}
+</select>
+
 </mapper>

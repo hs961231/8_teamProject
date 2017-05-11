@@ -8,6 +8,14 @@ public class EventVO {
 	private String e_name;
 	private Date e_start;
 	private Date e_end;
+	private String e_content;
+	
+	public String getE_content() {
+		return e_content;
+	}
+	public void setE_content(String e_content) {
+		this.e_content = e_content;
+	}
 	public int getE_id() {
 		return e_id;
 	}
