@@ -2,7 +2,9 @@ package yjc.wdb.scts;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ import yjc.wdb.scts.service.UserService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.EventService;
 import yjc.wdb.scts.service.PositionService;
+import yjc.wdb.scts.service.PurchaseInfoService;
 
 @Controller
 @RequestMapping("/android")
@@ -45,6 +48,9 @@ public class AndroidController {
 	
 	@Inject
 	private CouponService couponService;
+	
+	@Inject
+	private PurchaseInfoService purchaseInfoService;
 
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
 	
@@ -181,8 +187,8 @@ public class AndroidController {
 			eventJson = new JSONObject();
 			eventJson.put("e_id", list.get(i).getE_id());
 			eventJson.put("e_name", list.get(i).getE_name());
-			eventJson.put("e_start", list.get(i).getE_start());
-			eventJson.put("e_end", list.get(i).getE_end());
+			eventJson.put("e_start", list.get(i).getE_start().toString());
+			eventJson.put("e_end", list.get(i).getE_end().toString());
 			
 			eventArray.add(eventJson);
 			
@@ -207,9 +213,11 @@ public class AndroidController {
 		JSONObject eventJson = new JSONObject();
 		eventJson.put("e_id", eventVO.getE_id());
 		eventJson.put("e_name", eventVO.getE_name());
-		eventJson.put("e_start", eventVO.getE_start());
-		eventJson.put("e_end", eventVO.getE_end());
+		eventJson.put("e_start", eventVO.getE_start().toString());
+		eventJson.put("e_end", eventVO.getE_end().toString());
 		eventJson.put("e_content", eventVO.getE_content());
+		
+	
 		
 		
 		return callback + "(" + eventJson + ")";
@@ -261,6 +269,74 @@ public class AndroidController {
 		
 		return callback+"("+coupon+")";
 	}
+	
+	// 계산서 정보
+	@RequestMapping(value="billList", method=RequestMethod.GET)
+	public @ResponseBody String billList(String user_id, int day, HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = purchaseInfoService.billList(user_id,day);
+		
+		// 이부분 더 생각 해보기
+		JSONObject billJson;
+		
+		
+		
+		JSONArray billArray = new JSONArray();
+		for(int i=0; i < list.size(); i++){
+			billJson = new JSONObject();
+			billJson.put("b_id", list.get(i).get("b_id"));	
+			billJson.put("publish_date", list.get(i).get("publish_date").toString());	
+			billJson.put("user_id", list.get(i).get("user_id"));	
+			billJson.put("p_name", list.get(i).get("p_name"));	
+			billJson.put("totalPrice", list.get(i).get("totalPrice"));
+			
+			billArray.add(billJson);
+		}
+		
+		JSONObject billList = new JSONObject();
+		billList.put("data", billArray);
+		
+		System.out.println(billList.toString());
+
+		
+		return callback+"("+billList+")";
+	}
+	// 계산서 상세정보
+	@RequestMapping(value="billOne", method=RequestMethod.GET)
+	public @ResponseBody String billOne(int b_id, HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = purchaseInfoService.billOne(b_id); 
+		
+		// 이부분 더 생각 해보기
+		JSONObject billJson;
+		
+		
+		
+		JSONArray billArray = new JSONArray();
+		for(int i=0; i < list.size(); i++){
+			billJson = new JSONObject();	
+			billJson.put("product_name", list.get(i).get("product_name").toString());	
+			billJson.put("amount", list.get(i).get("amount"));	
+			billJson.put("price", list.get(i).get("price"));	
+		
+			
+			billArray.add(billJson);
+		}
+		
+		JSONObject billList = new JSONObject();
+		billList.put("data", billArray);
+		
+		System.out.println(billList.toString());
+
+		
+		return callback+"("+billList+")";
+	}
+	
+	
 	
 	
 	
