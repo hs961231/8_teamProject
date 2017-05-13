@@ -136,9 +136,11 @@
 
 <script>
      $(function(){
+
+         var name = $("#name").text();
+        sessionStorage.setItem('user_id', name);
         $("#couponBasket").click(function(){
-            var name = $("#name").text();
-            sessionStorage.setItem('user_id', name);
+            
             window.location.href = "couponList.html";
         }); 
 

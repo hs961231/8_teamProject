@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yjc.wdb.mapper.CouponMapper">
+
+<select id="couponList" resultType="CouponVO">
+	
+select c.coupon_id, c.coupon_name, c.coupon_content
+from couponBasket cb, coupon c
+where cb.user_id = #{user_id} and  cb.coupon_id = c.coupon_id
+</select>
+<delete id="delCouponBasket" >
+delete from couponBasket where user_id = #{user_id} and coupon_id = #{coupon_id};
+</delete>
+</mapper>

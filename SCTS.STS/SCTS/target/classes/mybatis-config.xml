@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="PositionVO" type="yjc.wdb.scts.bean.PositionVO"></typeAlias>
+		<typeAlias alias="UserVO" type="yjc.wdb.scts.bean.UserVO"></typeAlias>
+		<typeAlias alias="EventVO" type="yjc.wdb.scts.bean.EventVO"></typeAlias>
+		<typeAlias alias="CouponVO" type="yjc.wdb.scts.bean.CouponVO"></typeAlias>
+		<typeAlias alias="PaywayVO" type="yjc.wdb.scts.bean.PaywayVO"></typeAlias>
+		<typeAlias alias="ProductVO" type="yjc.wdb.scts.bean.ProductVO"></typeAlias>
+		<typeAlias alias="PurchaseListVO" type="yjc.wdb.scts.bean.PurchaseListVO"></typeAlias>
+		<typeAlias alias="BillVO" type="yjc.wdb.scts.bean.BillVO"></typeAlias>
+	</typeAliases>
+</configuration>
