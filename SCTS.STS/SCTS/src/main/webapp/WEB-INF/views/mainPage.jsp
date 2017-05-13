@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +44,100 @@
 <link href="resources/css/style-responsive.css" rel="stylesheet" />
 <link href="resources/css/xcharts.min.css" rel=" stylesheet">
 <link href="resources/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+
+	<!-- javascripts -->
+	<script src="resources/js/jquery.js"></script>
+	<script src="resources/js/jquery-ui-1.10.4.min.js"></script>
+	<script type="text/javascript"
+		src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
+	<!-- bootstrap -->
+	<script src="resources/js/bootstrap.min.js"></script>
+	<!-- nice scroll -->
+	<script src="resources/js/jquery.scrollTo.min.js"></script>
+	<script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
+	<!-- charts scripts -->
+	<script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
+	<script src="resources/js/jquery.sparkline.js" type="text/javascript"></script>
+	<script
+		src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+	<script src="resources/js/owl.carousel.js"></script>
+	<!-- jQuery full calendar -->
+	<script src="resources/js/fullcalendar.min.js"></script>
+	<!-- Full Google Calendar - Calendar -->
+	<script
+		src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+	<!--script for this page only-->
+	<script src="resources/js/calendar-custom.js"></script>
+	<script src="resources/js/jquery.rateit.min.js"></script>
+	<!-- custom select -->
+	<script src="resources/js/jquery.customSelect.min.js"></script>
+	<script src="resources/assets/chart-master/Chart.js"></script>
+
+	<!--custome script for all page-->
+	<script src="resources/js/scripts.js"></script>
+	<!-- custom script for this page-->
+	<script src="resources/js/sparkline-chart.js"></script>
+	<script src="resources/js/easy-pie-chart.js"></script>
+	<script src="resources/js/jquery-jvectormap-1.2.2.min.js"></script>
+	<script src="resources/js/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="resources/js/xcharts.min.js"></script>
+	<script src="resources/js/jquery.autosize.min.js"></script>
+	<script src="resources/js/jquery.placeholder.min.js"></script>
+	<script src="resources/js/gdp-data.js"></script>
+	<script src="resources/js/morris.min.js"></script>
+	<script src="resources/js/sparklines.js"></script>
+	<script src="resources/js/charts.js"></script>
+	<script src="resources/js/jquery.slimscroll.min.js"></script>
+	
+	<script src="/scts/resources/assets/chart-master/Chart.js"></script>
+	<script>
+		//knob
+		$(document).ready(function() {
+			$(".knob").knob({
+				'draw' : function() {
+					$(this.i).val(this.cv + '%')
+				}
+			})
+		});
+
+		//carousel
+		$(document).ready(function() {
+			$("#owl-slider").owlCarousel({
+				navigation : true,
+				slideSpeed : 300,
+				paginationSpeed : 400,
+				singleItem : true
+
+			});
+		});
+
+		//custom select box
+
+		$(document).ready(function() {
+			$('select.styled').customSelect();
+		});
+
+		/* ---------- Map ---------- */
+		$(document).ready(function() {
+			$('#map').vectorMap({
+				map : 'world_mill_en',
+				series : {
+					regions : [ {
+						values : gdpData,
+						scale : [ '#000', '#000' ],
+						normalizeFunction : 'polynomial'
+					} ]
+				},
+				backgroundColor : '#eef3f7',
+				onLabelShow : function(e, el, code) {
+					el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+				}
+			});
+		});
+	</script>
+
+
 <!-- =======================================================
         Theme Name: NiceAdmin
         Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -277,12 +372,12 @@
 						<ul class="sub">
 							<li><a class="" href="#">매장 등록</a></li>
 							<li><a class="" href="#">물품 등록</a></li>
-							<li><a class="" href="#">매출 관리</a></li>
+							<li><a class="" href="salesManagement">매출 관리</a></li>
 							<li><a class="" href="#">재고 관리</a></li>
 						</ul></li>
 
-					<li><a class="" href="#"> <i class="icon_genius"></i> <span>이벤트
-								관리</span>
+					<li><a class="" href="event"> <i class="icon_genius"></i>
+							<span>이벤트 관리</span>
 					</a></li>
 
 					<li><a class="" href="#"> <i class="icon_piechart"></i> <span>쿠폰
@@ -310,104 +405,15 @@
 
 		<section id="main-content">
 			<section class="wrapper">
-				<%-- <jsp:include page="${ main_content }" /> --%>
-				<jsp:include page="event.jsp" />
+				<c:if test="${ main_content != null }">
+					<jsp:include page="${ main_content }.jsp" />
+				</c:if>
 			</section>
 		</section>
 
 	</section>
 	<!-- container section start -->
 
-	<!-- javascripts -->
-	<script src="resources/js/jquery.js"></script>
-	<script src="resources/js/jquery-ui-1.10.4.min.js"></script>
-	<script type="text/javascript"
-		src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
-	<!-- bootstrap -->
-	<script src="resources/js/bootstrap.min.js"></script>
-	<!-- nice scroll -->
-	<script src="resources/js/jquery.scrollTo.min.js"></script>
-	<script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
-	<!-- charts scripts -->
-	<script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
-	<script src="resources/js/jquery.sparkline.js" type="text/javascript"></script>
-	<script
-		src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-	<script src="resources/js/owl.carousel.js"></script>
-	<!-- jQuery full calendar -->
-	<script src="resources/js/fullcalendar.min.js"></script>
-	<!-- Full Google Calendar - Calendar -->
-	<script
-		src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-	<!--script for this page only-->
-	<script src="resources/js/calendar-custom.js"></script>
-	<script src="resources/js/jquery.rateit.min.js"></script>
-	<!-- custom select -->
-	<script src="resources/js/jquery.customSelect.min.js"></script>
-	<script src="resources/assets/chart-master/Chart.js"></script>
-
-	<!--custome script for all page-->
-	<script src="resources/js/scripts.js"></script>
-	<!-- custom script for this page-->
-	<script src="resources/js/sparkline-chart.js"></script>
-	<script src="resources/js/easy-pie-chart.js"></script>
-	<script src="resources/js/jquery-jvectormap-1.2.2.min.js"></script>
-	<script src="resources/js/jquery-jvectormap-world-mill-en.js"></script>
-	<script src="resources/js/xcharts.min.js"></script>
-	<script src="resources/js/jquery.autosize.min.js"></script>
-	<script src="resources/js/jquery.placeholder.min.js"></script>
-	<script src="resources/js/gdp-data.js"></script>
-	<script src="resources/js/morris.min.js"></script>
-	<script src="resources/js/sparklines.js"></script>
-	<script src="resources/js/charts.js"></script>
-	<script src="resources/js/jquery.slimscroll.min.js"></script>
-	<script>
-
-      //knob
-      $(function() {
-        $(".knob").knob({
-          'draw' : function () { 
-            $(this.i).val(this.cv + '%')
-          }
-        })
-      });
-
-      //carousel
-      $(document).ready(function() {
-          $("#owl-slider").owlCarousel({
-              navigation : true,
-              slideSpeed : 300,
-              paginationSpeed : 400,
-              singleItem : true
-
-          });
-      });
-
-      //custom select box
-
-      $(function(){
-          $('select.styled').customSelect();
-      });
-	  
-	  /* ---------- Map ---------- */
-	$(function(){
-	  $('#map').vectorMap({
-	    map: 'world_mill_en',
-	    series: {
-	      regions: [{
-	        values: gdpData,
-	        scale: ['#000', '#000'],
-	        normalizeFunction: 'polynomial'
-	      }]
-	    },
-		backgroundColor: '#eef3f7',
-	    onLabelShow: function(e, el, code){
-	      el.html(el.html()+' (GDP - '+gdpData[code]+')');
-	    }
-	  });
-	});
-
-  </script>
 
 </body>
 </html>

@@ -65,6 +65,28 @@ public class HomeController {
 		return "mainPage";
 	}
 	
+	@RequestMapping(value="salesManagement", method=RequestMethod.GET)
+	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "sales";
+		
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+	
+	@RequestMapping(value="event", method=RequestMethod.GET)
+	public String event(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "event";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+	
 	/** 2017_05_01 구현
 	 * 각 타일 ( 메이저, 마이너 )에서의 고객들의 평균 머문 시간과, 몇명이 머물럿는지 데이터를 뽑아오는 것
 	 * 해당 jsp페이지에서 정상적으로 출력되는 것 확인 햇음.

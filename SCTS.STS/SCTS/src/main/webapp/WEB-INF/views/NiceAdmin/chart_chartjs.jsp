@@ -275,7 +275,7 @@
 					<li><a class="" href="widgets"> <i class="icon_genius"></i>
 							<span>Widgets</span>
 					</a></li>
-					<li><a class="" href="chart-chartjs"> <i
+					<li><a class="" href="chart_chartjs"> <i
 							class="icon_piechart"></i> <span>Charts</span>
 
 					</a></li>
