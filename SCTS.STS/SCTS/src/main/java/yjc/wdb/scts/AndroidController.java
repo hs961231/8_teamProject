@@ -278,7 +278,7 @@ public class AndroidController {
 		
 		List<HashMap> list = purchaseInfoService.billList(user_id,day);
 		
-		// 이부분 더 생각 해보기
+	
 		JSONObject billJson;
 		
 		
