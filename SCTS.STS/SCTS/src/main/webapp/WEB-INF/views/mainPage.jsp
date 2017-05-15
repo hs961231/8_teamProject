@@ -68,7 +68,7 @@
 	<script
 		src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
 	<!--script for this page only-->
-	<script src="resources/js/calendar-custom.js"></script>
+	
 	<script src="resources/js/jquery.rateit.min.js"></script>
 	<!-- custom select -->
 	<script src="resources/js/jquery.customSelect.min.js"></script>

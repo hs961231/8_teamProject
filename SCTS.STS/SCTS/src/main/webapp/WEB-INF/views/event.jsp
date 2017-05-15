@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
 <!-- 달력 -->
 <div class="row">
 	<div class="col-md-6 portlets">
@@ -110,10 +111,12 @@
                     All the links in the footer should remain intact. 
                     You can delete the links only if you purchased the pro version.
                     Licensing information: https://bootstrapmade.com/license/
-                    Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                    Purchas e the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
                 -->
 		<a
 			href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business
 			Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
 	</div>
 </div>
+<script src="resources/js/calendar-custom.js"></script>
+

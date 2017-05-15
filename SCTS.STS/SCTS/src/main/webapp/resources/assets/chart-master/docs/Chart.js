@@ -332,7 +332,7 @@ var Chart = function(context){
 			scaleFontFamily : "'Arial'",
 			scaleFontSize : 12,
 			scaleFontStyle : "normal",
-			scaleFontColor : "#666",
+			scaleFontColor : "#FFF",
 			scaleShowGridLines : true,
 			scaleGridLineColor : "rgba(0,0,0,.05)",
 			scaleGridLineWidth : 1,
