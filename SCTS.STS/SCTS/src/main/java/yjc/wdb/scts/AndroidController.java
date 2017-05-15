@@ -203,6 +203,7 @@ public class AndroidController {
 		return callback+"("+eventStr+")";
 	}
 	
+	// 이벤트 상세보기
 	@RequestMapping(value="eventOne", method=RequestMethod.GET)
 	public @ResponseBody String eventOne(String e_id, HttpServletRequest request) throws Exception{
 		
@@ -319,7 +320,7 @@ public class AndroidController {
 		JSONArray billArray = new JSONArray();
 		for(int i=0; i < list.size(); i++){
 			billJson = new JSONObject();	
-			billJson.put("product_name", list.get(i).get("product_name").toString());	
+			billJson.put("product_name", list.get(i).get("product_name"));	
 			billJson.put("amount", list.get(i).get("amount"));	
 			billJson.put("price", list.get(i).get("price"));	
 		
@@ -336,6 +337,37 @@ public class AndroidController {
 		return callback+"("+billList+")";
 	}
 	
+	
+	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
+	public @ResponseBody String recommandProduct(String user_id, HttpServletRequest request) throws Exception{
+		
+String callback = request.getParameter("callback");
+		
+		List<HashMap> list = purchaseInfoService.recommandList(user_id); 
+		
+		// 이부분 더 생각 해보기
+		JSONObject recommandJSON;
+		
+		
+		
+		JSONArray recommandArray = new JSONArray();
+		for(int i=0; i < list.size(); i++){
+			recommandJSON = new JSONObject();	
+			recommandJSON.put("product_id", list.get(i).get("product_id"));
+			recommandJSON.put("product_name", list.get(i).get("product_name"));	
+			recommandJSON.put("price", list.get(i).get("product_price"));			
+			
+			recommandArray.add(recommandJSON);
+		}
+		
+		JSONObject recommandList = new JSONObject();
+		recommandList.put("data", recommandArray);
+		
+		System.out.println(recommandList.toString());
+
+		
+		return callback+"("+recommandList+")";
+	}
 	
 	
 	

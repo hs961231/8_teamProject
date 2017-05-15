@@ -29,4 +29,10 @@ public class PurchaseInfoServeiceImpl implements PurchaseInfoService {
 		return dao.billOne(b_id);
 	}
 
+	@Override
+	public List<HashMap> recommandList(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.recommandList(user_id);
+	}
+
 }

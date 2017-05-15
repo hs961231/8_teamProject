@@ -34,4 +34,10 @@ public class PurchaseInfoDAOImpl implements PurchaseInfoDAO {
 		return sql.selectList(NAMESPACE+".billOne", b_id);
 	}
 
+	@Override
+	public List<HashMap> recommandList(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".recommandProduct", user_id);
+	}
+
 }
