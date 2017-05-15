@@ -40,7 +40,7 @@
 <link href="/scts/resources/css/jquery-jvectormap-1.2.2.css"
 	rel="stylesheet">
 <!-- Custom styles -->
-<link rel="stylesheet" href="/scts/resources/css/fullcalendar.css">
+<link href="/scts/resources/css/fullcalendar.css" rel="stylesheet">
 <link href="/scts/resources/css/widgets.css" rel="stylesheet">
 <link href="/scts/resources/css/style.css" rel="stylesheet">
 <link href="/scts/resources/css/style-responsive.css" rel="stylesheet" />

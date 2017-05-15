@@ -39,11 +39,15 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 
+	/********************************* 로그인 관련 ***************************************/
+	/********************************* 로그인 관련 ***************************************/
+	// 처음 접속 시 표시해 주는 로그인 화면
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String login() {
 		return "login";
 	}
 	
+	// 로그인 요청 받는 부분
 	@RequestMapping(value="/", method=RequestMethod.POST)
 	@ResponseBody
 	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
@@ -59,16 +63,45 @@ public class HomeController {
 			return "error";
 	}
 	
+	
+	// 메인페이지, 대쉬보드, 로고 클릭시 접속
 	@RequestMapping(value="mainPage", method=RequestMethod.GET)
 	public String mainPage(HttpServletRequest request, HttpSession session) {
-				
+		
+		return "mainPage";
+	}
+
+	/********************************* 매장 관리 메뉴 ***************************************/
+	/********************************* 매장 관리 메뉴 ***************************************/
+	// 매장 등록
+	@RequestMapping(value="shopRegister", method=RequestMethod.GET)
+	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "shopRegister";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+	// 상품 등록
+	@RequestMapping(value="productRegister", method=RequestMethod.GET)
+	public String productRegister(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "productRegister";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
 		return "mainPage";
 	}
 	
+	// 매출 관리
 	@RequestMapping(value="salesManagement", method=RequestMethod.GET)
 	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
-		String ContentPage = "sales";
+		String ContentPage = "salesManagement";
 		
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
@@ -76,10 +109,51 @@ public class HomeController {
 		return "mainPage";
 	}
 	
+	// 재고 관리
+	@RequestMapping(value="stockManagement", method=RequestMethod.GET)
+	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "stockManagement";
+		
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+
+	/********************************* 이벤트 관리 메뉴 ***************************************/
+	/********************************* 이벤트 관리 메뉴 ***************************************/
 	@RequestMapping(value="event", method=RequestMethod.GET)
 	public String event(HttpServletRequest request, HttpSession session, Model model) {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
 		String ContentPage = "event";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+	/********************************* 쿠폰 관리 메뉴 ***************************************/
+	/********************************* 쿠폰 관리 메뉴 ***************************************/
+	@RequestMapping(value="coupon", method=RequestMethod.GET)
+	public String coupon(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "coupon";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+	/********************************* 포스 시스템 메뉴 ***************************************/
+	/********************************* 포스 시스템 메뉴 ***************************************/
+	@RequestMapping(value="posSystem", method=RequestMethod.GET)
+	public String posSystem(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "posSystem";
 
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
