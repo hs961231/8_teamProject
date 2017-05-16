@@ -46,4 +46,10 @@ public class PositionServiceImpl implements PositionService{
 		// TODO Auto-generated method stub
 		return dao.probability();
 	}
+
+	@Override
+	public int todayCount() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.todayCount();
+	}
 }

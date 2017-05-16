@@ -30,6 +30,7 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<CouponVO> listCoupon() throws Exception {
 
 		return dao.listCoupon();
@@ -53,4 +54,10 @@ public class CouponServiceImpl implements CouponService {
 		
 	}
 
+=======
+	public CouponVO selectTest() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectTest();
+	}
+>>>>>>> origin/master
 }

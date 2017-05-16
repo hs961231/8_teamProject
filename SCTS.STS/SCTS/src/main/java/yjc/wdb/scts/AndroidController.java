@@ -15,12 +15,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.bean.CouponBasketVO;
@@ -92,8 +96,10 @@ public class AndroidController {
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
 		String str = request.getParameter("PositionVO");
+		JSONObject json = new JSONObject();
 		if(str == null) {
-			return "ERROR";
+			json.put("status", "ERROR");
+			return json.toString();
 		}
 
 		// 넘어온 문자열을 json 객체로 변환
@@ -124,8 +130,14 @@ public class AndroidController {
 		// 디비에 저장
 		positionService.insertPosition(position);
 
-
-		return "SUCCESS";
+		
+		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
+		str = new Gson().toJson(couponService.selectTest());
+		json = (JSONObject) new JSONParser().parse(str);
+		
+		json.put("status", "SUCCESS");
+		
+		return json.toString();
 	}
 
 	// 디비에 있는 비콘정보를 안드로이드로 넘겨줌

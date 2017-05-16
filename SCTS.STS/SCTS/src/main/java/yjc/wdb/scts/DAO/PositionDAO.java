@@ -12,4 +12,5 @@ public interface PositionDAO {
 	public List<HashMap<String, String>> visit_count() throws Exception;
 	public List<HashMap<String, String>> probability() throws Exception;
 	public List<HashMap<String, String>> avgStay() throws Exception;
+	public int todayCount() throws Exception;
 }

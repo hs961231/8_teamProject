@@ -68,5 +68,11 @@
 		group by major, minor
 		order by t.tile_name;
 	</select>
+	
+	<select id="todayCount" resultType="integer">
+		select count(DISTINCT user_id)
+		from position
+		where date(current_timedate) >= date(subdate(now(), INTERVAL 0 DAY))
+	</select>
 
 </mapper>

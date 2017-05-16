@@ -47,4 +47,10 @@ public class PositionDAOImpl implements PositionDAO{
 		return sqlSession.selectList(NAMESPACE+".probability");
 	}
 
+	@Override
+	public int todayCount() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE+".todayCount");
+	}
+
 }
