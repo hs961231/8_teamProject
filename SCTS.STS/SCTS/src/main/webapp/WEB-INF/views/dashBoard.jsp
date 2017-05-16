@@ -7,7 +7,7 @@
 	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 		<div class="info-box blue-bg">
 			<i class="fa fa-cloud-download"></i>
-			<div class="count">2,000</div>
+			<div class="count">${ todayCount }</div>
 			<div class="title">Today Visitor</div>
 		</div>
 		<!--/.info-box-->

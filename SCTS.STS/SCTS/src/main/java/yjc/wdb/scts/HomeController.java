@@ -50,13 +50,13 @@ public class HomeController {
 	/********************************* 로그인 관련 ***************************************/
 	/********************************* 로그인 관련 ***************************************/
 	// 처음 접속 시 표시해 주는 로그인 화면
-	@RequestMapping(value="/", method=RequestMethod.GET)
+	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String login() {
 		return "login";
 	}
 	
 	// 로그인 요청 받는 부분
-	@RequestMapping(value="/", method=RequestMethod.POST)
+	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
 	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
 		int chk = userService.loginUser(user);
@@ -74,7 +74,18 @@ public class HomeController {
 	
 	// 메인페이지, 대쉬보드, 로고 클릭시 접속
 	@RequestMapping(value="mainPage", method=RequestMethod.GET)
-	public String mainPage(HttpServletRequest request, HttpSession session) {
+	public String mainPage(HttpServletRequest request, HttpSession session, Model model) throws Exception{
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "dashBoard";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		
+		int todayCount = positionService.todayCount();
+		
+		model.addAttribute("todayCount", todayCount);
+		
 		
 		return "mainPage";
 	}
@@ -237,5 +248,55 @@ public class HomeController {
 		model.addAttribute("list", list);
 		return "test/probabilityTest";
 	}
+<<<<<<< HEAD
+
+	@RequestMapping(value="widgets")
+	public String widgets() {
+		return "NiceAdmin/widgets";
+	}
+	
+	@RequestMapping(value="404")
+	public String errorPage() {
+		return "NiceAdmin/404";
+	}
+	
+	@RequestMapping(value="register_shop")
+	public String register_shop() {
+		return "NiceAdmin/register_shop";
+	}
+	
+	@RequestMapping(value="register_shopForm")
+	public String register_shopForm() {
+		return "NiceAdmin/register_shopForm";
+	}
+	
+	@RequestMapping(value="form")
+	public String form(){
+		return "NiceAdmin/form";
+		
+	}
+	
+	@RequestMapping(value="register_tileInfo")
+	public String register_tileInfo() {
+		return "NiceAdmin/register_tileInfo";
+	}
+	
+	@RequestMapping(value="register_product")
+	public String register_product() {
+		return "NiceAdmin/register_product";
+	}
+	
+	@RequestMapping(value="product_list")
+	public String product_list() {
+		return "NiceAdmin/product_list";
+	}
+	
+	@RequestMapping(value="product_info")
+	public String product_info() {
+		return "NiceAdmin/product_info";
+	}
+	
+=======
+>>>>>>> origin/master
 	
 }

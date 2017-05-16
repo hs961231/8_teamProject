@@ -96,7 +96,7 @@
 			
 			$.ajax({
 				type:"post",
-				url:"",
+				url:"login",
 				data: {
 					user_id : user_id,
 					user_pw : user_pw
