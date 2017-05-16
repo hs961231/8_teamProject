@@ -46,6 +46,8 @@
 <link href="resources/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 
+
+
 	<!-- javascripts -->
 	<script src="resources/js/jquery.js"></script>
 	<script src="resources/js/jquery-ui-1.10.4.min.js"></script>
@@ -89,6 +91,8 @@
 	<script src="resources/js/sparklines.js"></script>
 	<script src="resources/js/charts.js"></script>
 	<script src="resources/js/jquery.slimscroll.min.js"></script>
+	
+	<script src="resources/js/IPSetting.js"></script>
 	
 	<script src="/scts/resources/assets/chart-master/Chart.js"></script>
 	<script>

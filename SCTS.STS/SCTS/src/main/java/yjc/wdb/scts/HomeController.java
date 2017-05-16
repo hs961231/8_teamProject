@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.UserService;
 
 import yjc.wdb.scts.service.PositionService;
+import yjc.wdb.scts.service.SalesService;
 
 /**
  * Handles requests for the application home page.
@@ -33,8 +36,13 @@ public class HomeController {
 	
 	@Inject
 	private UserService userService;
+	
 	@Inject
-	PositionService positionService;
+	private PositionService positionService;
+	
+	// 매출 관리 서비스
+	@Inject
+	private SalesService salesService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -108,6 +116,36 @@ public class HomeController {
 		
 		return "mainPage";
 	}
+	
+	@RequestMapping(value="yearSales", method=RequestMethod.GET)
+	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
+	
+	
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = salesService.yearSales(year);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i=0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+		}
+		
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+		
+	
+		
+		return callback + "(" + jsonObject +")";
+	}
+	
+	
+	
+	
 	
 	// 재고 관리
 	@RequestMapping(value="stockManagement", method=RequestMethod.GET)
