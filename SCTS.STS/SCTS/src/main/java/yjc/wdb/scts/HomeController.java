@@ -182,6 +182,41 @@ public class HomeController {
 		return "NiceAdmin/404";
 	}
 	
+	@RequestMapping(value="register_shop")
+	public String register_shop() {
+		return "NiceAdmin/register_shop";
+	}
+	
+	@RequestMapping(value="register_shopForm")
+	public String register_shopForm() {
+		return "NiceAdmin/register_shopForm";
+	}
+	
+	@RequestMapping(value="form")
+	public String form(){
+		return "NiceAdmin/form";
+		
+	}
+	
+	@RequestMapping(value="register_tileInfo")
+	public String register_tileInfo() {
+		return "NiceAdmin/register_tileInfo";
+	}
+	
+	@RequestMapping(value="register_product")
+	public String register_product() {
+		return "NiceAdmin/register_product";
+	}
+	
+	@RequestMapping(value="product_list")
+	public String product_list() {
+		return "NiceAdmin/product_list";
+	}
+	
+	@RequestMapping(value="product_info")
+	public String product_info() {
+		return "NiceAdmin/product_info";
+	}
 	
 	
 }
