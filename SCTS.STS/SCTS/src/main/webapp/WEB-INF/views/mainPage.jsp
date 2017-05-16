@@ -408,10 +408,10 @@
 				<c:if test="${ main_content != null }">
 					<jsp:include page="${ main_content }.jsp" />
 				</c:if>
-				
+				<%-- 
 				<c:if test="${ main_content == null }">
 					<jsp:include page="dashBoard.jsp"></jsp:include>
-				</c:if>
+				</c:if> --%>
 				
 			</section>
 		</section>

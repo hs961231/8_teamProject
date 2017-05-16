@@ -9,4 +9,5 @@ public interface CouponDAO {
 
 	public List<CouponVO> couponList(String user_id) throws Exception;
 	public void delCouponBasket(CouponBasketVO couponBasketVO) throws Exception;
+	public CouponVO selectTest() throws Exception;
 }

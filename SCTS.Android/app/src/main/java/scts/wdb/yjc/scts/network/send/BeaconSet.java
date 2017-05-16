@@ -3,6 +3,9 @@ package scts.wdb.yjc.scts.network.send;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import scts.wdb.yjc.scts.HttpClient;
 import scts.wdb.yjc.scts.bean.IPSetting;
 
@@ -42,9 +45,21 @@ public class BeaconSet extends AsyncTask<String, String, String> {
     }
 
     // jsp에서 리턴한 데이터 처리부분
+    /**************************** 이부분이 쿠폰 받은 부분이다!!!!!!!!!!!!!!! **************************/
+
     protected void onPostExecute(String s){
+
         Log.d("HTTP_RESULT", s);
+        try {
+            JSONArray jsonArray = new JSONArray(s);
+            JSONObject obj = jsonArray.getJSONObject(0);
+
+            obj.getString("coupon_content");
+            obj.getString("coupon_name");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
-
-
 }

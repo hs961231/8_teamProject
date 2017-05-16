@@ -15,4 +15,10 @@ where cb.user_id = #{user_id} and  cb.coupon_id = c.coupon_id
 <delete id="delCouponBasket" >
 delete from couponBasket where user_id = #{user_id} and coupon_id = #{coupon_id};
 </delete>
+
+<select id="selectTest" resultType="CouponVO">
+	select *
+	from coupon
+	limit 0,1
+</select>
 </mapper>
