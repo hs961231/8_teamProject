@@ -127,12 +127,23 @@ public class HomeController {
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
-		
-		for(int i=0; i < list.size(); i++){
+		int i = 0;
+		for(i = 0; i < list.size(); i++){
 			salesJson = new JSONObject();
 			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
 			salesArray.add(salesJson);
+			
 		}
+		
+		
+		
+		if(i == 2){
+			salesJson = new JSONObject();
+			salesJson.put("totalPrice", 0);
+			salesArray.add(salesJson);
+		}
+		
+		
 		
 		
 		JSONObject jsonObject = new JSONObject();

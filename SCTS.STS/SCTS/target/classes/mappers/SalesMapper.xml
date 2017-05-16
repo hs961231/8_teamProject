@@ -9,14 +9,25 @@
 		<result property="totalPrice" column="totalPrice" />
 	</resultMap>
 
-	<select id="yearSales" resultType="java.util.HashMap">
+	<select id="yearSales" resultMap="yearSales">
 		select sum(pl.amount *
 		p.product_price) as totalPrice
 		from product p, bill b, purchaseList pl
-		where p.product_id = pl.product_id AND b.b_id = pl.b_id and (b.publish_date
-		like concat(#{year}, '%') or b.publish_date like concat(#{year}-1, '%') or
+		where p.product_id = pl.product_id AND b.b_id = pl.b_id and
+		(b.publish_date
+		like concat(#{year}, '%') or b.publish_date like
+		concat(#{year}-1, '%') or
 		b.publish_date like concat(#{year}-2, '%'))
 		group by year(b.publish_date)
 
 	</select>
+
+<!-- 	<select id="daySales" resultType="java.util.HashMap">
+		select b.publish_date as
+		publish_date, sum(pl.amount * p.product_price) as totalPrice
+		from product p, bill b, purchaseList pl
+		where p.product_id = pl.product_id AND b.b_id = pl.b_id and (b.publish_date
+		<= curDate() and b.publish_date >= subDate(curDate(), Interval 7 DAY))
+		group by b.publish_date;
+	</select> -->
 </mapper>

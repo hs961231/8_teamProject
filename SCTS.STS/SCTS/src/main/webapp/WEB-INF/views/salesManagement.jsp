@@ -127,6 +127,7 @@
 					dataType: 'jsonp',
 					success : function(data) {
 						
+						
 						var barChartData = {};
 						barChartData.labels = [ year - 2, year - 1, year ];
 						barChartData.datasets = [];
