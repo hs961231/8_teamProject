@@ -8,27 +8,27 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="resources/img/favicon.png">
+    <link rel="shortcut icon" href="/scts/resources/img/favicon.png">
 
     <title>Profile | Creative - Bootstrap 3 Responsive Admin Template</title>
 
     <!-- Bootstrap CSS -->    
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/scts/resources/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="resources/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="/scts/resources/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="resources/css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="resources/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/scts/resources/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="/scts/resources/css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styles -->
-    <link href="resources/css/style.css" rel="stylesheet">
-    <link href="resources/css/style-responsive.css" rel="stylesheet" />
+    <link href="/scts/resources/css/style.css" rel="stylesheet">
+    <link href="/scts/resources/css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
-      <script src="resources/js/html5shiv.js"></script>
-      <script src="resources/js/respond.min.js"></script>
-      <script src="resources/js/lte-ie7.js"></script>
+      <script src="/scts/resources/js/html5shiv.js"></script>
+      <script src="/scts/resources/js/respond.min.js"></script>
+      <script src="/scts/resources/js/lte-ie7.js"></script>
     <![endif]-->
   </head>
 
@@ -159,7 +159,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Greg  Martin</span>
                                     <span class="time">1 min</span>
@@ -171,7 +171,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini2.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini2.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Bob   Mckenzie</span>
                                     <span class="time">5 mins</span>
@@ -183,7 +183,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini3.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini3.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Phillip   Park</span>
                                     <span class="time">2 hrs</span>
@@ -195,7 +195,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini4.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini4.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Ray   Munoz</span>
                                     <span class="time">1 day</span>
@@ -261,7 +261,7 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="resources/img/avatar1_small.jpg">
+                                <img alt="" src="/scts/resources/img/avatar1_small.jpg">
                             </span>
                             <span class="username">Jenifer Smith</span>
                             <b class="caret"></b>
@@ -339,7 +339,7 @@
                       </a>
                   </li>
                   <li>                     
-                      <a class="" href="chart-chartjs">
+                      <a class="" href="chart_chartjs">
                           <i class="icon_piechart"></i>
                           <span>Charts</span>
                           
@@ -399,7 +399,7 @@
                             <div class="col-lg-2 col-sm-2">
                               <h4>Jenifer Smith</h4>               
                               <div class="follow-ava">
-                                  <img src="resources/img/profile-widget-avatar.jpg" alt="">
+                                  <img src="/scts/resources/img/profile-widget-avatar.jpg" alt="">
                               </div>
                               <h6>Administrator</h6>
                             </div>
@@ -484,7 +484,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Jonatanh Doe</a> at 4:25pm, 30th Octmber 2014</p>
                                                       <p>It is a long established fact that a reader will be distracted layout</p>
                                                   </div>
@@ -494,7 +494,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Jhon Loves </a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Knowledge speaks, but wisdom listens.</p>                                                      
                                                   </div>
@@ -504,7 +504,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Rose Crack</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
                                                   </div>
@@ -514,7 +514,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Jimy Smith</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
                                                   </div>
@@ -524,7 +524,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Maria Willyam</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
                                                   </div>
@@ -534,7 +534,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Sarah saw</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Knowledge speaks, but wisdom listens.</p>                                                      
                                                   </div>
@@ -544,7 +544,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Layla night</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
                                                   </div>
@@ -554,7 +554,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Andriana lee</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
                                                   </div>
@@ -564,7 +564,7 @@
                                               <div class="activity-body act-in">
                                                   <span class="arrow"></span>
                                                   <div class="text">
-                                                      <a href="#" class="activity-img"><img class="avatar" src="resources/img/chat-avatar.jpg" alt=""></a>
+                                                      <a href="#" class="activity-img"><img class="avatar" src="/scts/resources/img/chat-avatar.jpg" alt=""></a>
                                                       <p class="attribution"><a href="#">Maria Willyam</a> at 5:25am, 30th Octmber 2014</p>
                                                       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
                                                   </div>
@@ -709,15 +709,15 @@
   </section>
   <!-- container section end -->
     <!-- javascripts -->
-    <script src="resources/js/jquery.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
+    <script src="/scts/resources/js/jquery.js"></script>
+    <script src="/scts/resources/js/bootstrap.min.js"></script>
     <!-- nice scroll -->
-    <script src="resources/js/jquery.scrollTo.min.js"></script>
-    <script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="/scts/resources/js/jquery.scrollTo.min.js"></script>
+    <script src="/scts/resources/js/jquery.nicescroll.js" type="text/javascript"></script>
     <!-- jquery knob -->
-    <script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
+    <script src="/scts/resources/assets/jquery-knob/js/jquery.knob.js"></script>
     <!--custome script for all page-->
-    <script src="resources/js/scripts.js"></script>
+    <script src="/scts/resources/js/scripts.js"></script>
 
   <script>
 

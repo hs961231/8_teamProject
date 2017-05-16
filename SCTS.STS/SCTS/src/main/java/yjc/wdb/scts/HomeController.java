@@ -8,19 +8,25 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.UserService;
 
 import yjc.wdb.scts.service.PositionService;
+import yjc.wdb.scts.service.SalesService;
 
 /**
  * Handles requests for the application home page.
@@ -30,33 +36,167 @@ public class HomeController {
 	
 	@Inject
 	private UserService userService;
+	
 	@Inject
-	PositionService positionService;
+	private PositionService positionService;
+	
+	// 매출 관리 서비스
+	@Inject
+	private SalesService salesService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+
+	/********************************* 로그인 관련 ***************************************/
+	/********************************* 로그인 관련 ***************************************/
+	// 처음 접속 시 표시해 주는 로그인 화면
+	@RequestMapping(value="/", method=RequestMethod.GET)
+	public String login() {
+		return "login";
+	}
+	
+	// 로그인 요청 받는 부분
+	@RequestMapping(value="/", method=RequestMethod.POST)
+	@ResponseBody
+	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
+		int chk = userService.loginUser(user);
+		
+		if(chk == 0)
+			return "error";
+		else if(chk == 1) {
+			session.setAttribute("user_id", user.getUser_id());
+			return "success";
+		}
+		else
+			return "error";
+	}
 	
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	// 메인페이지, 대쉬보드, 로고 클릭시 접속
+	@RequestMapping(value="mainPage", method=RequestMethod.GET)
+	public String mainPage(HttpServletRequest request, HttpSession session) {
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+		return "mainPage";
 	}
 
-	@RequestMapping(value="test1")
-	public void agebase_page() {
+	/********************************* 매장 관리 메뉴 ***************************************/
+	/********************************* 매장 관리 메뉴 ***************************************/
+	// 매장 등록
+	@RequestMapping(value="shopRegister", method=RequestMethod.GET)
+	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "shopRegister";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
 		
+		return "mainPage";
+	}
+
+	// 상품 등록
+	@RequestMapping(value="productRegister", method=RequestMethod.GET)
+	public String productRegister(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "productRegister";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+	
+	// 매출 관리
+	@RequestMapping(value="salesManagement", method=RequestMethod.GET)
+	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "salesManagement";
+		
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+	
+	@RequestMapping(value="yearSales", method=RequestMethod.GET)
+	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
+	
+	
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = salesService.yearSales(year);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i=0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+		}
+		
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+		
+	
+		
+		return callback + "(" + jsonObject +")";
+	}
+	
+	
+	
+	
+	
+	// 재고 관리
+	@RequestMapping(value="stockManagement", method=RequestMethod.GET)
+	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "stockManagement";
+		
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+
+	/********************************* 이벤트 관리 메뉴 ***************************************/
+	/********************************* 이벤트 관리 메뉴 ***************************************/
+	@RequestMapping(value="event", method=RequestMethod.GET)
+	public String event(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "event";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+	/********************************* 쿠폰 관리 메뉴 ***************************************/
+	/********************************* 쿠폰 관리 메뉴 ***************************************/
+	@RequestMapping(value="coupon", method=RequestMethod.GET)
+	public String coupon(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "coupon";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+	/********************************* 포스 시스템 메뉴 ***************************************/
+	/********************************* 포스 시스템 메뉴 ***************************************/
+	@RequestMapping(value="posSystem", method=RequestMethod.GET)
+	public String posSystem(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "posSystem";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
 	}
 	
 	/** 2017_05_01 구현
@@ -68,7 +208,7 @@ public class HomeController {
 		List<HashMap<String, String>> list = positionService.avgStay();
 		logger.debug(list.toString());
 		model.addAttribute("list", list);
-		return "avgStayTest";
+		return "test/avgStayTest";
 	}
 
 	@RequestMapping(value="visit_countTest")
@@ -76,7 +216,7 @@ public class HomeController {
 		List<HashMap<String, String>> list = positionService.visit_count();
 		logger.debug(list.toString());
 		model.addAttribute("list", list);
-		return "visit_countTest";
+		return "test/visit_countTest";
 	}
 
 	@RequestMapping(value="probabilityTest")
@@ -84,93 +224,9 @@ public class HomeController {
 		List<HashMap<String, String>> list = positionService.probability();
 		logger.debug(list.toString());
 		model.addAttribute("list", list);
-		return "probabilityTest";
+		return "test/probabilityTest";
 	}
-/***************************************** 디자인 관련 웹 페이지들 ***************************************************/
-
-	@RequestMapping(value="index")
-	public String index() {
-		return "NiceAdmin/index";
-	}
-
-	@RequestMapping(value="basic_table")
-	public String basic_table() {
-		return "NiceAdmin/basic_table";
-	}
-
-	@RequestMapping(value="blank")
-	public String blank() {
-		return "NiceAdmin/blank";
-	}
-
-	@RequestMapping(value="buttons")
-	public String buttons() {
-		return "NiceAdmin/buttons";
-	}
-
-	@RequestMapping(value="chart_chartjs")
-	public String chart_chartjs() {
-		return "NiceAdmin/chart_chartjs";
-	}
-
-	@RequestMapping(value="form_component")
-	public String form_component() {
-		return "NiceAdmin/form_component";
-	}
-
-	@RequestMapping(value="form_validation")
-	public String form_validation() {
-		return "NiceAdmin/form_validation";
-	}
-
-	@RequestMapping(value="general")
-	public String general() {
-		return "NiceAdmin/general";
-	}
-
-	@RequestMapping(value="grids")
-	public String grids() {
-		return "NiceAdmin/grids";
-	}
-
-	@RequestMapping(value="login", method=RequestMethod.GET)
-	public String loginForm() {
-		return "NiceAdmin/login";
-	}
-	
-	@RequestMapping(value="login", method=RequestMethod.POST)
-	public @ResponseBody String login(UserVO user) throws Exception{
-		
-		int loginUser = userService.loginUser(user);
-		
-		return ""+loginUser;
-	}
-	
-	@RequestMapping(value="signUp", method=RequestMethod.GET)
-	public String signUpForm() {
-		return "NiceAdmin/signUp";
-	}
-	
-	@RequestMapping(value="signUp", method=RequestMethod.POST)
-	public @ResponseBody String signUp(UserVO user) throws Exception{
-		userService.registerUser(user);
-		int checkUser = userService.checkUser(user.getUser_id());
-		return ""+checkUser;
-	}
-	
-	@RequestMapping(value="checkUser", method=RequestMethod.GET)
-	public @ResponseBody String checkUser(String user_id) throws Exception{
-		
-		int checkUser = userService.checkUser(user_id);
-		return ""+checkUser;
-	}
-	
-	
-
-	@RequestMapping(value="profile")
-	public String profile() {
-		return "NiceAdmin/profile";
-	}
+<<<<<<< HEAD
 
 	@RequestMapping(value="widgets")
 	public String widgets() {
@@ -218,5 +274,7 @@ public class HomeController {
 		return "NiceAdmin/product_info";
 	}
 	
+=======
+>>>>>>> origin/master
 	
 }

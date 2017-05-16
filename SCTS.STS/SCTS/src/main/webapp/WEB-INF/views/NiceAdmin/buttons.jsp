@@ -13,22 +13,22 @@
     <title>Button | Creative - Bootstrap 3 Responsive Admin Template</title>
 
     <!-- Bootstrap CSS -->    
-    <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/scts/resources/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="resources/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="/scts/resources/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="resources/css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="resources/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/scts/resources/css/elegant-icons-style.css" rel="stylesheet" />
+    <link href="/scts/resources/css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styles -->
-    <link href="resources/css/style.css" rel="stylesheet">
-    <link href="resources/css/style-responsive.css" rel="stylesheet" />
+    <link href="/scts/resources/css/style.css" rel="stylesheet">
+    <link href="/scts/resources/css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
-      <script src="resources/js/html5shiv.js"></script>
-      <script src="resources/js/respond.min.js"></script>
-      <script src="resources/js/lte-ie7.js"></script>
+      <script src="/scts/resources/js/html5shiv.js"></script>
+      <script src="/scts/resources/js/respond.min.js"></script>
+      <script src="/scts/resources/js/lte-ie7.js"></script>
     <![endif]-->
   </head>
 
@@ -161,7 +161,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Greg  Martin</span>
                                     <span class="time">1 min</span>
@@ -173,7 +173,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini2.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini2.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Bob   Mckenzie</span>
                                     <span class="time">5 mins</span>
@@ -185,7 +185,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini3.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini3.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Phillip   Park</span>
                                     <span class="time">2 hrs</span>
@@ -197,7 +197,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="resources/img/avatar-mini4.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="/scts/resources/img/avatar-mini4.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Ray   Munoz</span>
                                     <span class="time">1 day</span>
@@ -343,7 +343,7 @@
                       </a>
                   </li>
                   <li>                     
-                      <a class="" href="chart-chartjs">
+                      <a class="" href="chart_chartjs">
                           <i class="icon_piechart"></i>
                           <span>Charts</span>
                           
@@ -813,13 +813,13 @@
   </section>
   <!-- container section end -->
     <!-- javascripts -->
-    <script src="resources/js/jquery.js"></script>
-    <script src="resources/js/bootstrap.min.js"></script>
+    <script src="/scts/resources/js/jquery.js"></script>
+    <script src="/scts/resources/js/bootstrap.min.js"></script>
     <!-- nice scroll -->
-    <script src="resources/js/jquery.scrollTo.min.js"></script>
-    <script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="/scts/resources/js/jquery.scrollTo.min.js"></script>
+    <script src="/scts/resources/js/jquery.nicescroll.js" type="text/javascript"></script>
     <!--custome script for all page-->
-    <script src="resources/js/scripts.js"></script>
+    <script src="/scts/resources/js/scripts.js"></script>
 
 
   </body>

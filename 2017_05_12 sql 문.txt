@@ -1,0 +1,161 @@
+
+/*계산서*/
+create table bill(
+
+	b_id int auto_increment primary key,
+	publish_date Date,
+	user_id varchar(50) not null,
+	p_id int not null
+
+);
+
+
+
+
+/* Affected rows: 0  찾은 행: 0  경고: 0  지속 시간 2 queries: 0.078 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-05-11', 'admin','1');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.031 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-05-10', 'admin','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-04-10', 'admin','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.016 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-02-10', 'admin','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-02-12', 'admin','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-03-12', 'admin','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.016 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-04-30', 'admin','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.016 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-04-30', 'asd','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.016 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-05-11', 'asd','1');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.016 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-02-15', 'asd','1');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-04-15', 'asd','1');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.016 sec. */
+insert into bill(publish_date, user_id, p_id) values('2017-04-30', 'asd','2');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+
+
+/*결제방법*/
+create table payway(
+p_id int auto_increment primary key,
+p_name varchar(100)
+);
+
+
+
+/* Affected rows: 0  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.062 sec. */
+insert into payway(p_name) values('card');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into payway(p_name) values('money');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.015 sec. */
+
+
+/* 구매 내역 */
+create table purchaseList(
+
+b_id int not null,
+product_id int not null,
+amount int not null
+
+);
+
+
+insert into purchaseList values("1", "1", 1);
+insert into purchaseList values("1", "2", 1);
+insert into purchaseList values("1", "3", 2);
+insert into purchaseList values("1", "4", 2);
+insert into purchaseList values("1", "5", 3);
+insert into purchaseList values("1", "6", 2);
+
+
+insert into purchaseList values("8", "1", 1);
+insert into purchaseList values("8", "2", 1);
+insert into purchaseList values("8", "3", 1);
+insert into purchaseList values("9", "4", 1);
+insert into purchaseList values("9", "5", 1);
+insert into purchaseList values("9", "6", 1);
+
+/* 상품 */
+
+create table product
+( product_id int auto_increment primary key,
+product_name varchar(100) not null,
+product_price int not null,
+product_info varchar(1000) not null
+);
+
+
+insert into product(product_name, product_price, product_info) values("cup", 3000, "this is cup");
+insert into product(product_name, product_price, product_info) values("coffee", 4500, "this is coffee");
+insert into product(product_name, product_price, product_info) values("rice", 43000, "this is rice");
+insert into product(product_name, product_price, product_info) values("handcream", 8000, "this is handcream");
+insert into product(product_name, product_price, product_info) values("water", 700, "this is water");
+insert into product(product_name, product_price, product_info) values("book", 18000, "this is book");
+
+
+/* 쿠폰 바구니 삭제하고 다시 생성 */
+drop table couponbasket;
+
+create table couponbasket(
+user_id varchar(50) not null,
+coupon_id int not null
+);
+
+
+insert into couponbasket values('admin', 1);
+insert into couponbasket values('admin', 2);
+insert into couponbasket values('admin', 3);
+insert into couponbasket values('admin', 4);
+insert into couponbasket values('admin', 5);
+insert into couponbasket values('admin', 6);
+insert into couponbasket values('asd', 2);
+insert into couponbasket values('asd', 4);
+insert into couponbasket values('asd', 6);
+
+
+
+
+
+
+
+/* 각 구매내역 수량에 따른 합 구하기 */
+
+select p.b_id, product.product_name, p.amount, product.product_price * amount as price 
+from purchaseList p, product, bill b
+where product.product_id = p.product_id and b.b_id = p.b_id and p.b_id = 1
+group by p.b_id, product.product_name;
+
+
+/* 계산서 정보 구하기 */
+
+
+select b.b_id, b.publish_date,
+b.user_id, payway.p_name, sum(product.product_price * p.amount) as totalPrice
+from purchaseList p, product, bill b, payway
+where b.b_id = p.b_id and product.product_id = p.product_id and payway.p_id = b.p_id and b.user_id = "asd"
+and date(b.publish_date) >= date(subdate(curDate(), INTERVAL 15 DAY))
+group by p.b_id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
