@@ -17,7 +17,7 @@ public class CouponDAOImpl implements CouponDAO {
 	
 	@Inject
 	private SqlSession sql;
-
+	
 	@Override
 	public List<CouponVO> couponList(String user_id) throws Exception {
 		// TODO Auto-generated method stub
@@ -32,4 +32,26 @@ public class CouponDAOImpl implements CouponDAO {
 		
 	}
 
+	@Override
+	public List<CouponVO> listCoupon() throws Exception {
+	
+		return sql.selectList(NAMESPACE+".listCoupon");
+	}
+
+	@Override
+	public void regiCoupon(CouponVO couponVO) throws Exception {
+		sql.insert(NAMESPACE+".insertCoupon", couponVO);
+	}
+	
+	@Override
+	public void update(CouponVO couponVO) throws Exception {
+		sql.update(NAMESPACE+".updateCoupon", couponVO);
+		
+	}
+	
+	@Override
+	public void delCoupon(int coupon_id) throws Exception {
+		sql.delete(NAMESPACE+".deleteCoupon", coupon_id);
+	}
+	
 }

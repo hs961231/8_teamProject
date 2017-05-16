@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.UserService;
-
+import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.PositionService;
 
 /**
@@ -35,19 +37,21 @@ public class HomeController {
 	private UserService userService;
 	@Inject
 	PositionService positionService;
+	@Inject
+	private CouponService couponService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 
-	/********************************* ·Î±×ÀÎ °ü·Ã ***************************************/
-	/********************************* ·Î±×ÀÎ °ü·Ã ***************************************/
-	// Ã³À½ Á¢¼Ó ½Ã Ç¥½ÃÇØ ÁÖ´Â ·Î±×ÀÎ È­¸é
+	/********************************* ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ***************************************/
+	/********************************* ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ***************************************/
+	// Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ È­ï¿½ï¿½
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String login() {
 		return "login";
 	}
 	
-	// ·Î±×ÀÎ ¿äÃ» ¹Þ´Â ºÎºÐ
+	// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» ï¿½Þ´ï¿½ ï¿½Îºï¿½
 	@RequestMapping(value="/", method=RequestMethod.POST)
 	@ResponseBody
 	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
@@ -64,106 +68,131 @@ public class HomeController {
 	}
 	
 	
-	// ¸ÞÀÎÆäÀÌÁö, ´ë½¬º¸µå, ·Î°í Å¬¸¯½Ã Á¢¼Ó
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ë½¬ï¿½ï¿½ï¿½ï¿½, ï¿½Î°ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="mainPage", method=RequestMethod.GET)
 	public String mainPage(HttpServletRequest request, HttpSession session) {
 		
 		return "mainPage";
 	}
 
-	/********************************* ¸ÅÀå °ü¸® ¸Þ´º ***************************************/
-	/********************************* ¸ÅÀå °ü¸® ¸Þ´º ***************************************/
-	// ¸ÅÀå µî·Ï
+	/********************************* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
+	/********************************* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@RequestMapping(value="shopRegister", method=RequestMethod.GET)
 	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "shopRegister";
 
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 
-	// »óÇ° µî·Ï
+	// ï¿½ï¿½Ç° ï¿½ï¿½ï¿½
 	@RequestMapping(value="productRegister", method=RequestMethod.GET)
 	public String productRegister(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "productRegister";
 
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
-	// ¸ÅÃâ °ü¸®
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="salesManagement", method=RequestMethod.GET)
 	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "salesManagement";
 		
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
-	// Àç°í °ü¸®
+	// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="stockManagement", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "stockManagement";
 		
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 
 
-	/********************************* ÀÌº¥Æ® °ü¸® ¸Þ´º ***************************************/
-	/********************************* ÀÌº¥Æ® °ü¸® ¸Þ´º ***************************************/
+	/********************************* ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
+	/********************************* ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
 	@RequestMapping(value="event", method=RequestMethod.GET)
 	public String event(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "event";
 
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 
-	/********************************* ÄíÆù °ü¸® ¸Þ´º ***************************************/
-	/********************************* ÄíÆù °ü¸® ¸Þ´º ***************************************/
+	/********************************* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
+	/********************************* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
+	
+/*	@RequestMapping(value="registCoupon", method=RequestMethod.POST)
+	public String registPOST(CouponVO couponVO, Model model) throws Exception{
+		logger.info("register post...");
+		logger.info(couponVO.toString());
+		
+		couponService.regist(couponVO);
+		
+		model.addAttribute("result", "success");
+		return "mainPage";
+	}
+	*/
+	
+	@RequestMapping(value="remove", method=RequestMethod.POST)
+	public String remove(@RequestParam int coupon_id)throws Exception{/*
+		System.out.println("removeë‹¤");
+		couponService.remove(coupon_id);*/
+		
+		System.out.println(coupon_id);
+		return "mainPage";
+	}
+	
+	
 	@RequestMapping(value="coupon", method=RequestMethod.GET)
-	public String coupon(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+	public String coupon(HttpServletRequest request, HttpSession session, Model model) throws Exception {
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "coupon";
 
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
+		model.addAttribute("list",couponService.listCoupon());
 		
 		return "mainPage";
 	}
 
-	/********************************* Æ÷½º ½Ã½ºÅÛ ¸Þ´º ***************************************/
-	/********************************* Æ÷½º ½Ã½ºÅÛ ¸Þ´º ***************************************/
+	
+	/********************************* ï¿½ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
+	/********************************* ï¿½ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ***************************************/
 	@RequestMapping(value="posSystem", method=RequestMethod.GET)
 	public String posSystem(HttpServletRequest request, HttpSession session, Model model) {
-		// ¸ÞÀÎ ÄÜÅÙÃ÷¿¡¼­ ¾î¶² ÆäÀÌÁö¸¦ º¸¿© ÁÙ °ÍÀÎÁö ÀúÀåÇÒ º¯¼ö.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		String ContentPage = "posSystem";
 
-		// ½ÇÁ¦ ºä ÆäÀÌÁö·Î ¸ÞÀÎ ÄÜÅÙÃ÷ ÆäÀÌÁö Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
-	/** 2017_05_01 ±¸Çö
-	 * °¢ Å¸ÀÏ ( ¸ÞÀÌÀú, ¸¶ÀÌ³Ê )¿¡¼­ÀÇ °í°´µéÀÇ Æò±Õ ¸Ó¹® ½Ã°£°ú, ¸î¸íÀÌ ¸Ó¹°·µ´ÂÁö µ¥ÀÌÅÍ¸¦ »Ì¾Æ¿À´Â °Í
-	 * ÇØ´ç jspÆäÀÌÁö¿¡¼­ Á¤»óÀûÀ¸·Î Ãâ·ÂµÇ´Â °Í È®ÀÎ ÇÞÀ½.
+	/** 2017_05_01 ï¿½ï¿½ï¿½ï¿½
+	 * ï¿½ï¿½ Å¸ï¿½ï¿½ ( ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ì³ï¿½ )ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ó¹ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ì¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½
+	 * ï¿½Ø´ï¿½ jspï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ÂµÇ´ï¿½ ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	 */
 	@RequestMapping(value="avgStayTest")
 	public String avgStayTest(Model model) throws Exception{

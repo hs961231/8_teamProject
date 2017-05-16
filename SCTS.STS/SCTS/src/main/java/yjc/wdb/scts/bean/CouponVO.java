@@ -5,6 +5,7 @@ public class CouponVO {
 	private int coupon_id;
 	private String coupon_name;
 	private String coupon_content;
+	
 	public int getCoupon_id() {
 		return coupon_id;
 	}

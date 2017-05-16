@@ -29,4 +29,28 @@ public class CouponServiceImpl implements CouponService {
 		
 	}
 
+	@Override
+	public List<CouponVO> listCoupon() throws Exception {
+
+		return dao.listCoupon();
+	}
+
+	@Override
+	public void regist(CouponVO couponVO) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void modify(CouponVO couponVO) throws Exception {
+		
+		dao.update(couponVO);
+	}
+
+	@Override
+	public void remove(int coupon_id) throws Exception {
+		dao.delCoupon(coupon_id);
+		
+	}
+
 }
