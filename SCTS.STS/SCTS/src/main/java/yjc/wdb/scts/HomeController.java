@@ -42,41 +42,25 @@ public class HomeController {
 	@Inject
 	private PositionService positionService;
 	
-	// ���� ���� ����
-	@Inject
-<<<<<<< HEAD
-	PositionService positionService;
 	@Inject
 	private CouponService couponService;
-=======
+	
+	@Inject
 	private SalesService salesService;
->>>>>>> origin/master
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-
-<<<<<<< HEAD
-	/********************************* �α��� ���� ***************************************/
-	/********************************* �α��� ���� ***************************************/
-	// ó�� ���� �� ǥ���� �ִ� �α��� ȭ��
-	@RequestMapping(value="/", method=RequestMethod.GET)
-=======
-	/********************************* �α��� ���� ***************************************/
-	/********************************* �α��� ���� ***************************************/
-	// ó�� ���� �� ǥ���� �ִ� �α��� ȭ��
+	
+	/********************************* 로그인 관련 ***************************************/
+	/********************************* 로그인 관련 ***************************************/
+	// 처음 접속 시 표시해 주는 로그인 화면
 	@RequestMapping(value="/login", method=RequestMethod.GET)
->>>>>>> origin/master
 	public String login() {
 		return "login";
 	}
 	
-<<<<<<< HEAD
-	// �α��� ��û �޴� �κ�
-	@RequestMapping(value="/", method=RequestMethod.POST)
-=======
-	// �α��� ��û �޴� �κ�
+	// 로그인 요청 받는 부분
 	@RequestMapping(value="/login", method=RequestMethod.POST)
->>>>>>> origin/master
 	@ResponseBody
 	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
 		int chk = userService.loginUser(user);
@@ -92,13 +76,13 @@ public class HomeController {
 	}
 	
 	
-	// ����������, �뽬����, �ΰ� Ŭ���� ����
+	// 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙, 占쎈쉬占쏙옙占쏙옙, 占싸곤옙 클占쏙옙占쏙옙 占쏙옙占쏙옙
 	@RequestMapping(value="mainPage", method=RequestMethod.GET)
 	public String mainPage(HttpServletRequest request, HttpSession session, Model model) throws Exception{
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
 		String ContentPage = "dashBoard";
 
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 		
 		
@@ -110,47 +94,41 @@ public class HomeController {
 		return "mainPage";
 	}
 
-	/********************************* ���� ���� �޴� ***************************************/
-	/********************************* ���� ���� �޴� ***************************************/
-	// ���� ���
+	/********************************* 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
+	/********************************* 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
+	// 占쏙옙占쏙옙 占쏙옙占�
 	@RequestMapping(value="shopRegister", method=RequestMethod.GET)
 	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
 		String ContentPage = "shopRegister";
 
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 
-	// ��ǰ ���
+	// 占쏙옙품 占쏙옙占�
 	@RequestMapping(value="productRegister", method=RequestMethod.GET)
 	public String productRegister(HttpServletRequest request, HttpSession session, Model model) {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
 		String ContentPage = "productRegister";
 
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
-	// ���� ����
+	// 占쏙옙占쏙옙 占쏙옙占쏙옙
 	@RequestMapping(value="salesManagement", method=RequestMethod.GET)
 	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
 		String ContentPage = "salesManagement";
 		
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
-<<<<<<< HEAD
-	// ��� ����
-=======
+
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
 	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
 	
@@ -188,39 +166,31 @@ public class HomeController {
 		return callback + "(" + jsonObject +")";
 	}
 	
-	
-	
-	
-	
-	// ��� ����
->>>>>>> origin/master
 	@RequestMapping(value="stockManagement", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
+		// 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙 占쏘떤 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙.
 		String ContentPage = "stockManagement";
 		
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
+		// 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占싼곤옙占쌔댐옙.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 
 
-	/********************************* �̺�Ʈ ���� �޴� ***************************************/
-	/********************************* �̺�Ʈ ���� �޴� ***************************************/
+	/********************************* 占싱븝옙트 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
+	/********************************* 占싱븝옙트 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
 	@RequestMapping(value="event", method=RequestMethod.GET)
 	public String event(HttpServletRequest request, HttpSession session, Model model) {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
 		String ContentPage = "event";
 
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 
-	/********************************* ���� ���� �޴� ***************************************/
-	/********************************* ���� ���� �޴� ***************************************/
+	/********************************* 쿠폰 관리 부분 ***************************************/
+	/********************************* 쿠폰 관리 부분 ***************************************/
 	
 /*	@RequestMapping(value="registCoupon", method=RequestMethod.POST)
 	public String registPOST(CouponVO couponVO, Model model) throws Exception{
@@ -236,7 +206,7 @@ public class HomeController {
 	
 	@RequestMapping(value="remove", method=RequestMethod.POST)
 	public String remove(@RequestParam int coupon_id)throws Exception{/*
-		System.out.println("remove다");
+		System.out.println("remove�떎");
 		couponService.remove(coupon_id);*/
 		
 		System.out.println(coupon_id);
@@ -246,10 +216,8 @@ public class HomeController {
 	
 	@RequestMapping(value="coupon", method=RequestMethod.GET)
 	public String coupon(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
 		String ContentPage = "coupon";
 
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
 		model.addAttribute("main_content", ContentPage);
 		model.addAttribute("list",couponService.listCoupon());
 		
@@ -257,23 +225,17 @@ public class HomeController {
 	}
 
 	
-	/********************************* ���� �ý��� �޴� ***************************************/
-	/********************************* ���� �ý��� �޴� ***************************************/
+	/********************************* 포스 시스템 부분 ***************************************/
+	/********************************* 포스 시스템 부분 ***************************************/
 	@RequestMapping(value="posSystem", method=RequestMethod.GET)
 	public String posSystem(HttpServletRequest request, HttpSession session, Model model) {
-		// ���� ���������� � �������� ���� �� ������ ������ ����.
 		String ContentPage = "posSystem";
 
-		// ���� �� �������� ���� ������ ������ ������ �Ѱ��ش�.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
-	/** 2017_05_01 ����
-	 * �� Ÿ�� ( ������, ���̳� )������ ������ ��� �ӹ� �ð���, ����� �ӹ������� �����͸� �̾ƿ��� ��
-	 * �ش� jsp���������� ���������� ��µǴ� �� Ȯ�� ����.
-	 */
 	@RequestMapping(value="avgStayTest")
 	public String avgStayTest(Model model) throws Exception{
 		List<HashMap<String, String>> list = positionService.avgStay();
@@ -297,7 +259,9 @@ public class HomeController {
 		model.addAttribute("list", list);
 		return "test/probabilityTest";
 	}
-<<<<<<< HEAD
+
+	/****************************** 예지쓰 *************************************/
+	/****************************** 예지쓰 *************************************/
 
 	@RequestMapping(value="widgets")
 	public String widgets() {
@@ -345,7 +309,5 @@ public class HomeController {
 		return "NiceAdmin/product_info";
 	}
 	
-=======
->>>>>>> origin/master
 	
 }

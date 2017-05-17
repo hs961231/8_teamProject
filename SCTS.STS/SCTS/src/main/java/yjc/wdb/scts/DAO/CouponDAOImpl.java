@@ -33,7 +33,6 @@ public class CouponDAOImpl implements CouponDAO {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<CouponVO> listCoupon() throws Exception {
 	
 		return sql.selectList(NAMESPACE+".listCoupon");
@@ -55,11 +54,9 @@ public class CouponDAOImpl implements CouponDAO {
 		sql.delete(NAMESPACE+".deleteCoupon", coupon_id);
 	}
 	
-=======
 	public CouponVO selectTest() throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectOne(NAMESPACE+".selectTest");
 	}
 
->>>>>>> origin/master
 }
