@@ -236,6 +236,14 @@ public class HomeController {
 		return "mainPage";
 	}
 	
+	
+	/***************************************
+	 * 2017_05_09
+	 * 테스트용 페이지들
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="avgStayTest")
 	public String avgStayTest(Model model) throws Exception{
 		List<HashMap<String, String>> list = positionService.avgStay();

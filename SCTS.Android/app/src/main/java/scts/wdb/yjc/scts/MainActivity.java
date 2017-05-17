@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.estimote.sdk.SystemRequirementsChecker;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,13 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        // 블루투스 권한 및 활성화 코드
-//        SystemRequirementsChecker.checkWithDefaultDialogs(this);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 블루투스 권한 및 활성화 코드
+        SystemRequirementsChecker.checkWithDefaultDialogs(this);
+    }
 //
 //  protected void test() {
 //
