@@ -36,7 +36,7 @@ $('.regist').click(function(){
 	
 	$(".modify").on("click",function(){   /* 수정 버튼 클릭 시 */
 		formObj.attr("method", "post");
-		formObj.attr("action", "coupon");
+		formObj.attr("action", "coupon_Management");
 		formObj.submit();
 	});
 	

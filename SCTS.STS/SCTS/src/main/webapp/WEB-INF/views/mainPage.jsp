@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,56 +47,60 @@
 <link href="resources/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 
+<!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기사이에 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+<!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기다 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+<link href="resources/css/modal.css" rel="stylesheet">
 
 
-	<!-- javascripts -->
-	<script src="resources/js/jquery.js"></script>
-	<script src="resources/js/jquery-ui-1.10.4.min.js"></script>
-	<script type="text/javascript"
-		src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
-	<!-- bootstrap -->
-	<script src="resources/js/bootstrap.min.js"></script>
-	<!-- nice scroll -->
-	<script src="resources/js/jquery.scrollTo.min.js"></script>
-	<script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
-	<!-- charts scripts -->
-	<script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
-	<script src="resources/js/jquery.sparkline.js" type="text/javascript"></script>
-	<script
-		src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-	<script src="resources/js/owl.carousel.js"></script>
-	<!-- jQuery full calendar -->
-	<script src="resources/js/fullcalendar.min.js"></script>
-	<!-- Full Google Calendar - Calendar -->
-	<script
-		src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-	<!--script for this page only-->
-	
-	<script src="resources/js/jquery.rateit.min.js"></script>
-	<!-- custom select -->
-	<script src="resources/js/jquery.customSelect.min.js"></script>
-	<script src="resources/assets/chart-master/Chart.js"></script>
+<!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기다 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+<!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기다 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 
-	<!--custome script for all page-->
-	<script src="resources/js/scripts.js"></script>
-	<!-- custom script for this page-->
-	<script src="resources/js/sparkline-chart.js"></script>
-	<script src="resources/js/easy-pie-chart.js"></script>
-	<script src="resources/js/jquery-jvectormap-1.2.2.min.js"></script>
-	<script src="resources/js/jquery-jvectormap-world-mill-en.js"></script>
-	<script src="resources/js/xcharts.min.js"></script>
-	<script src="resources/js/jquery.autosize.min.js"></script>
-	<script src="resources/js/jquery.placeholder.min.js"></script>
-	<script src="resources/js/gdp-data.js"></script>
-	<script src="resources/js/morris.min.js"></script>
-	<script src="resources/js/sparklines.js"></script>
-	<script src="resources/js/charts.js"></script>
-	<script src="resources/js/jquery.slimscroll.min.js"></script>
-	
-	<script src="resources/js/IPSetting.js"></script>
-	
-	<script src="/scts/resources/assets/chart-master/Chart.js"></script>
-	<script>
+
+<!-- javascripts -->
+<script src="resources/js/jquery.js"></script>
+<script src="resources/js/jquery-ui-1.10.4.min.js"></script>
+<script type="text/javascript"
+	src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
+<!-- bootstrap -->
+<script src="resources/js/bootstrap.min.js"></script>
+<!-- nice scroll -->
+<script src="resources/js/jquery.scrollTo.min.js"></script>
+<script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
+<!-- charts scripts -->
+<script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
+<script src="resources/js/jquery.sparkline.js" type="text/javascript"></script>
+<script
+	src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+<script src="resources/js/owl.carousel.js"></script>
+<!-- jQuery full calendar -->
+<script src="resources/js/fullcalendar.min.js"></script>
+<!-- Full Google Calendar - Calendar -->
+<script src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+<!--script for this page only-->
+
+<script src="resources/js/jquery.rateit.min.js"></script>
+<!-- custom select -->
+<script src="resources/js/jquery.customSelect.min.js"></script>
+<script src="resources/assets/chart-master/Chart.js"></script>
+
+<!--custome script for all page-->
+<script src="resources/js/scripts.js"></script>
+<!-- custom script for this page-->
+<script src="resources/js/sparkline-chart.js"></script>
+<script src="resources/js/easy-pie-chart.js"></script>
+<script src="resources/js/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="resources/js/jquery-jvectormap-world-mill-en.js"></script>
+<script src="resources/js/xcharts.min.js"></script>
+<script src="resources/js/jquery.autosize.min.js"></script>
+<script src="resources/js/jquery.placeholder.min.js"></script>
+<script src="resources/js/gdp-data.js"></script>
+<script src="resources/js/morris.min.js"></script>
+<script src="resources/js/sparklines.js"></script>
+<script src="resources/js/charts.js"></script>
+<script src="resources/js/jquery.slimscroll.min.js"></script>
+
+<script src="/scts/resources/assets/chart-master/Chart.js"></script>
+<script>
 		//knob
 		$(document).ready(function() {
 			$(".knob").knob({
@@ -374,22 +379,23 @@
 							class="menu-arrow arrow_carrot-right"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="shopRegister">매장 등록</a></li>
-							<li><a class="" href="productRegister">물품 등록</a></li>
-							<li><a class="" href="salesManagement">매출 관리</a></li>
-							<li><a class="" href="stockManagement">재고 관리</a></li>
+							<li><a class="" href="shop_Register">매장 등록</a></li>
+							<li><a class="" href="product_List">물품 목록</a></li>
+							<li><a class="" href="sales_Management">매출 관리</a></li>
+							<li><a class="" href="stock_Management">재고 관리</a></li>
 						</ul></li>
 
-					<li><a class="" href="event"> <i class="icon_genius"></i>
-							<span>이벤트 관리</span>
+					<li><a class="" href="event_Management"> <i
+							class="icon_genius"></i> <span>이벤트 관리</span>
 					</a></li>
 
-					<li><a class="" href="coupon"> <i class="icon_piechart"></i> <span>쿠폰
-								관리</span>
+					<li><a class="" href="coupon_Management"> <i
+							class="icon_piechart"></i> <span>쿠폰 관리</span>
 
 					</a></li>
 
-					<li><a class="" href="posSystem"> <i class="icon_piechart"></i> <span>포스</span>
+					<li><a class="" href="posSystem"> <i class="icon_piechart"></i>
+							<span>포스</span>
 
 					</a></li>
 
@@ -412,11 +418,6 @@
 				<c:if test="${ main_content != null }">
 					<jsp:include page="${ main_content }.jsp" />
 				</c:if>
-				<%-- 
-				<c:if test="${ main_content == null }">
-					<jsp:include page="dashBoard.jsp"></jsp:include>
-				</c:if> --%>
-				
 			</section>
 		</section>
 

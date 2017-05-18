@@ -74,10 +74,3 @@
 <div class="row" style="height: 500px; border: solid 1px red">
 	<h1>이곳은 타일리스트 들어갈곳이다!!!!!!!!!!!!!!!</h1>
 </div>
-
-
-
-<!-- 달력!!!!!!!!-->
-<%-- <jsp:include page="${ main_content }" /> --%>
-<h2>달력은 곧 사라질 에정!</h2>
-<jsp:include page="event.jsp" />

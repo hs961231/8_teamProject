@@ -85,9 +85,7 @@ public class HomeController {
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 		
-		
 		int todayCount = positionService.todayCount();
-		
 		model.addAttribute("todayCount", todayCount);
 		
 		
@@ -97,10 +95,10 @@ public class HomeController {
 	/********************************* 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
 	/********************************* 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
 	// 占쏙옙占쏙옙 占쏙옙占�
-	@RequestMapping(value="shopRegister", method=RequestMethod.GET)
+	@RequestMapping(value="shop_Register", method=RequestMethod.GET)
 	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
-		String ContentPage = "shopRegister";
+		String ContentPage = "shop_Register";
 
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
@@ -109,19 +107,38 @@ public class HomeController {
 	}
 
 	// 占쏙옙품 占쏙옙占�
-	@RequestMapping(value="productRegister", method=RequestMethod.GET)
-	public String productRegister(HttpServletRequest request, HttpSession session, Model model) {
-		String ContentPage = "productRegister";
+	@RequestMapping(value="product_List", method=RequestMethod.GET)
+	public String product_List(HttpServletRequest request, HttpSession session, Model model) {
+		String ContentPage = "product_List";
+
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+
+	@RequestMapping(value="product_Register", method=RequestMethod.GET)
+	public String product_Register(HttpServletRequest request, HttpSession session, Model model) {
+		String ContentPage = "product_Register";
 
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
 	}
 	
+	@RequestMapping(value="product_Info", method=RequestMethod.GET)
+	public String product_Info(HttpServletRequest request, HttpSession session, Model model) {
+		String ContentPage = "product_Info";
+
+		model.addAttribute("main_content", ContentPage);
+		
+		return "mainPage";
+	}
+	
+	
 	// 占쏙옙占쏙옙 占쏙옙占쏙옙
-	@RequestMapping(value="salesManagement", method=RequestMethod.GET)
+	@RequestMapping(value="sales_Management", method=RequestMethod.GET)
 	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
-		String ContentPage = "salesManagement";
+		String ContentPage = "sales_Management";
 		
 		model.addAttribute("main_content", ContentPage);
 		
@@ -166,12 +183,10 @@ public class HomeController {
 		return callback + "(" + jsonObject +")";
 	}
 	
-	@RequestMapping(value="stockManagement", method=RequestMethod.GET)
+	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
-		// 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙 占쏘떤 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙.
-		String ContentPage = "stockManagement";
+		String ContentPage = "stock_Management";
 		
-		// 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占싼곤옙占쌔댐옙.
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
@@ -180,9 +195,9 @@ public class HomeController {
 
 	/********************************* 占싱븝옙트 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
 	/********************************* 占싱븝옙트 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
-	@RequestMapping(value="event", method=RequestMethod.GET)
+	@RequestMapping(value="event_Management", method=RequestMethod.GET)
 	public String event(HttpServletRequest request, HttpSession session, Model model) {
-		String ContentPage = "event";
+		String ContentPage = "event_Management";
 
 		model.addAttribute("main_content", ContentPage);
 		
@@ -214,9 +229,9 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="coupon", method=RequestMethod.GET)
+	@RequestMapping(value="coupon_Management", method=RequestMethod.GET)
 	public String coupon(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-		String ContentPage = "coupon";
+		String ContentPage = "coupon_Management";
 
 		model.addAttribute("main_content", ContentPage);
 		model.addAttribute("list",couponService.listCoupon());
@@ -307,13 +322,13 @@ public class HomeController {
 		return "NiceAdmin/register_product";
 	}
 	
-	@RequestMapping(value="product_list")
-	public String product_list() {
+	@RequestMapping(value="list_product")
+	public String list_product() {
 		return "NiceAdmin/product_list";
 	}
 	
-	@RequestMapping(value="product_info")
-	public String product_info() {
+	@RequestMapping(value="info_product")
+	public String info_product() {
 		return "NiceAdmin/product_info";
 	}
 	
