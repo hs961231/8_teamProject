@@ -7,5 +7,5 @@ public interface SalesDAO {
 	
 	
 	public List<HashMap> yearSales(int year) throws Exception; 
-
+	public List<HashMap> daySales() throws Exception;
 }

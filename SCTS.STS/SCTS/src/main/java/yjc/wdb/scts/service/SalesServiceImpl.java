@@ -22,4 +22,10 @@ public class SalesServiceImpl implements SalesService{
 		return dao.yearSales(year);
 	}
 
+	@Override
+	public List<HashMap> daySales() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.daySales();
+	}
+
 }
