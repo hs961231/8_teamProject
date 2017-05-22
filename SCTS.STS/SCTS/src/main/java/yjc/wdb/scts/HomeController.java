@@ -76,7 +76,7 @@ public class HomeController {
 	}
 	
 	
-	// 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙, 占쎈쉬占쏙옙占쏙옙, 占싸곤옙 클占쏙옙占쏙옙 占쏙옙占쏙옙
+	// 초기 화면 표시용 메인 페이지
 	@RequestMapping(value="mainPage", method=RequestMethod.GET)
 	public String mainPage(HttpServletRequest request, HttpSession session, Model model) throws Exception{
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
@@ -92,9 +92,9 @@ public class HomeController {
 		return "mainPage";
 	}
 
-	/********************************* 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
-	/********************************* 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
-	// 占쏙옙占쏙옙 占쏙옙占�
+	/********************************* 매장 관리 부분 ***************************************/
+	/********************************* 매장 관리 부분 ***************************************/
+	// 매장 등록 페이지
 	@RequestMapping(value="shop_Register", method=RequestMethod.GET)
 	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
@@ -106,7 +106,7 @@ public class HomeController {
 		return "mainPage";
 	}
 
-	// 占쏙옙품 占쏙옙占�
+	// 상품 리스트
 	@RequestMapping(value="product_List", method=RequestMethod.GET)
 	public String product_List(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "product_List";
@@ -116,6 +116,7 @@ public class HomeController {
 		return "mainPage";
 	}
 
+	// 상품 등록
 	@RequestMapping(value="product_Register", method=RequestMethod.GET)
 	public String product_Register(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "product_Register";
@@ -125,6 +126,7 @@ public class HomeController {
 		return "mainPage";
 	}
 	
+	// 상품 정보
 	@RequestMapping(value="product_Info", method=RequestMethod.GET)
 	public String product_Info(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "product_Info";
@@ -135,7 +137,7 @@ public class HomeController {
 	}
 	
 	
-	// 占쏙옙占쏙옙 占쏙옙占쏙옙
+	// 매출 관리
 	@RequestMapping(value="sales_Management", method=RequestMethod.GET)
 	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "sales_Management";
@@ -145,7 +147,7 @@ public class HomeController {
 		return "mainPage";
 	}
 	
-
+	
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
 	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
 	
@@ -173,13 +175,10 @@ public class HomeController {
 		}
 		
 		
-		
-		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 		
 	
-		
 		return callback + "(" + jsonObject +")";
 	}
 	
@@ -193,8 +192,8 @@ public class HomeController {
 	}
 
 
-	/********************************* 占싱븝옙트 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
-	/********************************* 占싱븝옙트 占쏙옙占쏙옙 占쌨댐옙 ***************************************/
+	/********************************* 이벤트 관리 부분 ***************************************/
+	/********************************* 이벤트 관리 부분 ***************************************/
 	@RequestMapping(value="event_Management", method=RequestMethod.GET)
 	public String event(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "event_Management";
