@@ -23,4 +23,10 @@ public class SalesDAOImpl implements SalesDAO{
 		return sql.selectList(NAMESPACE+".yearSales", year);
 	}
 
+	@Override
+	public List<HashMap> daySales() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".daySales");
+	}
+
 }
