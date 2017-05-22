@@ -74,4 +74,5 @@
 		order by sum(amount) desc
 		limit 0, 10;
 	</select>
+	
 </mapper>

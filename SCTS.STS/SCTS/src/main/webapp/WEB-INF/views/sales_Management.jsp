@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<script src="/scts/resources/assets/chart-master/Chart.js"></script>
 
 <!-- 일 매출, 월매출, 상품별 매출, 고객별 매출 -->
 

@@ -99,7 +99,6 @@
 <script src="resources/js/charts.js"></script>
 <script src="resources/js/jquery.slimscroll.min.js"></script>
 
-<script src="/scts/resources/assets/chart-master/Chart.js"></script>
 <script>
 		//knob
 		$(document).ready(function() {

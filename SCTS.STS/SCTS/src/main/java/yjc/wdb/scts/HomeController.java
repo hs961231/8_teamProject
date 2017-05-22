@@ -74,15 +74,8 @@ public class HomeController {
 		else
 			return "error";
 	}
-<<<<<<< HEAD
-	
 	
 	// 초기 화면 표시용 메인 페이지
-=======
-
-
-	// 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙, 占쎈쉬占쏙옙占쏙옙, 占싸곤옙 클占쏙옙占쏙옙 占쏙옙占쏙옙
->>>>>>> origin/master
 	@RequestMapping(value="mainPage", method=RequestMethod.GET)
 	public String mainPage(HttpServletRequest request, HttpSession session, Model model) throws Exception{
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
@@ -94,6 +87,21 @@ public class HomeController {
 		int todayCount = positionService.todayCount();
 		model.addAttribute("todayCount", todayCount);
 
+		// 메인 페이지 부분 당일 매출 데이터
+		List<HashMap> list = salesService.daySales();
+
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("publish_date", list.get(i).get("publish_date").toString());
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+		}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
 
 		return "mainPage";
 	}
@@ -131,12 +139,7 @@ public class HomeController {
 
 		return "mainPage";
 	}
-<<<<<<< HEAD
-	
 	// 상품 정보
-=======
-
->>>>>>> origin/master
 	@RequestMapping(value="product_Info", method=RequestMethod.GET)
 	public String product_Info(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "product_Info";
@@ -145,15 +148,9 @@ public class HomeController {
 
 		return "mainPage";
 	}
-<<<<<<< HEAD
 	
 	
-	// 매출 관리
-=======
-
-
 	// 매출관리
->>>>>>> origin/master
 	@RequestMapping(value="sales_Management", method=RequestMethod.GET)
 	public String salesManagement(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "sales_Management";
@@ -162,13 +159,7 @@ public class HomeController {
 
 		return "mainPage";
 	}
-<<<<<<< HEAD
 	
-	
-=======
-
-
->>>>>>> origin/master
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
 	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
 
@@ -214,17 +205,9 @@ public class HomeController {
 			salesArray.add(salesJson);
 		}
 		
-<<<<<<< HEAD
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", salesArray);
-		
-	
-=======
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
->>>>>>> origin/master
 		return callback + "(" + jsonObject +")";
 	}
 	
@@ -293,6 +276,8 @@ public class HomeController {
 		String ContentPage = "posSystem";
 
 		model.addAttribute("main_content", ContentPage);
+		
+		
 
 		return "mainPage";
 	}
