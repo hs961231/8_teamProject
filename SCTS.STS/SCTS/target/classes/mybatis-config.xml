@@ -12,5 +12,6 @@
 		<typeAlias alias="ProductVO" type="yjc.wdb.scts.bean.ProductVO"></typeAlias>
 		<typeAlias alias="PurchaseListVO" type="yjc.wdb.scts.bean.PurchaseListVO"></typeAlias>
 		<typeAlias alias="BillVO" type="yjc.wdb.scts.bean.BillVO"></typeAlias>
+		<typeAlias alias="TileVO" type="yjc.wdb.scts.bean.TileVO"></typeAlias>
 	</typeAliases>
 </configuration>

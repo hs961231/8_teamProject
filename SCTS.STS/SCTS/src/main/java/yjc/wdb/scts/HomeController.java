@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import yjc.wdb.scts.bean.CouponVO;
+import yjc.wdb.scts.bean.ProductVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.UserService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.PositionService;
+import yjc.wdb.scts.service.ProductService;
 import yjc.wdb.scts.service.SalesService;
 
 /**
@@ -47,6 +49,9 @@ public class HomeController {
 
 	@Inject
 	private SalesService salesService;
+	
+	@Inject
+	private ProductService productService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -122,10 +127,14 @@ public class HomeController {
 
 	// 상품 리스트
 	@RequestMapping(value="product_List", method=RequestMethod.GET)
-	public String product_List(HttpServletRequest request, HttpSession session, Model model) {
+	public String product_List(HttpServletRequest request, HttpSession session, Model model) throws Exception {
 		String ContentPage = "product_List";
 
 		model.addAttribute("main_content", ContentPage);
+		
+		List<ProductVO> productList = productService.productList();
+	
+		model.addAttribute("productList", productList);
 
 		return "mainPage";
 	}
@@ -136,16 +145,21 @@ public class HomeController {
 		String ContentPage = "product_Register";
 
 		model.addAttribute("main_content", ContentPage);
+		
 
 		return "mainPage";
 	}
+	
 	// 상품 정보
 	@RequestMapping(value="product_Info", method=RequestMethod.GET)
-	public String product_Info(HttpServletRequest request, HttpSession session, Model model) {
+	public String product_Info(HttpServletRequest request, HttpSession session, Model model, @RequestParam int product_id) throws Exception {
 		String ContentPage = "product_Info";
 
 		model.addAttribute("main_content", ContentPage);
 
+		ProductVO product = productService.productOne(product_id);
+		
+		model.addAttribute("product", product);
 		return "mainPage";
 	}
 	
