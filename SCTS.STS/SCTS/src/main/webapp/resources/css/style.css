@@ -1022,7 +1022,7 @@ ul.sidebar-menu li.active a i {
 
 .dark-bg {    
 
-    background: rgba(54,66,74,1);
+    background: #394a59;
 
     border-bottom: 1px solid #f1f2f7;
 
@@ -2076,9 +2076,9 @@ div[data-role="editor-toolbar"] {
 
   color : #fff;
 
-  background : #8497b0;
+  background : #394a59;
 
-  background-color : #8497b0;
+  background-color : #394a59;
 
 }
 
