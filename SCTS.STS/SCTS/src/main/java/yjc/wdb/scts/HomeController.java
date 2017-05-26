@@ -63,6 +63,12 @@ public class HomeController {
 	public String login() {
 		return "login";
 	}
+	
+	// 회원가입
+	@RequestMapping(value="/signUp", method=RequestMethod.GET)
+	public String sineUp() {
+		return "signUp";
+	}
 
 	// 로그인 요청 받는 부분
 	@RequestMapping(value="/login", method=RequestMethod.POST)
@@ -91,22 +97,9 @@ public class HomeController {
 
 		int todayCount = positionService.todayCount();
 		model.addAttribute("todayCount", todayCount);
-
-		// 메인 페이지 부분 당일 매출 데이터
-		List<HashMap> list = salesService.daySales();
-
-		JSONObject salesJson;
-		JSONArray salesArray = new JSONArray();
 		
-		for(int i = 0; i < list.size(); i++){
-			salesJson = new JSONObject();
-			salesJson.put("publish_date", list.get(i).get("publish_date").toString());
-			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
-			salesArray.add(salesJson);
-		}
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", salesArray);
+		List<HashMap<String, String>> list = positionService.avgStay();
+		model.addAttribute("list", list);
 
 		return "mainPage";
 	}

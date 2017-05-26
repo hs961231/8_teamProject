@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!-- 이 부분은 일매출, 일 방문자 수 등 보임!!!!!!!!!! -->
@@ -53,7 +54,7 @@
 		태그안에 설정해놓음!!!</h1>
 	<div class="col-lg-6">
 		<section class="panel">
-			<header class="panel-heading chartTitle"> 연매출 </header>
+			<header class="panel-heading chartTitle"> 일매출 </header>
 			<div class="panel-body text-center">
 				<canvas id="barDay" height="300" width="500"></canvas>
 			</div>
@@ -111,98 +112,33 @@
 							<th style="text-align: center;"><i class="icon_mail_alt"></i>
 								마이너</th>
 							<th style="text-align: center;"><i class="icon_pin_alt"></i>
-								Product_name</th>
+								평균머문시간</th>
 							<th style="text-align: center;"><i class="icon_pin_alt"></i>
-								Product_Amount</th>
-							<th style="text-align: center;"><i class="icon_pin_alt"></i>
-								Price(won)</th>
+								방문횟수</th>
 							<th style="text-align: center;"></th>
 						</tr>
 
-						<tr>
-							<td style="text-align: center;">001</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
 
-						<tr>
-							<td style="text-align: center;">002</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
+						<c:forEach items="${ list }" var="vo">
 
-						<tr>
-							<td style="text-align: center;">003</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
+							<tr>
+								<td style="text-align: center;">${ vo.get("tile_name") }</td>
+								<td style="text-align: center;">${ vo.get("major") }</td>
+								<td style="text-align: center;">${ vo.get("minor") }</td>
+								<td style="text-align: center;">${ vo.get("avg") }</td>
+								<td style="text-align: center;">${ vo.get("cnt") }</td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-primary" href="product_Info"><i
+											class="icon_plus_alt2"></i></a> <a class="btn btn-success"
+											href="#"><i class="icon_check_alt2"></i></a> <a
+											class="btn btn-danger" href="#"><i
+											class="icon_close_alt2"></i></a>
+									</div>
+								</td>
+							</tr>
 
-						<tr>
-							<td style="text-align: center;">004</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<td style="text-align: center;">005</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
+						</c:forEach>
 
 					</tbody>
 				</table>
@@ -212,81 +148,76 @@
 </div>
 
 
-
 <script>
-	$(document).ready(
-			function() {
+	$(document).ready( function() {
+		// 연매출 barchart!!!
+		var year = new Date().getFullYear();
 
-				// 연매출 barchart!!!
-				var year = new Date().getFullYear();
+		$.ajax({
+			type : "GET",
+			url : "yearSales",
+			data : {
+				year : year
+			},
+			dataType: 'jsonp',
+			success : function(data) {
 
-				$.ajax({
-					type : "GET",
-					url : "yearSales",
-					data : {
-						year : year
-					},
-					dataType: 'jsonp',
-					success : function(data) {
-
-						var barChartData = {};
-						barChartData.labels = [];
-						barChartData.datasets = [];
-						barChartData.datasets[0] = {};
-						barChartData.datasets[0].fillColor = "#FF3359";
-						barChartData.datasets[0].strokeColor = "#FF3359";
-						barChartData.datasets[0].data = [];
-						
-						var length = data.result.length;
-						
-						for(var i=0; i<length; i++){
-							
-							barChartData.labels[i] = data.result[i].year;
-							barChartData.datasets[0].data[i] = data.result[i].totalPrice;
-
-						}
-					
-						new Chart(document.getElementById("barYear").getContext(
-								"2d")).Bar(barChartData);
-
-					}
-				});
+				var barChartData = {};
+				barChartData.labels = [];
+				barChartData.datasets = [];
+				barChartData.datasets[0] = {};
+				barChartData.datasets[0].fillColor = "#FF3359";
+				barChartData.datasets[0].strokeColor = "#FF3359";
+				barChartData.datasets[0].data = [];
 				
-
-				$('.daySales').on('click', function(){
-					
-					$.ajax({
-						type : "GET",
-						url : "daySales",
-						dataType: 'jsonp',
-						success : function(data) {
-
-							var barChartData = {};
-							barChartData.labels = [];
-							barChartData.datasets = [];
-							barChartData.datasets[0] = {};
-							barChartData.datasets[0].fillColor = "#FF3359";
-							barChartData.datasets[0].strokeColor = "#FF3359";
-							barChartData.datasets[0].data = [];
-							
-							var length = data.result.length;
-							
-							for(var i=0; i<length; i++){
-								
-								barChartData.labels[i] = data.result[i].publish_date;
-								barChartData.datasets[0].data[i] = data.result[i].totalPrice;
-
-							}
-						
-							new Chart(document.getElementById("barDay").getContext(
-									"2d")).Bar(barChartData);
-
-						}
-					
-				});
-					
+				var length = data.result.length;
 				
-			});
+				for(var i=0; i<length; i++){
+					
+					barChartData.labels[i] = data.result[i].year;
+					barChartData.datasets[0].data[i] = data.result[i].totalPrice;
+
+				}
+			
+				new Chart(document.getElementById("barYear").getContext(
+						"2d")).Bar(barChartData);
+
+			}
+		});
+		
+		$.ajax({
+			type : "GET",
+			url : "daySales",
+			dataType: 'jsonp',
+			success : function(data) {
+
+				var barChartData = {};
+				barChartData.labels = [];
+				barChartData.datasets = [];
+				barChartData.datasets[0] = {};
+				barChartData.datasets[0].fillColor = "#FF3359";
+				barChartData.datasets[0].strokeColor = "#FF3359";
+				barChartData.datasets[0].data = [];
+				
+				var length = data.result.length;
+				
+				for(var i=0; i<length; i++){
+					
+					barChartData.labels[i] = data.result[i].publish_date;
+					barChartData.datasets[0].data[i] = data.result[i].totalPrice;
+
+				}
+			
+				new Chart(document.getElementById("barDay").getContext(
+						"2d")).Bar(barChartData);
+
+			}
+		
+		});
+
+		$('.daySales').on('click', function(){
+				
+		});
 	});
 </script>
 
