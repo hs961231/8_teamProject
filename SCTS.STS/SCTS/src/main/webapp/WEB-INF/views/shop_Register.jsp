@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="row">
 	<div class="col-lg-12">
@@ -44,7 +45,7 @@
 	</div>
 
 	<div class="col-md-3"
-		style="background-color: white; width: 280px; height: 417px; position: absolute; top: 195px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
+		style="background-color: white; width: 280px; height: 417px; position: absolute; top: 230px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
 
 		<br>
 		<br>
@@ -75,87 +76,30 @@
 						<th style="text-align: center;"><i class="icon_mail_alt"></i>
 							Beacon_Major</th>
 						<th style="text-align: center;"><i class="icon_pin_alt"></i>
-							Beacon_Minor</th>
-						<th style="float: right;"><a href="register_tileInfo"><i
-								class="fa fa-plus" aria-hidden="true"></i></a></th>
+							Beacon_Minorth</th>
+						<th style="padding-left:60px;"><a href="register_tileInfo"><i class="fa fa-plus" aria-hidden="true"></i></a></th>
 					</tr>
 
-					<tr>
-						<td style="text-align: center;">1</td>
-						<td style="text-align: center;">A1</td>
-						<td style="text-align: center;">25</td>
-						<td style="text-align: center;">24123</td>
-						<td>
-							<div class="btn-group">
-								<a class="btn btn-primary" href="#"><i
-									class="icon_plus_alt2"></i></a> <a class="btn btn-success" href="#"><i
-									class="icon_check_alt2"></i></a> <a class="btn btn-danger" href="#"><i
-									class="icon_close_alt2"></i></a>
-							</div>
-						</td>
-					</tr>
+					<c:forEach items="${list}" var="listTile">
+					<tbody>
+						<tr class="active">
+							<td>${listTile.tile_no}</td>
+							<td>${listTile.tile_name}</td>
+							<td>${listTile.major}</td>
+							<td>${listTile.minor}</td>
+							
+							<td>
+								<div class="btn-group">
+									<a class="btn btn-primary" href="product_Info"><i
+										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
+										href="#"><i class="icon_check_alt2"></i></a> <a
+										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</c:forEach>
 
-					<tr>
-						<td style="text-align: center;">2</td>
-						<td style="text-align: center;">A2</td>
-						<td style="text-align: center;">25</td>
-						<td style="text-align: center;">24124</td>
-						<td>
-							<div class="btn-group">
-								<a class="btn btn-primary" href="#"><i
-									class="icon_plus_alt2"></i></a> <a class="btn btn-success" href="#"><i
-									class="icon_check_alt2"></i></a> <a class="btn btn-danger" href="#"><i
-									class="icon_close_alt2"></i></a>
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td style="text-align: center;">3</td>
-						<td style="text-align: center;">A3</td>
-						<td style="text-align: center;">25</td>
-						<td style="text-align: center;">24125</td>
-						<td>
-							<div class="btn-group">
-								<a class="btn btn-primary" href="#"><i
-									class="icon_plus_alt2"></i></a> <a class="btn btn-success" href="#"><i
-									class="icon_check_alt2"></i></a> <a class="btn btn-danger" href="#"><i
-									class="icon_close_alt2"></i></a>
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td style="text-align: center;">4</td>
-						<td style="text-align: center;">B1</td>
-						<td style="text-align: center;">25</td>
-						<td style="text-align: center;">24126</td>
-						<td>
-							<div class="btn-group">
-								<a class="btn btn-primary" href="#"><i
-									class="icon_plus_alt2"></i></a> <a class="btn btn-success" href="#"><i
-									class="icon_check_alt2"></i></a> <a class="btn btn-danger" href="#"><i
-									class="icon_close_alt2"></i></a>
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td style="text-align: center;">5</td>
-						<td style="text-align: center;">B2</td>
-						<td style="text-align: center;">25</td>
-						<td style="text-align: center;">24127</td>
-						<td>
-							<div class="btn-group">
-								<a class="btn btn-primary" href="#"><i
-									class="icon_plus_alt2"></i></a> <a class="btn btn-success" href="#"><i
-									class="icon_check_alt2"></i></a> <a class="btn btn-danger" href="#"><i
-									class="icon_close_alt2"></i></a>
-							</div>
-						</td>
-					</tr>
-
-				</tbody>
 			</table>
 		</section>
 	</div>

@@ -25,11 +25,10 @@
 <link href="resources/css/elegant-icons-style.css" rel="stylesheet" />
 <link href="resources/css/font-awesome.min.css" rel="stylesheet" />
 <!-- full calendar css-->
-<link
-	href="resources/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
-	rel="stylesheet" />
-<link href="resources/assets/fullcalendar/fullcalendar/fullcalendar.css"
-	rel="stylesheet" />
+
+<link href='resources/eventCalendar/fullcalendar.min.css' rel='stylesheet' />
+<link href='resources/css/modal.css' rel='stylesheet' />
+
 <!-- easy pie chart-->
 <link
 	href="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css"
@@ -39,7 +38,6 @@
 	type="text/css">
 <link href="resources/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
 <!-- Custom styles -->
-<link href="resources/css/fullcalendar.css" rel="stylesheet">
 <link href="resources/css/widgets.css" rel="stylesheet">
 <link href="resources/css/style.css" rel="stylesheet">
 <link href="resources/css/style-responsive.css" rel="stylesheet" />
@@ -72,11 +70,11 @@
 <script
 	src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
 <script src="resources/js/owl.carousel.js"></script>
+
+
 <!-- jQuery full calendar -->
-<script src="resources/js/fullcalendar.min.js"></script>
-<!-- Full Google Calendar - Calendar -->
-<script src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-<!--script for this page only-->
+<script src='resources/eventCalendar/lib/moment.min.js'></script>
+<script src='resources/eventCalendar/fullcalendar.min.js'></script>
 
 <script src="resources/js/jquery.rateit.min.js"></script>
 <!-- custom select -->
