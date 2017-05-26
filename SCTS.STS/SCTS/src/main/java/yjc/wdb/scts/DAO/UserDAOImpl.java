@@ -32,4 +32,10 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne(namespace+".checkUser", id);
 	}
 
+	@Override
+	public int point(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".point", user_id);
+	}
+
 }

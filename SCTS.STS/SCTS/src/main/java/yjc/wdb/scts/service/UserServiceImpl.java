@@ -29,4 +29,10 @@ public class UserServiceImpl implements UserService {
 		return dao.checkUser(id);
 	}
 
+	@Override
+	public int point(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.point(user_id);
+	}
+
 }
