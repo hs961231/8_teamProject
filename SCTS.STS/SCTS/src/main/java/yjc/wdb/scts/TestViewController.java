@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.UserService;
 
-import yjc.wdb.scts.service.PositionService;
 
 /**
  * Handles requests for the application home page.
@@ -31,8 +30,9 @@ public class TestViewController {
 	
 	@Inject
 	private UserService userService;
-	@Inject
-	PositionService positionService;
+	
+	//@Inject
+	//PositionService positionService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -105,7 +105,7 @@ public class TestViewController {
 	public String loginForm() {
 		return "NiceAdmin/login";
 	}
-	
+	/*
 	@RequestMapping(value="login", method=RequestMethod.POST)
 	public @ResponseBody String login(UserVO user) throws Exception{
 		
@@ -132,7 +132,7 @@ public class TestViewController {
 		int checkUser = userService.checkUser(user_id);
 		return ""+checkUser;
 	}
-	
+	*/
 	
 
 	@RequestMapping(value="profile")

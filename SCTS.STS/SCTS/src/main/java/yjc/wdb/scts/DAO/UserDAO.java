@@ -1,11 +1,5 @@
-package yjc.wdb.scts.DAO;
-
-import yjc.wdb.scts.bean.UserVO;
+package yjc.wdb.scts.dao;
 
 public interface UserDAO {
-
-	public int loginUser(UserVO user) throws Exception;
-	public void registerUser(UserVO user) throws Exception;
-	public int checkUser(String id) throws Exception;
-	
+	public int loginUser(String user_id, String user_password) throws Exception;
 }
