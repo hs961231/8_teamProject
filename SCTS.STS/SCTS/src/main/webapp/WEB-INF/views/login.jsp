@@ -99,7 +99,7 @@
 				url:"login",
 				data: {
 					user_id : user_id,
-					user_pw : user_pw
+					user_password : user_pw
 				},
 				success: function(data){
 					if(data == "success"){

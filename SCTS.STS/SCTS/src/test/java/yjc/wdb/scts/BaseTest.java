@@ -25,6 +25,7 @@ public class BaseTest {
 	@Inject
 	private CouponService couponService;
 	
+	/*
 	@Test
 	public void asdasd(){
 		
@@ -42,18 +43,18 @@ public class BaseTest {
 
 			System.out.println(json.toString());
 			
-			/*
+			
 			str = new Gson().toJson(couponService.selectTest());
 			JSONObject coupon = (JSONObject) new JSONParser().parse(str);
 			
 			coupon.put("status", "success");
 			
-			System.out.println(coupon);*/
+			System.out.println(coupon);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 }

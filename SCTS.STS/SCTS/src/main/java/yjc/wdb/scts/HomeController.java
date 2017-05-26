@@ -1,18 +1,10 @@
 package yjc.wdb.scts;
 
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,16 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import yjc.wdb.scts.bean.CouponVO;
-import yjc.wdb.scts.bean.ProductVO;
-import yjc.wdb.scts.bean.UserVO;
-import yjc.wdb.scts.service.UserService;
 import yjc.wdb.scts.service.CouponService;
-import yjc.wdb.scts.service.PositionService;
-import yjc.wdb.scts.service.ProductService;
-import yjc.wdb.scts.service.SalesService;
+import yjc.wdb.scts.service.CourseService;
+import yjc.wdb.scts.service.UserService;
 
 /**
  * Handles requests for the application home page.
@@ -42,17 +28,12 @@ public class HomeController {
 	private UserService userService;
 
 	@Inject
-	private PositionService positionService;
+	private CourseService courseService;
 
 	@Inject
 	private CouponService couponService;
-
-	@Inject
-	private SalesService salesService;
 	
-	@Inject
-	private ProductService productService;
-
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 
@@ -73,13 +54,14 @@ public class HomeController {
 	// 로그인 요청 받는 부분
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
-	public String loginPost(UserVO user, HttpServletRequest request, HttpSession session) throws Exception{
-		int chk = userService.loginUser(user);
+	public String loginPost(@RequestParam("user_id") String user_id, @RequestParam("user_password") String user_password, 
+							HttpServletRequest request, HttpSession session) throws Exception{
+		int chk = userService.loginUser(user_id, user_password);
 
 		if(chk == 0)
 			return "error";
 		else if(chk == 1) {
-			session.setAttribute("user_id", user.getUser_id());
+			session.setAttribute("user_id", user_id);
 			return "success";
 		}
 		else
@@ -95,12 +77,14 @@ public class HomeController {
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 
+		/*
 		int todayCount = positionService.todayCount();
 		model.addAttribute("todayCount", todayCount);
 		
 		List<HashMap<String, String>> list = positionService.avgStay();
 		model.addAttribute("list", list);
-
+		*/
+		
 		return "mainPage";
 	}
 
@@ -124,11 +108,11 @@ public class HomeController {
 		String ContentPage = "product_List";
 
 		model.addAttribute("main_content", ContentPage);
-		
+		/*
 		List<ProductVO> productList = productService.productList();
 	
 		model.addAttribute("productList", productList);
-
+*/
 		return "mainPage";
 	}
 
@@ -150,9 +134,10 @@ public class HomeController {
 
 		model.addAttribute("main_content", ContentPage);
 
-		ProductVO product = productService.productOne(product_id);
+		/*ProductVO product = productService.productOne(product_id);
 		
-		model.addAttribute("product", product);
+		model.addAttribute("product", product);*/
+		
 		return "mainPage";
 	}
 	
@@ -167,6 +152,7 @@ public class HomeController {
 		return "mainPage";
 	}
 	
+	/*
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
 	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
 
@@ -193,8 +179,9 @@ public class HomeController {
 
 		return callback + "(" + jsonObject +")";
 	}
+	*/
 	
-	@RequestMapping(value="daySales", method=RequestMethod.GET)
+	/*@RequestMapping(value="daySales", method=RequestMethod.GET)
 	public @ResponseBody String daySales(HttpServletRequest request) throws Exception{
 
 
@@ -226,7 +213,7 @@ public class HomeController {
 		model.addAttribute("main_content", ContentPage);
 
 		return "mainPage";
-	}
+	}*/
 
 
 	/********************************* 이벤트 관리 부분 ***************************************/
@@ -270,7 +257,8 @@ public class HomeController {
 		String ContentPage = "coupon_Management";
 
 		model.addAttribute("main_content", ContentPage);
-		model.addAttribute("list",couponService.listCoupon());
+
+	//	model.addAttribute("list",couponService.listCoupon());
 
 		return "mainPage";
 	}
@@ -297,6 +285,7 @@ public class HomeController {
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 	@RequestMapping(value="avgStayTest")
 	public String avgStayTest(Model model) throws Exception{
 		List<HashMap<String, String>> list = positionService.avgStay();
@@ -320,7 +309,7 @@ public class HomeController {
 		model.addAttribute("list", list);
 		return "test/probabilityTest";
 	}
-
+*/
 	/****************************** 예지쓰 *************************************/
 	/****************************** 예지쓰 *************************************/
 
@@ -370,5 +359,6 @@ public class HomeController {
 		return "NiceAdmin/product_info";
 	}
 
+	
 
 }

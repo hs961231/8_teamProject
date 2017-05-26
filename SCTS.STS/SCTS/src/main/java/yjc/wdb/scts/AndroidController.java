@@ -33,6 +33,7 @@ import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.bean.PositionVO;
 import yjc.wdb.scts.service.UserService;
 import yjc.wdb.scts.service.CouponService;
+import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.EventService;
 import yjc.wdb.scts.service.PositionService;
 import yjc.wdb.scts.service.PurchaseInfoService;
@@ -45,16 +46,17 @@ public class AndroidController {
 	private UserService userService;
 
 	@Inject
-	PositionService positionService;
+	//PositionService positionService;
+	CourseService courseService;
 
-	@Inject
-	private EventService eventService;
+	// 여기 주서ㄱ
+	//@Inject
+	//private EventService eventService;
 
 	@Inject
 	private CouponService couponService;
 
-	@Inject
-	private PurchaseInfoService purchaseInfoService;
+	
 
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
 
@@ -204,7 +206,6 @@ public class AndroidController {
 
 			eventArray.add(eventJson);
 
-
 		}
 
 		event = new JSONObject();
@@ -254,13 +255,9 @@ public class AndroidController {
 
 			couponArray.add(couponJson);
 
-
 		}
-
 		coupon = new JSONObject();
 		coupon.put("data", couponArray);
-
-
 
 		return callback+"("+coupon+")";
 	}
@@ -293,8 +290,6 @@ public class AndroidController {
 
 
 		JSONObject billJson;
-
-
 
 		JSONArray billArray = new JSONArray();
 		for(int i=0; i < list.size(); i++){

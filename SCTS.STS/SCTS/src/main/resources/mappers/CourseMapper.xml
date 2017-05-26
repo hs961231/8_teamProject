@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yjc.wdb.mapper.CourseMapper">
+
+<insert id="insertCourse">
+insert into COURSE
+	(USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
+values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
+</insert>
+
+<update id="">
+</update>
+
+<delete id="" >
+</delete>
+
+<select id="" resultType="">
+</select>
+
+</mapper>

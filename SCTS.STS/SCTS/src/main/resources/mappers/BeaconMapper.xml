@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yjc.wdb.mapper.BeaconMapper">
+
+<insert id="insertBeacon">
+insert into BEACON
+	(BEACON_MJR, BEACON_MNR, BEACON_STTUS, BHF_CODE)
+values (#{beacon_mjr}, #{beacon_mnr}, #{beacon_sttus}, #{bhf_code})
+</insert>
+
+<update id="">
+</update>
+
+<delete id="" >
+</delete>
+
+<select id="" resultType="">
+</select>
+
+</mapper>

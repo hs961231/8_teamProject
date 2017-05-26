@@ -5,9 +5,20 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="yjc.wdb.mapper.TileMapper">
-	<select id="tileList" resultType="TileVO">
-		select *
-		from tile
-		order by tile_name asc
-	</select>
+
+<insert id="insertTile">
+insert into TILE
+	(TILE_NM)
+values(#{tile_nm})
+</insert>
+
+<update id="">
+</update>
+
+<delete id="" >
+</delete>
+
+<select id="" resultType="">
+</select>
+
 </mapper>

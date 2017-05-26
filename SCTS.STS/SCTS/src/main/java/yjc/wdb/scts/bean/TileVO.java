@@ -1,26 +1,26 @@
 package yjc.wdb.scts.bean;
 
 public class TileVO {
-	private String tile_name;
-	private int major;
-	private int minor;
+	private int		tile_code;
+	private String	tile_nm;
+	private int		beacon_code;
 	
-	public String getTile_name() {
-		return tile_name;
+	public int getTile_code() {
+		return tile_code;
 	}
-	public void setTile_name(String tile_name) {
-		this.tile_name = tile_name;
+	public void setTile_code(int tile_code) {
+		this.tile_code = tile_code;
 	}
-	public int getMajor() {
-		return major;
+	public String getTile_nm() {
+		return tile_nm;
 	}
-	public void setMajor(int major) {
-		this.major = major;
+	public void setTile_nm(String tile_nm) {
+		this.tile_nm = tile_nm;
 	}
-	public int getMinor() {
-		return minor;
+	public int getBeacon_code() {
+		return beacon_code;
 	}
-	public void setMinor(int minor) {
-		this.minor = minor;
+	public void setBeacon_code(int beacon_code) {
+		this.beacon_code = beacon_code;
 	}
 }
