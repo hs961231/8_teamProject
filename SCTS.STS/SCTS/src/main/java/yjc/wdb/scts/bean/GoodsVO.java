@@ -2,9 +2,17 @@ package yjc.wdb.scts.bean;
 
 public class GoodsVO {
 	private int		goods_code;
+	private String 	goods_nm;
 	private int		goods_pc;
 	private String	goods_dc;
 	private int		detailctgry_code;
+	
+	public String getGoods_nm() {
+		return goods_nm;
+	}
+	public void setGoods_nm(String goods_nm) {
+		this.goods_nm = goods_nm;
+	}
 	
 	public int getGoods_code() {
 		return goods_code;

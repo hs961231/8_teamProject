@@ -12,7 +12,7 @@ insert into BRANCH_OFFICE
 values (#{bhf_nm}, #{bhf_adres}, #{bhf_telno})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
@@ -20,5 +20,5 @@ values (#{bhf_nm}, #{bhf_adres}, #{bhf_telno})
 
 <select id="" resultType="">
 </select>
-
+ -->
 </mapper>

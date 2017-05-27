@@ -4,7 +4,7 @@ public class Detail_categoryVO {
 	private int		detailctgry_code;
 	private int		lclasctgry_code;
 	private String	detailctgry_nm;
-	private String	detailctgry_color;
+
 	
 	public int getDetailctgry_code() {
 		return detailctgry_code;
@@ -24,10 +24,5 @@ public class Detail_categoryVO {
 	public void setDetailctgry_nm(String detailctgry_nm) {
 		this.detailctgry_nm = detailctgry_nm;
 	}
-	public String getDetailctgry_color() {
-		return detailctgry_color;
-	}
-	public void setDetailctgry_color(String detailctgry_color) {
-		this.detailctgry_color = detailctgry_color;
-	}
+	
 }

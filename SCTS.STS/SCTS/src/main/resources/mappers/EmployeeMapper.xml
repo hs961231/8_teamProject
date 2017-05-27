@@ -12,13 +12,13 @@ insert into EMPLOYEE
 values (#{user_id}, #{emp_ihidnum}, #{emp_anslry}, #{emp_acnuto}, #{emp_encpn})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
 </delete>
 
 <select id="" resultType="">
-</select>
+</select> -->
 
 </mapper>

@@ -6,19 +6,27 @@
 
 <mapper namespace="yjc.wdb.mapper.CouponMapper">
 
-<insert id="insertCoupon">
-insert into COUPON
-	(COUPON_NM, COUPON_CNTNTS, COUPON_DSCNT, COUPON_BEGIN_DE, COUPON_END_DE)
-values (#{coupon_nm}, #{coupon_cntnts}, #{coupon_dscnt}, #{coupon_begin_de}, #{coupon_end_de})
-</insert>
+	<insert id="insertCoupon">
+		insert into COUPON
+		(COUPON_NM, COUPON_CNTNTS,
+		COUPON_DSCNT, COUPON_BEGIN_DE, COUPON_END_DE)
+		values (#{coupon_nm},
+		#{coupon_cntnts}, #{coupon_dscnt}, #{coupon_begin_de},
+		#{coupon_end_de})
+	</insert>
 
-<update id="">
-</update>
+	<select resultType="CouponVO" id="couponList"> 
+		select * from coupon_hold ch, coupon c where
+		ch.user_id = #{user_id} and ch.COUPONHOLD_USE_AT = 'no' and ch.coupon_code = c.coupon_code
+	</select>
 
-<delete id="" >
-</delete>
+	<delete id="delCouponBasket"> 
+		delete from coupon_hold 
+		where user_id = #{user_id}
+		and coupon_code = #{coupon_code}; </delete>
 
-<select id="" resultType="">
-</select>
+	<!-- <update id=""> </update> <delete id="" > </delete> <select id="" resultType=""> 
+		</select> -->
+
 
 </mapper>

@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.UserService;
+
 
 /**
  * Handles requests for the application home page.
@@ -27,11 +29,11 @@ public class HomeController {
 	@Inject
 	private UserService userService;
 
-	@Inject
+/*	@Inject
 	private CourseService courseService;
 
 	@Inject
-	private CouponService couponService;
+	private CouponService couponService;*/
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -54,14 +56,14 @@ public class HomeController {
 	// 로그인 요청 받는 부분
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
-	public String loginPost(@RequestParam("user_id") String user_id, @RequestParam("user_password") String user_password, 
+	public String loginPost(UserVO user, 
 							HttpServletRequest request, HttpSession session) throws Exception{
-		int chk = userService.loginUser(user_id, user_password);
+		int chk = userService.loginUser(user);
 
 		if(chk == 0)
 			return "error";
 		else if(chk == 1) {
-			session.setAttribute("user_id", user_id);
+			session.setAttribute("user_id", user.getUser_id());
 			return "success";
 		}
 		else

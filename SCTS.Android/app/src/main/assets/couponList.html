@@ -38,7 +38,7 @@
 
         .coupon{
             width: 96%;
-            height: 125px;
+            height: 145px;
             border: 0.2px solid black;
             margin-bottom: 10px;
         }
@@ -60,6 +60,10 @@
             width: 70px;
             height: 30px;
             float: right;
+        }
+        .couponDe{
+            font-size: 13px;
+            margin-top: -10px;
         }
 
      
@@ -89,11 +93,13 @@
 
                         var list = $("#list");
 
-                        list.append($('<div></div>').addClass("coupon").attr('data-id', data.data[i].coupon_id));
-                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<img />").attr("src", "img/coupon.png").addClass("couponImg"));
-                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<p></p>").text(data.data[i].coupon_name));
-                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<p></p>").text(data.data[i].coupon_content));
-                        $(".coupon[data-id="+data.data[i].coupon_id +"]").append($("<button></button>").addClass("couponDel").text("삭제"));
+                        list.append($('<div></div>').addClass("coupon").attr('data-id', data.data[i].coupon_code));
+                        $(".coupon[data-id="+data.data[i].coupon_code +"]").append($("<img />").attr("src", "img/coupon.png").addClass("couponImg"));
+                        $(".coupon[data-id="+data.data[i].coupon_code +"]").append($("<p></p>").text(data.data[i].coupon_nm));
+                        $(".coupon[data-id="+data.data[i].coupon_code +"]").append($("<p></p>").text(data.data[i].coupon_cntnts));
+                        $(".coupon[data-id="+data.data[i].coupon_code +"]").append($("<p></p>").text(data.data[i].coupon_begin_de + "~" + data.data[i].coupon_end_de)
+                        .addClass("couponDe"));
+                        $(".coupon[data-id="+data.data[i].coupon_code +"]").append($("<button></button>").addClass("couponDel").text("삭제"));
 
                     }
 
@@ -122,7 +128,7 @@
    <script>
     $(document.body).on("click", ".couponDel", function(){
         var id = sessionStorage.getItem("user_id");
-        var coupon_id = $(this).parent().attr("data-id");
+        var coupon_code = $(this).parent().attr("data-id");
         var removeTarget = $(this).parent();
 
         $.ajax({
@@ -130,7 +136,7 @@
             url: IPSetting()+"delCouponBasket",
             data: {
                 user_id : id,
-                coupon_id : coupon_id
+                coupon_code : coupon_code
             },
             dataType:"jsonp",
             success: function(data){

@@ -12,13 +12,13 @@ insert into FLOOR_INFORMATION
 values (#{bhf_code}, #{drw_code}, #{floorinfo_floor}, now())
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
 </delete>
 
 <select id="" resultType="">
-</select>
+</select> -->
 
 </mapper>

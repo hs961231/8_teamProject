@@ -12,13 +12,13 @@ insert into TILE_LOCATION
 values (#{drw_code}, #{tile_code}, #{tilelc_crdnt_x}, #{tilelc_crdnt_y}, #{tilelc_hg}, #{tilelc_ar})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
 </delete>
 
 <select id="" resultType="">
-</select>
+</select> -->
 
 </mapper>

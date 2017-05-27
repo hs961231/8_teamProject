@@ -1,15 +1,16 @@
-package yjc.wdb.scts.service;
+package yjc.wdb.scts.service.impl;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import yjc.wdb.scts.DAO.UserDAO;
 import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.dao.UserDAO;
+import yjc.wdb.scts.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserService {
-	
+public class UserServiceImpl implements UserService{
+
 	@Inject
 	private UserDAO dao;
 
@@ -19,8 +20,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void registerUser(UserVO user) throws Exception {
-		dao.registerUser(user);
+	public void insertUser(UserVO user) throws Exception {
+		dao.insertUser(user);
 	}
 
 	@Override

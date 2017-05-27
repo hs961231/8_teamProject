@@ -12,13 +12,13 @@ insert into BILL
 values (#{user_id}, now(), #{bill_totamt})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
 </delete>
 
 <select id="" resultType="">
-</select>
+</select> -->
 
 </mapper>

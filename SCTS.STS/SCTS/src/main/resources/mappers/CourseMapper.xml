@@ -12,13 +12,13 @@ insert into COURSE
 values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
 </delete>
 
 <select id="" resultType="">
-</select>
+</select> -->
 
 </mapper>

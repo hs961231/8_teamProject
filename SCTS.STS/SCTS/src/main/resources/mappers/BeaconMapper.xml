@@ -12,13 +12,13 @@ insert into BEACON
 values (#{beacon_mjr}, #{beacon_mnr}, #{beacon_sttus}, #{bhf_code})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
 </delete>
 
 <select id="" resultType="">
-</select>
+</select> -->
 
 </mapper>

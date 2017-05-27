@@ -8,11 +8,11 @@
 
 <insert id="insertDetail_category">
 insert into DETAIL_CATEGORY
-	(LCLASCTGRY_CODE, DETAILCTGRY_NM, DETAILCTGRY_COLOR)
-values (#{lclasctgry_code} #{detailctgry_nm}, #{detailctgry_color})
+	(LCLASCTGRY_CODE, DETAILCTGRY_NM)
+values (#{lclasctgry_code} #{detailctgry_nm})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
@@ -20,5 +20,5 @@ values (#{lclasctgry_code} #{detailctgry_nm}, #{detailctgry_color})
 
 <select id="" resultType="">
 </select>
-
+ -->
 </mapper>

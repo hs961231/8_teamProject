@@ -27,16 +27,12 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.UserVO;
-import yjc.wdb.scts.bean.CouponBasketVO;
 import yjc.wdb.scts.bean.CouponVO;
-import yjc.wdb.scts.bean.EventVO;
-import yjc.wdb.scts.bean.PositionVO;
+import yjc.wdb.scts.bean.Coupon_holdVO;
 import yjc.wdb.scts.service.UserService;
 import yjc.wdb.scts.service.CouponService;
+import yjc.wdb.scts.service.Coupon_holdService;
 import yjc.wdb.scts.service.CourseService;
-import yjc.wdb.scts.service.EventService;
-import yjc.wdb.scts.service.PositionService;
-import yjc.wdb.scts.service.PurchaseInfoService;
 
 @Controller
 @RequestMapping("/android")
@@ -45,9 +41,9 @@ public class AndroidController {
 	@Inject
 	private UserService userService;
 
-	@Inject
+	//@Inject
 	//PositionService positionService;
-	CourseService courseService;
+	//CourseService courseService;
 
 	// 여기 주서ㄱ
 	//@Inject
@@ -55,7 +51,6 @@ public class AndroidController {
 
 	@Inject
 	private CouponService couponService;
-
 	
 
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
@@ -77,7 +72,7 @@ public class AndroidController {
 		try {
 
 			user.setUser_id( userJson.get("user_id").toString() );
-			user.setUser_pw( userJson.get("user_pw").toString() );
+			user.setUser_password(userJson.get("user_pw").toString());
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -91,7 +86,7 @@ public class AndroidController {
 	}
 
 
-	// 안드로이드에서 비콘정보 전송
+	/*// 안드로이드에서 비콘정보 전송
 	@RequestMapping(value="/setPositionData")
 	@ResponseBody
 	public String setPositionData(HttpServletRequest request) throws Exception{
@@ -148,19 +143,17 @@ public class AndroidController {
 	public PositionVO getPositionData(HttpServletRequest request) throws Exception{
 		// 디비에서 비콘정보 빼서 바로 리턴
 		return positionService.selectPosition();
-	}
+	}*/
 
 
 
 	// 회원가입
-
 	@RequestMapping(value="checkUser", method=RequestMethod.POST)
 	public @ResponseBody String checkUser(String user_id, HttpServletRequest request) throws Exception{
 		System.out.print(request.getParameter("user_id"));
 		int checkUser = userService.checkUser(user_id);
 		return ""+checkUser;
 	}
-
 	@RequestMapping(value="signUp", method=RequestMethod.POST)
 	public @ResponseBody String signUp(HttpServletRequest request) throws Exception{
 
@@ -170,17 +163,13 @@ public class AndroidController {
 
 		UserVO user = new UserVO();
 		user.setUser_id(joinJSON.get("user_id").toString());
-		user.setUser_pw((String) joinJSON.get("user_pw").toString());
-		user.setAge(Integer.parseInt(joinJSON.get("age").toString()));
-		user.setGender(joinJSON.get("gender").toString());
+		user.setUser_password((String) joinJSON.get("user_pw").toString());
+		//user.setAge(Integer.parseInt(joinJSON.get("age").toString()));
+		user.setUser_sexdstn(joinJSON.get("gender").toString());
 
 
-		System.out.println(user.getUser_id());
-		System.out.println(user.getUser_pw());
-		System.out.println(user.getAge());
-		System.out.println(user.getGender());
 
-		userService.registerUser(user);
+		userService.insertUser(user);
 
 
 
@@ -189,7 +178,7 @@ public class AndroidController {
 	}
 
 	// 이벤트 보기
-	@RequestMapping(value="eventList", method=RequestMethod.GET)
+	/*@RequestMapping(value="eventList", method=RequestMethod.GET)
 	public @ResponseBody String eventList(HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -236,22 +225,26 @@ public class AndroidController {
 
 		return callback + "(" + eventJson + ")";
 
-	}
+	}*/
+	
+	
 
 	// 쿠폰 바구니에 담긴 쿠폰 보기
 	@RequestMapping(value="couponList", method=RequestMethod.GET)
 	public @ResponseBody String couponList(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
-		List<CouponVO> list = couponService.couponList(user_id);
+		List<CouponVO> list = couponService.couponBasket(user_id);
 		JSONObject couponJson;
 		JSONObject coupon;
 		JSONArray couponArray = new JSONArray();
 		for(int i = 0; i < list.size(); i++){
 			couponJson = new JSONObject();
-			couponJson.put("coupon_id", list.get(i).getCoupon_id());
-			couponJson.put("coupon_name", list.get(i).getCoupon_name());
-			couponJson.put("coupon_content", list.get(i).getCoupon_content());
+			couponJson.put("coupon_code", list.get(i).getCoupon_code());
+			couponJson.put("coupon_nm", list.get(i).getCoupon_nm());
+			couponJson.put("coupon_cntnts", list.get(i).getCoupon_cntnts());
+			couponJson.put("coupon_begin_de", list.get(i).getCoupon_begin_de().toString());
+			couponJson.put("coupon_end_de", list.get(i).getCoupon_end_de().toString());
 
 			couponArray.add(couponJson);
 
@@ -264,10 +257,10 @@ public class AndroidController {
 
 	// 쿠폰 바구니에서 쿠폰 삭제
 	@RequestMapping(value="delCouponBasket", method=RequestMethod.GET)
-	public @ResponseBody String delCouponBasket(CouponBasketVO couponBasketVO, HttpServletRequest request) throws Exception{
+	public @ResponseBody String delCouponBasket(Coupon_holdVO coupon_holdVO, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
-		couponService.delCouponBasket(couponBasketVO);
+		couponService.delCouponBasket(coupon_holdVO);
 
 		// 이부분 더 생각 해보기
 		JSONObject coupon;
@@ -281,7 +274,7 @@ public class AndroidController {
 	}
 
 	// 계산서 정보
-	@RequestMapping(value="billList", method=RequestMethod.GET)
+	/*@RequestMapping(value="billList", method=RequestMethod.GET)
 	public @ResponseBody String billList(String user_id, int day, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -310,9 +303,9 @@ public class AndroidController {
 
 
 		return callback+"("+billList+")";
-	}
+	}*/
 	// 계산서 상세정보
-	@RequestMapping(value="billOne", method=RequestMethod.GET)
+	/*@RequestMapping(value="billOne", method=RequestMethod.GET)
 	public @ResponseBody String billOne(int b_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -342,10 +335,10 @@ public class AndroidController {
 
 
 		return callback+"("+billList+")";
-	}
+	}*/
 
 
-	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
+/*	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
 	public @ResponseBody String recommandProduct(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -375,7 +368,7 @@ public class AndroidController {
 
 		return callback+"("+recommandList+")";
 	}
-	
+	*/
 	
 	// 포인트
 	@RequestMapping(value="point", method=RequestMethod.POST)
@@ -387,7 +380,6 @@ public class AndroidController {
 		return ""+point;
 		
 	}
-
 
 
 

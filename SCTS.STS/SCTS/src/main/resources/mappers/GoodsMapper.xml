@@ -8,11 +8,11 @@
 
 <insert id="insertGoods">
 insert into GOODS
-	(GOODS_PC, GOODS_DC, DETAILCTGRY_CODE)
-values (#{goods_pc}, #{goods_dc}, #{detailctgry_code})
+	(GOODS_NM, GOODS_PC, GOODS_DC, DETAILCTGRY_CODE)
+values (#{goods_nm}, #{goods_pc}, #{goods_dc}, #{detailctgry_code})
 </insert>
 
-<update id="">
+<!-- <update id="">
 </update>
 
 <delete id="" >
@@ -20,5 +20,5 @@ values (#{goods_pc}, #{goods_dc}, #{detailctgry_code})
 
 <select id="" resultType="">
 </select>
-
+ -->
 </mapper>
