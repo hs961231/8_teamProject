@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
+/*    @Override
     protected void onResume() {
         super.onResume();
         // 블루투스 권한 및 활성화 코드
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
-    }
+    }*/
 //
 //  protected void test() {
 //
@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 // 네트워크 연결 후 서버 전송
                 NetworkTask networkTask = new NetworkTask();
                 networkTask.execute(json);
+
+                NetworkTask2 networkTask2 = new NetworkTask2();
+                networkTask2.execute(user_id);
 
             }
         });
@@ -177,5 +180,56 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    // 포인트 받아오기!
+    private class NetworkTask2 extends AsyncTask<String, String, String> {
+
+        protected  void onPreExcute(){
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... json) {
+            // bean 안에 있는 ip 셋팅 정보를 꼭 바꾸도록 할 것
+            HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "point");
+
+            http.addOrReplace("user_id", json[0]);
+
+            // HTTP 요청 전송
+            HttpClient post = http.create();
+
+            post.request();
+
+
+            // 응답 상태코드 가져오기
+            int statusCode = post.getHttpStatusCode();
+
+            // 응답 본문 가져오기
+            String body = post.getBody();
+
+
+            return body;
+        }
+
+        protected void onPostExecute(String s){
+
+            Log.i("point", s);
+
+            sp = getSharedPreferences("test", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("point", s);
+            editor.commit();
+
+            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+
+
+        }
+
+    }
+
+
+
 
 }

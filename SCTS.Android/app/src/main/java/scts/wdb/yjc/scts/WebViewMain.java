@@ -27,6 +27,7 @@ public class WebViewMain extends AppCompatActivity {
     private BeaconM beaconM;
     private SharedPreferences sp;
     private String str;
+    private String point;
     private SharedPreferences.Editor editor;
 
     private final static String MAIN_URL = "file:///android_asset/index.html";
@@ -126,8 +127,11 @@ public class WebViewMain extends AppCompatActivity {
             sp = getSharedPreferences("test", 0);
             str = sp.getString("user_id", "");
 
+            point = sp.getString("point", "0");
 
-            webView.loadUrl("javascript:setId('"+str+"')");
+
+            webView.loadUrl("javascript:setId('"+str+"', '"+point+"')");
+
 
         }
     }

@@ -375,7 +375,18 @@ public class AndroidController {
 
 		return callback+"("+recommandList+")";
 	}
-
+	
+	
+	// Æ÷ÀÎÆ®
+	@RequestMapping(value="point", method=RequestMethod.POST)
+	public @ResponseBody String point(HttpServletRequest request) throws Exception{
+		
+		System.out.println(request.getParameter("user_id"));
+		int point = userService.point(request.getParameter("user_id"));
+		System.out.println(point);
+		return ""+point;
+		
+	}
 
 
 
