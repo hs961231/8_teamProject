@@ -12,6 +12,13 @@ insert into GOODS
 values (#{goods_nm}, #{goods_pc}, #{goods_dc}, #{detailctgry_code})
 </insert>
 
+<select id="selectGoodsList" resultType="GoodsVO">
+select
+	*
+from
+	GOODS
+</select>
+
 <!-- <update id="">
 </update>
 

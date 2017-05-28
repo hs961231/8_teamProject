@@ -12,6 +12,16 @@ insert into COURSE
 values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
 </insert>
 
+<!-- 오늘 방문자 수 계산 -->
+<select id="selectTodayVisitCnt" resultType="integer">
+select
+	count(DISTINCT user_id)
+from
+	COURSE
+where
+	date(COURS_PASNG_TIME) >= date(subdate(now(), INTERVAL 0 DAY))
+</select>
+
 <!-- <update id="">
 </update>
 

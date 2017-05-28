@@ -1,6 +1,9 @@
 package yjc.wdb.scts;
 
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.bean.UserVO;
-import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
+import yjc.wdb.scts.service.GoodsService;
+import yjc.wdb.scts.service.TileService;
 import yjc.wdb.scts.service.UserService;
 
 
@@ -29,11 +34,14 @@ public class HomeController {
 	@Inject
 	private UserService userService;
 
-/*	@Inject
-	private CourseService courseService;
-
 	@Inject
-	private CouponService couponService;*/
+	TileService tileService;
+	
+	@Inject
+	CourseService courseService;
+	
+	@Inject
+	GoodsService goodsService;
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -79,13 +87,11 @@ public class HomeController {
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 
-		/*
-		int todayCount = positionService.todayCount();
+		int todayCount = courseService.selectTodayVisitCnt();
 		model.addAttribute("todayCount", todayCount);
 		
-		List<HashMap<String, String>> list = positionService.avgStay();
+		List<HashMap<String, String>> list = tileService.selectTileList();
 		model.addAttribute("list", list);
-		*/
 		
 		return "mainPage";
 	}
@@ -103,6 +109,28 @@ public class HomeController {
 
 		return "mainPage";
 	}
+	
+	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.GET)
+	public String shop_RegisterForm(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "shop_RegisterForm";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+
+		return "mainPage";
+	}
+	
+	@RequestMapping(value="tile_RegisterForm", method=RequestMethod.GET)
+	public String tile_RegisterForm(HttpServletRequest request, HttpSession session, Model model) {
+		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
+		String ContentPage = "tile_RegisterForm";
+
+		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
+		model.addAttribute("main_content", ContentPage);
+
+		return "mainPage";
+	}
 
 	// 상품 리스트
 	@RequestMapping(value="product_List", method=RequestMethod.GET)
@@ -110,11 +138,11 @@ public class HomeController {
 		String ContentPage = "product_List";
 
 		model.addAttribute("main_content", ContentPage);
-		/*
-		List<ProductVO> productList = productService.productList();
+		
+		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
 	
-		model.addAttribute("productList", productList);
-*/
+		model.addAttribute("GoodsList", GoodsList);
+		
 		return "mainPage";
 	}
 

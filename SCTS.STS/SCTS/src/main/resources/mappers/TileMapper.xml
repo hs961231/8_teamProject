@@ -12,6 +12,25 @@ insert into TILE
 values(#{tile_nm})
 </insert>
 
+<!-- 존재하는 타일리스트 전부를 뽑아옴, 여기서 비콘이 셋팅되어 있으면 셋팅된 비콘의 메이저 마이너를 얻어옴 -->
+<select id="selectTileList" resultType="java.util.HashMap">
+select
+	t.TILE_NM, b.BEACON_MJR, b.BEACON_MNR
+from
+	TILE t LEFT OUTER JOIN BEACON b
+	ON t.BEACON_CODE = b.BEACON_CODE
+</select>
+
+<!-- 타일 비콘 등록할 때 쓸 것 -->
+<update id="updateTile">
+update
+	TILE
+set
+	BEACON_CODE = #{beacon_code}
+where
+	TILE_CODE = #{tile_code}
+</update>
+
 <!-- <update id="">
 </update>
 
