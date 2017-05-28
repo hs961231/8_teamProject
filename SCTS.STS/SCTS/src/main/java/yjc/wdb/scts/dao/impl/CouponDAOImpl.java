@@ -11,6 +11,7 @@ import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Coupon_holdVO;
 import yjc.wdb.scts.dao.CouponDAO;
 
+
 @Repository
 public class CouponDAOImpl implements CouponDAO{
 	
