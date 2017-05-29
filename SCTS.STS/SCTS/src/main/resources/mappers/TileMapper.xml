@@ -15,7 +15,7 @@ values(#{tile_nm})
 <!-- 존재하는 타일리스트 전부를 뽑아옴, 여기서 비콘이 셋팅되어 있으면 셋팅된 비콘의 메이저 마이너를 얻어옴 -->
 <select id="selectTileList" resultType="java.util.HashMap">
 select
-	t.TILE_NM, b.BEACON_MJR, b.BEACON_MNR
+	t.TILE_NM tile_nm, b.BEACON_MJR beacon_mjr, b.BEACON_MNR beacon_mnr
 from
 	TILE t LEFT OUTER JOIN BEACON b
 	ON t.BEACON_CODE = b.BEACON_CODE

@@ -31,4 +31,10 @@ public class CouponServiceImpl implements CouponService {
 		
 	}
 
+	@Override
+	public List<CouponVO> selectCouponList() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectCouponList();
+	}
+
 }

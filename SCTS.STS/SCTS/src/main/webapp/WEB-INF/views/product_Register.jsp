@@ -22,32 +22,32 @@
 			<div class="panel-body">
 				<div class="form">
 					<form class="form-validate form-horizontal" id="feedback_form"
-						method="get" action="">
+						method="post" action="product_Register">
 						<div class="form-group ">
-							<label for="name" class="control-label col-lg-2">물품 명 <span
+							<label for="name" class="control-label col-lg-2">상품 명 <span
 								class="required">*</span>
 							</label>
 							<div class="col-lg-10">
-								<input class="form-control" id="name" name="fullname"
+								<input class="form-control" id="name" name="goods_nm"
 									type="text" required />
 							</div>
 						</div>
 
-						<div class="form-group ">
+						<div class="form-group "><!-- 
 							<label for="amount" class="control-label col-lg-2">물품 수량
 								<span class="required">*</span>
 							</label>
 							<div class="col-lg-4">
 								<input class="form-control" id="amount" name="fullname"
 									type="text" required />
-							</div>
+							</div> -->
 
 							<label for="price" class="control-label col-lg-2">판매 가 <span
 								class="required">*</span>
 							</label>
 							<div class="col-lg-4">
-								<input class="form-control" id="price" name="fullname"
-									type="text" required />
+								<input class="form-control" id="price" name="goods_pc"
+									type="number" required />
 							</div>
 						</div>
 
@@ -57,18 +57,18 @@
 								정보 <span class="required">*</span>
 							</label>
 							<div class="col-lg-4">
-								<select class="form-control m-bot15">
-									<option>카테고리 정보를 선택해주세요.</option>
-									<option>신선 식품(01)</option>
-									<option>차량 용품(02)</option>
-									<option>가전 제품(03)</option>
-									<option>문구 용품(04)</option>
-									<option>의류 제품(05)</option>
+								<select class="form-control m-bot15" name="detailctgry_code">
+									<option selected>카테고리 정보를 선택해주세요.</option>
+									<option value="1">신선 식품(01)</option>
+									<option value="2">차량 용품(02)</option>
+									<option value="3">가전 제품(03)</option>
+									<option value="4">문구 용품(04)</option>
+									<option value="5">의류 제품(05)</option>
 								</select>
 							</div>
 
-							<label for="price" class="control-label col-lg-2">물품 이미지
-								파일 <span class="required">*</span>
+							<label for="price" class="control-label col-lg-2">상품 이미지
+								파일<span class="required">*</span>
 							</label>
 							<div class="col-lg-4">
 								<input type="file" name="file">
@@ -77,10 +77,10 @@
 
 
 						<div class="form-group ">
-							<label for="ccomment" class="control-label col-lg-2">물품
-								부가 정보</label>
+							<label for="ccomment" class="control-label col-lg-2">상품
+								설명</label>
 							<div class="col-lg-10">
-								<textarea class="form-control " id="ccomment" name="comment"
+								<textarea class="form-control " id="ccomment" name="goods_dc"
 									required></textarea>
 							</div>
 						</div>

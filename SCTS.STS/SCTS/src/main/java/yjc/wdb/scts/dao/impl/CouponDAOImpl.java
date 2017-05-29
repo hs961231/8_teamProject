@@ -33,4 +33,10 @@ public class CouponDAOImpl implements CouponDAO{
 		
 	}
 
+	@Override
+	public List<CouponVO> selectCouponList() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".selectCouponList");
+	}
+
 }

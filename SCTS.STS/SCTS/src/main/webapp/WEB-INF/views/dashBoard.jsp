@@ -122,9 +122,9 @@
 						<c:forEach items="${ list }" var="vo">
 
 							<tr>
-								<td style="text-align: center;">${ vo.get("tile_name") }</td>
-								<td style="text-align: center;">${ vo.get("major") }</td>
-								<td style="text-align: center;">${ vo.get("minor") }</td>
+								<td style="text-align: center;">${ vo.get("tile_nm") }</td>
+								<td style="text-align: center;">${ vo.get("beacon_mjr") }</td>
+								<td style="text-align: center;">${ vo.get("beacon_mnr") }</td>
 								<td style="text-align: center;">${ vo.get("avg") }</td>
 								<td style="text-align: center;">${ vo.get("cnt") }</td>
 								<td>

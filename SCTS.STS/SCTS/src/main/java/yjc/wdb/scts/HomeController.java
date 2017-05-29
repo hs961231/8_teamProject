@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.GoodsService;
 import yjc.wdb.scts.service.TileService;
@@ -42,6 +44,9 @@ public class HomeController {
 	
 	@Inject
 	GoodsService goodsService;
+	
+	@Inject
+	CouponService couponService;
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -146,7 +151,7 @@ public class HomeController {
 		return "mainPage";
 	}
 
-	// 상품 등록
+	// 상품 등록 폼 호출
 	@RequestMapping(value="product_Register", method=RequestMethod.GET)
 	public String product_Register(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "product_Register";
@@ -155,6 +160,21 @@ public class HomeController {
 		
 
 		return "mainPage";
+	}
+	
+	//상품등록 처리
+	@RequestMapping(value="product_Register", method=RequestMethod.POST)
+	public String product_RegisterPost(HttpServletRequest request, HttpSession session, Model model, GoodsVO vo) throws Exception{
+		String ContentPage = "product_Register";
+
+		model.addAttribute("main_content", ContentPage);
+		
+		System.out.println("GoodsVO 정보 : " + vo.getDetailctgry_code() + "  상품명 : " + vo.getGoods_nm());
+		
+		goodsService.insertGoods(vo);
+		
+
+		return "redirect:mainPage";
 	}
 	
 	// 상품 정보
@@ -287,9 +307,11 @@ public class HomeController {
 		String ContentPage = "coupon_Management";
 
 		model.addAttribute("main_content", ContentPage);
+		
+		List<CouponVO> Couponlist = couponService.selectCouponList();
 
-	//	model.addAttribute("list",couponService.listCoupon());
-
+		model.addAttribute("Couponlist", Couponlist);
+		
 		return "mainPage";
 	}
 

@@ -22,18 +22,22 @@
 						<th>쿠폰 번호</th>
 						<!-- <th>쿠폰 코드</th> -->
 						<th>쿠폰 명</th>
-						<th>쿠폰 내용</th>
+						<th>쿠폰 할인율</th>
+						<th>쿠폰 시작날짜</th>
+						<th>쿠폰 종료날짜</th>
 						<!--<th>유효 기간</th>
 										<th>내용</th> -->
 						<th></th>
 					</tr>
 				</thead>
-				<c:forEach items="${list}" var="listCoupon">
+				<c:forEach items="${Couponlist}" var="vo">
 					<tbody>
 						<tr class="active">
-							<td>${listCoupon.coupon_id}</td>
-							<td>${listCoupon.coupon_name }</td>
-							<td>${listCoupon.coupon_content }</td>
+							<td>${ vo.coupon_code }</td>
+							<td>${ vo.coupon_nm }</td>
+							<td>${ vo.coupon_dscnt }</td>
+							<td>${ vo.coupon_begin_de }</td>x
+							<td>${ vo.coupon_end_de }</td>
 
 							<td><input type="submit" class="modify btn btn-primary"
 								value="수정"> <input type="submit"
@@ -48,16 +52,22 @@
 
 			<div class="modal-layout">
 				<h4>
-					쿠폰 코드 : <input type="text">
-				</h4>
-
-				<h4>
 					쿠폰 이름 : <input type="text">
 				</h4>
 
 				<h4>
 					쿠폰 내용 : <input type="text">
 				</h4>
+				
+				<h4>
+					쿠폰 시작일 : <input type="date-locale">
+				</h4>
+				
+				<h4>
+					쿠폰 종료일 : <input type="date-locale">
+				</h4>
+				
+				
 
 				<h4>유효 기간 :</h4>
 				<input type="date">
