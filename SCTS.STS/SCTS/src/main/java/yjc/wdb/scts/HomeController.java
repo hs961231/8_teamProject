@@ -255,7 +255,8 @@ public class HomeController {
 		return callback + "(" + jsonObject +")";
 	}
 	
-
+	*/
+	
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
 		String ContentPage = "stock_Management";
@@ -263,7 +264,7 @@ public class HomeController {
 		model.addAttribute("main_content", ContentPage);
 
 		return "mainPage";
-	}*/
+	}
 
 
 	/********************************* 이벤트 관리 부분 ***************************************/
@@ -310,7 +311,7 @@ public class HomeController {
 		
 		List<CouponVO> Couponlist = couponService.selectCouponList();
 
-		model.addAttribute("Couponlist", Couponlist);
+		model.addAttribute("list", Couponlist);
 		
 		return "mainPage";
 	}

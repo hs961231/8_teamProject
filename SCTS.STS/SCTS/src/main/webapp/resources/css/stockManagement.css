@@ -1,0 +1,28 @@
+* {
+	font-family: 'Malgun Gothic';
+	font-size: 15px;
+}
+
+th, td {
+	text-align: center;
+}
+
+.navbar-search {
+	border: 1px solid;
+	background-color: #FFFFFF;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	display: inline-block;
+}
+
+.search-btn {
+	border: 1px solid;
+	background-color: #E5EFF7;
+}
+
+/* .form-control{
+	display:inline;
+	width:30%;	
+	bootstrap-theme.css의 변경 사항이 적용이 안돼
+} */
