@@ -44,11 +44,10 @@
 <link href="resources/css/xcharts.min.css" rel=" stylesheet">
 <link href="resources/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
-
 <!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기사이에 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 <!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기다 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-<link href="resources/css/modal.css" rel="stylesheet">
-
+<link href="resources/css/couponManagement.css" rel="stylesheet">
+<link href="resources/css/stockManagement.css" rel=" stylesheet">
 
 <!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기다 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 <!-- @@@@@@@@@@@@@@@@@@@@@ 직접만든 css들 전부 여기다 넣을 것!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
