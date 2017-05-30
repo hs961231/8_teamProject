@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import yjc.wdb.scts.asd.CourseDAO;
+import yjc.wdb.scts.dao.CourseDAO;
 import yjc.wdb.scts.service.CourseService;
 
 @Service

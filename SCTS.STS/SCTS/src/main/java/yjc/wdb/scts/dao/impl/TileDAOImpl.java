@@ -1,4 +1,4 @@
-package yjc.wdb.scts.asd.impl;
+package yjc.wdb.scts.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import yjc.wdb.scts.asd.TileDAO;
+import yjc.wdb.scts.dao.TileDAO;
 
 @Repository
 public class TileDAOImpl implements TileDAO {

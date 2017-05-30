@@ -1,4 +1,4 @@
-package yjc.wdb.scts.asd;
+package yjc.wdb.scts.dao;
 
 public interface Large_classification_categoryDAO {
 

@@ -1,4 +1,4 @@
-package yjc.wdb.scts.asd.impl;
+package yjc.wdb.scts.dao.impl;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import yjc.wdb.scts.asd.GoodsDAO;
 import yjc.wdb.scts.bean.GoodsVO;
+import yjc.wdb.scts.dao.GoodsDAO;
 
 @Repository
 public class GoodsDAOImpl implements GoodsDAO {

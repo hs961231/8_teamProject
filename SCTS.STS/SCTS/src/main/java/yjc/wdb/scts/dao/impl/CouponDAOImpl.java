@@ -1,4 +1,4 @@
-package yjc.wdb.scts.asd.impl;
+package yjc.wdb.scts.dao.impl;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import yjc.wdb.scts.asd.CouponDAO;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Coupon_holdVO;
+import yjc.wdb.scts.dao.CouponDAO;
 
 
 @Repository
