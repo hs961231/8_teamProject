@@ -1,12 +1,12 @@
-package yjc.wdb.scts.dao.impl;
+package yjc.wdb.scts.asd.impl;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import yjc.wdb.scts.asd.UserDAO;
 import yjc.wdb.scts.bean.UserVO;
-import yjc.wdb.scts.dao.UserDAO;
 
 @Repository
 public class UserDAOImpl implements UserDAO {

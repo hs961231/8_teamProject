@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import yjc.wdb.scts.asd.CouponDAO;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Coupon_holdVO;
-import yjc.wdb.scts.dao.CouponDAO;
 import yjc.wdb.scts.service.CouponService;
 
 

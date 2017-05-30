@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import yjc.wdb.scts.dao.TileDAO;
+import yjc.wdb.scts.asd.TileDAO;
 import yjc.wdb.scts.service.TileService;
 
 @Service

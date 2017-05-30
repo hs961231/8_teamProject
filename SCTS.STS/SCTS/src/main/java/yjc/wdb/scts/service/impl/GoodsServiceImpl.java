@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import yjc.wdb.scts.asd.GoodsDAO;
 import yjc.wdb.scts.bean.GoodsVO;
-import yjc.wdb.scts.dao.GoodsDAO;
 import yjc.wdb.scts.service.GoodsService;
 
 @Service

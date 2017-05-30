@@ -1,4 +1,4 @@
-package yjc.wdb.scts.dao;
+package yjc.wdb.scts.asd;
 
 public interface Branch_officeDAO {
 
