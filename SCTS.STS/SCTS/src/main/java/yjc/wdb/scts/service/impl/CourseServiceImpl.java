@@ -1,5 +1,7 @@
 package yjc.wdb.scts.service.impl;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -17,6 +19,12 @@ public class CourseServiceImpl implements CourseService {
 	public int selectTodayVisitCnt() throws Exception {
 		// TODO Auto-generated method stub
 		return dao.selectTodayVisitCnt();
+	}
+
+	@Override
+	public void insertCourse(HashMap<String, String> vo) throws Exception {
+		// TODO Auto-generated method stub
+		dao.insertCourse(vo);
 	}
 
 }

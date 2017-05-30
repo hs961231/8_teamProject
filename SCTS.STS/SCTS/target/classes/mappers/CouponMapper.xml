@@ -22,6 +22,15 @@
 		from
 			coupon
 	</select>
+	
+	<!-- 고객에게 쿠폰 전송 -->
+	<select id="selectSendAndroidCoupon" resultType="CouponVO">
+		select
+			*
+		from
+			coupon
+		limit 0,1
+	</select>
 
 	<!-- 쿠폰 바구니 들고있는 목록 -->
 	<select resultType="CouponVO" id="couponList"> 

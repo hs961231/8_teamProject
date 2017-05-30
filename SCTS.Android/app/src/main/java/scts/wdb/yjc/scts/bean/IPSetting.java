@@ -13,7 +13,7 @@ public class IPSetting {
 
     // selectMode 변수의 값만 바꿈으로서 서버에 연결할 ip 값을 바꿔줌
     // 0 = 서버용 , 1 = 정영화, 2,3 = 정혜수,
-    public final static int selectMode = 2;
+    public final static int selectMode = 1;
 
     public static String getIpAddress() {
         String str = "http://";
@@ -26,7 +26,7 @@ public class IPSetting {
                 break;
 
             case 1: // 정영화
-                str += "172.19.1.169:8080/"; // 내꺼 아이피 wifi 잡을때마다 바뀜
+                str += "172.19.2.57:8080/"; // 내꺼 아이피 wifi 잡을때마다 바뀜
                 break;
 
             case 2: // 정혜수

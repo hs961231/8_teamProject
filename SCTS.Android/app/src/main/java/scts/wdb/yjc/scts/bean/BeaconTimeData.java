@@ -8,11 +8,11 @@ import java.util.Calendar;
  */
 
 public class BeaconTimeData {
-    private int major;
-    private int minor;
+    private int beacon_mjr;
+    private int beacon_mnr;
     private String user_id;
-    private Timestamp current_Timedate;
-    private int stay_Time;
+    private int cours_stay_time;
+    private Timestamp cours_pasng_time;
 
     // 초기 객체 생성시 현재 시간 입력
     public BeaconTimeData() {
@@ -21,40 +21,51 @@ public class BeaconTimeData {
         Calendar cal = Calendar.getInstance();
 
         // 시간 셋팅
-        current_Timedate = new Timestamp(cal.getTimeInMillis());
+        cours_pasng_time = new Timestamp(cal.getTimeInMillis());
 
         //currentTime = new Date( new java.util.Date().getTime() );
     }
-    public BeaconTimeData(int major, int minor) {
+    public BeaconTimeData(int beacon_mjr, int beacon_mnr) {
         this();
 
-        this.major = major;
-        this.minor = minor;
+        this.beacon_mjr = beacon_mjr;
+        this.beacon_mnr = beacon_mnr;
     }
 
-    public int getMajor() {
-        return major;
+    public int getBeacon_mjr() {
+        return beacon_mjr;
     }
 
-    public void setMajor(int major) {
-        this.major = major;
+    public void setBeacon_mjr(int beacon_mjr) {
+        this.beacon_mjr = beacon_mjr;
     }
 
-    public int getMinor() {
-        return minor;
+    public int getBeacon_mnr() {
+        return beacon_mnr;
     }
 
-    public void setMinor(int minor) {
-        this.minor = minor;
+    public void setBeacon_mnr(int beacon_mnr) {
+        this.beacon_mnr = beacon_mnr;
+    }
+
+    public String getUser_id() {
+        return user_id;
     }
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    public void setStay_Time(int stay_Time) {
-        this.stay_Time = stay_Time;
+    public int getCours_stay_time() {
+        return cours_stay_time;
+    }
 
+    public void setCours_stay_time(int cours_stay_time) {
+        this.cours_stay_time = cours_stay_time;
+    }
+
+    public Timestamp getCours_pasng_time() {
+        return cours_pasng_time;
     }
 
     /*
@@ -66,11 +77,4 @@ public class BeaconTimeData {
     }
     */
 
-    public Timestamp getCurrentTime() {
-        return current_Timedate;
-    }
-
-    public int getStay_Time() {
-        return stay_Time;
-    }
 }

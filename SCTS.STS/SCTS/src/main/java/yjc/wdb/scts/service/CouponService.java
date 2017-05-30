@@ -10,4 +10,5 @@ public interface CouponService {
 	public List<CouponVO> selectCouponList() throws Exception;
 	public List<CouponVO> couponBasket(String user_id) throws Exception;
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
+	public CouponVO selectSendAndroidCoupon() throws Exception;
 }

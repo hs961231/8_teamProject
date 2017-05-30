@@ -6,11 +6,27 @@
 
 <mapper namespace="yjc.wdb.mapper.CourseMapper">
 
+<!-- 
 <insert id="insertCourse">
 insert into COURSE
 	(USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
 values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
 </insert>
+ -->
+
+<!-- 안드로이드에서 비콘정보 쏴줄 때 서버 측에서 비콘 정보 인설트용 쿼리 -->
+<insert id="insertCourse">
+insert into COURSE (USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
+values (#{user_id},
+		(select t.TILE_CODE
+			from TILE t, BEACON b
+			where b.BEACON_MJR = #{beacon_mjr}
+			and b.BEACON_MNR = #{beacon_mnr}
+			and b.BEACON_CODE = t.BEACON_CODE) ,
+		#{cours_stay_time},
+		#{cours_pasng_time} );
+</insert>
+			
 
 <!-- 오늘 방문자 수 계산 -->
 <select id="selectTodayVisitCnt" resultType="integer">

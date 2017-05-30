@@ -106,7 +106,7 @@ public class BeaconM{
     public void sendBeaconData() {
 
         // 비콘 타임데이터에 머문 시간 저장
-        beaconTimeData.setStay_Time( stayTimeMil/1000 );
+        beaconTimeData.setCours_stay_time( stayTimeMil/1000 );
         stayTimeMil = 0;
 
         // 서버로 전송시키기 위해 비콘 감지 데이터를 json형태 문자열로 변환

@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import scts.wdb.yjc.scts.HttpClient;
 import scts.wdb.yjc.scts.bean.IPSetting;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by JYH on 2017-04-06.
  */
@@ -50,16 +52,21 @@ public class BeaconSet extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s){
 
         Log.d("HTTP_RESULT", s);
-        try {
-            JSONArray jsonArray = new JSONArray(s);
-            JSONObject obj = jsonArray.getJSONObject(0);
-
-            obj.getString("coupon_content");
-            obj.getString("coupon_name");
+        if(s.equals("SUCCESS")) {
+            Log.d(TAG, "onPostExecute: 날아온 쿠폰이 없음");
         }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+        else {
+            try {
+                JSONArray jsonArray = new JSONArray(s);
+                JSONObject obj = jsonArray.getJSONObject(0);
 
+                //obj.getString("coupon_content");
+                //obj.getString("coupon_name");
+
+                Log.d(TAG, "전송된 쿠폰 정보: " + obj.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

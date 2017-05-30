@@ -39,4 +39,10 @@ public class CouponDAOImpl implements CouponDAO{
 		return sql.selectList(NAMESPACE+".selectCouponList");
 	}
 
+	@Override
+	public CouponVO selectSendAndroidCoupon() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE+".selectSendAndroidCoupon");
+	}
+
 }

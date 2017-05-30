@@ -1,3 +1,3 @@
-SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/DAO/UserDAOImpl.java
+SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/dao/UserDAOImpl.java
 SCTS.STS/SCTS/target/classes/yjc/wdb/scts/service/UserServiceImpl.class
-SCTS.STS/SCTS/target/classes/yjc/wdb/scts/DAO/UserDAOImpl.class
+SCTS.STS/SCTS/target/classes/yjc/wdb/scts/dao/UserDAOImpl.class

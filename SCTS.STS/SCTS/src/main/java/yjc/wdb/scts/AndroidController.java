@@ -41,11 +41,10 @@ public class AndroidController {
 	@Inject
 	private UserService userService;
 
-	//@Inject
-	//PositionService positionService;
-	//CourseService courseService;
+	@Inject
+	CourseService courseService;
 
-	// 여기 주서ㄱ
+	// 여기 주석
 	//@Inject
 	//private EventService eventService;
 
@@ -86,35 +85,38 @@ public class AndroidController {
 	}
 
 
-	/*// 안드로이드에서 비콘정보 전송
+	// 안드로이드에서 비콘정보 전송
 	@RequestMapping(value="/setPositionData")
 	@ResponseBody
 	public String setPositionData(HttpServletRequest request) throws Exception{
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
 		String str = request.getParameter("PositionVO");
+		
 		JSONObject json = new JSONObject();
+		
 		if(str == null) {
 			json.put("status", "ERROR");
 			return json.toString();
 		}
 
 		// 넘어온 문자열을 json 객체로 변환
-		JSONObject positionJson = (JSONObject) new JSONParser().parse( str );
+		JSONObject courseJson = (JSONObject) new JSONParser().parse( str );
 
-		PositionVO position = new PositionVO();
+		//PositionVO position = new PositionVO();
+		HashMap<String, String> vo = new HashMap<String, String>();
+		
 		try {
 			// 문자열 형태의 날짜시간 값을 timestamp값으로 변환
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
-			java.util.Date parsedDate = dateFormat.parse( (String) positionJson.get("current_Timedate") );
+			java.util.Date parsedDate = dateFormat.parse( (String) courseJson.get("cours_pasng_time") );
 			Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 
-			// vo객체에 값 저장
-			position.setCurrent_Timedate( timestamp );
-			position.setMajor( Integer.parseInt(positionJson.get("major").toString() ) );
-			position.setMinor( Integer.parseInt(positionJson.get("minor").toString() ) );
-			position.setUser_id( positionJson.get("user_id").toString() );
-			position.setStay_Time( Integer.parseInt(positionJson.get("stay_Time").toString() ) );
+			vo.put("beacon_mjr", courseJson.get("beacon_mjr").toString() );
+			vo.put("beacon_mnr", courseJson.get("beacon_mnr").toString() );
+			vo.put("user_id", courseJson.get("user_id").toString() );
+			vo.put("cours_stay_time", courseJson.get("cours_stay_time").toString() );
+			vo.put("cours_pasng_time", timestamp.toString() );
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -122,29 +124,30 @@ public class AndroidController {
 		}
 
 		logger.debug(str);
-		logger.debug(position.toString());
+		logger.debug(vo.toString());
 
 		// 디비에 저장
-		positionService.insertPosition(position);
+		//positionService.insertPosition(position);
+		courseService.insertCourse(vo);
 
 		
 		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
-		str = new Gson().toJson(couponService.selectTest());
+		CouponVO coupon = couponService.selectSendAndroidCoupon();
+		
+		if(coupon == null) {
+			logger.debug("보낼 쿠폰 없음");
+			return "SUCCESS";
+		}
+		
+		str = new Gson().toJson(coupon);
 		json = (JSONObject) new JSONParser().parse(str);
 		
 		json.put("status", "SUCCESS");
 		
+		logger.debug(json.toString());
+		
 		return json.toString();
 	}
-
-	// 디비에 있는 비콘정보를 안드로이드로 넘겨줌
-	@RequestMapping(value="/getPositionData")
-	@ResponseBody
-	public PositionVO getPositionData(HttpServletRequest request) throws Exception{
-		// 디비에서 비콘정보 빼서 바로 리턴
-		return positionService.selectPosition();
-	}*/
-
 
 
 	// 회원가입
@@ -378,7 +381,6 @@ public class AndroidController {
 		int point = userService.point(request.getParameter("user_id"));
 		System.out.println(point);
 		return ""+point;
-		
 	}
 
 
