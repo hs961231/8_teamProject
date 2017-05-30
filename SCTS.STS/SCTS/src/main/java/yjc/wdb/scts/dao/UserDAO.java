@@ -1,4 +1,4 @@
-package yjc.wdb.scts.asd;
+package yjc.wdb.scts.dao;
 
 import yjc.wdb.scts.bean.UserVO;
 
