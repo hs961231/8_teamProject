@@ -11,6 +11,8 @@
 			month = "0" + month;
 		}
 		var day = date.getDate();
+		
+	
 
 		$('#calendar').fullCalendar({
 			header : {
@@ -24,13 +26,10 @@
 			selectHelper : true,
 			select : registerEvent(),
 			editable : true,
-			eventLimit : true, // allow "more" link when too many events
-			events : [ {
-				title : 'All Day Event',
-				start : '2017-05-01',
-				end : '2017-05-05'
-			} ]
+			eventLimit : true
 		});
+		
+		viewCalendar();
 
 		/* 취소 버튼 클릭 */
 		$('#close').click(function() {
@@ -45,6 +44,8 @@
 			});
 		});
 	});
+	
+
 
 	function registerEvent() {
 		
@@ -139,6 +140,36 @@
 		// link로 넘어가는 부분 이벤트 차단
 		$(document).on('click', 'a', function(event){
 			event.stopImmediatePropagation();
+		});
+	}
+	
+	
+	function viewCalendar(){
+		$.ajax({
+			type:"GET",
+			url:"viewCalendar",
+			dataType:"jsonp",
+			success:function(data){
+				
+				
+				var length = data.result.length;
+
+				
+				
+				for(var i=0; i < length; i++){
+					var eventData = {
+						title: data.result[i].title,
+						start: data.result[i].start,
+						end:data.result[i].end
+					}
+					
+					
+					$('#calendar').fullCalendar('renderEvent', eventData, true);
+				}
+				
+				
+				
+			}
 		});
 	}
 </script>

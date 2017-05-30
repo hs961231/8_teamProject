@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.service.BBSService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.GoodsService;
@@ -48,6 +51,9 @@ public class HomeController {
 	@Inject
 	CouponService couponService;
 	
+	
+	@Inject
+	private BBSService bbsService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -277,6 +283,36 @@ public class HomeController {
 
 		return "mainPage";
 	}
+	
+	// 캘린더 위 일정 뿌리기
+	@RequestMapping(value="viewCalendar", method=RequestMethod.GET)
+	public @ResponseBody String viewCalendar(HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = bbsService.viewCalendar();
+		
+		JSONObject viewCalJson;
+		JSONArray viewCalArray = new JSONArray();
+		
+		for(int i=0; i < list.size(); i++){
+			
+			viewCalJson = new JSONObject();
+			
+			viewCalJson.put("title", list.get(i).get("bbsctt_sj"));
+			viewCalJson.put("start", list.get(i).get("event_begin_de").toString());
+			viewCalJson.put("end", list.get(i).get("event_end_de").toString());
+			
+			viewCalArray.add(viewCalJson);
+			
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("result", viewCalArray);
+		
+		return callback + "(" + json +")";
+	}
+	
 
 	/********************************* 쿠폰 관리 부분 ***************************************/
 	/********************************* 쿠폰 관리 부분 ***************************************/
