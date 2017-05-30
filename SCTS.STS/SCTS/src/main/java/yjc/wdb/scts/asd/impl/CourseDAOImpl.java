@@ -1,4 +1,4 @@
-package yjc.wdb.scts.dao.impl;
+package yjc.wdb.scts.asd.impl;
 
 import java.util.HashMap;
 
@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import yjc.wdb.scts.dao.CourseDAO;
+import yjc.wdb.scts.asd.CourseDAO;
 
 @Repository
 public class CourseDAOImpl implements CourseDAO {

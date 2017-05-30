@@ -4,8 +4,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import yjc.wdb.scts.asd.UserDAO;
 import yjc.wdb.scts.bean.UserVO;
-import yjc.wdb.scts.dao.UserDAO;
 import yjc.wdb.scts.service.UserService;
 
 @Service

@@ -1,4 +1,4 @@
-package yjc.wdb.scts.dao;
+package yjc.wdb.scts.asd;
 
 import java.util.HashMap;
 import java.util.List;
