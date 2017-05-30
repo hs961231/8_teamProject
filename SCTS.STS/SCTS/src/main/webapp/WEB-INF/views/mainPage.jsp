@@ -27,7 +27,6 @@
 <!-- full calendar css-->
 
 <link href='resources/eventCalendar/fullcalendar.min.css' rel='stylesheet' />
-<link href='resources/css/modal.css' rel='stylesheet' />
 
 <!-- easy pie chart-->
 <link
