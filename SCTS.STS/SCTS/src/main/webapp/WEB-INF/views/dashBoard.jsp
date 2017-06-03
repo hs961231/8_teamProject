@@ -119,7 +119,7 @@
 						</tr>
 
 
-						<c:forEach items="${ list }" var="vo">
+						<c:forEach items="${ tileList }" var="vo">
 
 							<tr>
 								<td style="text-align: center;">${ vo.get("tile_nm") }</td>

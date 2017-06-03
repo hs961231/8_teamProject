@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.GoodsVO;
+import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.BBSService;
 import yjc.wdb.scts.service.CouponService;
@@ -101,8 +102,8 @@ public class HomeController {
 		int todayCount = courseService.selectTodayVisitCnt();
 		model.addAttribute("todayCount", todayCount);
 		
-		List<HashMap<String, String>> list = tileService.selectTileList();
-		model.addAttribute("list", list);
+		List<HashMap<String, String>> tileList = tileService.selectTileList();
+		model.addAttribute("tileList", tileList);
 		
 		return "mainPage";
 	}
@@ -111,12 +112,15 @@ public class HomeController {
 	/********************************* 매장 관리 부분 ***************************************/
 	// 매장 등록 페이지
 	@RequestMapping(value="shop_Register", method=RequestMethod.GET)
-	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
+	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) throws Exception {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
 		String ContentPage = "shop_Register";
 
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
+		
+		List<HashMap<String, String>> tileList = tileService.selectTileList();
+		model.addAttribute("tileList", tileList);
 
 		return "mainPage";
 	}
@@ -141,6 +145,16 @@ public class HomeController {
 		model.addAttribute("main_content", ContentPage);
 
 		return "mainPage";
+	}
+	
+	@RequestMapping(value="tile_RegisterForm", method=RequestMethod.POST)
+	public String tile_RegisterPost(HttpServletRequest request, HttpSession session, TileVO vo) throws Exception {
+		
+		tileService.insertTile(vo);
+		
+		logger.debug("타일 정보가 db에 등록 되었음." + vo.getTile_nm() );
+		
+		return "redirect:mainPage";
 	}
 
 	// 상품 리스트
@@ -170,10 +184,7 @@ public class HomeController {
 	
 	//상품등록 처리
 	@RequestMapping(value="product_Register", method=RequestMethod.POST)
-	public String product_RegisterPost(HttpServletRequest request, HttpSession session, Model model, GoodsVO vo) throws Exception{
-		String ContentPage = "product_Register";
-
-		model.addAttribute("main_content", ContentPage);
+	public String product_RegisterPost(HttpServletRequest request, HttpSession session, GoodsVO vo) throws Exception{
 		
 		System.out.println("GoodsVO 정보 : " + vo.getDetailctgry_code() + "  상품명 : " + vo.getGoods_nm());
 		

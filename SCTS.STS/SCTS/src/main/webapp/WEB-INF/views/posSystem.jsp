@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+
+<script src="resources/customjs/posSystem.js"></script>
 
 <%-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 상품리스트 부분 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ --%>
 <div class="row">
@@ -18,7 +21,7 @@
 						<th>할인</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="goodsList">
 					<tr>
 						<td>1</td>
 						<td>Mark</td>
@@ -70,7 +73,7 @@
 					<tbody>
 						<tr>
 							<td>바코드</td>
-							<td>1834680934809538</td>
+							<td><input type="text" name="goods_id" id="goods_id" /></td>
 						</tr>
 					</tbody>
 				</table>
@@ -127,7 +130,7 @@
 	<div class="col-lg-2">
 		<section class="panel">
 			<div class="panel-body">
-				<button class="btn btn-default" type="button">등록</button>
+				<button class="btn btn-default" type="button" id="getGoods">등록</button>
 				<br>
 				<button class="btn btn-default" type="button">취소</button>
 				<br>

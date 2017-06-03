@@ -21,18 +21,18 @@
 			<div class="panel-body">
 				<div class="form">
 					<form class="form-validate form-horizontal" id="feedback_form"
-						method="get" action="">
+						method="post" action="">
 
 						<div class="form-group ">
 							<label for="name" class="control-label col-lg-2">타일 명 <span
 								class="required">*</span>
 							</label>
 							<div class="col-lg-10">
-								<input class="form-control" id="name" name="fullname"
+								<input class="form-control" id="tile_nm" name="tile_nm"
 									type="text" required />
 							</div>
 						</div>
-
+<!-- 
 						<div class="form-group ">
 							<label for="major" class="control-label col-lg-2">비콘 시리얼
 								번호 <span class="required">*</span> <br>(Major)
@@ -61,6 +61,7 @@
 									required></textarea>
 							</div>
 						</div>
+-->
 
 						<div class="form-group">
 							<div class="col-lg-offset-2 col-lg-10">
