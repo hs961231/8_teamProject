@@ -1,0 +1,103 @@
+
+
+/* 상품세부카테고리에 쿠폰을 생성하다 */
+
+
+create table coupon_detailcategory_creation(
+coupon_code integer references coupon_code(coupon),
+DETAILCTGRY_CODE integer references DETAILCTGRY_CODE(detail_category),
+coupon_co integer not null
+);
+
+/* 상품에 쿠폰을 생성하다 */
+create table coupon_goods_creation(
+coupon_code integer references coupon_code(coupon),
+goods_code integer references goods_code(goods),
+coupon_co integer not null
+);
+
+insert into coupon_goods_creation values(2, 3, 10);
+
+insert into coupon(COUPON_NM, COUPON_CNTNTS, COUPON_DSCNT, COUPON_BEGIN_DE, COUPON_END_DE)
+values('책류', '문서 쿠폰~', 10, '2017-05-30', '2017-06-02');
+
+insert into goods(goods_nm, goods_pc, goods_dc, DETAILCTGRY_CODE) values('book', 18000, 'this is book!', 3);
+
+
+insert into large_classification_category(LCLASCTGRY_NM, LCLASCTGRY_COLOR) values('문서류','blue');
+
+
+insert into detail_category(LCLASCTGRY_CODE, DETAILCTGRY_NM) values(4, '책류');
+
+insert into purchase_goods values(1, 4, null, 2);
+
+insert into coupon_detailcategory_creation values(3, 3, 5);
+
+
+/* 게시판 카테고리 */
+
+create table bbs_category(
+BBSCTGRY_CODE integer auto_increment primary key,
+bbsctgry_nm varchar(50) not null
+);
+
+
+/* 게시글 */
+
+create table bbsctt(
+bbsctt_code integer auto_increment primary key,
+bbsctt_sj varchar(100) not null,
+bbsctt_cn varchar(1000) not null
+);
+
+/* 이벤트 */
+create table event(
+bbsctt_code integer not null references bbsctt_code(bbsctt),
+event_begin_de date not null,
+event_end_de date not null
+);
+
+/* 게시글을 작성할 수 있다*/
+create table bbsctt_writing(
+user_id varchar(10) not null references user_id(user),
+bbsctgry_code integer not null references bbsctgry_code(bbs_category),
+bbsctt_code integer not null references bbsctt_code(bbsctt),
+bbsctt_rgsde date not null,
+bbsctt_rdcnt integer default 0);
+
+
+/* 댓글 */
+
+create table reply(
+reply_code integer auto_increment primary key,
+reply_cn varchar(500) not null
+);
+
+/* 댓글을 작성할 수 있다 */
+create table reply_writing(
+user_id varchar(10) not null references user_id(user),
+bbsctt_code integer not null references bbsctt_code(bbsctt),
+reply_code integer not null references reply_code(reply),
+reply_rgsde date not null);
+
+insert into bbs_category(bbsctgry_nm) values('event');
+
+insert into bbsctt(bbsctt_sj, bbsctt_cn) values('이벤트1', '기획행사이벤트입니다');
+insert into bbsctt(bbsctt_sj, bbsctt_cn) values('이벤트2', '할인이벤트입니다');
+insert into bbsctt(bbsctt_sj, bbsctt_cn) values('이벤트3', '추석이벤트입니다');
+
+
+
+insert into event values(1, '2017-05-01', '2017-05-05');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.062 sec. */
+insert into event values(2, '2017-05-10', '2017-05-11');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.093 sec. */
+insert into event values(3, '2017-05-31', '2017-06-03');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.046 sec. */
+
+
+
+
+
+
+
