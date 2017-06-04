@@ -7,6 +7,15 @@
 <!-- 게시판에 관한 모든 디비를 여기 넣을 것이다! -->
 <mapper namespace="yjc.wdb.mapper.BBSMapper">
 
+	<insert id="bbscttInsert">
+		insert into bbsctt(bbsctt_sj, bbsctt_cn) 
+		values(#{bbsctt_sj}, #{bbsctt_cn})
+	</insert>
+	
+	<insert id="eventInsert">
+		insert into event 
+		values(last_insert_id(), #{event_begin_de}, #{event_end_de});
+	</insert>
 
 	<!-- 캘린더위의 이벤트 일정 표시 -->
 	<resultMap id="viewCalendar" type="java.util.HashMap">
@@ -22,6 +31,9 @@
 		from bbsctt bc, event e
 		where bc.bbsctt_code = e.bbsctt_code
 	</select>
+	
+	
+	
 
 
 </mapper>

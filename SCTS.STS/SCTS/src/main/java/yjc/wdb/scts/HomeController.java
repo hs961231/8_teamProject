@@ -12,6 +12,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import yjc.wdb.scts.bean.BBScttVO;
 import yjc.wdb.scts.bean.CouponVO;
+import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
@@ -58,6 +62,7 @@ public class HomeController {
 	
 	@Inject
 	private BillService billService;
+
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -325,7 +330,29 @@ public class HomeController {
 		return callback + "(" + json +")";
 	}
 	
-
+	// 이벤트 등록
+	@RequestMapping(value="insertEvent", method=RequestMethod.GET)
+	public ResponseEntity<String> insertEvent(EventVO eventVO, BBScttVO bbscttVO){
+	
+		ResponseEntity<String> entity = null;
+		
+		try {
+			bbsService.insertEvent(eventVO, bbscttVO);
+			System.out.println(bbscttVO.getBbsctt_cn());
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			
+		} catch (Exception e) {
+			
+			entity =  new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			e.printStackTrace();
+		}
+		
+		return entity;
+		
+		
+	}
+	
+	
 	/********************************* 쿠폰 관리 부분 ***************************************/
 	/********************************* 쿠폰 관리 부분 ***************************************/
 

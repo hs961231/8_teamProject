@@ -101,16 +101,44 @@
 			
 			
 			var title = $("#eventName").val();
-			var start = $("#eventStart").val();
+			var start = $("#eventStart").val(); 
 			var end = $("#eventEnd").val();
+			var eventInfo = $("#eventInfo").val();
 			
-			eventData = {
-				title : title,
-				start : start,
-				end : end
-			};
-
-			$('#calendar').fullCalendar('renderEvent', eventData, true);
+			$.ajax({
+				type:"GET",
+				url: "insertEvent",
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "GET"
+				},
+				data:{
+					
+					bbsctt_sj : title,
+					bbsctt_cn : eventInfo,
+					event_begin_de : start,
+					event_end_de : end
+					
+				},
+				dataType: "text",
+				success: function(result){
+					if(result == "success"){
+						
+						alert("등록 성공!");
+						
+						eventData = {
+								title : title,
+								start : start,
+								end : end
+						};
+						$('#calendar').fullCalendar('renderEvent', eventData, true);			
+						
+					}
+				}
+			});
+			
+			
+			
 					
 			var object = $('.bgLayer');
 			var object2 = $(".modal-layout");
@@ -194,9 +222,9 @@ body {
 <div id="registerEvent" class="modal-layout">
 	<label for="eventName">이벤트 이름</label><input id="eventName"
 		name="eventName" type="text" /> <br> <label for="eventStart">이벤트
-		시작일자</label> <input id="eventStart" name="eventStart" type="datetime-local" />
+		시작일자</label> <input id="eventStart" name="eventStart" type="date" />
 	<br> <label for="eventEnd">이벤트 종료일자</label><input id="eventEnd"
-		name="eventEnd" type="datetime-local" /> <br> <label
+		name="eventEnd" type="date" /> <br> <label
 		for="eventInfo">이벤트 설명</label>
 	<textarea id="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>
 	<br>
