@@ -30,15 +30,27 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public List<HashMap> settleInfo(String user_id) throws Exception {
+	public List<HashMap> settleInfo(String user_id, int bill_code) throws Exception {
 		
-		return dao.settleInfo(user_id);
+		return dao.settleInfo(user_id, bill_code);
 	}
 
 	@Override
 	public List<HashMap> recommandProduct(String user_id) throws Exception {
 		
 		return dao.recommandProduct(user_id);
+	}
+
+	@Override
+	public List<HashMap> yearSales(int year) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.yearSales(year);
+	}
+
+	@Override
+	public List<HashMap> daySales() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.daySales();
 	}
 
 }

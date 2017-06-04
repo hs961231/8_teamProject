@@ -220,4 +220,8 @@ select
 		subDate(curDate(),
 		Interval 7 DAY)) group by
 		b.BILL_ISSU_DE;
-		
+
+
+/* 결제 정보 리스트 */
+select * from bill where user_id = 'hs' and date(bill.BILL_ISSU_DE) >=
+		date(subdate(curDate(), INTERVAL 30 DAY));

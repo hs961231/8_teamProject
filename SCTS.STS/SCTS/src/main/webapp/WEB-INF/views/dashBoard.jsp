@@ -203,7 +203,7 @@
 				
 				for(var i=0; i<length; i++){
 					
-					barChartData.labels[i] = data.result[i].publish_date;
+					barChartData.labels[i] = data.result[i].bill_issu_de;
 					barChartData.datasets[0].data[i] = data.result[i].totalPrice;
 
 				}

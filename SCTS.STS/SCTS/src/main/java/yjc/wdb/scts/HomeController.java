@@ -24,6 +24,7 @@ import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.BBSService;
+import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.GoodsService;
@@ -41,20 +42,22 @@ public class HomeController {
 	private UserService userService;
 
 	@Inject
-	TileService tileService;
+	private TileService tileService;
 	
 	@Inject
-	CourseService courseService;
+	private CourseService courseService;
 	
 	@Inject
-	GoodsService goodsService;
+	private GoodsService goodsService;
 	
 	@Inject
-	CouponService couponService;
-	
+	private CouponService couponService;
 	
 	@Inject
 	private BBSService bbsService;
+	
+	@Inject
+	private BillService billService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -219,14 +222,14 @@ public class HomeController {
 		return "mainPage";
 	}
 	
-	/*
+	
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
 	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
 
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = salesService.yearSales(year);
+		List<HashMap> list = billService.yearSales(year);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -240,28 +243,26 @@ public class HomeController {
 		}
 		
 
-
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
 		return callback + "(" + jsonObject +")";
 	}
-	*/
-	
-	/*@RequestMapping(value="daySales", method=RequestMethod.GET)
+
+	@RequestMapping(value="daySales", method=RequestMethod.GET)
 	public @ResponseBody String daySales(HttpServletRequest request) throws Exception{
 
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = salesService.daySales();
+		List<HashMap> list = billService.daySales();
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
 		
 		for(int i = 0; i < list.size(); i++){
 			salesJson = new JSONObject();
-			salesJson.put("publish_date", list.get(i).get("publish_date").toString());
+			salesJson.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
 			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
 			salesArray.add(salesJson);
 		}
@@ -272,7 +273,7 @@ public class HomeController {
 		return callback + "(" + jsonObject +")";
 	}
 	
-	*/
+
 	
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {

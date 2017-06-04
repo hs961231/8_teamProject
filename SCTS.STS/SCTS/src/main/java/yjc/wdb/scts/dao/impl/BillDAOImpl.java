@@ -37,15 +37,31 @@ public class BillDAOImpl implements BillDAO {
 	}
 
 	@Override
-	public List<HashMap> settleInfo(String user_id) throws Exception {
+	public List<HashMap> settleInfo(String user_id, int bill_code) throws Exception {
 		
-		return sql.selectList(NAMESPACE+".settleInfo", user_id);
+		Map map = new HashMap();
+		map.put("user_id", user_id);
+		map.put("bill_code", bill_code);
+		
+		return sql.selectList(NAMESPACE+".settleInfo", map);
 	}
 
 	@Override
 	public List<HashMap> recommandProduct(String user_id) throws Exception {
 		
 		return sql.selectList(NAMESPACE+".recommandProduct", user_id);
+	}
+
+	@Override
+	public List<HashMap> yearSales(int year) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".yearSales", year);
+	}
+
+	@Override
+	public List<HashMap> daySales() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".daySales");
 	}
 
 }

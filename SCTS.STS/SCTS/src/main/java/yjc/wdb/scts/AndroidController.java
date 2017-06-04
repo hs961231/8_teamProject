@@ -339,12 +339,13 @@ public class AndroidController {
 	
 	// 계산서를 결제하다 정보
 	@RequestMapping(value="settleInfo", method=RequestMethod.GET)
-	public @ResponseBody String settleInfo(String user_id, HttpServletRequest request) 
+	public @ResponseBody String settleInfo(String user_id, int bill_code,
+			HttpServletRequest request) 
 			throws Exception{
 		
 		String callback = request.getParameter("callback");
 		
-		List<HashMap> list = billService.settleInfo(user_id);
+		List<HashMap> list = billService.settleInfo(user_id, bill_code);
 		
 		JSONObject settleJson;
 
@@ -352,6 +353,7 @@ public class AndroidController {
 		for(int i=0; i < list.size(); i++){
 			settleJson = new JSONObject();	
 			settleJson.put("bill_code", list.get(i).get("bill_code"));	
+			settleJson.put("setle_mth_code", list.get(i).get("setle_mth_code"));
 			settleJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));	
 			settleJson.put("stprc", list.get(i).get("stprc"));
 
@@ -381,7 +383,6 @@ public class AndroidController {
 
 		// 이부분 더 생각 해보기
 		JSONObject recommandJSON;
-
 
 
 		JSONArray recommandArray = new JSONArray();
