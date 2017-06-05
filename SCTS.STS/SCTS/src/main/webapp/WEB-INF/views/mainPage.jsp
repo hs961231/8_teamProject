@@ -79,7 +79,7 @@
 <script src="resources/js/jquery.customSelect.min.js"></script>
 <script src="resources/assets/chart-master/Chart.js"></script>
 
-<!--custome script for all page-->
+<!--custom script for all page-->
 <script src="resources/js/scripts.js"></script>
 <!-- custom script for this page-->
 <script src="resources/js/sparkline-chart.js"></script>

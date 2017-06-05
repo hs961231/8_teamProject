@@ -27,9 +27,11 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.bean.BillVO;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Coupon_holdVO;
 import yjc.wdb.scts.service.UserService;
+import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.Coupon_holdService;
 import yjc.wdb.scts.service.CourseService;
@@ -42,14 +44,13 @@ public class AndroidController {
 	private UserService userService;
 
 	@Inject
-	CourseService courseService;
-
-	// 여기 주석
-	//@Inject
-	//private EventService eventService;
+	private CourseService courseService;
 
 	@Inject
 	private CouponService couponService;
+	
+	@Inject
+	private BillService billService;
 	
 
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
@@ -265,7 +266,7 @@ public class AndroidController {
 		String callback = request.getParameter("callback");
 		couponService.delCouponBasket(coupon_holdVO);
 
-		// 이부분 더 생각 해보기
+	
 		JSONObject coupon;
 
 		coupon = new JSONObject();
@@ -277,12 +278,12 @@ public class AndroidController {
 	}
 
 	// 계산서 정보
-	/*@RequestMapping(value="billList", method=RequestMethod.GET)
+	@RequestMapping(value="billList", method=RequestMethod.GET)
 	public @ResponseBody String billList(String user_id, int day, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = purchaseInfoService.billList(user_id,day);
+		List<BillVO> list = billService.billList(user_id,day);
 
 
 		JSONObject billJson;
@@ -290,11 +291,9 @@ public class AndroidController {
 		JSONArray billArray = new JSONArray();
 		for(int i=0; i < list.size(); i++){
 			billJson = new JSONObject();
-			billJson.put("b_id", list.get(i).get("b_id"));	
-			billJson.put("publish_date", list.get(i).get("publish_date").toString());	
-			billJson.put("user_id", list.get(i).get("user_id"));	
-			billJson.put("p_name", list.get(i).get("p_name"));	
-			billJson.put("totalPrice", list.get(i).get("totalPrice"));
+			billJson.put("bill_code", list.get(i).getBill_code());	
+			billJson.put("bill_issu_de", list.get(i).getBill_issu_de().toString());		
+			billJson.put("bill_totamt", list.get(i).getBill_totamt());
 
 			billArray.add(billJson);
 		}
@@ -306,27 +305,25 @@ public class AndroidController {
 
 
 		return callback+"("+billList+")";
-	}*/
+	}
 	// 계산서 상세정보
-	/*@RequestMapping(value="billOne", method=RequestMethod.GET)
-	public @ResponseBody String billOne(int b_id, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="billOne", method=RequestMethod.GET)
+	public @ResponseBody String billOne(int bill_code, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = purchaseInfoService.billOne(b_id); 
+		List<HashMap> list = billService.billOne(bill_code); 
 
-		// 이부분 더 생각 해보기
+		
 		JSONObject billJson;
-
-
 
 		JSONArray billArray = new JSONArray();
 		for(int i=0; i < list.size(); i++){
 			billJson = new JSONObject();	
-			billJson.put("product_name", list.get(i).get("product_name"));	
-			billJson.put("amount", list.get(i).get("amount"));	
+			billJson.put("goods_nm", list.get(i).get("goods_nm"));	
+			billJson.put("purchgoods_qy", list.get(i).get("purchgoods_qy"));	
+			billJson.put("COUPON_DSCNT", list.get(i).get("COUPON_DSCNT"));
 			billJson.put("price", list.get(i).get("price"));	
-
 
 			billArray.add(billJson);
 		}
@@ -338,27 +335,62 @@ public class AndroidController {
 
 
 		return callback+"("+billList+")";
-	}*/
+	}
+	
+	// 계산서를 결제하다 정보
+	@RequestMapping(value="settleInfo", method=RequestMethod.GET)
+	public @ResponseBody String settleInfo(String user_id, int bill_code,
+			HttpServletRequest request) 
+			throws Exception{
+		
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = billService.settleInfo(user_id, bill_code);
+		
+		JSONObject settleJson;
+
+		JSONArray settleArray = new JSONArray();
+		for(int i=0; i < list.size(); i++){
+			settleJson = new JSONObject();	
+			settleJson.put("bill_code", list.get(i).get("bill_code"));	
+			settleJson.put("setle_mth_code", list.get(i).get("setle_mth_code"));
+			settleJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));	
+			settleJson.put("stprc", list.get(i).get("stprc"));
+
+			settleArray.add(settleJson);
+		}
+
+		JSONObject settleList = new JSONObject();
+		settleList.put("data", settleArray);
+
+		System.out.println(settleList.toString());
 
 
-/*	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
+		return callback+"("+settleList+")";
+		
+		
+		
+		
+	}
+
+
+	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
 	public @ResponseBody String recommandProduct(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = purchaseInfoService.recommandList(user_id); 
+		List<HashMap> list = billService.recommandProduct(user_id); 
 
 		// 이부분 더 생각 해보기
 		JSONObject recommandJSON;
 
 
-
 		JSONArray recommandArray = new JSONArray();
 		for(int i=0; i < list.size(); i++){
 			recommandJSON = new JSONObject();	
-			recommandJSON.put("product_id", list.get(i).get("product_id"));
-			recommandJSON.put("product_name", list.get(i).get("product_name"));	
-			recommandJSON.put("price", list.get(i).get("product_price"));			
+			recommandJSON.put("goods_code", list.get(i).get("goods_code"));
+			recommandJSON.put("goods_nm", list.get(i).get("goods_nm"));	
+			recommandJSON.put("goods_pc", list.get(i).get("goods_pc"));			
 
 			recommandArray.add(recommandJSON);
 		}
@@ -371,7 +403,7 @@ public class AndroidController {
 
 		return callback+"("+recommandList+")";
 	}
-	*/
+
 	
 	// 포인트
 	@RequestMapping(value="point", method=RequestMethod.POST)

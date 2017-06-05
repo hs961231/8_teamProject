@@ -152,11 +152,11 @@
 
                         var list = $("#list");
 
-                        list.append($('<div></div>').addClass("purchase").attr('data-id', data.data[i].b_id));
-                        $(".purchase[data-id="+data.data[i].b_id+"]").append($("<img />").attr("src", "img/list.png").addClass("purchaseImg"));
-                        $(".purchase[data-id="+data.data[i].b_id+"]").append($("<h4></h4>").attr('publish_date', data.data[i].publish_date).text(data.data[i].publish_date+" 구매정보"));
-                        $(".purchase[data-id="+data.data[i].b_id+"]").append($("<p></p>").addClass("purchaseWay")
-                        .attr('p_name', data.data[i].p_name).attr('totalPrice',  data.data[i].totalPrice).text(data.data[i].p_name + " " + data.data[i].totalPrice + "원"));
+                        list.append($('<div></div>').addClass("purchase").attr('data-id', data.data[i].bill_code));
+                        $(".purchase[data-id="+data.data[i].bill_code+"]").append($("<img />").attr("src", "img/list.png").addClass("purchaseImg"));
+                        $(".purchase[data-id="+data.data[i].bill_code+"]").append($("<h4></h4>").attr('bill_issu_de', data.data[i].bill_issu_de).text(data.data[i].bill_issu_de+" 구매정보"));
+                        $(".purchase[data-id="+data.data[i].bill_code+"]").append($("<p></p>").addClass("purchaseWay")
+                        .attr('bill_totamt',  data.data[i].bill_totamt).text(data.data[i].bill_totamt + "원"));
 
                     }
 
@@ -216,38 +216,37 @@
 
          $(document.body).on("click", ".purchase", function(){
             
+            var id = sessionStorage.getItem("user_id");
           
             $('.purchase').remove();
             $("#title > h2 ").text("구매 상세 내역");
             $("#title > h2 ").css("left", "23%");
             $("#title > img").css("left", "20%");
-            var b_id = $(this).attr('data-id');
-            var publish_date = $(this).find("h4").attr('publish_date');
-            var p_name = $(this).find("p").attr('p_name');
-            var totalPrice = $(this).find("p").attr('totalPrice');
-          
+            var bill_code = $(this).attr('data-id');
+            var bill_issu_de = $(this).find("h4").attr('bill_issu_de');
+            var bill_totamt = $(this).find("p").attr('bill_totamt');
+
+
+            var table = $("#billOne");
+            $("#billOne").children().remove();
+
 
           $.ajax({
                 type: "GET",
                 url: IPSetting()+"billOne",
                 data: {
-                    b_id : b_id
+                    bill_code : bill_code
                 },
                 dataType:"jsonp",
+                async: false,
                 success: function(data){
 
-                    console.log(data);
-
                      $(".purchaseDetail").show();
-                     $(".purchaseDetail > h3").text(publish_date+" 구매 상세 내역");
-
-                    var table = $("#billOne");
-                    $("#billOne").children().remove();
-
-                    
+                     $(".purchaseDetail > h3").text(bill_issu_de+" 구매 상세 내역");
 
                     table.append($('<tr></tr>').addClass('add').attr('data', '0'));
                     $('.add[data=0]').append($('<th></th>').text("상품 명")).append($('<th></th>').text("수량"))
+                    .append($('<th></th>').text("쿠폰적용가"));
                     $('.add[data=0]').append($('<th></th>').text("상품 가격"));
 
                     var length = data.data.length;
@@ -255,31 +254,51 @@
                     for(var i = 0; i < length; i++){
 
                         
-
                         table.append($('<tr></tr>').addClass('add').attr('i', i));
-                        $('.add[i='+i+']').append($('<td></td>').text(data.data[i].product_name));
-                        $('.add[i='+i+']').append($('<td></td>').text(data.data[i].amount));
+                        $('.add[i='+i+']').append($('<td></td>').text(data.data[i].goods_nm));
+                        $('.add[i='+i+']').append($('<td></td>').text(data.data[i].purchgoods_qy));
+                        $('.add[i='+i+']').append($('<td></td>').text(data.data[i].COUPON_DSCNT));
                         $('.add[i='+i+']').append($('<td></td>').text(data.data[i].price));
-
 
                     }
 
-                       table.append($('<tr></tr>').addClass('add').attr('data', 'totalPrice'));
-                       $('.add[data=totalPrice]').append($('<td></td>').attr('colspan', '2').text("상품 총 가격"));
-                       $('.add[data=totalPrice]').append($('<td></td>').text(totalPrice));
-                      
-                        table.append($('<tr></tr>').addClass('add').attr('data', 'p_name'));
-                        $('.add[data=p_name]').append($('<td></td>').attr('colspan', '2').text("결제 수단"));
-                        $('.add[data=p_name]').append($('<td></td>').text(p_name));
-
-
-
-
-
-           
                 }
             });
 
+
+            $.ajax({
+                type:"GET",
+                url: IPSetting() + "settleInfo",
+                data : {
+                    user_id : id,
+                    bill_code : bill_code
+                },
+                dataType : "jsonp",
+                success: function(data){
+
+                    var length = data.data.length;
+
+                
+                    for(var i = 0; i < length; i++){
+
+                        
+                        table.append($('<tr></tr>').addClass('add').attr('data', data.data[i].setle_mth_code));
+                        $('.add[data='+data.data[i].setle_mth_code+']').append($('<td></td>').attr('colspan', '2').text("결제 수단"));
+                        $('.add[data='+data.data[i].setle_mth_code+']').append($('<td></td>').text(data.data[i].setle_mth_nm));
+                        $('.add[data='+data.data[i].setle_mth_code+']').append($('<td></td>').text(data.data[i].stprc));
+
+
+                    }
+                
+
+                     table.append($('<tr></tr>').addClass('add').attr('data', 'totalPrice'));
+                     $('.add[data=totalPrice]').append($('<td></td>').attr('colspan', '2').text("상품 총 가격"));
+                     $('.add[data=totalPrice]').append($('<td></td>').text(bill_totamt));
+
+
+                }
+
+            });
             
 
 

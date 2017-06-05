@@ -7,5 +7,9 @@ import yjc.wdb.scts.bean.GoodsVO;
 public interface GoodsService {
 	public void insertGoods(GoodsVO vo) throws Exception;
 	public List<GoodsVO> selectGoodsList() throws Exception;
+<<<<<<< HEAD
 	public List<GoodsVO> searchGoodsList(String goodsName) throws Exception;
+=======
+	public GoodsVO selectGoodsOne(int goods_code) throws Exception;
+>>>>>>> origin/master
 }

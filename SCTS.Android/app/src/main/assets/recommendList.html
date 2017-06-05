@@ -86,10 +86,10 @@
 
                         var list = $("#list");
 
-                        list.append($('<div></div>').addClass("recommandProduct").attr('data-id', data.data[i].product_id));
-                        $(".recommandProduct[data-id="+data.data[i].product_id +"]").append($("<img />").attr("src", "img/product.png").addClass("recommandImg"));
-                        $(".recommandProduct[data-id="+data.data[i].product_id +"]").append($("<p></p>").text(data.data[i].product_name));
-                        $(".recommandProduct[data-id="+data.data[i].product_id +"]").append($("<p></p>").text(data.data[i].price+"원").addClass("price"));
+                        list.append($('<div></div>').addClass("recommandProduct").attr('data-id', data.data[i].goods_code));
+                        $(".recommandProduct[data-id="+data.data[i].goods_code +"]").append($("<img />").attr("src", "img/product.png").addClass("recommandImg"));
+                        $(".recommandProduct[data-id="+data.data[i].goods_code +"]").append($("<p></p>").text(data.data[i].goods_nm));
+                        $(".recommandProduct[data-id="+data.data[i].goods_code +"]").append($("<p></p>").text(data.data[i].goods_pc+"원").addClass("price"));
 
                     }
 

@@ -11,6 +11,8 @@
 			month = "0" + month;
 		}
 		var day = date.getDate();
+		
+	
 
 		$('#calendar').fullCalendar({
 			header : {
@@ -24,93 +26,15 @@
 			selectHelper : true,
 			select : registerEvent(),
 			editable : true,
-			eventLimit : true, // allow "more" link when too many events
-			events : [ {
-				title : 'All Day Event',
-				start : '2017-05-01',
-				end : '2017-05-05'
-			} ]
+			eventLimit : true
 		});
+		
+		viewCalendar();
+		
+	
 
 		/* 취소 버튼 클릭 */
-		$('#close').click(function() {
-			var object = $('.bgLayer');
-			var object2 = $(".modal-layout");
-
-			// if(object.length){}; 이프문? 안써도 되긴함.
-			object.fadeOut(500, function() {
-			});
-
-			object2.fadeOut(500, function() {
-			});
-		});
-	});
-
-	function registerEvent() {
-		
-		
-		$(document).on('click', '.fc-row', function(){
-			
-			if (!$('.bgLayer').length) {
-				$('<div class="bgLayer"></div>').appendTo($('body'));
-			}
-			var object = $(".bgLayer");
-			var object2 = $(".modal-layout");
-
-			var w = $(document).width() + 12;
-			var h = $(document).height();
-
-			object.css({
-				'width' : w,
-				'height' : h
-			});
-
-			object.fadeIn(500); // 나타나는 시간 설정
-
-			object2.fadeIn(500);
-
-		});
-		
-		
-		$(document).on('click', '.fc-widget-content', function(){
-			
-			if (!$('.bgLayer').length) {
-				$('<div class="bgLayer"></div>').appendTo($('body'));
-			}
-			var object = $(".bgLayer");
-			var object2 = $(".modal-layout");
-
-			var w = $(document).width() + 12;
-			var h = $(document).height();
-
-			object.css({
-				'width' : w,
-				'height' : h
-			});
-
-			object.fadeIn(500); // 나타나는 시간 설정
-
-			object2.fadeIn(500);
-
-		});
-		
-		
-
-		$('#edit').click(function() {
-			
-			
-			var title = $("#eventName").val();
-			var start = $("#eventStart").val();
-			var end = $("#eventEnd").val();
-			
-			eventData = {
-				title : title,
-				start : start,
-				end : end
-			};
-
-			$('#calendar').fullCalendar('renderEvent', eventData, true);
-					
+		$('.close').click(function() {
 			var object = $('.bgLayer');
 			var object2 = $(".modal-layout");
 
@@ -119,15 +43,30 @@
 
 			object2.fadeOut(500, function() {
 			});
-			
-			
 		});
-		
 		
 		// 등록된 이벤트 클릭
-		$(document).on('click', '.fc-event-container', function(event){
-			//현재 발생하는 이벤트에 대해 이벤트 발생 막아줌 
+		$(document).on('click', '.fc-content', function(){
+			
 			event.stopImmediatePropagation();
+			
+			if (!$('.bgLayer').length) {
+				$('<div class="bgLayer"></div>').appendTo($('body'));
+			}
+			var object = $(".bgLayer");
+			var object2 = $("#modifyEvent");
+
+			var w = $(document).width() + 12;
+			var h = $(document).height();
+
+			object.css({
+				'width' : w,
+				'height' : h
+			});
+
+			object.fadeIn(500); // 나타나는 시간 설정
+
+			object2.fadeIn(500);
 
 		});
 		
@@ -140,6 +79,142 @@
 		$(document).on('click', 'a', function(event){
 			event.stopImmediatePropagation();
 		});
+	});
+	
+
+
+	function registerEvent() {
+		
+		// 빈칸 눌렀을때
+		 $(document).on('click', '.fc-widget-content', function(){
+			
+			if (!$('.bgLayer').length) {
+				$('<div class="bgLayer"></div>').appendTo($('body'));
+			}
+			var object = $(".bgLayer");
+			var object2 = $("#registerEvent");
+
+			var w = $(document).width() + 12;
+			var h = $(document).height();
+
+			object.css({
+				'width' : w,
+				'height' : h
+			});
+
+			object.fadeIn(500); // 나타나는 시간 설정
+
+			object2.fadeIn(500);
+
+		}); 
+		
+
+		
+		// 등록
+		$('#edit').click(function() {
+			
+			
+			var title = $("#eventName").val();
+			var start = $("#eventStart").val(); 
+			start = start.replace("T", " ");
+			start = start+":00";
+		
+			var end = $("#eventEnd").val();
+			end = end.replace("T", " ")+":00";
+			
+			
+			var eventInfo = $("#eventInfo").val();
+			
+			$.ajax({
+				type:"GET",
+				url: "insertEvent",
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "GET"
+				},
+				data:{
+					
+					bbsctt_sj : title,
+					bbsctt_cn : eventInfo,
+					event_begin_de : start,
+					event_end_de : end
+					
+				},
+				dataType: "text",
+				success: function(result){
+					if(result == "success"){
+						
+					
+						eventData = {
+								title : title,
+								start : start,
+								end : end
+						};
+						$('#calendar').fullCalendar('renderEvent', eventData, true);			
+						
+					}
+				}
+			});
+			
+		
+			var object = $('.bgLayer');
+			var object2 = $(".modal-layout");
+
+			object.fadeOut(500, function() {
+			});
+
+			object2.fadeOut(500, function() {
+			});
+			
+			
+		});
+		
+		
+		
+		
+	}
+	
+	// 페이지 로딩시 디비에 있는 이벤트 불러옴
+	function viewCalendar(){
+		$.ajax({
+			type:"GET",
+			url:"viewCalendar",
+			dataType:"jsonp",
+			success:function(data){
+				
+				
+				var length = data.result.length;
+
+						
+				for(var i=0; i < length; i++){
+					var eventData = {
+						title: data.result[i].title,
+						start: data.result[i].start,
+						end:data.result[i].end,
+						bbsctt_code : data.result[i].bbsctt_code
+						
+					}
+					
+					
+					$('#calendar').fullCalendar('renderEvent', eventData, true);
+	
+					
+					// 이것 좀 하자 제발! 혜수야!
+					$('.fc-content').each(function(index){
+						
+						$(this).append($('<span></span>').attr("data", eventData.bbsctt_code)
+								.text(eventData.bbsctt_code));
+						
+					});
+					
+				}
+				
+				
+	
+			}
+		});
+		
+
 	}
 </script>
 <style>
@@ -169,6 +244,25 @@ body {
 		for="eventInfo">이벤트 설명</label>
 	<textarea id="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>
 	<br>
-	<button id="close" class="btn btn-danger">닫기</button>
+
 	<button id="edit" class="btn btn-primary">등록</button>
+	<button class="btn btn-danger close">닫기</button>
+	
+</div>
+
+
+
+<div id="modifyEvent" class="modal-layout">
+	<label for="eventName">이벤트 이름</label><input id="eventName"
+		name="eventName" type="text" /> <br> <label for="eventStart">이벤트
+		시작일자</label> <input id="eventStart" name="eventStart" type="datetime-local" />
+	<br> <label for="eventEnd">이벤트 종료일자</label><input id="eventEnd"
+		name="eventEnd" type="datetime-local" /> <br> <label
+		for="eventInfo">이벤트 설명</label>
+	<textarea id="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>
+	<br>
+
+	<button id="modify" class="btn btn-primary">수정</button>
+	<button id="delete" class="btn btn-warning">삭제</button>
+	<button class="btn btn-danger close">닫기</button>
 </div>

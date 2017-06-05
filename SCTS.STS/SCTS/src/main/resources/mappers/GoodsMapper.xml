@@ -19,6 +19,7 @@ from
 	GOODS
 </select>
 
+<<<<<<< HEAD
 <select id="likeGoodsList" resultType="GoodsVO">
 	select
 		*
@@ -29,6 +30,16 @@ from
 	like concat
 	('%',#{goodsName},'%')
 </select>
+=======
+<select id="selectGoodsOne" resultType="GoodsVO">
+select
+	*
+from
+	GOODS
+where GOODS_CODE = #{goods_code}
+</select>
+
+>>>>>>> origin/master
 <!-- <update id="">
 </update>
 

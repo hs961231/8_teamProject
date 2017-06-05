@@ -8,8 +8,12 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import yjc.wdb.scts.bean.BBScttVO;
 import yjc.wdb.scts.bean.CouponVO;
+import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.bean.GoodsVO;
+import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
+import yjc.wdb.scts.service.BBSService;
+import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.GoodsService;
@@ -37,17 +46,23 @@ public class HomeController {
 	private UserService userService;
 
 	@Inject
-	TileService tileService;
+	private TileService tileService;
 	
 	@Inject
-	CourseService courseService;
+	private CourseService courseService;
 	
 	@Inject
-	GoodsService goodsService;
+	private GoodsService goodsService;
 	
 	@Inject
-	CouponService couponService;
+	private CouponService couponService;
 	
+	@Inject
+	private BBSService bbsService;
+	
+	@Inject
+	private BillService billService;
+
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -95,8 +110,8 @@ public class HomeController {
 		int todayCount = courseService.selectTodayVisitCnt();
 		model.addAttribute("todayCount", todayCount);
 		
-		List<HashMap<String, String>> list = tileService.selectTileList();
-		model.addAttribute("list", list);
+		List<HashMap<String, String>> tileList = tileService.selectTileList();
+		model.addAttribute("tileList", tileList);
 		
 		return "mainPage";
 	}
@@ -105,12 +120,15 @@ public class HomeController {
 	/********************************* 매장 관리 부분 ***************************************/
 	// 매장 등록 페이지
 	@RequestMapping(value="shop_Register", method=RequestMethod.GET)
-	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) {
+	public String shopRegister(HttpServletRequest request, HttpSession session, Model model) throws Exception {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
 		String ContentPage = "shop_Register";
 
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
+		
+		List<HashMap<String, String>> tileList = tileService.selectTileList();
+		model.addAttribute("tileList", tileList);
 
 		return "mainPage";
 	}
@@ -135,6 +153,16 @@ public class HomeController {
 		model.addAttribute("main_content", ContentPage);
 
 		return "mainPage";
+	}
+	
+	@RequestMapping(value="tile_RegisterForm", method=RequestMethod.POST)
+	public String tile_RegisterPost(HttpServletRequest request, HttpSession session, TileVO vo) throws Exception {
+		
+		tileService.insertTile(vo);
+		
+		logger.debug("타일 정보가 db에 등록 되었음." + vo.getTile_nm() );
+		
+		return "redirect:mainPage";
 	}
 
 	// 상품 리스트
@@ -164,10 +192,7 @@ public class HomeController {
 	
 	//상품등록 처리
 	@RequestMapping(value="product_Register", method=RequestMethod.POST)
-	public String product_RegisterPost(HttpServletRequest request, HttpSession session, Model model, GoodsVO vo) throws Exception{
-		String ContentPage = "product_Register";
-
-		model.addAttribute("main_content", ContentPage);
+	public String product_RegisterPost(HttpServletRequest request, HttpSession session, GoodsVO vo) throws Exception{
 		
 		System.out.println("GoodsVO 정보 : " + vo.getDetailctgry_code() + "  상품명 : " + vo.getGoods_nm());
 		
@@ -202,14 +227,14 @@ public class HomeController {
 		return "mainPage";
 	}
 	
-	/*
+	
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
 	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
 
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = salesService.yearSales(year);
+		List<HashMap> list = billService.yearSales(year);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -223,28 +248,26 @@ public class HomeController {
 		}
 		
 
-
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
 		return callback + "(" + jsonObject +")";
 	}
-	*/
-	
-	/*@RequestMapping(value="daySales", method=RequestMethod.GET)
+
+	@RequestMapping(value="daySales", method=RequestMethod.GET)
 	public @ResponseBody String daySales(HttpServletRequest request) throws Exception{
 
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = salesService.daySales();
+		List<HashMap> list = billService.daySales();
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
 		
 		for(int i = 0; i < list.size(); i++){
 			salesJson = new JSONObject();
-			salesJson.put("publish_date", list.get(i).get("publish_date").toString());
+			salesJson.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
 			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
 			salesArray.add(salesJson);
 		}
@@ -255,7 +278,7 @@ public class HomeController {
 		return callback + "(" + jsonObject +")";
 	}
 	
-	*/
+
 	
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
@@ -277,7 +300,62 @@ public class HomeController {
 
 		return "mainPage";
 	}
-
+	
+	// 캘린더 위 일정 뿌리기
+	@RequestMapping(value="viewCalendar", method=RequestMethod.GET)
+	public @ResponseBody String viewCalendar(HttpServletRequest request) throws Exception{
+		
+		String callback = request.getParameter("callback");
+		
+		List<HashMap> list = bbsService.viewCalendar();
+		
+		JSONObject viewCalJson;
+		JSONArray viewCalArray = new JSONArray();
+		
+		for(int i=0; i < list.size(); i++){
+			
+			viewCalJson = new JSONObject();
+			
+			viewCalJson.put("bbsctt_code", list.get(i).get("bbsctt_code"));
+			viewCalJson.put("title", list.get(i).get("bbsctt_sj"));
+			viewCalJson.put("start", list.get(i).get("event_begin_de").toString());
+			viewCalJson.put("end", list.get(i).get("event_end_de").toString());
+			
+			viewCalArray.add(viewCalJson);
+			
+		}
+		
+		JSONObject json = new JSONObject();
+		json.put("result", viewCalArray);
+		
+		return callback + "(" + json +")";
+	}
+	
+	// 이벤트 등록
+	@RequestMapping(value="insertEvent", method=RequestMethod.GET)
+	public ResponseEntity<String> insertEvent(EventVO eventVO, BBScttVO bbscttVO){
+	
+		ResponseEntity<String> entity = null;
+		
+		try {
+			bbsService.insertEvent(eventVO, bbscttVO);
+			System.out.println(eventVO.getEvent_begin_de());
+			System.out.println(eventVO.getEvent_end_de());
+			
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			
+		} catch (Exception e) {
+			
+			entity =  new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			e.printStackTrace();
+		}
+		
+		return entity;
+		
+		
+	}
+	
+	
 	/********************************* 쿠폰 관리 부분 ***************************************/
 	/********************************* 쿠폰 관리 부분 ***************************************/
 

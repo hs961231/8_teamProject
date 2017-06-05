@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 게시판에 관한 모든 디비를 여기 넣을 것이다! -->
+<mapper namespace="yjc.wdb.mapper.BBSMapper">
+
+	<insert id="bbscttInsert">
+		insert into bbsctt(bbsctt_sj, bbsctt_cn) 
+		values(#{bbsctt_sj}, #{bbsctt_cn})
+	</insert>
+	
+	<insert id="eventInsert" parameterType="EventVO">
+		<selectKey resultType="integer" keyProperty="bbsctt_code" order="BEFORE">
+			select max(bbsctt_code) from bbsctt
+		</selectKey>
+		insert into event 
+		values(#{bbsctt_code}, #{event_begin_de}, #{event_end_de});
+	</insert>
+
+	<!-- 캘린더위의 이벤트 일정 표시 -->
+	<resultMap id="viewCalendar" type="java.util.HashMap">
+		<result property="bbsctt_code" column="bbsctt_code" />
+		<result property="bbsctt_sj" column="bbsctt_sj" />
+		<result property="event_begin_de" column="event_begin_de" />
+		<result property="event_end_de" column="event_end_de" />
+	</resultMap>
+
+	<select id="viewCalendar" resultMap="viewCalendar">
+		select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj, 
+		e.event_begin_de as event_begin_de, e.event_end_de as event_end_de
+		from bbsctt bc, event e
+		where bc.bbsctt_code = e.bbsctt_code
+	</select>
+	
+	
+	
+
+
+</mapper>

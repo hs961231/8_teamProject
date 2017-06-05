@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.dao.TileDAO;
 
 @Repository
@@ -22,6 +23,12 @@ public class TileDAOImpl implements TileDAO {
 	public List<HashMap<String, String>> selectTileList() throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(NAMESPACE + ".selectTileList");
+	}
+
+	@Override
+	public void insertTile(TileVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertTile", vo);
 	}
 	
 }

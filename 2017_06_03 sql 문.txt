@@ -1,0 +1,227 @@
+/* 회원이 소유한 쿠폰과 상품에 배치된 쿠폰을 가져와 맞는 상품에 맞는 쿠폰을 가져옴 */
+
+  select pg.BILL_CODE, pg.GOODS_CODE, g.GOODS_NM, ch.coupon_code
+   from coupon_hold ch, bill b, purchase_goods pg, coupon_goods_creation cc, goods g, coupon
+   where ch.USER_ID = 'hs' and ch.COUPONHOLD_USE_AT = 'no' and g.GOODS_CODE = pg.GOODS_CODE and
+   g.GOODS_CODE = cc.goods_code and
+   cc.COUPON_CODE = coupon.coupon_code and ch.COUPON_CODE = coupon.coupon_code
+   and b.BILL_CODE = pg.BILL_CODE and b.USER_ID ='hs';
+
+
+/* 회원이 소유한 쿠폰과 상품카테고리에 배치된 쿠폰을 가져와 맞는 상품카테고리에 맞는 쿠폰을 가져옴 */
+
+  select pg.BILL_CODE, pg.GOODS_CODE, g.GOODS_NM, ch.coupon_code
+   from coupon_hold ch, bill b, purchase_goods pg, coupon_detailcategory_creation cdc, detail_category dc,goods g, coupon
+   where ch.USER_ID = 'hs' and ch.COUPONHOLD_USE_AT = 'no' and dc.DETAILCTGRY_CODE = g.DETAILCTGRY_CODE and dc.DETAILCTGRY_CODE = cdc.DETAILCTGRY_CODE and
+	g.GOODS_CODE = pg.GOODS_CODE and
+   cdc.COUPON_CODE = coupon.coupon_code and ch.COUPON_CODE = coupon.coupon_code
+   and b.BILL_CODE = pg.BILL_CODE and b.USER_ID ='hs';
+
+
+
+/* 나중에 포스할때 회원의 쿠폰바구니와 포스에 올라온 상품을 파악할때 바로 쿠폰 삽입 */
+
+update purchase_goods pg, ( select ch.coupon_code as COUPON_CODE, g.GOODS_CODE as goods_code
+   from coupon_hold ch, bill b, purchase_goods pg, coupon_goods_creation cc, goods g, coupon
+   where ch.USER_ID = 'hs' and ch.COUPONHOLD_USE_AT = 'no' and g.GOODS_CODE = pg.GOODS_CODE and
+   g.GOODS_CODE = cc.goods_code and
+   cc.COUPON_CODE = coupon.coupon_code and ch.COUPON_CODE = coupon.coupon_code
+   and b.BILL_CODE = pg.BILL_CODE and b.USER_ID ='hs') as pgc
+set pg.COUPON_CODE = pgc.coupon_code where pg.GOODS_CODE = pgc.goods_code;
+
+
+
+/* 나중에 포스할때 회원의 쿠폰바구니와 포스에 올라온 상품카테고리를 파악할때 바로 쿠폰 삽입 */
+
+update purchase_goods pg, ( select ch.coupon_code as COUPON_CODE, g.GOODS_CODE as goods_code
+   from coupon_hold ch, bill b, purchase_goods pg, coupon_detailcategory_creation cdc, goods g, coupon, detail_category dc
+   where ch.USER_ID = 'hs' and ch.COUPONHOLD_USE_AT = 'no' and g.GOODS_CODE = pg.GOODS_CODE and cdc.DETAILCTGRY_CODE = dc.DETAILCTGRY_CODE and dc.DETAILCTGRY_CODE = g.DETAILCTGRY_CODE and
+   cdc.COUPON_CODE = coupon.coupon_code and ch.COUPON_CODE = coupon.coupon_code
+   and b.BILL_CODE = pg.BILL_CODE and b.USER_ID ='hs') as pgc
+set pg.COUPON_CODE = pgc.coupon_code where pg.GOODS_CODE = pgc.goods_code;
+
+
+/* 결제 수단 */
+
+create table settlement_method(
+setle_mth_code integer auto_increment primary key,
+setle_mth_nm varchar(50) not null
+);
+
+/* 계산서를 결제하다 */
+
+create table settlement_infomation(
+bill_code integer not null references bill_code(bill),
+setle_mth_code integer not null references setle_mth_code(settlement_method),
+stprc integer not null);
+
+
+
+insert into settlement_method(setle_mth_nm) values('card');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.015 sec. */
+insert into settlement_method(setle_mth_nm) values('money');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into settlement_method(setle_mth_nm) values('gift card');
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+
+
+insert into settlement_infomation values(1, 1, 3000);
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.015 sec. */
+insert into settlement_infomation values(1, 2, 32100);
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.000 sec. */
+insert into settlement_infomation values(2, 2, 1900);
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.015 sec. */
+insert into settlement_infomation values(3, 1, 2000);
+/* Affected rows: 1  찾은 행: 0  경고: 0  지속 시간 1 쿼리: 0.015 sec. */
+
+
+
+/* 전체적인 계산서를 결제하다 정보 */
+
+select b.BILL_CODE, sm.setle_mth_nm, si.stprc
+		from bill b, settlement_method sm, settlement_infomation si
+		where b.user_id = 'hs' and sm.setle_mth_code = si.setle_mth_code and b.BILL_CODE = si.bill_code
+		order by b.bill_code;
+
+
+
+/* 전체적인 계산서 정보 총가격 update 용 */
+
+select b.BILL_CODE, b.BILL_ISSU_DE,
+		b.user_id, sum(result.price) as
+		totalPrice
+		from bill b,
+		(select pg.BILL_CODE as bill_code,g.GOODS_PC *
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT like '%@%' escape '@',
+		(g.GOODS_PC * (trim(trailing '%' from c.COUPON_DSCNT)/100)),
+		c.COUPON_DSCNT)) as price
+		from goods g, purchase_goods pg, bill b,
+		coupon c
+		where g.GOODS_CODE = pg.GOODS_CODE and b.BILL_CODE = pg.BILL_CODE and
+		if(isnull(pg.COUPON_CODE), 1, c.COUPON_CODE = pg.COUPON_CODE)
+		group by pg.BILL_CODE, pg.GOODS_CODE) as result
+		where result.bill_code = b.bill_code and b.user_id = 'hs'
+		and date(b.BILL_ISSU_DE) >=
+		date(subdate(curDate(), INTERVAL 30 DAY))
+		group by result.BILL_CODE;
+
+
+
+
+
+/* 하나의 계산서 결제정보 */
+select b.BILL_CODE, sm.setle_mth_nm, si.stprc
+		from bill b, settlement_method sm, settlement_infomation si
+		where b.user_id = 'hs' and sm.setle_mth_code = si.setle_mth_code and b.BILL_CODE = si.bill_code and b.BILL_CODE = 1
+		order by b.bill_code;
+
+
+
+
+/* 하나의 계산서 내역 상세보기 */
+
+select b.bill_code, g.GOODS_NM,
+		pg.PURCHSGOODS_QY, if(isnull(pg.COUPON_CODE), 'X', c.COUPON_DSCNT) as COUPON_DSCNT, g.GOODS_PC *
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing '%' from c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT)) as price
+		from goods g, purchase_goods pg, bill b,
+		coupon c
+		where g.GOODS_CODE = pg.GOODS_CODE and pg.BILL_CODE = b.BILL_CODE and
+		if(isnull(pg.COUPON_CODE), 1, c.COUPON_CODE = pg.COUPON_CODE) and b.BILL_CODE = 1
+		group by g.GOODS_NM, pg.bill_code;
+
+
+
+
+/* 하나의 계산서 총 가격 update 용*/
+select result.bill_code, sum(result.price)
+from (select pg.BILL_CODE as bill_code,g.GOODS_PC *
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT like '%@%' escape '@',
+		(g.GOODS_PC * (trim(trailing '%' from c.COUPON_DSCNT)/100)),
+		c.COUPON_DSCNT)) as price
+		from goods g, purchase_goods pg, bill b,
+		coupon c
+		where g.GOODS_CODE = pg.GOODS_CODE and b.BILL_CODE = pg.BILL_CODE and
+		b.BILL_CODE = 1 and
+		if(isnull(pg.COUPON_CODE), 1, c.COUPON_CODE = pg.COUPON_CODE)
+		group by pg.BILL_CODE, pg.GOODS_CODE) as result
+group by result.bill_code;
+
+		
+
+
+/* 추천상품 */
+
+select
+		g.GOODS_CODE, g.GOODS_NM, g.GOODS_PC, sum(pg.PURCHSGOODS_QY)
+		from
+		purchase_goods pg, goods g, user u, bill b
+		where g.GOODS_CODE =
+		pg.GOODS_CODE and u.user_id = b.user_id and 
+		pg.BILL_CODE = b.BILL_CODE and 
+		floor((year(curDate()) - date_format(u.USER_BRTHDY, '%Y') + 1)/10) = 
+		(select floor((year(curDate()) - date_format(user.USER_BRTHDY, '%Y') + 1)/10) from
+		user where user_id = 'hs') and
+		u.USER_SEXDSTN = (select user.USER_SEXDSTN from user where user_id ='hs') and
+		u.USER_MRRG_AT = (select user.USER_MRRG_AT  from user where user_id = 'hs')
+		group by g.GOODS_CODE, u.USER_SEXDSTN, floor((year(curDate()) - date_format(u.USER_BRTHDY, '%Y') + 1)/10)
+		order by sum(pg.PURCHSGOODS_QY) desc
+		limit 0, 10
+
+
+
+
+/* 총가격 update*/
+
+update bill, (select sum(result.price) as bill_total
+		from (select pg.BILL_CODE as bill_code,g.GOODS_PC *
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT like '%@%' escape '@',
+		(g.GOODS_PC * (trim(trailing '%' from c.COUPON_DSCNT)/100)),
+		c.COUPON_DSCNT)) as price
+		from goods g, purchase_goods pg, bill b,
+		coupon c
+		where g.GOODS_CODE = pg.GOODS_CODE and b.BILL_CODE = pg.BILL_CODE and
+		b.BILL_CODE = 1 and
+		if(isnull(pg.COUPON_CODE), 1, c.COUPON_CODE = pg.COUPON_CODE)
+		group by pg.BILL_CODE, pg.GOODS_CODE) as result
+		group by result.bill_code) as total
+set bill_totamt = total.bill_total
+where bill_code = 1;
+
+
+/* 연매출(최근 3년)*/
+
+select
+		date_format((b.BILL_ISSU_DE), '%Y') as year, sum(b.BILL_TOTAMT) as
+		totalPrice
+		from bill b
+		where
+		(b.BILL_ISSU_DE
+		like concat('2017', '%') or b.BILL_ISSU_DE like
+		concat('2016', '%')
+		or
+		b.BILL_ISSU_DE like concat('2015', '%'))
+		group by date_format((b.BILL_ISSU_DE), '%Y');
+
+
+/* 일매출(일주일) */
+		
+		select b.BILL_ISSU_DE
+		as bill_issu_de, sum(b.BILL_TOTAMT) as
+		totalPrice from
+		bill b
+		where (b.BILL_ISSU_DE <= curDate() and
+		b.BILL_ISSU_DE >=
+		subDate(curDate(),
+		Interval 7 DAY)) group by
+		b.BILL_ISSU_DE;
+
+
+/* 결제 정보 리스트 */
+select * from bill where user_id = 'hs' and date(bill.BILL_ISSU_DE) >=
+		date(subdate(curDate(), INTERVAL 30 DAY));
