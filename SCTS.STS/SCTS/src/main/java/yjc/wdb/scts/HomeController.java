@@ -10,16 +10,20 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.BBScttVO;
 import yjc.wdb.scts.bean.CouponVO;
@@ -404,6 +408,28 @@ public class HomeController {
 
 		return "mainPage";
 	}
+	
+	@RequestMapping(value="getGoodsAjax", method=RequestMethod.POST,
+			produces = "text/plain; charset=UTF-8")
+	@ResponseBody 
+	public ResponseEntity<String> getGoodsAjax(@RequestParam("goods_code") int goods_code) throws Exception {
+
+		logger.debug("입장");
+		logger.info("설마 이거 되면 진심 욕한다");
+		System.out.println("설마 누가 건드림?" + goods_code);
+		
+		GoodsVO vo = goodsService.selectGoodsOne(goods_code);
+		//JSONObject goods = ; 
+		if(vo == null) {
+			return new ResponseEntity<String>(HttpStatus.OK);
+		}
+		String str = new Gson().toJson(vo);
+		
+		System.out.println(str);
+		
+		return new ResponseEntity<String>(str, HttpStatus.OK);
+	}
+	
 
 
 	/***************************************

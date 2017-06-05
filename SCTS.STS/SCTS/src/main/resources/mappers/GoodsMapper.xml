@@ -19,6 +19,14 @@ from
 	GOODS
 </select>
 
+<select id="selectGoodsOne" resultType="GoodsVO">
+select
+	*
+from
+	GOODS
+where GOODS_CODE = #{goods_code}
+</select>
+
 <!-- <update id="">
 </update>
 

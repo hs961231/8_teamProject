@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+
 
 <script src="resources/customjs/posSystem.js"></script>
 
@@ -73,7 +73,7 @@
 					<tbody>
 						<tr>
 							<td>바코드</td>
-							<td><input type="text" name="goods_id" id="goods_id" /></td>
+							<td><input type="text" name="goods_code" id="goods_code" /></td>
 						</tr>
 					</tbody>
 				</table>
@@ -105,21 +105,21 @@
 	<div class="col-lg-2">
 		<section class="panel">
 			<div class="panel-body">
-				<button class="btn btn-default" type="button">1</button>
-				<button class="btn btn-default" type="button">2</button>
-				<button class="btn btn-default" type="button">3</button>
+				<button class="btn btn-default numberPad" type="button">1</button>
+				<button class="btn btn-default numberPad" type="button">2</button>
+				<button class="btn btn-default numberPad" type="button">3</button>
 				<br>
-				<button class="btn btn-default" type="button">4</button>
-				<button class="btn btn-default" type="button">5</button>
-				<button class="btn btn-default" type="button">6</button>
+				<button class="btn btn-default numberPad" type="button">4</button>
+				<button class="btn btn-default numberPad" type="button">5</button>
+				<button class="btn btn-default numberPad" type="button">6</button>
 				<br>
-				<button class="btn btn-default" type="button">7</button>
-				<button class="btn btn-default" type="button">8</button>
-				<button class="btn btn-default" type="button">9</button>
+				<button class="btn btn-default numberPad" type="button">7</button>
+				<button class="btn btn-default numberPad" type="button">8</button>
+				<button class="btn btn-default numberPad" type="button">9</button>
 				<br>
-				<button class="btn btn-default" type="button">D</button>
-				<button class="btn btn-default" type="button">0</button>
-				<button class="btn btn-default" type="button">C</button>
+				<button class="btn btn-default numberPad" type="button">D</button>
+				<button class="btn btn-default numberPad" type="button">0</button>
+				<button class="btn btn-default numberPad" type="button">C</button>
 				<br>
 
 			</div>
@@ -132,11 +132,11 @@
 			<div class="panel-body">
 				<button class="btn btn-default" type="button" id="getGoods">등록</button>
 				<br>
-				<button class="btn btn-default" type="button">취소</button>
+				<button class="btn btn-default" type="button" id="cancleGoods">취소</button>
 				<br>
-				<button class="btn btn-default" type="button">수량+</button>
+				<button class="btn btn-default" type="button" id="additionGoods">수량+</button>
 				<br>
-				<button class="btn btn-default" type="button">수량-</button>
+				<button class="btn btn-default" type="button" id="subtractGoods">수량-</button>
 				<br>
 			</div>
 		</section>
@@ -145,7 +145,7 @@
 	<div class="col-lg-2">
 		<section class="panel">
 			<div class="panel-body">
-				<button class="btn btn-default" type="button">상품검섹</button>
+				<button class="btn btn-default" type="button" id="searchGoods">상품검섹</button>
 				<br>
 				<button class="btn btn-default" type="button">상품삭제</button>
 				<br>
@@ -158,4 +158,35 @@
 			</div>
 		</section>
 	</div>
+</div>
+
+<div class="modal-layout">
+	<h4>
+		쿠폰 이름 : <input type="text" name="coupon_nm">
+	</h4>
+
+	<h4>
+		쿠폰 내용 : <input type="text" name="coupon_cntnts">
+	</h4>
+
+	<h4>
+		쿠폰 할인율 : <select name="coupon_dscnt">
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+		</select>
+	</h4>
+
+	<h4>
+		쿠폰 등록날짜 : <input type="date" name="coupon_begin_de">
+	</h4>
+
+	<h4>
+		쿠폰 마감날짜 : <input type="date" name="coupon_end_de">
+	</h4>
+
+
+
+	<input type="button" class="close" value="취소" /> <input type="submit"
+		class="close regiBtn" value="등록" />
 </div>
