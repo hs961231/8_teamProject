@@ -12,9 +12,12 @@
 		values(#{bbsctt_sj}, #{bbsctt_cn})
 	</insert>
 	
-	<insert id="eventInsert">
+	<insert id="eventInsert" parameterType="EventVO">
+		<selectKey resultType="integer" keyProperty="bbsctt_code" order="BEFORE">
+			select max(bbsctt_code) from bbsctt
+		</selectKey>
 		insert into event 
-		values(last_insert_id(), #{event_begin_de}, #{event_end_de});
+		values(#{bbsctt_code}, #{event_begin_de}, #{event_end_de});
 	</insert>
 
 	<!-- 캘린더위의 이벤트 일정 표시 -->

@@ -25,5 +25,6 @@
 		<typeAlias alias="Tile_locationVO" 					type="yjc.wdb.scts.bean.Tile_locationVO"></typeAlias>
 		<typeAlias alias="TileVO" 							type="yjc.wdb.scts.bean.TileVO"></typeAlias>
 		<typeAlias alias="UserVO" 							type="yjc.wdb.scts.bean.UserVO"></typeAlias>
+		<typeAlias alias="EventVO" 							type="yjc.wdb.scts.bean.EventVO"></typeAlias>
 	</typeAliases>
 </configuration>
