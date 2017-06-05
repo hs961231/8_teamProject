@@ -102,7 +102,13 @@
 			
 			var title = $("#eventName").val();
 			var start = $("#eventStart").val(); 
+			start = start.replace("T", " ");
+			start = start+":00";
+		
 			var end = $("#eventEnd").val();
+			end = end.replace("T", " ")+":00";
+			
+			
 			var eventInfo = $("#eventInfo").val();
 			
 			$.ajax({
@@ -157,6 +163,7 @@
 		$(document).on('click', '.fc-event-container', function(event){
 			//현재 발생하는 이벤트에 대해 이벤트 발생 막아줌 
 			event.stopImmediatePropagation();
+			
 
 		});
 		
@@ -222,9 +229,9 @@ body {
 <div id="registerEvent" class="modal-layout">
 	<label for="eventName">이벤트 이름</label><input id="eventName"
 		name="eventName" type="text" /> <br> <label for="eventStart">이벤트
-		시작일자</label> <input id="eventStart" name="eventStart" type="date" />
+		시작일자</label> <input id="eventStart" name="eventStart" type="datetime-local" />
 	<br> <label for="eventEnd">이벤트 종료일자</label><input id="eventEnd"
-		name="eventEnd" type="date" /> <br> <label
+		name="eventEnd" type="datetime-local" /> <br> <label
 		for="eventInfo">이벤트 설명</label>
 	<textarea id="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>
 	<br>

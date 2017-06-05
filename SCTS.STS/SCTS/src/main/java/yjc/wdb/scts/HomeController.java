@@ -342,7 +342,8 @@ public class HomeController {
 		
 		try {
 			bbsService.insertEvent(eventVO, bbscttVO);
-			System.out.println(bbscttVO.getBbsctt_cn());
+			System.out.println(eventVO.getEvent_begin_de());
+			System.out.println(eventVO.getEvent_end_de());
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 			
 		} catch (Exception e) {
