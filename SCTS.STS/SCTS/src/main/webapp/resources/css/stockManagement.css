@@ -13,7 +13,11 @@ th, td {
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 15px;
-	display: inline-block;
+}
+ 
+.navbar-form{
+	display:inline;
+	width:300px;	
 }
 
 .search-btn {
@@ -21,8 +25,17 @@ th, td {
 	background-color: #E5EFF7;
 }
 
-/* .form-control{
+.navbar-form .form-control{
 	display:inline;
-	width:30%;	
-	bootstrap-theme.css의 변경 사항이 적용이 안돼
-} */
+	width:350px;	
+}
+
+.navbar-inner{
+	margin-bottom:10px;
+}
+
+#stockCategory{
+	width: 150px; 
+	height: 29px;
+	margin-left: 25px;
+}

@@ -19,6 +19,16 @@ from
 	GOODS
 </select>
 
+<select id="likeGoodsList" resultType="GoodsVO">
+	select
+		*
+	from
+		GOODS
+	where
+		GOODS_NM
+	like concat
+	('%',#{goodsName},'%')
+</select>
 <!-- <update id="">
 </update>
 

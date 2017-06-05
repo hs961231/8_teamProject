@@ -6,6 +6,7 @@
 
 <mapper namespace="yjc.wdb.mapper.CouponMapper">
 
+	<!-- 쿠폰 등록 -->
 	<insert id="insertCoupon">
 		insert into COUPON
 		(COUPON_NM, COUPON_CNTNTS,
@@ -22,6 +23,18 @@
 		from
 			coupon
 	</select>
+	
+	<!-- 쿠폰 수정 -->
+	<update id="updateCoupon">
+		update coupon set coupon_nm =#{coupon_nm}, coupon_cntnts =#{coupon_cntnts},
+		coupon_dscnt = #{coupon_dscnt}, coupon_begin_de = #{coupon_begin_de}, coupon_end_de = #{coupon_end_de}
+		where coupon_code = #{coupon_code};
+	</update>
+	
+	<!-- 쿠폰 삭제 -->
+	<delete id="deleteCoupon">
+		delete from coupon where coupon_code = #{coupon_code};
+	</delete>
 	
 	<!-- 고객에게 쿠폰 전송 -->
 	<select id="selectSendAndroidCoupon" resultType="CouponVO">

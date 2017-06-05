@@ -23,10 +23,8 @@
 		box-sizing: border-box;*/
 	}
 	
-	td, th{
-		text-align:center;
-	}
-	.modal{
+	 .myModals{
+	 	display:none;
 		position: fixed;  /* 스크롤해도 레이어는 고정 */
 		width: 40%;
 		left:50%;
@@ -43,6 +41,10 @@
 		padding: 1em;
 		box-sizing: border-box;*/
 	}
+	
+	td, th{
+		text-align:center;
+	} 
 
 	/* 불투명 배경에 대한 스타일 */
 	.bgLayer{

@@ -28,4 +28,10 @@ public class GoodsServiceImpl implements GoodsService {
 		return dao.selectGoodsList();
 	}
 
+	@Override
+	public List<GoodsVO> searchGoodsList(String goodsName) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.searchGoodsList(goodsName);
+	}
+
 }

@@ -30,4 +30,10 @@ public class GoodsDAOImpl implements GoodsDAO {
 		return sqlSession.selectList(NAMESPACE + ".selectGoodsList");
 	}
 
+	@Override
+	public List<GoodsVO> searchGoodsList(String goodsName) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".likeGoodsList", goodsName);
+	}
+
 }

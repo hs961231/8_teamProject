@@ -20,6 +20,13 @@ public class CouponDAOImpl implements CouponDAO{
 	@Inject
 	private SqlSession sql;
 
+
+	@Override
+	public void insertCoupon(CouponVO couponVO) throws Exception {
+		// TODO Auto-generated method stub
+		sql.insert(NAMESPACE+".insertCoupon", couponVO);
+	}
+	
 	@Override
 	public List<CouponVO> couponBasket(String user_id) throws Exception {
 		// TODO Auto-generated method stub
@@ -44,5 +51,19 @@ public class CouponDAOImpl implements CouponDAO{
 		// TODO Auto-generated method stub
 		return sql.selectOne(NAMESPACE+".selectSendAndroidCoupon");
 	}
+	
+	@Override
+	public void updateCoupon(CouponVO couponVO) throws Exception {
+		// TODO Auto-generated method stub
+		sql.update(NAMESPACE+".updateCoupon" , couponVO);
+	}
+
+	@Override
+	public void deleteCoupon(int coupon_code) throws Exception {
+		// TODO Auto-generated method stub
+		sql.delete(NAMESPACE+".deleteCoupon", coupon_code);
+	}
+
+
 
 }
