@@ -84,4 +84,16 @@ public class BillServiceImpl implements BillService {
 		return dao.daySettle(date1, date2, setle_mth_code);
 	}
 
+	@Override
+	public List<HashMap> monthSales(String month1, String month2) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.monthSales(month1, month2);
+	}
+
+	@Override
+	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.monthSalesSettleInfo(month1, month2, setle_mth_code);
+	}
+
 }

@@ -110,4 +110,24 @@ public class BillDAOImpl implements BillDAO {
 		return sql.selectList(NAMESPACE+".daySettle", map);
 	}
 
+	@Override
+	public List<HashMap> monthSales(String month1, String month2) throws Exception {
+		Map map = new HashMap();
+		map.put("month1", month1);
+		map.put("month2", month2);
+		
+		
+		return sql.selectList(NAMESPACE+".monthSales", map);
+	}
+
+	@Override
+	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception {
+		Map map = new HashMap();
+		map.put("month1", month1);
+		map.put("month2", month2);
+		map.put("setle_mth_code", setle_mth_code);
+		
+		return sql.selectList(NAMESPACE+".monthSalesSettleInfo", map);
+	}
+
 }
