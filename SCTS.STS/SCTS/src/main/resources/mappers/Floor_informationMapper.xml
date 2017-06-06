@@ -6,6 +6,11 @@
 
 <mapper namespace="yjc.wdb.mapper.Floor_informationMapper">
 
+<insert id="insertdrawing">
+insert into DRAWING (DRW_FLPTH);
+values(#{drw_flpth});
+</insert>
+
 <insert id="insertFloor_information">
 insert into FLOOR_INFORMATION
 	(BHF_CODE, DRW_CODE, FLOORINFO_FLOOR, FLOORINFO_RGSDE)
