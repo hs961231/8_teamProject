@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -70,6 +70,44 @@ public class FileUploadController {
 		floor_informationService.register_shop(savedName, vo);
 
 		return "mainPage";
+	}
+
+	@RequestMapping("displayDrawing")
+	@ResponseBody
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
+		ResponseEntity<byte[]> entity = null;
+		
+		String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+		MediaType mediaType = MediaUtils.getMediaType(ext);
+		
+		InputStream in = null;
+		
+		logger.info("File Name: " + fileName);
+		
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			in = new FileInputStream(drawingPath + fileName);
+			if(mediaType != null) {
+				headers.setContentType(mediaType);
+			}
+			else {
+				fileName = fileName.substring(fileName.indexOf("_")+1);
+				headers.setContentType(mediaType.APPLICATION_OCTET_STREAM);
+				String fN = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+				headers.add("Content-Dissponstion", "attachment; filename=\""+ fN + "\"");
+			}
+
+			byte[] data = IOUtils.toByteArray(in);
+			entity = new ResponseEntity<byte[]>(data,headers,HttpStatus.CREATED);
+		} catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			if(in != null) in.close();
+		}
+		
+		return entity;
 	}
 	
 	/*

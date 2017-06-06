@@ -28,7 +28,7 @@ select f.floorinfo_floor floorinfo_floor, d.drw_flpth drw_flpth
 from DRAWING d, FLOOR_INFORMATION f
 where BHF_CODE = #{bhf_code}
 and f.DRW_CODE = d.DRW_CODE
-order by FLOORINFO_FLOOR
+order by FLOORINFO_RGSDE asc
 </select>
 
 
