@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import yjc.wdb.scts.bean.Floor_informationVO;
+import yjc.wdb.scts.service.Floor_informationService;
 import yjc.wdb.scts.util.MediaUtils;
 import yjc.wdb.scts.util.UploadFileUtils;
 
@@ -40,6 +43,9 @@ public class FileUploadController {
 	
 	@Resource(name = "drawingPath")
 	private String drawingPath;
+	
+	@Inject
+	Floor_informationService floor_informationService;
 
 	
 	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.POST)
@@ -56,6 +62,12 @@ public class FileUploadController {
 		
 		String savedName = UploadFileUtils.uploadDrawingFile(file.getOriginalFilename(), drawingPath, file.getBytes());
 		
+		Floor_informationVO vo = new Floor_informationVO();
+		
+		vo.setBhf_code(bhf_code);
+		vo.setFloorinfo_floor(floorinfo_floor);
+
+		floor_informationService.register_shop(savedName, vo);
 
 		return "mainPage";
 	}

@@ -6,16 +6,31 @@
 
 <mapper namespace="yjc.wdb.mapper.Floor_informationMapper">
 
-<insert id="insertdrawing">
-insert into DRAWING (DRW_FLPTH);
-values(#{drw_flpth});
+<insert id="insertDrawing">
+insert into DRAWING (DRW_FLPTH)
+values(#{drw_flpth})
 </insert>
 
 <insert id="insertFloor_information">
-insert into FLOOR_INFORMATION
+insert into floor_information
+	(bhf_code, drw_code, floorinfo_floor, floorinfo_rgsde)
+values 
+	( #{bhf_code}, (select max(drw_code) from drawing), #{floorinfo_floor}, date(now()) )
+
+<!-- insert into FLOOR_INFORMATION
 	(BHF_CODE, DRW_CODE, FLOORINFO_FLOOR, FLOORINFO_RGSDE)
-values (#{bhf_code}, #{drw_code}, #{floorinfo_floor}, now())
+values (#{bhf_code}, #{drw_code}, #{floorinfo_floor}, now()) -->
 </insert>
+
+
+<select id="selectDrawingList" resultType="java.util.HashMap">
+select f.floorinfo_floor floorinfo_floor, d.drw_flpth drw_flpth
+from DRAWING d, FLOOR_INFORMATION f
+where BHF_CODE = #{bhf_code}
+and f.DRW_CODE = d.DRW_CODE
+order by FLOORINFO_FLOOR
+</select>
+
 
 <!-- <update id="">
 </update>

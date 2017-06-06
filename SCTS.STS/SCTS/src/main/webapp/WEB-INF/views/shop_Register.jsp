@@ -29,9 +29,13 @@
 			</div>
 			<div class="panel-body-map">
 				<div id="blueprint" style="height: 380px; text-align: center;">
+				<!-- 
 					<br> <br> <br> <br> <br> <br> <br>
 					<br>
 					<p>설계도면 파일을 등록해주세요.</p>
+				 -->
+				 	<img src="resources\\drawing\\${ drawingList.get(0).drw_flpth }">
+				 	<!-- <img src="resources/drawing/asdqwe_94bc590b-322a-4553-8be7-4e0aa61b1132.jpg"> -->
 				</div>
 			</div>
 
