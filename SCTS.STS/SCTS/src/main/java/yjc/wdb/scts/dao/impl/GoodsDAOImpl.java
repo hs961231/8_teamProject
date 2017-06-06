@@ -31,6 +31,9 @@ public class GoodsDAOImpl implements GoodsDAO {
 	}
 
 	@Override
+	public List<GoodsVO> searchGoodsList(String goodsName) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".likeGoodsList", goodsName);
 	public GoodsVO selectGoodsOne(int goods_code) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".selectGoodsOne", goods_code);

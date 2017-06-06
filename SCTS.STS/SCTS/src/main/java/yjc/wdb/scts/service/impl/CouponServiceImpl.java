@@ -19,6 +19,12 @@ public class CouponServiceImpl implements CouponService {
 	private CouponDAO dao;
 
 	@Override
+	public void insertCoupon(CouponVO couponVO) throws Exception {
+		// TODO Auto-generated method stub
+		dao.insertCoupon(couponVO);
+	}
+
+	@Override
 	public List<CouponVO> couponBasket(String user_id) throws Exception {
 		
 		return dao.couponBasket(user_id);
@@ -42,5 +48,18 @@ public class CouponServiceImpl implements CouponService {
 		// TODO Auto-generated method stub
 		return dao.selectSendAndroidCoupon();
 	}
+	
+	@Override
+	public void updateCoupon(CouponVO couponVO) throws Exception {
+		// TODO Auto-generated method stub
+		dao.updateCoupon(couponVO);
+	}
+
+	@Override
+	public void deleteCoupon(int coupon_code) throws Exception {
+		// TODO Auto-generated method stub
+		dao.deleteCoupon(coupon_code);
+	}
+
 
 }
