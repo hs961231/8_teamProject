@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<script src="resources/customjs/fileUpload.js"></script>
+
 <div class="row">
 	<div class="col-lg-12">
 		<h3 class="page-header">
@@ -22,24 +24,15 @@
 			<div class="panel-body">
 				<div class="form">
 					<form class="form-validate form-horizontal" id="feedback_form"
-						method="get" action="">
+						method="post" action="" enctype="multipart/form-data">
 
 						<div class="form-group ">
-							<label for="cname" class="control-label col-lg-2">설계도면 명
+							<label for="cname" class="control-label col-lg-2">지점코드
 								<span class="required">*</span>
 							</label>
 							<div class="col-lg-10">
-								<input class="form-control" id="name" name="fullname"
+								<input class="form-control" id="name" name="bhf_code"
 									type="text" required />
-							</div>
-						</div>
-
-						<div class="form-group ">
-							<label for="cname" class="control-label col-lg-2">첨부파일 <span
-								class="required">*</span>
-							</label>
-							<div class="col-lg-10">
-								<input type="file" name="file">
 							</div>
 						</div>
 
@@ -48,19 +41,20 @@
 								class="required">*</span>
 							</label>
 							<div class="col-lg-10">
-								<input class="form-control" id="level_info" name="fullname"
+								<input class="form-control" id="level_info" name="floorinfo_floor"
 									type="text" required />
 							</div>
 						</div>
-
+						
 						<div class="form-group ">
-							<label for="ccomment" class="control-label col-lg-2">설계도면
-								부가 정보</label>
+							<label for="cname" class="control-label col-lg-2">첨부파일 <span
+								class="required">*</span>
+							</label>
 							<div class="col-lg-10">
-								<textarea class="form-control " id="ccomment" name="comment"
-									required></textarea>
+								<input type="file" name="file" required>
 							</div>
 						</div>
+
 
 						<div class="form-group">
 							<div class="col-lg-offset-2 col-lg-10">
