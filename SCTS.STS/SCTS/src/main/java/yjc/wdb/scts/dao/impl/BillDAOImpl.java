@@ -1,5 +1,6 @@
 package yjc.wdb.scts.dao.impl;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,51 @@ public class BillDAOImpl implements BillDAO {
 	public List<HashMap> daySales() throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectList(NAMESPACE+".daySales");
+	}
+
+	@Override
+	public List<HashMap> searchYear(int year1, int year2) throws Exception {
+		Map map = new HashMap();
+		map.put("year1", year1);
+		map.put("year2", year2);
+		
+		return sql.selectList(NAMESPACE+".searchYear", map);
+	}
+
+	@Override
+	public List<HashMap> settleSalesInfo(int year1, int year2) throws Exception {
+		Map map = new HashMap();
+		map.put("year1", year1);
+		map.put("year2", year2);
+		
+		return sql.selectList(NAMESPACE+".settleSalesInfo", map);
+	}
+
+	@Override
+	public List<HashMap> daySalesSettleInfo() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".daySalesSettleInfo");
+	}
+
+	@Override
+	public List<HashMap> searchDaySales(Date date1, Date date2) throws Exception {
+		
+		Map map = new HashMap();
+		map.put("date1", date1);
+		map.put("date2", date2);
+		
+		return sql.selectList(NAMESPACE+".searchDaySales", map);
+	}
+
+	@Override
+	public List<HashMap> daySettle(Date date1, Date date2, int setle_mth_code) {
+		
+		Map map = new HashMap();
+		map.put("date1", date1);
+		map.put("date2", date2);
+		map.put("setle_mth_code", setle_mth_code);
+		
+		return sql.selectList(NAMESPACE+".daySettle", map);
 	}
 
 }

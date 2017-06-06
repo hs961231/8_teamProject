@@ -1,6 +1,7 @@
 package yjc.wdb.scts;
 
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -253,6 +254,64 @@ public class HomeController {
 
 		return callback + "(" + jsonObject +")";
 	}
+	
+	
+	@RequestMapping(value="searchYear", method=RequestMethod.GET)
+	public @ResponseBody String searchYear(HttpServletRequest request, int year1, int year2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.searchYear(year1, year2);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	
+	@RequestMapping(value="settleSalesInfo", method=RequestMethod.GET)
+	public @ResponseBody String settleSalesInfo(HttpServletRequest request, int year1, int year2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.settleSalesInfo(year1, year2);
+
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year"));
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	
+	
 
 	@RequestMapping(value="daySales", method=RequestMethod.GET)
 	public @ResponseBody String daySales(HttpServletRequest request) throws Exception{
@@ -279,6 +338,88 @@ public class HomeController {
 	}
 	
 
+	
+	@RequestMapping(value="daySettle", method=RequestMethod.GET)
+	public @ResponseBody String daySettle(HttpServletRequest request, Date date1, Date date2, int setle_mth_code) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.daySettle(date1, date2, setle_mth_code);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year").toString());
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	@RequestMapping(value="searchDaySales", method=RequestMethod.GET)
+	public @ResponseBody String searchDaySales(HttpServletRequest request, Date date1, Date date2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.searchDaySales(date1, date2);
+
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+		}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+
+	
+	@RequestMapping(value="daySalesSettleInfo", method=RequestMethod.GET)
+	public @ResponseBody String daySalesSettleInfo(HttpServletRequest request) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.daySalesSettleInfo();
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year").toString());
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	/////////////////////////////////////////////재고관리 //////////////////////////
 	
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
@@ -324,7 +465,7 @@ public class HomeController {
 			viewCalArray.add(viewCalJson);
 			
 		}
-		
+		 
 		JSONObject json = new JSONObject();
 		json.put("result", viewCalArray);
 		
@@ -339,8 +480,7 @@ public class HomeController {
 		
 		try {
 			bbsService.insertEvent(eventVO, bbscttVO);
-			System.out.println(eventVO.getEvent_begin_de());
-			System.out.println(eventVO.getEvent_end_de());
+			
 			
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 			
