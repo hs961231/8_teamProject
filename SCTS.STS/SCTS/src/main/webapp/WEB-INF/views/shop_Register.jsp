@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<<<<<<< HEAD
+<script src="resources/customjs/shop_Register.js"></script>
+
 <style>
 /* The Modal (background) */
-.modal,.tileModal {
+.modal, .tileModal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 1; /* Sit on top */
@@ -78,28 +79,26 @@ to {
 .panel-heading {
 	border: 1px solid #D5D5D5;
 }
-=======
 
-<script src="resources/customjs/shop_Register.js"></script>
+.tileMap>div {
+	width: 100%;
+	height: 12.5%;
+}
 
-<style>
-	.tileMap > div {
-		width: 100%;
-		height: 12.5%;
-	}
-	.tile {
-		background-color: rgba(30,255,255,0.3);
-		width: 12.5%;
-		height: 100%;
-		float: left;
-	}
-	div.mouseover {
-		background-color: blue;
-	}
-	div.active {
-		background-color: red;
-	}
->>>>>>> origin/master
+.tile {
+	background-color: rgba(30, 255, 255, 0.3);
+	width: 12.5%;
+	height: 100%;
+	float: left;
+}
+
+div.mouseover {
+	background-color: blue;
+}
+
+div.active {
+	background-color: red;
+}
 </style>
 
 <div class="row">
@@ -128,110 +127,132 @@ to {
 				</div>
 			</div>
 			<div class="panel-body-map">
-				<div id="blueprint" style="height: 380px; text-align: center; position: absolute; z-index: 1;">
-				<!-- 
+				<div id="blueprint"
+					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
+					<!-- 
 					<br> <br> <br> <br> <br> <br> <br>
 					<br>
 					<p>설계도면 파일을 등록해주세요.</p>
 				 -->
-			 		<img src="displayDrawing?fileName=/${ drawingList.get(0).drw_flpth }" style="width: 800px; height: 380px;" >
-				 	
+					<img
+						src="displayDrawing?fileName=/${ drawingList.get(0).drw_flpth }"
+						style="width: 800px; height: 380px;">
+
 				</div>
-				
-				
-			 	<!-- 전체 타일 영역 잡을 것. 위에 이미지 태그와 겹칠수 있도록 정의해야함 -->
-			 	<div class="tileMap" style="position: absolute; width: 800px; height: 380px; z-index: 2;">	<!-- 타일영역 전체 감싸는 div -->
-				
-			 		<div>	<!-- 타일영역 1번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 1번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 2번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 2번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 3번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 3번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 4번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 4번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 5번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 5번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 6번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 6번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 7번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 7번 줄 -->
-				 	
-				 	<div>	<!-- 타일영역 8번 줄 -->
-					 	<div class="tile"></div>	
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-					 	<div class="tile"></div>
-				 	</div>	<!-- 타일영역 8번 줄 -->
-			 	
-			 	</div>	<!-- 타일영역 전체 감싸는 div -->
-			 	
+
+
+				<!-- 전체 타일 영역 잡을 것. 위에 이미지 태그와 겹칠수 있도록 정의해야함 -->
+				<div class="tileMap"
+					style="position: absolute; width: 800px; height: 380px; z-index: 2;">
+					<!-- 타일영역 전체 감싸는 div -->
+
+					<div>
+						<!-- 타일영역 1번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 1번 줄 -->
+
+					<div>
+						<!-- 타일영역 2번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 2번 줄 -->
+
+					<div>
+						<!-- 타일영역 3번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 3번 줄 -->
+
+					<div>
+						<!-- 타일영역 4번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 4번 줄 -->
+
+					<div>
+						<!-- 타일영역 5번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 5번 줄 -->
+
+					<div>
+						<!-- 타일영역 6번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 6번 줄 -->
+
+					<div>
+						<!-- 타일영역 7번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 7번 줄 -->
+
+					<div>
+						<!-- 타일영역 8번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 8번 줄 -->
+
+				</div>
+				<!-- 타일영역 전체 감싸는 div -->
+
 			</div>
 
 		</div>
@@ -339,7 +360,7 @@ to {
 							<div class="form-group">
 								<div class="col-lg-offset-2 col-lg-10">
 									<button class="btn btn-primary" id="save" type="submit">Save</button>
-									<button class="btn btn-default" id="shopCancel"type="button">Cancel</button>
+									<button class="btn btn-default" id="shopCancel" type="button">Cancel</button>
 								</div>
 							</div>
 						</form>
@@ -353,23 +374,23 @@ to {
 <div id="tileModal" class="modal">
 	<div class="tileModal-row">
 		<div class="col-lg-12">
-		<section class="panel">
-			<header class="panel-heading"> 타일 정보 등록 </header>
-			<div class="panel-body">
-				<div class="form">
-					<form class="form-validate form-horizontal" id="feedback_form"
-						method="post" action="">
+			<section class="panel">
+				<header class="panel-heading"> 타일 정보 등록 </header>
+				<div class="panel-body">
+					<div class="form">
+						<form class="form-validate form-horizontal" id="feedback_form"
+							method="post" action="">
 
-						<div class="form-group ">
-							<label for="name" class="control-label col-lg-2">타일 명 <span
-								class="required">*</span>
-							</label>
-							<div class="col-lg-10">
-								<input class="form-control" id="tile_nm" name="tile_nm"
-									type="text" required />
+							<div class="form-group ">
+								<label for="name" class="control-label col-lg-2">타일 명 <span
+									class="required">*</span>
+								</label>
+								<div class="col-lg-10">
+									<input class="form-control" id="tile_nm" name="tile_nm"
+										type="text" required />
+								</div>
 							</div>
-						</div>
-<!-- 
+							<!-- 
 						<div class="form-group ">
 							<label for="major" class="control-label col-lg-2">비콘 시리얼
 								번호 <span class="required">*</span> <br>(Major)
@@ -400,18 +421,18 @@ to {
 						</div>
 -->
 
-						<div class="form-group">
-							<div class="col-lg-offset-2 col-lg-10">
-								<button class="btn btn-primary" id="tileSave" type="submit">Save</button>
-								<button class="btn btn-default" id="tileCancel" type="button">Cancel</button>
+							<div class="form-group">
+								<div class="col-lg-offset-2 col-lg-10">
+									<button class="btn btn-primary" id="tileSave" type="submit">Save</button>
+									<button class="btn btn-default" id="tileCancel" type="button">Cancel</button>
+								</div>
 							</div>
-						</div>
-					</form>
-				</div>
+						</form>
+					</div>
 
-			</div>
-		</section>
-	</div>
+				</div>
+			</section>
+		</div>
 	</div>
 </div>
 
