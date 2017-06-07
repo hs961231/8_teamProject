@@ -317,7 +317,7 @@ div.active {
 	</div>
 </div>
 
-<div id="Mymodal" class="modal">
+<div id="Mymodal" class="modal" style="z-index: 3;">
 	<div class="modal-row">
 		<div class="col-lg-12">
 			<section class="panel">
@@ -325,7 +325,7 @@ div.active {
 				<div class="panel-body">
 					<div class="form">
 						<form class="form-validate form-horizontal" id="feedback_form"
-							method="post" action="" enctype="multipart/form-data">
+							method="post" action="shop_RegisterForm" enctype="multipart/form-data">
 
 							<div class="form-group ">
 								<label for="cname" class="control-label col-lg-2">지점코드 <span

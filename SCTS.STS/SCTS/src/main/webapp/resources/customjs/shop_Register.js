@@ -56,5 +56,34 @@ $(document).ready(function() {
 		
 	});
 	
+	var imgLoad = function() {
+		$.ajax({
+			url: "shopTileClick",
+			type: "post",
+			data: {
+				X_index : X_index,
+				Y_index : Y_index
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data != null) {
+					var tile_info = $("#tile_info");
+					tile_info.empty();
+					
+					$("<p></p>").text("tile_code = " + data.tile_code).appendTo(tile_info);
+					$("<p></p>").text("tile_nm = " + data.tile_nm).appendTo(tile_info);
+					$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
+					$("<p></p>").text("beacon_mjr = " + data.beacon_mjr).appendTo(tile_info);
+					$("<p></p>").text("beacon_mnr = " + data.beacon_mnr).appendTo(tile_info);
+				}
+				else {
+					window.alert("현재 해당 타일은 등록되어있지 않습니다.");
+				}
+			},
+			error: function(data) {
+				
+			}
+		});
+	};
 	
 });
