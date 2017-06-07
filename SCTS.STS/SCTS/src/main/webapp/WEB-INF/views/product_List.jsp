@@ -15,6 +15,8 @@
 </div>
 
 <!-- page start-->
+<form id="pageForm">
+</form>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
@@ -27,140 +29,52 @@
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>
 			</div>
-			<section class="panel" style="overflow: scroll; height: 430px;">
-
-				<table class="table table-striped table-advance table-hover">
-					<tbody>
-					
-					
-						<tr>
-							<th style="text-align: center;"><i class="icon_profile"></i>
-								Product_no</th>
-							<th style="text-align: center;"><i class="icon_calendar"></i>
-								Category_no</th>
-							<th style="text-align: center;"><i class="icon_mail_alt"></i>
-								Category_name</th>
-							<th style="text-align: center;"><i class="icon_pin_alt"></i>
-								Product_name</th>
-							<th style="text-align: center;"><i class="icon_pin_alt"></i>
-								Product_Amount</th>
-							<th style="text-align: center;"><i class="icon_pin_alt"></i>
-								Price(won)</th>
-							<th style="text-align: center;"></th>
-						</tr>
-
-
-						<c:forEach items="${ GoodsList }" var="vo">
-
+			<section class="panel" style="overflow: scroll; height: 430px;">>
+					<table class="table table-striped table-advance table-hover">
+						<tbody>
 							<tr>
-								<td style="text-align: center;">${ vo.goods_code }</td>
-								<td style="text-align: center;">${ vo.detailctgry_code }</td>
-								<td style="text-align: center;">이름출력 아직 안됨</td>
-								<td style="text-align: center;">${ vo.goods_nm }</td>
-								<td style="text-align: center;">상품수량 아직 안됨</td>
-								<td style="text-align: center;">${ vo.goods_pc }</td>
-								<td>
-									<div class="btn-group">
-										<a class="btn btn-primary" href="product_Info"><i
-											class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-											href="#"><i class="icon_check_alt2"></i></a> <a
-											class="btn btn-danger" href="#"><i
-											class="icon_close_alt2"></i></a>
-									</div>
-								</td>
+								<th style="text-align: center;"><i class="icon_profile"></i>
+									Product_no</th>
+								<th style="text-align: center;"><i class="icon_calendar"></i>
+									Category_no</th>
+								<th style="text-align: center;"><i class="icon_mail_alt"></i>
+									Category_name</th>
+								<th style="text-align: center;"><i class="icon_pin_alt"></i>
+									Product_name</th>
+								<th style="text-align: center;"><i class="icon_pin_alt"></i>
+									Product_Amount</th>
+								<th style="text-align: center;"><i class="icon_pin_alt"></i>
+									Price(won)</th>
 							</tr>
 
-						</c:forEach>
-						
-						
-						<tr>
-							<td style="text-align: center;">001</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<td style="text-align: center;">002</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<td style="text-align: center;">003</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<td style="text-align: center;">004</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<td style="text-align: center;">005</td>
-							<td style="text-align: center;">03</td>
-							<td style="text-align: center;">가전 제품</td>
-							<td style="text-align: center;">** 고데기</td>
-							<td style="text-align: center;">15</td>
-							<td style="text-align: center;">25000</td>
-							<td>
-								<div class="btn-group">
-									<a class="btn btn-primary" href="product_Info"><i
-										class="icon_plus_alt2"></i></a> <a class="btn btn-success"
-										href="#"><i class="icon_check_alt2"></i></a> <a
-										class="btn btn-danger" href="#"><i class="icon_close_alt2"></i></a>
-								</div>
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
+							<c:forEach items="${ GoodsList }" var="vo">
+								<tr>
+									<td style="text-align: center;">${ vo.goods_code }</td>
+									<td style="text-align: center;">${ vo.detailctgry_code }</td>
+									<td style="text-align: center;"><a href="${vo.goods_code}"
+										class="code">이름출력 아직 안됨</a></td>
+									<td style="text-align: center;">${ vo.goods_nm }</td>
+									<td style="text-align: center;">상품수량 아직 안됨</td>
+									<td style="text-align: center;">${ vo.goods_pc }</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 			</section>
 		</div>
 	</div>
 </div>
+
+<script>
+	var pageForm = $("#pageForm");
+
+	$(".code").on("click", function(){
+		event.preventDefault();	
+		var product_id = $(this).attr("href");
+		pageForm.attr("action", "product_Info");
+		pageForm.attr("method", "get");
+		$("<input type='text' name='product_id' value='"+product_id+"'>").appendTo(pageForm);
+		pageForm.submit();
+	}); 
+	
+</script>
