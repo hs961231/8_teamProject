@@ -275,7 +275,7 @@
 		<section class="panel panel-default">
 			<header class="panel-heading chartTitle"> 연매출 </header>
 			<div class="panel-body text-center">
-				<canvas id="bar" height="450" width="1200"></canvas>
+				<canvas id="bar" height="450" width="600"></canvas>
 			</div>
 		</section>
 	</div>
