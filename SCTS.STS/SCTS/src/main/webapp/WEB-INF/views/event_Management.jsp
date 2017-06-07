@@ -227,7 +227,6 @@ body {
 }
 </style>
 
-
 <div id='calendar'></div>
 
 <div id="registerEvent" class="modal-layout">
