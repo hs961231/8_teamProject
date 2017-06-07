@@ -3,6 +3,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
+<script src="resources/customjs/shop_Register.js"></script>
+
+<style>
+
+.tileMap>div {
+	width: 100%;
+	height: 12.5%;
+}
+
+.tile {
+	background-color: rgba(30, 255, 255, 0.3);
+	width: 12.5%;
+	height: 100%;
+	float: left;
+}
+
+div.mouseover {
+	background-color: blue;
+}
+
+div.active {
+	background-color: red;
+}
+</style>
 <!-- 이 부분은 일매출, 일 방문자 수 등 보임!!!!!!!!!! -->
 <div class="row">
 	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -74,16 +98,156 @@
 <!-- 대시보드 -->
 <div class="row"
 	style="height: 500px; border: solid 1px blue; margin-bottom: 20px;">
-	<div
-		style="width: 65%; float: left; height: 450px; border: solid 1px black; margin-right: 3%; margin-top: 1%;">
-		
+	<div class="col-lg-9 col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2>
+					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
+				</h2>
+			</div>
+			<div class="panel-body-map">
+				<div id="blueprint"
+					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
+					<!-- 
+					<br> <br> <br> <br> <br> <br> <br>
+					<br>
+					<p>설계도면 파일을 등록해주세요.</p>
+				 -->
+					<%-- <img
+						src="displayDrawing?fileName=/${ drawingList.get(0).drw_flpth }"
+						style="width: 800px; height: 380px;"> --%>
+
+				</div>
+
+
+				<!-- 전체 타일 영역 잡을 것. 위에 이미지 태그와 겹칠수 있도록 정의해야함 -->
+				<div class="tileMap"
+					style="position: absolute; width: 800px; height: 380px; z-index: 2;">
+					<!-- 타일영역 전체 감싸는 div -->
+
+					<div>
+						<!-- 타일영역 1번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 1번 줄 -->
+
+					<div>
+						<!-- 타일영역 2번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 2번 줄 -->
+
+					<div>
+						<!-- 타일영역 3번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 3번 줄 -->
+
+					<div>
+						<!-- 타일영역 4번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 4번 줄 -->
+
+					<div>
+						<!-- 타일영역 5번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 5번 줄 -->
+
+					<div>
+						<!-- 타일영역 6번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 6번 줄 -->
+
+					<div>
+						<!-- 타일영역 7번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 7번 줄 -->
+
+					<div>
+						<!-- 타일영역 8번 줄 -->
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+						<div class="tile"></div>
+					</div>
+					<!-- 타일영역 8번 줄 -->
+
+				</div>
+				<!-- 타일영역 전체 감싸는 div -->
+
+			</div>
+
+		</div>
 	</div>
-	<div
-		style="width: 30%; height: 450px; float: left; border: solid 1px black; margin-top: 1%;">
-		
+
+	<div class="col-md-3" id="tile_info"
+		style="background-color: white; width: 280px; height: 417px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
+
+		<br> <br> <br> <br> <br> <br> <br>
+		<br> <br> <br>
+		<p>선택된 타일 정보가 없습니다.</p>
+
 	</div>
 </div>
 
+			
 
 
 <!-- 타일리스트 -->
