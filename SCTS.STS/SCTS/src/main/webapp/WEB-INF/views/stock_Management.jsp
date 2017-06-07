@@ -36,6 +36,7 @@
 				</h2>
 			</div>
 			<section class="panel" style="overflow: scroll; height: 600px;">
+			<form class="form">
 				<table class="table table-striped table-advance table-hover">
 					<!-- table-bordered -->
 					<thead>
@@ -65,6 +66,7 @@
 						</tbody>
 					</c:forEach>
 				</table>
+				</form>
 			</section>
 		</div>
 	</div>

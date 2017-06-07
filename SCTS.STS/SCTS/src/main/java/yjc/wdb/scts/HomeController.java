@@ -486,15 +486,36 @@ public class HomeController {
 	/////////////////////////////////////////////재고관리 //////////////////////////
 	
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
-	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
+	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) throws Exception{
 		String ContentPage = "stock_Management";
-
 		model.addAttribute("main_content", ContentPage);
+		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
+		System.out.println(GoodsList);
+		 model.addAttribute("list", GoodsList);
+		return "mainPage";
+	}
+	
+	
+	@RequestMapping(value="searchStock", method=RequestMethod.POST)
+	public String searchStock(HttpServletRequest request, HttpSession session, Model model, String goodsName) throws Exception{
+		String ContentPage = "stock_Management";
+		model.addAttribute("main_content", ContentPage);
+		
+		List<GoodsVO> GoodsList = goodsService.searchGoodsList(goodsName);
+		System.out.println("뽑아온 리스트는 " +GoodsList);
+		model.addAttribute("list", GoodsList);
 
 		return "mainPage";
 	}
 
-
+	@RequestMapping(value="deleteStock", method=RequestMethod.POST)
+	public String deleteStock(int goods_code)throws Exception{
+		
+		System.out.println("넘어온 번호 : " + goods_code);
+		goodsService.deleteStock(goods_code);
+		return "redirect:stock_Management";
+	}
+	
 	/********************************* 이벤트 관리 부분 ***************************************/
 	/********************************* 이벤트 관리 부분 ***************************************/
 	@RequestMapping(value="event_Management", method=RequestMethod.GET)
@@ -563,25 +584,27 @@ public class HomeController {
 	/********************************* 쿠폰 관리 부분 ***************************************/
 	/********************************* 쿠폰 관리 부분 ***************************************/
 
-	/*	@RequestMapping(value="registCoupon", method=RequestMethod.POST)
-	public String registPOST(CouponVO couponVO, Model model) throws Exception{
-		logger.info("register post...");
-		logger.info(couponVO.toString());
-
-		couponService.regist(couponVO);
-
-		model.addAttribute("result", "success");
-		return "mainPage";
+	@RequestMapping(value="insertCoupon", method=RequestMethod.POST)
+	public String insertCoupon(CouponVO couponVO) throws Exception{
+		
+		System.out.println(couponVO);
+		couponService.insertCoupon(couponVO);
+		return "redirect:coupon_Management";
 	}
-	 */
+	
+	@RequestMapping(value="updateCoupon", method=RequestMethod.POST)
+	public String modifyCoupon(CouponVO couponVO, int coupon_code) throws Exception{
+		
+		return "redirect:coupon_Management";
+	}
 
-	@RequestMapping(value="remove", method=RequestMethod.POST)
-	public String remove(@RequestParam int coupon_id)throws Exception{/*
-		System.out.println("remove�떎");
-		couponService.remove(coupon_id);*/
+	@RequestMapping(value="deleteCoupon", method=RequestMethod.POST)
+	public String remove(int coupon_code)throws Exception{
 
-		System.out.println(coupon_id);
-		return "mainPage";
+		System.out.println("넘어온 쿠폰 코드는 " + coupon_code);
+		couponService.deleteCoupon(coupon_code);
+
+		return "redirect:coupon_Management";
 	}
 
 
@@ -597,7 +620,6 @@ public class HomeController {
 		
 		return "mainPage";
 	}
-
 
 	/********************************* 포스 시스템 부분 ***************************************/
 	/********************************* 포스 시스템 부분 ***************************************/

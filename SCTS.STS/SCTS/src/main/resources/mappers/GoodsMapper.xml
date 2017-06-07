@@ -37,6 +37,10 @@ from
 where GOODS_CODE = #{goods_code}
 </select>
 
+<delete id="deleteStock">
+	delete from goods where goods_code = #{goods_code};
+</delete>
+
 <!-- <update id="">
 </update>
 
