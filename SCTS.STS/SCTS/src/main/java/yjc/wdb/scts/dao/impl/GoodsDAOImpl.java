@@ -42,4 +42,10 @@ public class GoodsDAOImpl implements GoodsDAO {
 		return sqlSession.selectOne(NAMESPACE + ".selectGoodsOne", goods_code);
 	}
 
+	@Override
+	public void deleteStock(int goods_code) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.delete(NAMESPACE + ".deleteStock", goods_code);
+	}
+
 }

@@ -8,3 +8,13 @@ $('#mySearch').click(function(){
 	$('.navbar-form').attr("method", "post");
 	$('.navbar-form').submit();
 });
+
+
+$('.delBtn').click(function(){
+	var SiNum = $(this).parent().siblings().eq(0).html();
+	window.alert(SiNum);
+	$('.form').append("<input type='number' name='goods_code' value='"+ SiNum + "'/> ");
+	$('.form').attr("action", "deleteStock");
+	$('.form').attr("method", "post");
+	$('.form').submit();
+});

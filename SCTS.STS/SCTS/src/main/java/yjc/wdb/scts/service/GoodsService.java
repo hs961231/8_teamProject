@@ -9,4 +9,5 @@ public interface GoodsService {
 	public List<GoodsVO> selectGoodsList() throws Exception;
 	public List<GoodsVO> searchGoodsList(String goodsName) throws Exception;
 	public GoodsVO selectGoodsOne(int goods_code) throws Exception;
+	public void deleteStock(int goods_code) throws Exception;
 }
