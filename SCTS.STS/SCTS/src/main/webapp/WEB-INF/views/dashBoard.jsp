@@ -50,8 +50,7 @@
 <!-- 하이차트 : 매출 들어갈곳 -->
 <div class="row"
 	style="height: 500px; border: solid 1px black; margin-bottom: 20px;">
-	<h1>이곳은!!!!!!!!!!!!!!!!!!!!!!!!!매출 하이차트 들어갈곳이다!!!!!!!! 스타일 인라인이다
-		태그안에 설정해놓음!!!</h1>
+
 	<div class="col-lg-6">
 		<section class="panel">
 			<header class="panel-heading chartTitle"> 일매출 </header>
@@ -77,11 +76,11 @@
 	style="height: 500px; border: solid 1px blue; margin-bottom: 20px;">
 	<div
 		style="width: 65%; float: left; height: 450px; border: solid 1px black; margin-right: 3%; margin-top: 1%;">
-		<h1>이곳은 대시보드 들어갈곳이다!!!!!!</h1>
+		
 	</div>
 	<div
 		style="width: 30%; height: 450px; float: left; border: solid 1px black; margin-top: 1%;">
-		<h1>이곳은 대시보드 옆 하이차트 들어갈곳임</h1>
+		
 	</div>
 </div>
 

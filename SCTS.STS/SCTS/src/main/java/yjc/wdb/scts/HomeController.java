@@ -430,7 +430,7 @@ public class HomeController {
 		return callback + "(" + jsonObject +")";
 	}
 	
-	/*@RequestMapping(value="monthSales", method=RequestMethod.GET)
+	@RequestMapping(value="monthSales", method=RequestMethod.GET)
 	public @ResponseBody String monthSales(HttpServletRequest request, String month1, String month2) throws Exception{
 
 
@@ -493,7 +493,7 @@ public class HomeController {
 
 		return "mainPage";
 	}
-*/
+
 
 	/********************************* 이벤트 관리 부분 ***************************************/
 	/********************************* 이벤트 관리 부분 ***************************************/
