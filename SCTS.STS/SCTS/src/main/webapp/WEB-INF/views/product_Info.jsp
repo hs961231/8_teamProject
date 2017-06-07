@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<form role="form" method="post">
+	<input type="hidden" name="product_id" value="${vo.goods_code}">
+</form>
+
 <div class="row">
 	<div class="col-lg-12">
 		<h3 class="page-header">
@@ -22,7 +26,7 @@
 			<div class="panel-body" style="overflow: scroll">
 				<div class="form">
 					<form class="form-validate form-horizontal" id="feedback_form"
-						method="get" action="">
+						method="post">
 						<div class="form-group ">
 							<label for="name" class="control-label col-lg-2">물품 사진 <span
 								class="required">*</span>
@@ -38,7 +42,7 @@
 								</label>
 								<div class="col-lg-5">
 									<input class="form-control" id="name" name="fullname"
-										type="text" required />
+										type="text" value="${vo.goods_nm}" required />
 								</div>
 								<br> <br> <br> <label for="amount"
 									class="control-label col-lg-2">카테고리 정보 <span
@@ -60,7 +64,7 @@
 								</label>
 								<div class="col-lg-5">
 									<input class="form-control" id="price" name="fullname"
-										type="text" required />
+										type="text" value="${ vo.goods_pc }" required />
 								</div>
 								<br> <br> <br> <label for="price"
 									class="control-label col-lg-2">판매 수량 <span
