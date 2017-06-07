@@ -29,4 +29,10 @@ public class TileServiceImpl implements TileService {
 		dao.insertTile(vo);
 	}
 
+	@Override
+	public HashMap<String, String> selectTile_LocationOne(HashMap<String, String> Map_XY) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectTile_LocationOne(Map_XY);
+	}
+
 }

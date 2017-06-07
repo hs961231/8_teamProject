@@ -1,6 +1,7 @@
 package yjc.wdb.scts;
 
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import yjc.wdb.scts.bean.BBScttVO;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.EventVO;
@@ -31,6 +34,7 @@ import yjc.wdb.scts.service.BBSService;
 import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
+import yjc.wdb.scts.service.Floor_informationService;
 import yjc.wdb.scts.service.GoodsService;
 import yjc.wdb.scts.service.TileService;
 import yjc.wdb.scts.service.UserService;
@@ -62,6 +66,9 @@ public class HomeController {
 	
 	@Inject
 	private BillService billService;
+	
+	@Inject
+	private Floor_informationService floor_informationService;
 
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -129,6 +136,11 @@ public class HomeController {
 		
 		List<HashMap<String, String>> tileList = tileService.selectTileList();
 		model.addAttribute("tileList", tileList);
+		
+		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김
+		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
+		List<HashMap<String, String>> drawingList = floor_informationService.selectDrawingList(bhf_code);
+		model.addAttribute("drawingList", drawingList);
 
 		return "mainPage";
 	}
@@ -253,6 +265,64 @@ public class HomeController {
 
 		return callback + "(" + jsonObject +")";
 	}
+	
+	
+	@RequestMapping(value="searchYear", method=RequestMethod.GET)
+	public @ResponseBody String searchYear(HttpServletRequest request, int year1, int year2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.searchYear(year1, year2);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	
+	@RequestMapping(value="settleSalesInfo", method=RequestMethod.GET)
+	public @ResponseBody String settleSalesInfo(HttpServletRequest request, int year1, int year2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.settleSalesInfo(year1, year2);
+
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year"));
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	
+	
 
 	@RequestMapping(value="daySales", method=RequestMethod.GET)
 	public @ResponseBody String daySales(HttpServletRequest request) throws Exception{
@@ -279,6 +349,141 @@ public class HomeController {
 	}
 	
 
+	
+	@RequestMapping(value="daySettle", method=RequestMethod.GET)
+	public @ResponseBody String daySettle(HttpServletRequest request, Date date1, Date date2, int setle_mth_code) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.daySettle(date1, date2, setle_mth_code);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year").toString());
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	@RequestMapping(value="searchDaySales", method=RequestMethod.GET)
+	public @ResponseBody String searchDaySales(HttpServletRequest request, Date date1, Date date2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.searchDaySales(date1, date2);
+
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+		}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+
+	
+	@RequestMapping(value="daySalesSettleInfo", method=RequestMethod.GET)
+	public @ResponseBody String daySalesSettleInfo(HttpServletRequest request) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.daySalesSettleInfo();
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year").toString());
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	@RequestMapping(value="monthSales", method=RequestMethod.GET)
+	public @ResponseBody String monthSales(HttpServletRequest request, String month1, String month2) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.monthSales(month1, month2);
+
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+		}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+
+	
+	@RequestMapping(value="monthSalesSettleInfo", method=RequestMethod.GET)
+	public @ResponseBody String monthSalesSettleInfo(HttpServletRequest request, String month1, String month2, int setle_mth_code) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.monthSalesSettleInfo(month1, month2, setle_mth_code);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("year", list.get(i).get("year").toString());
+			salesJson.put("setle_mth_nm", list.get(i).get("setle_mth_nm"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesArray.add(salesJson);
+
+		}
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	/////////////////////////////////////////////재고관리 //////////////////////////
 	
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(HttpServletRequest request, HttpSession session, Model model) {
@@ -324,7 +529,7 @@ public class HomeController {
 			viewCalArray.add(viewCalJson);
 			
 		}
-		
+		 
 		JSONObject json = new JSONObject();
 		json.put("result", viewCalArray);
 		
@@ -339,8 +544,7 @@ public class HomeController {
 		
 		try {
 			bbsService.insertEvent(eventVO, bbscttVO);
-			System.out.println(eventVO.getEvent_begin_de());
-			System.out.println(eventVO.getEvent_end_de());
+			
 			
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 			
@@ -407,7 +611,27 @@ public class HomeController {
 
 		return "mainPage";
 	}
+	
+	@RequestMapping(value="getGoodsAjax", method=RequestMethod.POST,
+			produces = "text/plain; charset=UTF-8")
+	@ResponseBody 
+	public ResponseEntity<String> getGoodsAjax(@RequestParam("goods_code") int goods_code) throws Exception {
 
+		logger.debug("입장");
+		logger.info("설마 이거 되면 진심 욕한다");
+		System.out.println("설마 누가 건드림?" + goods_code);
+		
+		GoodsVO vo = goodsService.selectGoodsOne(goods_code);
+		//JSONObject goods = ; 
+		if(vo == null) {
+			return new ResponseEntity<String>(HttpStatus.OK);
+		}
+		String str = new Gson().toJson(vo);
+		
+		System.out.println(str);
+		
+		return new ResponseEntity<String>(str, HttpStatus.OK);
+	}
 
 	/***************************************
 	 * 2017_05_09

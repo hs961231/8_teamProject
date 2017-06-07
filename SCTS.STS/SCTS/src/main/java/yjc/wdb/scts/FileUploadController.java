@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import yjc.wdb.scts.bean.Floor_informationVO;
+import yjc.wdb.scts.service.Floor_informationService;
 import yjc.wdb.scts.util.MediaUtils;
 import yjc.wdb.scts.util.UploadFileUtils;
 
@@ -40,6 +43,9 @@ public class FileUploadController {
 	
 	@Resource(name = "drawingPath")
 	private String drawingPath;
+	
+	@Inject
+	Floor_informationService floor_informationService;
 
 	
 	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.POST)
@@ -56,8 +62,52 @@ public class FileUploadController {
 		
 		String savedName = UploadFileUtils.uploadDrawingFile(file.getOriginalFilename(), drawingPath, file.getBytes());
 		
+		Floor_informationVO vo = new Floor_informationVO();
+		
+		vo.setBhf_code(bhf_code);
+		vo.setFloorinfo_floor(floorinfo_floor);
+
+		floor_informationService.register_shop(savedName, vo);
 
 		return "mainPage";
+	}
+
+	@RequestMapping("displayDrawing")
+	@ResponseBody
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
+		ResponseEntity<byte[]> entity = null;
+		
+		String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+		MediaType mediaType = MediaUtils.getMediaType(ext);
+		
+		InputStream in = null;
+		
+		logger.info("File Name: " + fileName);
+		
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			in = new FileInputStream(drawingPath + fileName);
+			if(mediaType != null) {
+				headers.setContentType(mediaType);
+			}
+			else {
+				fileName = fileName.substring(fileName.indexOf("_")+1);
+				headers.setContentType(mediaType.APPLICATION_OCTET_STREAM);
+				String fN = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+				headers.add("Content-Dissponstion", "attachment; filename=\""+ fN + "\"");
+			}
+
+			byte[] data = IOUtils.toByteArray(in);
+			entity = new ResponseEntity<byte[]>(data,headers,HttpStatus.CREATED);
+		} catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			if(in != null) in.close();
+		}
+		
+		return entity;
 	}
 	
 	/*

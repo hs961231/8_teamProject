@@ -30,5 +30,11 @@ public class TileDAOImpl implements TileDAO {
 		// TODO Auto-generated method stub
 		sqlSession.insert(NAMESPACE + ".insertTile", vo);
 	}
+
+	@Override
+	public HashMap<String, String> selectTile_LocationOne(HashMap<String, String> Map_XY) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".selectTile_LocationOne", Map_XY);
+	}
 	
 }

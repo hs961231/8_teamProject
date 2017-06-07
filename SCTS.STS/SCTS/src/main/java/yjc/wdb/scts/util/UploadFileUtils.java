@@ -29,7 +29,7 @@ public class UploadFileUtils {
 		
 		FileCopyUtils.copy(fileData, target);
 		
-		return uploadPath + File.separator + savedName;
+		return savedName;
 	}
 
 	public static String uploadFile(String originalName, String uploadPath, byte[] fileData) throws Exception {

@@ -144,13 +144,19 @@
 				success: function(result){
 					if(result == "success"){
 						
-					
 						eventData = {
 								title : title,
 								start : start,
 								end : end
 						};
-						$('#calendar').fullCalendar('renderEvent', eventData, true);			
+						
+						
+						
+						$('#calendar').fullCalendar('renderEvent', eventData, true);
+						
+						$('.fc-content').append($("<span></span>").text(eventData.end));
+						
+						
 						
 					}
 				}
@@ -195,21 +201,10 @@
 						
 					}
 					
-					
 					$('#calendar').fullCalendar('renderEvent', eventData, true);
-	
 					
-					// 이것 좀 하자 제발! 혜수야!
-					$('.fc-content').each(function(index){
-						
-						$(this).append($('<span></span>').attr("data", eventData.bbsctt_code)
-								.text(eventData.bbsctt_code));
-						
-					});
 					
 				}
-				
-				
 	
 			}
 		});

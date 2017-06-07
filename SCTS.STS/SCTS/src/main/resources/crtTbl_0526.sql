@@ -10,7 +10,7 @@ create table BRANCH_OFFICE (
 /* 도면 테이블 */
 create table DRAWING (
 	DRW_CODE int AUTO_INCREMENT,
-	DRW_FLPTH varchar(50) not null,	/* 도면 파일 경로 */
+	DRW_FLPTH varchar(100) not null,	/* 도면 파일 경로 */
 	PRIMARY KEY(DRW_CODE)
 );
 
