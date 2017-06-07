@@ -36,7 +36,7 @@
 								<label for="name" class="control-label col-lg-2">물품 명 <span
 									class="required">*</span>
 								</label>
-								<div class="col-lg-3">
+								<div class="col-lg-5">
 									<input class="form-control" id="name" name="fullname"
 										type="text" required />
 								</div>
@@ -44,7 +44,7 @@
 									class="control-label col-lg-2">카테고리 정보 <span
 									class="required">*</span>
 								</label>
-								<div class="col-lg-3">
+								<div class="col-lg-5">
 									<select class="form-control m-bot15">
 										<option>카테고리 정보를 선택해주세요.</option>
 										<option>신선 식품(01)</option>
@@ -58,7 +58,7 @@
 									class="control-label col-lg-2">판매 가 <span
 									class="required">*</span>
 								</label>
-								<div class="col-lg-3">
+								<div class="col-lg-5">
 									<input class="form-control" id="price" name="fullname"
 										type="text" required />
 								</div>
@@ -66,7 +66,7 @@
 									class="control-label col-lg-2">판매 수량 <span
 									class="required">*</span>
 								</label>
-								<div class="col-lg-3">
+								<div class="col-lg-5">
 									<input class="form-control" id="price" name="fullname"
 										type="text" required />
 								</div>
@@ -76,7 +76,7 @@
 						<div class="form-group ">
 							<label for="ccomment" class="control-label col-lg-2">물품
 								부가 정보</label>
-							<div class="col-lg-8">
+							<div class="col-lg-20">
 								<textarea class="form-control " id="ccomment" name="comment"
 									required></textarea>
 							</div>

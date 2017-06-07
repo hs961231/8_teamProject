@@ -73,7 +73,7 @@
 		var product_id = $(this).attr("href");
 		pageForm.attr("action", "product_Info");
 		pageForm.attr("method", "get");
-		$("<input type='text' name='product_id' value='"+product_id+"'>").appendTo(pageForm);
+		$("<input type='hidden' name='product_id' value='"+product_id+"'>").appendTo(pageForm);
 		pageForm.submit();
 	}); 
 	
