@@ -95,6 +95,14 @@
 <script src="resources/js/charts.js"></script>
 <script src="resources/js/jquery.slimscroll.min.js"></script>
 
+<!-- HighChart -->
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
+
 <script>
 		//knob
 		$(document).ready(function() {

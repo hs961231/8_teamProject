@@ -57,20 +57,20 @@
 	<!--/.col-->
 
 	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-		<div class="info-box yellow-bg2 productLank">
+		<div class="info-box yellow-bg2 productRank">
 			<i class="fa fa-thumbs-o-up"></i>
 			<div class="count">3,200</div>
-			<div class="title">Monthly Product Lank</div>
+			<div class="title">Monthly Product Rank</div>
 		</div>
 		<!--/.info-box-->
 	</div>
 	<!--/.col-->
 
 	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-		<div class="info-box dark-bg customerProductLank">
+		<div class="info-box dark-bg customerProductRank">
 			<i class="fa fa-cubes"></i>
 			<div class="count">20,000</div>
-			<div class="title">Customer Product Lank</div>
+			<div class="title">Customer Product Rank</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -172,7 +172,7 @@
 
 </div>
 
-<div id="customerProductLankInfo">
+<div id="customerProductRankInfo">
 <table class="table">
 		<tr>
 			<td width="700"></td>
