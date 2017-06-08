@@ -33,6 +33,8 @@
 		<result property="stprc" column="stprc" />
 	</resultMap>
 
+
+	<!-- APP -->
 	<select id="billList" resultType="BillVO">
 		select * from bill where
 		user_id = #{user_id} and date(bill.BILL_ISSU_DE) >=
@@ -41,20 +43,19 @@
 
 	<select id="billOne" resultMap="billOne">
 		select g.GOODS_NM as goods_nm,
-		pg.PURCHSGOODS_QY as purchgoods_qy, if(isnull(pg.COUPON_CODE), 'X',
-		c.COUPON_DSCNT) as COUPON_DSCNT, g.GOODS_PC *
-		pg.PURCHSGOODS_QY -
-		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT like '%@%' escape '@',
-		g.GOODS_PC * (trim(trailing '%' from c.COUPON_DSCNT)/100),
-		c.COUPON_DSCNT)) as price
-		from goods g, purchase_goods pg, bill b,
-		coupon c
-		where g.GOODS_CODE = pg.GOODS_CODE and pg.BILL_CODE =
-		b.BILL_CODE and
-		if(isnull(pg.COUPON_CODE), 1, c.COUPON_CODE =
-		pg.COUPON_CODE) and b.BILL_CODE = #{bill_code}
-		group by g.GOODS_NM,
-		pg.bill_code;
+		pg.purchsgoods_qy as purchsgoods_qy, if(isnull(pg.coupon_code), 'X',
+		c.COUPON_DSCNT) as COUPON_DSCNT,
+		sum(g.GOODS_PC *
+		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing '%' from
+		c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT))) as price
+		from purchase_goods pg left outer join coupon c on pg.COUPON_CODE =
+		c.COUPON_CODE, goods g, bill b
+		where g.goods_code = pg.goods_code and b.BILL_CODE = pg.BILL_CODE and
+		pg.bill_code = #{bill_code}
+		group by pg.bill_code, pg.goods_code
 	</select>
 
 	<select id="settleInfo" resultMap="settleInfo">
@@ -97,7 +98,7 @@
 		limit 0, 10
 	</select>
 
-	<!-- 매출 -->
+	<!-- Web 매출 -->
 	<resultMap id="yearSales" type="java.util.HashMap">
 		<result property="year" column="year" />
 		<result property="totalPrice" column="totalPrice" />
@@ -115,6 +116,7 @@
 
 	</resultMap>
 
+	<!-- 연매출 그래프 -->
 	<select id="yearSales" resultMap="yearSales">
 		select
 		date_format((b.BILL_ISSU_DE), '%Y') as year, sum(b.BILL_TOTAMT) as
@@ -137,6 +139,7 @@
 
 	</select>
 
+	<!-- 연매출 검색 -->
 	<select id="searchYear" resultMap="yearSales">
 		<![CDATA[
 		select
@@ -149,6 +152,7 @@
 
 	</select>
 
+	<!-- 연도별 결제수단, 총매출 -->
 	<select id="settleSalesInfo" resultMap="settleSalesInfo">
 		<![CDATA[
 		select
@@ -163,7 +167,7 @@
 	</select>
 
 
-
+	<!--  -->
 	<select id="daySales" resultMap="daySales">
 		<![CDATA[
 		select b.BILL_ISSU_DE
@@ -176,7 +180,7 @@
 		]]>
 	</select>
 
-
+	<!-- 일매출 div 누를 시 일, 결제수단, 총매출 -->
 	<select id="daySalesSettleInfo" resultMap="settleSalesInfo">
 	
 	<![CDATA[
@@ -191,21 +195,21 @@
 	]]>
 	</select>
 
-
+	<!-- 일매출 검색시 그래프 -->
 	<select id="searchDaySales" resultMap="daySales">
 	<![CDATA[
 		select b.BILL_ISSU_DE
 			as bill_issu_de, sum(b.BILL_TOTAMT) as
 			totalPrice from
 			bill b
-			where (b.BILL_ISSU_DE between #{date2} and #{date1})
+			where b.BILL_ISSU_DE between #{date2} and #{date1}
 			group by
 			b.BILL_ISSU_DE;
 	]]>
 
 	</select>
 
-
+	<!-- 일매출 검색 시 일, 결제수단, 총매출 -->
 	<select id="daySettle" resultMap="settleSalesInfo">
 		<![CDATA[
 		select
@@ -219,18 +223,19 @@
 		]]>
 	</select>
 
-
+	<!-- 월 매출 -->
 	<select id="monthSales" resultMap="daySales">
 	<![CDATA[
 		select date_format(b.BILL_ISSU_DE, '%Y-%m') as bill_issu_de, sum(b.BILL_TOTAMT) as totalPrice
 		from bill b
-		where date_format(b.BILL_ISSU_DE, '%Y-%m') between #{month2} and #{month1} and
+		where date_format(b.BILL_ISSU_DE, '%Y-%m') between #{month2} and #{month1}
 		group by date_format(b.BILL_ISSU_DE, '%Y-%m')
 
 	]]>
 
 	</select>
-
+	
+	<!-- 월 매출 월,결제수단, 총매출 -->
 	<select id="monthSalesSettleInfo" resultMap="settleSalesInfo">
 	<![CDATA[
 		
@@ -242,6 +247,9 @@
 		group by date_format(b.BILL_ISSU_DE, '%Y-%m'), sm.setle_mth_nm;
 	]]>
 	</select>
+	
+	
+	
 
 
 
