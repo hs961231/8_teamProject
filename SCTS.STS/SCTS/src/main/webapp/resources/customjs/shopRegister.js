@@ -1,8 +1,10 @@
 	/* modal창 스크립트 */
 	var modal = document.getElementById('Mymodal');
 	var tileModal = document.getElementById('tileModal');
+	var listModal = document.getElementById('listModal');
 	var btn = document.getElementById('MyBtn');
 	var tileBtn = document.getElementById('tileBtn');
+	var listBtn = document.getElementById('listBtn');
 	var cancel = document.getElementsByClassName("btn btn-default");
 	
 	
@@ -13,6 +15,11 @@
 	tileBtn.onclick = function() {
 		tileModal.style.display = "block";
 	}
+	
+	listBtn.onclick = function() {
+		listModal.style.display = "block";
+	}
+	
 	
 	cancel[0].onclick = function() {
 		modal.style.display = "none";
@@ -29,12 +36,21 @@
 			modal.style.display = "none";
 		}else if(event.target == tileModal){
 			tileModal.style.display = "none";
+		}else if(event.target == tileModal){
+			listModal.style.display = "none";
 		}
 	}
-
+	
 	$("#drawingSave").on("click", function() {
 		$("form").attr("action", "shop_RegisterForm");
 		$("form").attr("method", "post");
+		$("form").submit();
+		//alert("등록성공");
+	});
+
+	$("#save").on("click", function() {
+		$("form").attr("action", "shop_Register");
+		$("form").attr("method", "get");
 		$("form").submit();
 		//alert("등록성공");
 	});
