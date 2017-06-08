@@ -119,6 +119,11 @@ public class HomeController {
 		
 		List<HashMap<String, String>> tileList = tileService.selectTileList();
 		model.addAttribute("tileList", tileList);
+
+		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김
+		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
+		int countStory = floor_informationService.selectCountStory(bhf_code);
+		model.addAttribute("countStory", countStory);
 		
 		return "mainPage";
 	}
@@ -139,9 +144,9 @@ public class HomeController {
 		
 		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김
 		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
-		List<HashMap<String, String>> drawingList = floor_informationService.selectDrawingList(bhf_code);
-		model.addAttribute("drawingList", drawingList);
-
+		int countStory = floor_informationService.selectCountStory(bhf_code);
+		model.addAttribute("countStory", countStory);
+		
 		return "mainPage";
 	}
 	

@@ -71,6 +71,21 @@ public class FileUploadController {
 
 		return "mainPage";
 	}
+	
+	@RequestMapping("getDrawingFileName")
+	@ResponseBody
+	public String getDrawingFileName(@RequestParam("floor") int floor) throws Exception {
+		
+		int bhf_code = 1;
+		HashMap map = floor_informationService.selectDrawingOne(bhf_code, floor);
+		
+		String data = (String) map.get("drw_flpth");
+		
+		System.out.println("여기 통과하면 아작스는 끝난거임");
+		System.out.println(data);
+		
+		return data;
+	}
 
 	@RequestMapping("displayDrawing")
 	@ResponseBody

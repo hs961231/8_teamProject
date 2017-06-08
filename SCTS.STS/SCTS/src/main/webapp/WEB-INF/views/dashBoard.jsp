@@ -108,6 +108,9 @@ div.active {
 			<div class="panel-body-map">
 				<div id="blueprint"
 					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
+					
+				 	<input type="hidden" id="countStory" value="${ countStory }">
+				 	<input type="hidden" id="floor" value="0">
 					<!-- 
 					<br> <br> <br> <br> <br> <br> <br>
 					<br>

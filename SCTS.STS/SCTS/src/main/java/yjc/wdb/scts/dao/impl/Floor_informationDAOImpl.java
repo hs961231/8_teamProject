@@ -37,4 +37,20 @@ public class Floor_informationDAOImpl implements Floor_informationDAO {
 		return sql.selectList(NAMESPACE + ".selectDrawingList", bhf_code);
 	}
 
+	@Override
+	public int selectCountStory(int bhf_code) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE + ".selectCountStory", bhf_code);
+	}
+
+	@Override
+	public HashMap<String, String> selectDrawingOne(int bhf_code, int floor) throws Exception {
+		// TODO Auto-generated method stub
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("bhf_code", bhf_code);
+		map.put("floor", floor);
+		
+		return sql.selectOne(NAMESPACE + ".selectDrawingOne", map);
+	}
+
 }
