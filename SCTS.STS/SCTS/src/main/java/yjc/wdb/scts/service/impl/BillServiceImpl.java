@@ -96,4 +96,16 @@ public class BillServiceImpl implements BillService {
 		return dao.monthSalesSettleInfo(month1, month2, setle_mth_code);
 	}
 
+	@Override
+	public List<HashMap> productRank(String date) throws Exception {
+		
+		return dao.productRank(date);
+	}
+
+	@Override
+	public List<HashMap> productRankInfo(String date) throws Exception {
+		
+		return dao.productRankInfo(date);
+	}
+
 }

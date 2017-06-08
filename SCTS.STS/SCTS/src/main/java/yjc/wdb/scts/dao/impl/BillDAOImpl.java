@@ -130,4 +130,16 @@ public class BillDAOImpl implements BillDAO {
 		return sql.selectList(NAMESPACE+".monthSalesSettleInfo", map);
 	}
 
+	@Override
+	public List<HashMap> productRank(String date) throws Exception {
+		
+		return sql.selectList(NAMESPACE+".productRank", date);
+	}
+
+	@Override
+	public List<HashMap> productRankInfo(String date) throws Exception {
+		
+		return sql.selectList(NAMESPACE+".productRankInfo", date);
+	}
+
 }

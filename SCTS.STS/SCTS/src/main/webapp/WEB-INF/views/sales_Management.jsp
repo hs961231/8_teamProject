@@ -14,7 +14,7 @@
 #productSalesInfo{
 	display: none;
 }
-#customerProductLankInfo{
+#customerProductRankInfo{
 	display: none;
 }
 </style>
@@ -154,16 +154,18 @@
 <div id="productSalesInfo">
 	<table class="table">
 		<tr>
-			<td width="200px">
+			<td width="23%">
 				<!-- 아이콘!! < 이모양이랑 > 이모양 -->
 				<button id="prev" class="btn btn-default" style="width:70px">&lt</button>
 				<button id="next" class="btn btn-default" style="width:70px">&gt</button>
 			</td>
-			<td>
+			<td width="50%">
 				<h3>2017-06</h3>
 			</td>
 			
-			<td></td>
+			<td><button id="income" class="btn btn-default" style="width:85px">순이익순</button>
+				<button id="total" class="btn btn-default" style="width:85px">총매출순</button>
+			</td>
 			
 		</tr>
 
@@ -175,8 +177,12 @@
 <div id="customerProductRankInfo">
 <table class="table">
 		<tr>
-			<td width="700"></td>
-			<td>
+			<td width="23%">
+				<!-- 아이콘!! < 이모양이랑 > 이모양 -->
+				<button id="prev" class="btn btn-default" style="width:70px">&lt</button>
+				<button id="next" class="btn btn-default" style="width:70px">&gt</button>
+			</td>
+			<td width="45%">
 				<h3>성별</h3>
 			</td>
 			
@@ -187,6 +193,8 @@
 				<button id="age30" class="btn btn-default">30대</button>
 				<button id="age40" class="btn btn-default">40대</button>
 				<button id="age50" class="btn btn-default">50대 이후</button>
+				<button id="income" class="btn btn-default" style="width:85px">순이익순</button>
+				<button id="total" class="btn btn-default" style="width:85px">총매출순</button>
 			</td>
 			
 		</tr>

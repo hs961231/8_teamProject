@@ -4,7 +4,7 @@
 
 
 
-	$('.daySales').on('click', function(event){
+	$('.daySales').click(function(){
 					
 				
 			$("#searchSales").show();
@@ -21,6 +21,31 @@
 			$('.tr').append($("<td></td>").text("연도"));
 			$('.tr').append($("<td></td>").text("결제수단"));
 			$('.tr').append($("<td></td>").text("총 매출"));
+			
+			
+			$.ajax({
+				type : "GET",
+				url : "daySalesSettleInfo",
+				dataType: 'jsonp',
+				success : function(data) {
+			
+	
+					var length = data.result.length;
+					
+					for(var i = 0; i < length; i++){
+						$("#settleSales").append($("<tr></tr>").attr("data", i));
+						
+						$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].year));
+						$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
+						$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
+						
+										
+					}
+					
+
+				}
+					
+			});
 
 		
 					
@@ -57,28 +82,7 @@
 			});
 			
 			
-			$.ajax({
-				type : "GET",
-				url : "daySalesSettleInfo",
-				dataType: 'jsonp',
-				success : function(data) {
 			
-	
-					var length = data.result.length;
-					
-					for(var i = 0; i < length; i++){
-							$("#settleSales").append($("<tr></tr>").attr("data", data.result[i].year));
-										
-							$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].year));
-							$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
-							$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
-										
-						}
-					
-
-				}
-					
-			});
 
 	});
 	
@@ -149,11 +153,12 @@
 				var length = data.result.length;
 				
 				for(var i = 0; i < length; i++){
-						$("#settleSales").append($("<tr></tr>").attr("data", data.result[i].year));
 									
-						$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].year));
-						$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
-						$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
+						$("#settleSales").append($("<tr></tr>").attr("data", i));
+						
+						$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].year));
+						$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
+						$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
 									
 					}
 
@@ -225,11 +230,11 @@
 				var length = data.result.length;
 				
 				for(var i = 0; i < length; i++){
-						$("#settleSales").append($("<tr></tr>").attr("data", data.result[i].year));
-									
-						$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].year));
-						$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
-						$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
+					$("#settleSales").append($("<tr></tr>").attr("data", i));
+					
+					$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].year));
+					$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
+					$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
 									
 					}
 
@@ -294,9 +299,9 @@
 
 		$("#settleSales").append($("<tr></tr>").addClass('tr'));
 		$('.tr').append($("<td></td>").text("상품 이름"));
-		$('.tr').append($("<td></td>").text("재고량"));
-		$('.tr').append($("<td></td>").text("공급업체 이름"));
-		$('.tr').append($("<td></td>").text("매출 수량"));
+		$('.tr').append($("<td></td>").text("쿠폰 사용량"));
+		$('.tr').append($("<td></td>").text("총 판매 수량"));
+		$('.tr').append($("<td></td>").text("순이익"));
 		$('.tr').append($("<td></td>").text("총 매출"));
 		
 		
@@ -315,9 +320,9 @@
 		
 		$("#settleSales").append($("<tr></tr>").addClass('tr'));
 		$('.tr').append($("<td></td>").text("상품 이름"));
-		$('.tr').append($("<td></td>").text("재고량"));
-		$('.tr').append($("<td></td>").text("공급업체 이름"));
-		$('.tr').append($("<td></td>").text("매출 수량"));
+		$('.tr').append($("<td></td>").text("쿠폰 사용량"));
+		$('.tr').append($("<td></td>").text("총 판매 수량"));
+		$('.tr').append($("<td></td>").text("순이익"));
 		$('.tr').append($("<td></td>").text("총 매출"));
 		
 	});

@@ -90,6 +90,11 @@ $(document).ready(function(){
 		
 		$("#settleSales").children().remove();
 		
+		$("#settleSales").append($("<tr></tr>").addClass('tr'));
+		$('.tr').append($("<td></td>").text("연도"));
+		$('.tr').append($("<td></td>").text("결제수단"));
+		$('.tr').append($("<td></td>").text("총 매출"));
+		
 		$.ajax({
 			type : "GET",
 			url : "settleSalesInfo",
@@ -99,24 +104,18 @@ $(document).ready(function(){
 					},
 			dataType: 'jsonp',
 			success : function(data) {
-				
-			$("#settleSales").append($("<tr></tr>").addClass('tr'));
-			$('.tr').append($("<td></td>").text("연도"));
-			$('.tr').append($("<td></td>").text("결제수단"));
-			$('.tr').append($("<td></td>").text("총 매출"));
-				
-		
-			var length = data.result.length;
+			
+					var length = data.result.length;
 							
-			for(var i = 0; i < length; i++){
-					$("#settleSales").append($("<tr></tr>").attr("data", data.result[i].year));
+					for(var i = 0; i < length; i++){
+							$("#settleSales").append($("<tr></tr>").attr("data", i));
+										
+							$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].year));
+							$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
+							$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
 								
-					$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].year));
-					$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].setle_mth_nm));
-					$("tr[data="+data.result[i].year+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
-								
-				}
+					}
 
-			}
+		   }
 		});
 	}
