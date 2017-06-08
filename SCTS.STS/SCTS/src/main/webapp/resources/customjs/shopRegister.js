@@ -4,7 +4,6 @@
 	var listModal = document.getElementById('listModal');
 	var btn = document.getElementById('MyBtn');
 	var tileBtn = document.getElementById('tileBtn');
-	var listBtn = document.getElementById('listBtn');
 	var cancel = document.getElementsByClassName("btn btn-default");
 	
 	
@@ -16,9 +15,6 @@
 		tileModal.style.display = "block";
 	}
 	
-	listBtn.onclick = function() {
-		listModal.style.display = "block";
-	}
 	
 	
 	cancel[0].onclick = function() {
@@ -36,7 +32,7 @@
 			modal.style.display = "none";
 		}else if(event.target == tileModal){
 			tileModal.style.display = "none";
-		}else if(event.target == tileModal){
+		}else if(event.target == listModal){
 			listModal.style.display = "none";
 		}
 	}

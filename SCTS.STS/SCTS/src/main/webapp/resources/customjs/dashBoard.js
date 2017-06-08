@@ -1,7 +1,5 @@
 /**
- * 현재 이 파일은 dashBoard와
- * shop_Register 두개의 페이지에서 사용중이지만
- * 실제 사용하는 대부분은 shop_Register탭임
+ * 
  */
 
 
@@ -60,63 +58,6 @@ $(document).ready(function() {
 				}
 				else {
 					window.alert("현재 해당 타일은 등록되어있지 않습니다.");
-				}
-			},
-			error: function(data) {
-				
-			}
-		});
-		
-	});
-	
-	/**
-	 * 모달에 출력된 비콘리스트를 하나 클릭하면 서버에 해당 타일에 해당 비콘을 저장시키는 것
-	 */
-	$("#beaconList").on("click", ".beacon", function() {
-		console.log($(this));
-		
-		$.ajax({
-			url: "setTileBeacon",
-			type: "post",
-			dataType: "text",
-			success: function(data) {
-				$('#listModal').css('display', 'none');
-				alert("성공");
-			},
-			error: function(data) {
-				
-			}
-		});
-	});
-	
-	
-	/**
-	 * 타일에서 비콘설정버튼을 클릭햇을때 현재 사용할 수 있는 비콘들을 모두 가져와서 리스트 형태로 출력
-	 */
-	$("#tile_info").on("click", "#getBeacon", function() {
-		
-		$.ajax({
-			url: "getBeaconList",
-			type: "post",
-			dataType: "json",
-			success: function(data) {
-				if(data != null) {
-					$('#listModal').css('display', 'block');
-					//listModal.style.display = "block";
-					
-					$("#beaconList").empty();
-					
-					for(var i=0; i<data.length; i++) {
-						var beaconItem = $("<div class='beacon'></div>");
-						$("<td></td>").text(data[i].beacon_mjr).appendTo(beaconItem);
-						$("<td></td>").text(data[i].beacon_mnr).appendTo(beaconItem);
-						$("<td></td>").text(data[i].beacon_sttus).appendTo(beaconItem);
-						
-						beaconItem.appendTo($("#beaconList"));
-					}
-				}
-				else {
-					window.alert("등록된 비콘이 없습니다.");
 				}
 			},
 			error: function(data) {

@@ -6,6 +6,7 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
 <script src="resources/customjs/shop_Register.js"></script>
+<link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
 
 <style>
 /* The Modal (background) */
@@ -83,25 +84,6 @@ to {
 	border: 1px solid #D5D5D5;
 }
 
-.tileMap>div {
-	width: 100%;
-	height: 12.5%;
-}
-
-.tile {
-	background-color: rgba(30, 255, 255, 0.3);
-	width: 12.5%;
-	height: 100%;
-	float: left;
-}
-
-div.mouseover {
-	background-color: blue;
-}
-
-div.active {
-	background-color: red;
-}
 </style>
 
 <div class="row">
@@ -383,7 +365,7 @@ div.active {
 	</div>
 </div>
 
-<div id="tileModal" class="modal">
+<div id="tileModal" class="modal" style="z-index: 3;">
 	<div class="tileModal-row">
 		<div class="col-lg-12">
 			<section class="panel">
@@ -448,10 +430,10 @@ div.active {
 	</div>
 </div>
 
-<div id="listModal" class="modal">
+<div id="listModal" class="modal" style="z-index: 3;">
 	<div class="modal-row">
 		<div class="col-lg-12">
-			<section class="panel" style="overflow:scroll">
+			<section class="panel" id="beaconList" style="overflow:scroll">
 				
 			</section>
 		</div>

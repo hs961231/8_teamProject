@@ -4,28 +4,8 @@
 
 
 <script src="resources/customjs/shop_Register.js"></script>
+<link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
 
-<style>
-.tileMap>div {
-	width: 100%;
-	height: 12.5%;
-}
-
-.tile {
-	background-color: rgba(30, 255, 255, 0.3);
-	width: 12.5%;
-	height: 100%;
-	float: left;
-}
-
-div.mouseover {
-	background-color: blue;
-}
-
-div.active {
-	background-color: red;
-}
-</style>
 
 <script>
 $(document).ready(function () {

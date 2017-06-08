@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
+import yjc.wdb.scts.bean.BeaconVO;
+import yjc.wdb.scts.service.BeaconService;
 import yjc.wdb.scts.service.TileService;
 
 @Controller
@@ -24,6 +26,9 @@ public class AjaxController {
 	
 	@Inject
 	TileService tileService;
+	
+	@Inject
+	BeaconService beaconService;
 
 	@RequestMapping(value="shopTileClick", method=RequestMethod.POST)
 	@ResponseBody
@@ -43,4 +48,33 @@ public class AjaxController {
 		
 		return str;
 	}
+	
+
+	@RequestMapping(value="getBeaconList", method=RequestMethod.POST)
+	@ResponseBody
+	public String getBeacon() throws Exception {
+		
+		int bhf_code = 1;
+		List<BeaconVO> beaconList = beaconService.selectBeaconList(bhf_code);
+		
+		String str = new Gson().toJson(beaconList);
+		
+		System.out.println(str);
+		
+		return str;
+	}
+	
+
+	@RequestMapping(value="setTileBeacon", method=RequestMethod.POST)
+	@ResponseBody
+	public String setTileBeacon() throws Exception {
+		
+		// 현재 이부분에 실제 비콘정보가 타일로 들어가야함.
+		/*
+		 *  현재 shop_Register.js 에 이부분과 연동되는 아작스가 있지만
+		 *  제대로 코딩이 되지 않음 양쪽 부분 다 손봐야함
+		 */
+		return "success";
+	}
+	
 }
