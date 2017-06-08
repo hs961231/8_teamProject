@@ -105,30 +105,71 @@ $(document).ready(function () {
         }]
     });
     
+    var chart;
+    
+    $.ajax({
+		type : "GET",
+		url : "daySales",
+		dataType: 'jsonp',
+		success : function(data) {
+			
+			var length = data.result.length;
+			
+			 var options = {
+
+				        title: {
+				            text: '일매출'
+				        },
+				        subtitle: {
+				            text: 'Plain'
+				        }, 
+				        xAxis:{
+				        	categories:[]
+				        },
+				        series:[{
+				        	type: 'column',
+				        	colorByPoint: true,
+				        	data : [],
+				        	showInLegend: false
+				        }]
+				        
+
+				        /* xAxis: {
+				            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+				        },
+
+				        series: [{
+				            type: 'column',
+				            colorByPoint: true,
+				            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+				            showInLegend: false
+				        }] */
+
+				    }
+			 
+			 for(var i = 0; i < length; i++){
+				 
+				 options.xAxis.categories[i] = data.result[i].bill_issu_de;
+				 options.series[0].data[i] = data.result[i].totalPrice;
+				 
+			 }
+			
+			 
+			 chart = Highcharts.chart('barChart', options);
+			 
+		
+		}
+			 
+
+	
+	});
     
     
-    var chart = Highcharts.chart('barChart', {
-
-        title: {
-            text: 'Chart.update'
-        },
-
-        subtitle: {
-            text: 'Plain'
-        },
-
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
-
-        series: [{
-            type: 'column',
-            colorByPoint: true,
-            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-            showInLegend: false
-        }]
-
-    });
+    
+    
+    
+    
+   
 
 
     $('#plain').click(function () {
