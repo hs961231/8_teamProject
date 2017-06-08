@@ -71,8 +71,9 @@ public class FileUploadController {
 
 		return "mainPage";
 	}
-	
-	@RequestMapping("getDrawingFileName")
+
+	//@RequestMapping(value="uploadAjax", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
+	@RequestMapping(value="getDrawingFileName", produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String getDrawingFileName(@RequestParam("floor") int floor) throws Exception {
 		

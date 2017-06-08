@@ -75,6 +75,8 @@ var imgLoad = function() {
 			if(data != null) {
 				$('#blueprint > img').remove();
 				
+				console.log(data);
+				
 				var drawingImg = $('<img src="displayDrawing?fileName=/' + data + '" style="width: 800px; height: 380px;">');
 				drawingImg.appendTo($('#blueprint'));
 				
