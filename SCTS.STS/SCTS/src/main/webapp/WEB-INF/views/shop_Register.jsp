@@ -286,10 +286,11 @@ div.active {
 				<h2>
 					<i class="fa fa-map-marker red"></i><strong>타일 리스트</strong>
 				</h2>
+				
 				<div class="panel-actions">
 					<a href="#" class="btn-setting" id="tileBtn"><i id="tileBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
-				</div>
+				</div>	
 			</div>
 			<section class="panel" style="overflow: scroll; height: 430px;">
 
@@ -442,6 +443,16 @@ div.active {
 					</div>
 
 				</div>
+			</section>
+		</div>
+	</div>
+</div>
+
+<div id="listModal" class="modal">
+	<div class="modal-row">
+		<div class="col-lg-12">
+			<section class="panel" style="overflow:scroll">
+				
 			</section>
 		</div>
 	</div>
