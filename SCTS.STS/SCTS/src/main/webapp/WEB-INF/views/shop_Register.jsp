@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!-- 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
 <script src="resources/customjs/shop_Register.js"></script>
 
 <style>
@@ -127,11 +128,11 @@ div.active {
 					<a href="#" class="btn-setting" id="MyBtn"><i id="MyBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>
-				
+				<!-- 
 				<div class="panel-actions">
 					<a href="#" class="btn-setting" id="MyBtns"><i id="MyBtns"
 						class="glyphicon glyphicon-chevron-right" aria-hidden="true"></i></a>
-				</div>
+				</div> -->
 			</div>
 			<div class="panel-body-map">
 				<div id="blueprint"
@@ -141,9 +142,12 @@ div.active {
 					<br>
 					<p>설계도면 파일을 등록해주세요.</p>
 				 -->
+				 	<input type="hidden" id="countStory" value="${ countStory }">
+				 	<input type="hidden" id="floor" value="0">
+				 	<%-- 
 					<img
 						src="displayDrawing?fileName=/${ drawingList.get(0).drw_flpth }"
-						style="width: 800px; height: 380px;">
+						style="width: 800px; height: 380px;"> --%>
 
 				</div>
 

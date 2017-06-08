@@ -33,4 +33,16 @@ public class Floor_informationServiceImpl implements Floor_informationService {
 		return dao.selectDrawingList(bhf_code);
 	}
 
+	@Override
+	public int selectCountStory(int bhf_code) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectCountStory(bhf_code);
+	}
+
+	@Override
+	public HashMap<String, String> selectDrawingOne(int bhf_code, int floor) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectDrawingOne(bhf_code, floor);
+	}
+
 }

@@ -9,4 +9,6 @@ public interface Floor_informationDAO {
 	public void insertDrawing(String drw_flpth) throws Exception;
 	public void insertFloor_information(Floor_informationVO vo) throws Exception;
 	public List<HashMap<String, String>> selectDrawingList(int bhf_code) throws Exception;
+	public int selectCountStory(int bhf_code) throws Exception;
+	public HashMap<String, String> selectDrawingOne(int bhf_code, int floor) throws Exception;
 }

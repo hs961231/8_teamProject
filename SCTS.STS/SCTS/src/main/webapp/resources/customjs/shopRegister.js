@@ -32,9 +32,9 @@
 		}
 	}
 
-	$("#save").on("click", function() {
-		$("form").attr("action", "shop_Register");x
-		$("form").attr("method", "get");
+	$("#drawingSave").on("click", function() {
+		$("form").attr("action", "shop_RegisterForm");
+		$("form").attr("method", "post");
 		$("form").submit();
 		//alert("등록성공");
 	});
