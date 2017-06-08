@@ -30,6 +30,10 @@ public class AjaxController {
 	@Inject
 	BeaconService beaconService;
 
+	/* shop_Register.js
+	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
+	 * 해당 타일의 정보를 디비에서 가져와서 보내준다
+	 */
 	@RequestMapping(value="shopTileClick", method=RequestMethod.POST)
 	@ResponseBody
 	public String shopTileClick(@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
@@ -49,7 +53,10 @@ public class AjaxController {
 		return str;
 	}
 	
-
+	/* shop_Register.js
+	 * 매장등록 페이지에서 타일클릭 후 타일에 비콘이 등록되어 있지 않을 때
+	 * 비콘등록 버튼을 누를 시 디비에서 사용가능한 비콘의 정보들을 불러와서 아작스로 전송 
+	 */
 	@RequestMapping(value="getBeaconList", method=RequestMethod.POST)
 	@ResponseBody
 	public String getBeacon() throws Exception {
@@ -65,6 +72,32 @@ public class AjaxController {
 	}
 	
 
+	/* dashBoard.js
+	 * 대쉬보드에서 도면의 타일을 선택할 경우 발생하는 아작스 통신
+	 * 현재 이 메서드는 아직 제대로 된 데이터를 긁어오는 것이 아님
+	 */
+	@RequestMapping(value="dashBoardTile", method=RequestMethod.POST)
+	@ResponseBody
+	public String dashBoardTile(@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
+		
+		logger.info("X = " + X_index + "  Y = " + Y_index);
+		
+		HashMap<String, String> Map_XY = new HashMap<String, String>();
+		Map_XY.put("tilelc_crdnt_x", "" + X_index);
+		Map_XY.put("tilelc_crdnt_y", "" + Y_index);
+		
+		HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
+		
+		String str = new Gson().toJson(tile);
+		
+		System.out.println(str);
+		
+		return str;
+	}
+	
+	/* shop_Register.js
+	 * 
+	 */
 	@RequestMapping(value="setTileBeacon", method=RequestMethod.POST)
 	@ResponseBody
 	public String setTileBeacon() throws Exception {

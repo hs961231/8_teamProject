@@ -32,7 +32,7 @@ $(document).ready(function() {
 		console.log("X = " + X_index + " Y = " + Y_index);
 		
 		$.ajax({
-			url: "shopTileClick",
+			url: "dashBoardTile",
 			type: "post",
 			data: {
 				X_index : X_index,
