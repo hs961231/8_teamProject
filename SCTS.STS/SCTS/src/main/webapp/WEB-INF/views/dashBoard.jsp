@@ -6,7 +6,6 @@
 <script src="resources/customjs/shop_Register.js"></script>
 
 <style>
-
 .tileMap>div {
 	width: 100%;
 	height: 12.5%;
@@ -27,6 +26,196 @@ div.active {
 	background-color: red;
 }
 </style>
+
+<script>
+$(document).ready(function () {
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+
+    Highcharts.chart('charts', {
+        chart: {
+            type: 'spline',
+            animation: Highcharts.svg, // don't animate in old IE
+            marginRight: 10,
+            renderTo: 'charts',
+            defaultSeriesType: 'column',
+            width: '670',
+            events: {
+                load: function () {
+
+                    // set up the updating of the chart each second
+                    var series = this.series[0];
+                    setInterval(function () {
+                        var x = (new Date()).getTime(), // current time
+                            y = Math.random();
+                        series.addPoint([x, y], true, true);
+                    }, 1000);
+                }
+            }
+        },
+        title: {
+            text: 'Live random data'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150
+        },
+        yAxis: {
+            title: {
+                text: 'Value'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.series.name + '</b><br/>' +
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                    Highcharts.numberFormat(this.y, 2);
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Random data',
+            data: (function () {
+                // generate an array of random data
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+
+                for (i = -19; i <= 0; i += 1) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: Math.random()
+                    });
+                }
+                return data;
+            }())
+        }]
+    });
+    
+    var chart;
+    
+    $.ajax({
+		type : "GET",
+		url : "daySales",
+		dataType: 'jsonp',
+		success : function(data) {
+			
+			var length = data.result.length;
+			
+			 var options = {
+
+				        title: {
+				            text: '일매출'
+				        },
+				        subtitle: {
+				            text: 'Plain'
+				        }, 
+				        xAxis:{
+				        	categories:[]
+				        },
+				        series:[{
+				        	type: 'column',
+				        	colorByPoint: true,
+				        	data : [],
+				        	showInLegend: false
+				        }]
+				        
+
+				        /* xAxis: {
+				            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+				        },
+
+				        series: [{
+				            type: 'column',
+				            colorByPoint: true,
+				            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+				            showInLegend: false
+				        }] */
+
+				    }
+			 
+			 for(var i = 0; i < length; i++){
+				 
+				 options.xAxis.categories[i] = data.result[i].bill_issu_de;
+				 options.series[0].data[i] = data.result[i].totalPrice;
+				 
+			 }
+			
+			 
+			 chart = Highcharts.chart('barChart', options);
+			 
+		
+		}
+			 
+
+	
+	});
+    
+    
+    
+    
+    
+    
+   
+
+
+    $('#plain').click(function () {
+        chart.update({
+            chart: {
+                inverted: false,
+                polar: false
+            },
+            subtitle: {
+                text: 'Plain'
+            }
+        });
+    });
+    
+    
+    $('#polar').click(function () {
+    	
+        chart.update({
+            chart: {
+                inverted: false,
+                polar: true
+            },
+            subtitle: {
+                text: 'Polar'
+            }
+        });
+    });
+
+    $('#inverted').click(function () {
+        chart.update({
+            chart: {
+                inverted: true,
+                polar: false
+            },
+            subtitle: {
+                text: 'Inverted'
+            }
+        });
+    });
+
+   
+    
+    
+});
+
+</script>
 <!-- 이 부분은 일매출, 일 방문자 수 등 보임!!!!!!!!!! -->
 <div class="row">
 	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -79,19 +268,29 @@ div.active {
 		<section class="panel">
 			<header class="panel-heading chartTitle"> 일매출 </header>
 			<div class="panel-body text-center">
-				<canvas id="barDay" height="300" width="500"></canvas>
+				<div id="barChart"></div>
+				<button id="plain">Plain</button>
+				<button id="inverted">Inverted</button>
+				<button id="polar">Polar</button>
 			</div>
 		</section>
 	</div>
+
 	<div class="col-lg-6">
 		<section class="panel">
-			<header class="panel-heading chartTitle"> 연매출 </header>
+			<header class="panel-heading chartTitle"> 실시간 방문자수 </header>
 			<div class="panel-body text-center">
-				<canvas id="barYear" height="300" width="500"></canvas>
+			<div id="charts"
+				style="min-width: 550px; height: 400px; margin: 0 auto;"></div>
 			</div>
 		</section>
+		
 	</div>
+
+
 </div>
+
+
 
 
 
@@ -250,7 +449,7 @@ div.active {
 	</div>
 </div>
 
-			
+
 
 
 <!-- 타일리스트 -->
@@ -315,42 +514,10 @@ div.active {
 
 
 <script>
-	$(document).ready( function() {
+	/* $(document).ready( function() {
 		// 연매출 barchart!!!
 		var year = new Date().getFullYear();
 
-		$.ajax({
-			type : "GET",
-			url : "yearSales",
-			data : {
-				year : year
-			},
-			dataType: 'jsonp',
-			success : function(data) {
-
-				var barChartData = {};
-				barChartData.labels = [];
-				barChartData.datasets = [];
-				barChartData.datasets[0] = {};
-				barChartData.datasets[0].fillColor = "#FF3359";
-				barChartData.datasets[0].strokeColor = "#FF3359";
-				barChartData.datasets[0].data = [];
-				
-				var length = data.result.length;
-				
-				for(var i=0; i<length; i++){
-					
-					barChartData.labels[i] = data.result[i].year;
-					barChartData.datasets[0].data[i] = data.result[i].totalPrice;
-
-				}
-			
-				new Chart(document.getElementById("barYear").getContext(
-						"2d")).Bar(barChartData);
-
-			}
-		});
-		
 		$.ajax({
 			type : "GET",
 			url : "daySales",
@@ -384,6 +551,6 @@ div.active {
 		$('.daySales').on('click', function(){
 				
 		});
-	});
+	}); */
 </script>
 

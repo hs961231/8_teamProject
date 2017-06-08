@@ -11,7 +11,7 @@
 			$("#searchYearSales").hide();
 			$("#month").hide();
 			$("#productSalesInfo").hide();
-			$("#customerProductLankInfo").hide();
+			$("#customerProductRankInfo").hide();
 			
 			$("#settleSales").children().remove();
 			
@@ -168,7 +168,7 @@
 		$("#searchYearSales").hide();
 		$("#month").show();
 		$("#productSalesInfo").hide();
-		$("#customerProductLankInfo").hide();
+		$("#customerProductRankInfo").hide();
 		
 		var date = new Date();
 		
@@ -281,12 +281,12 @@
 	
 	
 	
-	$(".productLank").click(function(){
+	$(".productRank").click(function(){
 		$("#searchSales").hide();
 		$("#searchYearSales").hide();
 		$("#month").hide();
 		$("#productSalesInfo").show();
-		$("#customerProductLankInfo").hide();
+		$("#customerProductRankInfo").hide();
 		
 		$("#settleSales").children().remove();
 		
@@ -303,13 +303,13 @@
 	});
 	
 	
-	$(".customerProductLank").click(function(){
+	$(".customerProductRank").click(function(){
 		
 		$("#searchSales").hide();
 		$("#searchYearSales").hide();
 		$("#month").hide();
 		$("#productSalesInfo").hide();
-		$("#customerProductLankInfo").show();
+		$("#customerProductRankInfo").show();
 		
 		$("#settleSales").children().remove();
 		
