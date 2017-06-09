@@ -108,4 +108,10 @@ public class BillServiceImpl implements BillService {
 		return dao.productRankInfo(date);
 	}
 
+	@Override
+	public List<HashMap> yearToMonth(int year) throws Exception {
+		
+		return dao.yearToMonth(year);
+	}
+
 }

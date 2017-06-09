@@ -142,4 +142,10 @@ public class BillDAOImpl implements BillDAO {
 		return sql.selectList(NAMESPACE+".productRankInfo", date);
 	}
 
+	@Override
+	public List<HashMap> yearToMonth(int year) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".yearToMonth", year);
+	}
+
 }

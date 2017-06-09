@@ -23,5 +23,6 @@ public interface BillDAO {
 	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception;
 	public List<HashMap> productRank(String date) throws Exception;
 	public List<HashMap> productRankInfo(String date) throws Exception;
+	public List<HashMap> yearToMonth(int year) throws Exception;
 
 }

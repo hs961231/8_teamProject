@@ -161,6 +161,18 @@
 
 
 	</select>
+	
+	<!-- 연매출 그래프 누를 시 월매출 -->
+	<select id="yearToMonth" resultMap="daySales">
+		select
+		date_format(b.BILL_ISSU_DE, '%Y-%m') as bill_issu_de,
+		sum(b.BILL_TOTAMT) as totalPrice
+		from bill b
+		where
+		date_format(b.BILL_ISSU_DE, '%Y-%m') between concat(#{year}, '-01')  and concat(#{year}, '-12') 
+		group by date_format(b.BILL_ISSU_DE, '%Y-%m')
+		
+	</select>
 
 	<!-- 연매출 검색 -->
 	<select id="searchYear" resultMap="yearSales">
@@ -263,8 +275,6 @@
 		where
 		date_format(b.BILL_ISSU_DE, '%Y-%m') between #{month2} and #{month1}
 		group by date_format(b.BILL_ISSU_DE, '%Y-%m')
-
-
 
 	</select>
 

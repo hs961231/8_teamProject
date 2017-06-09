@@ -252,9 +252,12 @@ public class HomeController {
 		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.yearSales(year);
+		
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
+		JSONArray ytmArray = new JSONArray();
+		
 		
 		for(int i = 0; i < list.size(); i++){
 			salesJson = new JSONObject();
@@ -266,7 +269,36 @@ public class HomeController {
 		
 
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", salesArray);
+		jsonObject.put("yearSales", salesArray);
+	
+
+		return callback + "(" + jsonObject +")";
+	}
+	
+	@RequestMapping(value="yearToMonth", method=RequestMethod.GET)
+	public @ResponseBody String yearToMonth(HttpServletRequest request, int year) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> yearToMonth = billService.yearToMonth(year);
+
+		JSONObject salesJson;
+	
+		JSONArray ytmArray = new JSONArray();
+	
+		
+		for(int i = 0; i < yearToMonth.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("bill_issu_de", yearToMonth.get(i).get("bill_issu_de"));
+			salesJson.put("totalPrice", yearToMonth.get(i).get("totalPrice"));
+			ytmArray.add(salesJson);
+
+		}
+	
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("yearToMonth", ytmArray);
 
 		return callback + "(" + jsonObject +")";
 	}

@@ -19,7 +19,7 @@
 }
 </style>
 
-<script src="resources/customjs/sales_Management._start.js"></script>
+<script src="resources/customjs/sales_Management._start.js?ver=1"></script>
 <!-- 일 매출, 월매출, 상품별 매출, 고객별 매출 -->
 
 <div class="row">
@@ -210,8 +210,8 @@
 	<div class="col-lg-12">
 		<section class="panel panel-default">
 			<header class="panel-heading chartTitle"> 연매출 </header>
-			<div class="panel-body text-center">
-				<canvas id="bar" height="450" width="800"></canvas>
+			<div  class="panel-body text-center chart">
+				<div id="salesChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 			</div>
 		</section>
 	</div>

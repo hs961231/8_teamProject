@@ -46,6 +46,10 @@
 				}
 					
 			});
+			
+			$(".chart").children().remove(); 
+			
+			$(".chart").append($("<div id='salesChart' style='min-width: 550px; height: 400px; margin: 0 auto'></div>"));
 
 		
 					
@@ -54,31 +58,48 @@
 				url : "daySales",
 				dataType: 'jsonp',
 				success : function(data) {
-	
-						var barChartData = {};
-						barChartData.labels = [];
-						barChartData.datasets = [];
-						barChartData.datasets[0] = {};
-						barChartData.datasets[0].fillColor = "#FF3359";
-						barChartData.datasets[0].strokeColor = "#FF3359";
-						barChartData.datasets[0].data = [];
-							
-						var length = data.result.length;
-							
-						for(var i=0; i<length; i++){
-								
-							barChartData.labels[i] = data.result[i].bill_issu_de;
-							barChartData.datasets[0].data[i] = data.result[i].totalPrice;
-
-						}
-							
-						$('.chartTitle').text("일매출"); 
-						
-						new Chart(document.getElementById("bar").getContext(
-								"2d")).Bar(barChartData);
-
-				}
 					
+					
+					
+		
+					
+					var length = data.result.length;
+					
+					 var options = {
+
+						        title: {
+						            text: '일매출'
+						        },
+						        subtitle: {
+						            text: 'Plain'
+						        }, 
+						        xAxis:{
+						        	categories:[]
+						        },
+						        series:[{
+						        	type: 'column',
+						        	colorByPoint: true,
+						        	data : [],
+						        	showInLegend: false
+						        }]
+						       
+						    }
+					 
+					 for(var i = 0; i < length; i++){
+						 
+						 options.xAxis.categories[i] = data.result[i].bill_issu_de;
+						 options.series[0].data[i] = data.result[i].totalPrice;
+						 
+					 }
+					
+					 
+					 chart = Highcharts.chart('salesChart', options);
+					 
+				
+				}
+					 
+
+			
 			});
 			
 			
