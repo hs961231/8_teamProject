@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: WOOYEJI
+=======
+Built-By: bon
+>>>>>>> origin/master
 Build-Jdk: 1.8.0_121
 Created-By: Maven Integration for Eclipse
 
