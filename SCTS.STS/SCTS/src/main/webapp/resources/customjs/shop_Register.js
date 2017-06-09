@@ -107,7 +107,7 @@ $(document).ready(function() {
 					$("#beaconList").empty();
 					
 					for(var i=0; i<data.length; i++) {
-						var beaconItem = $("<div class='beacon'></div>");
+						var beaconItem = $("<tr class='beacon'></tr>");
 						$("<td></td>").text(data[i].beacon_mjr).appendTo(beaconItem);
 						$("<td></td>").text(data[i].beacon_mnr).appendTo(beaconItem);
 						$("<td></td>").text(data[i].beacon_sttus).appendTo(beaconItem);

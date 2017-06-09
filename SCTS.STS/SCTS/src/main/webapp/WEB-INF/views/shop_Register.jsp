@@ -107,14 +107,13 @@ to {
 					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
 				</h2>
 				<div class="panel-actions">
+					<a href="#" class="btn-setting" id="leftBtns"><i id="leftBtns"
+						class="fa fa-chevron-left" aria-hidden="true"></i></a>
+					<a href="#" class="btn-setting" id="rightBtns"><i id="rightBtns"
+						class="fa fa-chevron-right" aria-hidden="true"></i></a>
 					<a href="#" class="btn-setting" id="MyBtn"><i id="MyBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>
-				<!-- 
-				<div class="panel-actions">
-					<a href="#" class="btn-setting" id="MyBtns"><i id="MyBtns"
-						class="glyphicon glyphicon-chevron-right" aria-hidden="true"></i></a>
-				</div> -->
 			</div>
 			<div class="panel-body-map">
 				<div id="blueprint"
@@ -252,7 +251,7 @@ to {
 	</div>
 
 	<div class="col-md-3" id="tile_info"
-		style="background-color: white; width: 280px; height: 417px; position: absolute; top: 230px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
+		style="background-color: white; width: 340px; height: 417px; position: absolute; top: 230px; left: 78%; border: 1px solid #D5D5D5; text-align: center;">
 
 		<br> <br> <br> <br> <br> <br> <br>
 		<br> <br> <br>
@@ -262,7 +261,7 @@ to {
 </div>
 
 <div class="row">
-	<div class="col-lg-12">
+	<div class="col-lg-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>
@@ -279,31 +278,60 @@ to {
 				<table class="table table-striped table-advance table-hover">
 					<tbody>
 						<tr>
-							<th style="text-align: center;"><i class="icon_profile"></i>
-								타일번호</th>
-							<th style="text-align: center;"><i class="icon_calendar"></i>
-								메이저</th>
-							<th style="text-align: center;"><i class="icon_mail_alt"></i>
-								마이너</th>
-							<th style="text-align: center;"><i class="icon_pin_alt"></i>
+							<th style="text-align: center;"><i class="fa fa-square"></i>
+								타일명</th>
+							<th style="text-align: center;"><i class="fa fa-clock-o"></i>
 								평균머문시간</th>
-							<th style="text-align: center;"><i class="icon_pin_alt"></i>
+							<th style="text-align: center;"><i class="fa fa-users"></i>
 								방문횟수</th>
 						</tr>
 
 
 						<c:forEach items="${ tileList }" var="vo">
-
 							<tr>
 								<td style="text-align: center;">${ vo.get("tile_nm") }</td>
-								<td style="text-align: center;">${ vo.get("beacon_mjr") }</td>
-								<td style="text-align: center;">${ vo.get("beacon_mnr") }</td>
 								<td style="text-align: center;">${ vo.get("avg") }</td>
 								<td style="text-align: center;">${ vo.get("cnt") }</td>
 							</tr>
-
 						</c:forEach>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	</div>
+	
+		<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2>
+					<i class="fa fa-map-marker red"></i><strong>비콘 리스트</strong>
+				</h2>
+				
+				<div class="panel-actions">
+					<a href="#" class="btn-setting" id="tileBtn"><i id="tileBtn"
+						class="fa fa-plus" aria-hidden="true"></i></a>
+				</div>	
+			</div>
+			<section class="panel col-lg-12" style="overflow: scroll; height: 430px;">
 
+				<table class="table table-striped table-advance table-hover">
+					<tbody>
+						<tr>
+							<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
+								메이저</th>
+							<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
+								마이너</th>
+							<th style="text-align: center;"><i class="fa fa-flag"></i>
+								상태</th>
+						</tr>
+
+						<c:forEach items="" var="vo">
+							<tr>
+								<td style="text-align: center;"></td>
+								<td style="text-align: center;"></td>
+								<td style="text-align: center;"></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</section>
@@ -431,12 +459,26 @@ to {
 </div>
 
 <div id="listModal" class="modal" style="z-index: 3;">
-	<div class="modal-row">
-		<div class="col-lg-12">
-			<section class="panel" id="beaconList" style="overflow:scroll">
+	<div class="modal-row" style="overflow:scroll">
+			<table class="table table-striped table-advance table-hover">
+				<thead>
+					<tr>
+						<th style="text-align: center;"><i class="fa fa-bullseye"></i>
+								비콘 코드</th>
+						<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
+								메이저</th>
+						<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
+								마이너</th>
+						<th style="text-align: center;"><i class="fa fa-flag"></i>
+								상태</th>
+					</tr>
+				</thead>
 				
-			</section>
-		</div>
+				<tbody id="beaconList">
+								
+				</tbody>
+				
+			</table>
 	</div>
 </div>
 
