@@ -43,13 +43,6 @@
 		$("form").submit();
 		//alert("등록성공");
 	});
-
-	$("#save").on("click", function() {
-		$("form").attr("action", "shop_Register");
-		$("form").attr("method", "get");
-		$("form").submit();
-		//alert("등록성공");
-	});
 	
 	$("#tileSave").on("click", function() {
 		$("form").attr("action", "shop_Register");
