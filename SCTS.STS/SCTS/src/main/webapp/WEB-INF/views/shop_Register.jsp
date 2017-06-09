@@ -353,7 +353,7 @@ to {
 
 							<div class="form-group">
 								<div class="col-lg-offset-2 col-lg-10">
-									<button class="btn btn-primary" id="save" type="submit">Save</button>
+									<button class="btn btn-primary" id="drawingSave" type="submit">Save</button>
 									<button class="btn btn-default" id="shopCancel" type="button">Cancel</button>
 								</div>
 							</div>
