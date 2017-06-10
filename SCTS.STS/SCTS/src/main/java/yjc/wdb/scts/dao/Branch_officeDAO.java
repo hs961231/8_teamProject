@@ -1,5 +1,8 @@
 package yjc.wdb.scts.dao;
 
-public interface Branch_officeDAO {
+import java.util.HashMap;
+import java.util.List;
 
+public interface Branch_officeDAO {
+	public List<HashMap<String, String>> selectBranchNameList() throws Exception;
 }

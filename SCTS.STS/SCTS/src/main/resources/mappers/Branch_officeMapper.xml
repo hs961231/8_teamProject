@@ -12,6 +12,13 @@ insert into BRANCH_OFFICE
 values (#{bhf_nm}, #{bhf_adres}, #{bhf_telno})
 </insert>
 
+<select id="selectBranchNameList" resultType="java.util.HashMap">
+select
+	bhf_code, bhf_nm
+from
+	BRANCH_OFFICE
+</select>
+
 <!-- <update id="">
 </update>
 

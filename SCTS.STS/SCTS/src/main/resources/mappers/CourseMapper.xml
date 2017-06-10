@@ -38,6 +38,81 @@ where
 	date(COURS_PASNG_TIME) >= date(subdate(now(), INTERVAL 0 DAY))
 </select>
 
+<select id="tileProbability" resultType="java.util.HashMap">
+select
+	C.tile_visit,
+	T.total_visit,
+	(C.tile_visit / T.total_visit) AS probability
+	
+from
+	(
+		select
+			count(DISTINCT user_id) AS tile_visit
+		from
+			COURSE
+		where
+			TILE_CODE =	(
+							select
+								TILE_CODE
+							from
+								TILE_LOCATION
+							where
+								TILELC_CRDNT_X = #{tilelc_crdnt_x}
+							and
+								TILELC_CRDNT_Y = #{tilelc_crdnt_y}
+						)
+		and
+			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY)) 
+	) C,
+	
+	(
+		select
+			count(DISTINCT user_id) AS total_visit
+		from
+			COURSE
+		where
+			date(COURS_PASNG_TIME) >= date(subdate(curDate(), INTERVAL 0 DAY)) 
+	) T
+</select>
+
+<select id="tileUserinfo" resultType="java.util.HashMap">
+select
+	U.user_id, U.user_nm, U.agegroup, U.user_sexdstn, U.user_mrrg_at
+	
+from
+	(
+		select
+			user_id
+		from
+			COURSE
+		where
+			TILE_CODE =	(
+							select
+								TILE_CODE
+							from
+								TILE_LOCATION
+							where
+								TILELC_CRDNT_X = #{tilelc_crdnt_x}
+							and
+								TILELC_CRDNT_Y = #{tilelc_crdnt_y}
+						)
+		and
+			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY)) 
+	) C,
+
+	(
+		select
+			USER_ID, USER_NM, floor((year(curDate()) - date_format(USER_BRTHDY, '%Y') + 1)/10) agegroup,
+			USER_SEXDSTN, USER_MRRG_AT
+		from
+			USER
+	) U
+
+where
+	C.user_id = U.user_id
+</select>
+
+
 <!-- <update id="">
 </update>
 
