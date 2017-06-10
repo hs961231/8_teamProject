@@ -38,7 +38,7 @@ select f.floorinfo_floor, d.drw_flpth
 from DRAWING d, FLOOR_INFORMATION f
 where BHF_CODE = #{bhf_code}
 and f.DRW_CODE = d.DRW_CODE
-order by FLOORINFO_RGSDE desc
+order by f.FLOORINFO_RGSDE desc, d.DRW_CODE desc
 limit #{floor}, 1
 </select>
 

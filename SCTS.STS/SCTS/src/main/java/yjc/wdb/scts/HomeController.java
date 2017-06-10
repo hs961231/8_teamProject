@@ -150,17 +150,6 @@ public class HomeController {
 		return "mainPage";
 	}
 	
-	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.GET)
-	public String shop_RegisterForm(HttpServletRequest request, HttpSession session, Model model) {
-		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
-		String ContentPage = "shop_RegisterForm";
-
-		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
-		model.addAttribute("main_content", ContentPage);
-
-		return "mainPage";
-	}
-	
 	@RequestMapping(value="tile_RegisterForm", method=RequestMethod.GET)
 	public String tile_RegisterForm(HttpServletRequest request, HttpSession session, Model model) {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.

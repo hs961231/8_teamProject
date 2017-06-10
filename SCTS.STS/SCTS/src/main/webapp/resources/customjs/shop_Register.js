@@ -6,8 +6,11 @@
 
 
 $(document).ready(function() {
-	imgLoad();
-	
+	if($("#countStory").val() > 0)
+		imgLoad(0);
+	/* ********************************************************************************************************* /
+	 * 타일관련 선택시
+	 */
 	$("div.tile").on("mouseover", function() {
 		$(this).addClass("mouseover");
 	});
@@ -15,6 +18,77 @@ $(document).ready(function() {
 	$("div.tile").on("mouseout", function() {
 		$(this).removeClass("mouseover");
 	});
+	
+	// 버튼 클릭시 업로드 되어있는 사진들 전환
+	$("#leftDrawingBtns").on("click", function() {
+		var countStory = parseInt($("#countStory").val());
+		var floor = parseInt($("#floor").val());
+
+		if(floor > 0) {
+			floor--;
+			$("#floor").val(floor);
+			imgLoad(floor);
+		}
+	});
+	
+	$("#rightDrawingBtns").on("click", function() {
+		var countStory = parseInt($("#countStory").val());
+		var floor = parseInt($("#floor").val());
+
+		if(floor < countStory-1) {
+			floor++;
+			$("#floor").val(floor);
+			imgLoad(floor);
+		}
+		else if(floor == countStory-1) {
+			floor++;
+			$("#floor").val(floor);
+			$('#blueprint').empty();
+			
+			var blueprint = $('#blueprint');
+			$("<p>새로운 도면을 등록해주세요 </p>").appendTo(blueprint);
+		}
+	});
+	/* 
+	 * 타일관련 선택시
+	 * *********************************************************************************************************/
+	
+	
+	/* ********************************************************************************************************* /
+	 * 매장 등록 버튼 클릭 시 뜨는 모달창 관련
+	 */
+	$("#MyBtn").on("click", function() {
+		//$('#Modal').css('display', 'block');	// 해당 하는 부분은 shopRegister.js 에서 처리하고 있어서 필요 없음
+
+		var countStory = parseInt($("#countStory").val());
+		
+		$.ajax({
+			url: "shop_RegisterForm",
+			type: "get",
+			dataType: "json",
+			success: function(data) {
+				// 지점 정보들 셀렉트 리스트에 등록
+				var branchList = $("#bhf_code");
+				for(var i=0; i<data.length; i++) {
+					$("<option></option>").val(data[i].bhf_code).text(data[i].bhf_nm).appendTo(branchList);
+				}
+				
+				// 층 정보 셀렉트 리스트에 등록
+				var floorList = $("#floorinfo_floor");
+				for(var i=0; i<countStory+1; i++) {
+					$("<option></option>").val(i+1).text((i+1) + "층").appendTo(floorList);
+				}
+			},
+			error : function(data) {
+				
+			}
+		});
+	});
+
+	/* 
+	 * 매장 등록 버튼 클릭 시 뜨는 모달창 관련
+	 * *********************************************************************************************************/
+	
 	
 	/**
 	 * 타일 클릭시 해당 타일 정보를 아작스로 서버에서 가져와서 도면 우측편에 표시하는 것
@@ -27,16 +101,16 @@ $(document).ready(function() {
 		
 		var totalNum = $("div.tile").index($(this))
 		var RowNum = $("div.tileMap > div").length;
-		
+
+		var floor = parseInt($("#floor").val());
 		var X_index = parseInt(totalNum / RowNum);
 		var Y_index = totalNum % RowNum;
-		
-		console.log("X = " + X_index + " Y = " + Y_index);
 		
 		$.ajax({
 			url: "shopTileClick",
 			type: "post",
 			data: {
+				floor : floor,
 				X_index : X_index,
 				Y_index : Y_index
 			},
@@ -69,8 +143,10 @@ $(document).ready(function() {
 		
 	});
 	
+	
 	/**
 	 * 모달에 출력된 비콘리스트를 하나 클릭하면 서버에 해당 타일에 해당 비콘을 저장시키는 것
+	 * 아직 제대로 코딩 안됨
 	 */
 	$("#beaconList").on("click", ".beacon", function() {
 		console.log($(this));
@@ -131,9 +207,9 @@ $(document).ready(function() {
 /**
  * 도면 이미지를 페이지에 뿌려줌
  */
-var imgLoad = function() {
-	var countStory = $("#countStory").val();
-	var floor = $("#floor").val();
+var imgLoad = function(floor) {
+	//var countStory = $("#countStory").val();
+	//var floor = $("#floor").val();
 	
 	$.ajax({
 		url: "getDrawingFileName",
@@ -144,15 +220,16 @@ var imgLoad = function() {
 		dataType: "text",
 		success: function(data) {
 			if(data != null) {
-				$('#blueprint > img').remove();
+				$('#blueprint').empty();
 				
 				console.log(data);
 				
 				var drawingImg = $('<img src="displayDrawing?fileName=/' + data + '" style="width: 800px; height: 380px;">');
 				drawingImg.appendTo($('#blueprint'));
 				
-				$("#floor").val(floor+1);
+				//$("#floor").val(floor+1);
 			}
+			
 			else {
 				window.alert("도면이 없습니다. 등록해주세요");
 			}

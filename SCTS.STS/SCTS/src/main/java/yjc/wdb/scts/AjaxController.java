@@ -4,10 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +22,7 @@ import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.BeaconVO;
 import yjc.wdb.scts.service.BeaconService;
+import yjc.wdb.scts.service.Branch_officeService;
 import yjc.wdb.scts.service.TileService;
 
 @Controller
@@ -29,6 +35,9 @@ public class AjaxController {
 	
 	@Inject
 	BeaconService beaconService;
+	
+	@Inject
+	Branch_officeService branchService;
 
 	/* shop_Register.js
 	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
@@ -36,11 +45,13 @@ public class AjaxController {
 	 */
 	@RequestMapping(value="shopTileClick", method=RequestMethod.POST)
 	@ResponseBody
-	public String shopTileClick(@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
+	public String shopTileClick(@RequestParam("floor") int floor,
+			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
 		
 		logger.info("X = " + X_index + "  Y = " + Y_index);
 		
 		HashMap<String, String> Map_XY = new HashMap<String, String>();
+		Map_XY.put("floor", "" + floor);
 		Map_XY.put("tilelc_crdnt_x", "" + X_index);
 		Map_XY.put("tilelc_crdnt_y", "" + Y_index);
 		
@@ -109,5 +120,23 @@ public class AjaxController {
 		 */
 		return "success";
 	}
-	
+
+	/* shop_Register.js
+	 * 매장 등록 버튼 클릭시 아작스로 존재하는 매장과, 층정보를 db에서 검색하여 넘겨주는 역할
+	 */
+
+	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String shop_RegisterForm() throws Exception{
+		
+		
+		// 지점 정보들 불러오기
+		List<HashMap<String, String>> branchList = branchService.selectBranchNameList();
+		
+		String str = new Gson().toJson(branchList);
+		
+		System.out.println(str);
+		
+		return str;
+	}
 }
