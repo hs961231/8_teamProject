@@ -122,7 +122,6 @@
 
 	<resultMap id="productRank" type="java.util.HashMap">
 		<result property="goods_nm" column="goods_nm" />
-		<result property="totalPurchsgoods_py" column="totalPurchsgoods_py" />
 		<result property="goods_netIncome" column="goods_netIncome" />
 		<result property="totalPrice" column="totalPrice" />
 
@@ -302,7 +301,6 @@
 	<select id="productRank" resultMap="productRank">
 		select g.GOODS_NM as
 		goods_nm,
-		sum(pg.purchsgoods_qy) as totalPurchsgoods_py,
 		sum(g.GOODS_PC
 		*
 		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
@@ -338,21 +336,27 @@
 		and result.goods_code = pg.goods_code
 		group by
 		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code
-		order by totalPrice
-		desc, totalPurchsgoods_py desc
+		order by 
+		<if test="standard == 1">
+			totalPrice desc
+		</if>
+		<if test="standard == 2">
+			goods_netIncome desc
+		</if>
+		
 		limit 0, 10;
 	</select>
 
 	<!-- 상품 랭킹 정보 -->
 	<select id="productRankInfo" resultMap="productRankInfo">
-		select g.GOODS_NM, sum(pg.PURCHSGOODS_QY) as totalPurchsgoods_qy,
+		select g.GOODS_NM as goods_nm, sum(pg.PURCHSGOODS_QY) as totalPurchsgoods_qy,
 		count(c.COUPON_CODE) as totalCouponCount,
 		sum(g.GOODS_PC *
 		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
 		like '%@%' escape '@',
 		g.GOODS_PC * (trim(trailing '%' from
 		c.COUPON_DSCNT)/100),
-		c.COUPON_DSCNT))) as price,
+		c.COUPON_DSCNT))) as totalPrice,
 		(sum(g.GOODS_PC *
 		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
 		like '%@%' escape '@',
@@ -370,7 +374,16 @@
 		where g.goods_code = pg.goods_code and result.goods_code = pg.goods_code
 		and b.BILL_CODE = pg.bill_code and date_format(b.BILL_ISSU_DE,
 		'%Y-%m') = #{date}
-		group by date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code, b.BILL_CODE;
+		group by date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code, b.BILL_CODE
+		order by 
+		<if test="standard == 1">
+			totalPrice desc
+		</if>
+		<if test="standard == 2">
+			goods_netIncome desc
+		</if>
+		
+		limit 0, 10;
 
 	</select>
 	

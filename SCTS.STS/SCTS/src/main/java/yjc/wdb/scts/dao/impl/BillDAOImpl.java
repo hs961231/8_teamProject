@@ -131,15 +131,22 @@ public class BillDAOImpl implements BillDAO {
 	}
 
 	@Override
-	public List<HashMap> productRank(String date) throws Exception {
+	public List<HashMap> productRank(String date, int standard) throws Exception {
 		
-		return sql.selectList(NAMESPACE+".productRank", date);
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("standard", standard);
+		
+		return sql.selectList(NAMESPACE+".productRank", map);
 	}
 
 	@Override
-	public List<HashMap> productRankInfo(String date) throws Exception {
+	public List<HashMap> productRankInfo(String date ,int standard) throws Exception {
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("standard", standard);
 		
-		return sql.selectList(NAMESPACE+".productRankInfo", date);
+		return sql.selectList(NAMESPACE+".productRankInfo", map);
 	}
 
 	@Override

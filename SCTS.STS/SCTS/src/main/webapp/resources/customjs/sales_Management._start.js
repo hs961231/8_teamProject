@@ -44,64 +44,6 @@ $(document).ready(function(){
 				    drilldown : {
 				    	series : []
 				    }
-
-				   /* series: [{
-				        name: 'Brands',
-				        colorByPoint: true,
-				        data: [{
-				            name: 'Microsoft Internet Explorer',
-				            y: 56.33,
-				            drilldown: 'Microsoft Internet Explorer'
-				        }, {
-				            name: 'Chrome',
-				            y: 24.03,
-				            drilldown: 'Chrome'
-				        }, {
-				            name: 'Firefox',
-				            y: 10.38,
-				            drilldown: 'Firefox'
-				        }, {
-				            name: 'Safari',
-				            y: 4.77,
-				            drilldown: 'Safari'
-				        }, {
-				            name: 'Opera',
-				            y: 0.91,
-				            drilldown: 'Opera'
-				        }]
-				    }],
-				    drilldown: {
-				        series: [{
-				            name: 'Microsoft Internet Explorer',
-				            id: 'Microsoft Internet Explorer',
-				            data: [
-				                [
-				                    'v11.0',
-				                    24.13
-				                ],
-				                [
-				                    'v8.0',
-				                    17.2
-				                ],
-				                [
-				                    'v9.0',
-				                    8.11
-				                ],
-				                [
-				                    'v10.0',
-				                    5.33
-				                ],
-				                [
-				                    'v6.0',
-				                    1.06
-				                ],
-				                [
-				                    'v7.0',
-				                    0.5
-				                ]
-				            ]
-				        }]
-				    }*/
 				}
 	
 		
@@ -113,7 +55,7 @@ $(document).ready(function(){
 		}
 		
 
-		 $.ajax({
+		 /*$.ajax({
 			type : "GET",
 			url : "yearSales",
 			data : {
@@ -130,46 +72,27 @@ $(document).ready(function(){
 					options.series[0].data[i].name =  data.yearSales[i].year;
 					options.series[0].data[i].y = data.yearSales[i].totalPrice;
 					options.series[0].data[i].drilldown = data.yearSales[i].year;
-					/*options.drilldown.series[i] = {}
-					options.drilldown.series[i].name =  data.yearSales[i].year;
-					options.drilldown.series[i].id = data.yearSales[i].year;
-					options.drilldown.series[i].data = [];*/
-			
+				
 				}
-				
-				/*length = data.yearToMonth.length;
-				
-				for(var j = 0; j < data.yearSales.length; j++){
-					
-					for(var i=0; i < length; i++){
-						options.drilldown.series[j].data[i] = [];
-						options.drilldown.series[j].data[i]= data.yearToMonth[i].bill_issu_de+",";
-						options.drilldown.series[j].data[i]+= data.yearToMonth[i].totalPrice;
-						
-						alert(options.drilldown.series[j].data[i]);
-				
-					}
-					
-				}*/
-				
-				
-				
 				
 				Highcharts.chart('salesChart', options);
 
 			}
 		});
 		 
-		 $(document).on("click", ".highcharts-drilldown-point", function(){
+		 $(document).on("click", ".highcharts-drilldown-point", function(event){
+			
+			 event.preventDefault();
+			
 			var index = $(".highcharts-drilldown-point").index(this);
 			var text = $(".highcharts-xaxis-labels tspan").eq(index).text();
-
+		
 			
 			$.ajax({
 				type : "GET",
 				url : "yearToMonth",
 				data : {
-					year: text
+					year : text
 				},
 				dataType: 'jsonp',
 				success : function(data) {
@@ -178,6 +101,8 @@ $(document).ready(function(){
 					options.drilldown.series[index] = {}
 					options.drilldown.series[index].name =  text;
 					options.drilldown.series[index].id = text;
+					
+					
 					options.drilldown.series[index].data = [];
 					
 					for(var i=0; i < length; i++){
@@ -187,9 +112,7 @@ $(document).ready(function(){
 					
 						
 					}
-					
-					
-					
+				
 				
 				}
 			});
@@ -198,48 +121,55 @@ $(document).ready(function(){
 		 
 		 yearSalesSettleInfo(year-4, year);
 		 
+		 
 		 $("#searchYear").click(function(){
 				
 				var year1 = $("#year1 option:selected").val();
 				var year2 = $("#year2 option:selected").val();
+				
+				
+				$(".chart").children().remove(); 
+				
+				$(".chart").append($('<div id="salesChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>'));
 							
 							
-				$.ajax({
-				type : "GET",
-				url : "searchYear",
-				data : {
-							year1 : year1,
-							year2 : year2
-					},
-				dataType: 'jsonp',
-				success : function(data) {
-
-						var barChartData = {};
-						barChartData.labels = [];
-				    	barChartData.datasets = [];
-						barChartData.datasets[0] = {};
-						barChartData.datasets[0].fillColor = "#FF3359";
-						barChartData.datasets[0].strokeColor = "#FF3359";
-						barChartData.datasets[0].data = [];
-									
-						var length = data.result.length;
-									
-						for(var i=0; i<length; i++){
-										
-							barChartData.labels[i] = data.result[i].year;
-							barChartData.datasets[0].data[i] = data.result[i].totalPrice;
+					$.ajax({
+					type : "GET",
+					url : "searchYear",
+					data : {
+								year1 : year1,
+								year2 : year2
+						},
+					dataType: 'jsonp',
+					success : function(data) {
+						
+						delete options.series[0].data;
+						options.series[0].data = [];
+						
+						var length = data.yearSales.length;
+						
+						for(var i=0; i < length; i++){
+						
+							options.series[0].data[i] = {};
+							options.series[0].data[i].name =  data.yearSales[i].year;
+							options.series[0].data[i].y = data.yearSales[i].totalPrice;
+							options.series[0].data[i].drilldown = data.yearSales[i].year;
+						
+							alert(options.series[0].data[i].name);
+						}
+						
+						Highcharts.chart('salesChart', options);
+						
+						
+						
+						yearSalesSettleInfo(year1, year2);
+					
 						}
 								
-						new Chart(document.getElementById("bar").getContext("2d")).Bar(barChartData);
-
-					}
 				});
-			
-				 yearSalesSettleInfo(year1, year2);
-							
-			});
 		
-	});
+		 });*/
+});
 	
 	function yearSalesSettleInfo(year1, year2){
 		
@@ -274,6 +204,9 @@ $(document).ready(function(){
 		   }
 		});
 	}
+	
+	
+	
 	
 	function highchartTheme(){
 		Highcharts.theme = {

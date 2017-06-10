@@ -97,15 +97,15 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public List<HashMap> productRank(String date) throws Exception {
+	public List<HashMap> productRank(String date, int standard) throws Exception {
 		
-		return dao.productRank(date);
+		return dao.productRank(date, standard);
 	}
 
 	@Override
-	public List<HashMap> productRankInfo(String date) throws Exception {
+	public List<HashMap> productRankInfo(String date, int standard) throws Exception {
 		
-		return dao.productRankInfo(date);
+		return dao.productRankInfo(date, standard);
 	}
 
 	@Override

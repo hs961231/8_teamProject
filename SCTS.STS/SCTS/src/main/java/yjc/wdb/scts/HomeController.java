@@ -278,6 +278,7 @@ public class HomeController {
 	@RequestMapping(value="yearToMonth", method=RequestMethod.GET)
 	public @ResponseBody String yearToMonth(HttpServletRequest request, int year) throws Exception{
 
+		System.out.println(year);
 
 		String callback = request.getParameter("callback");
 
@@ -325,7 +326,7 @@ public class HomeController {
 		
 
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", salesArray);
+		jsonObject.put("yearSales", salesArray);
 
 		return callback + "(" + jsonObject +")";
 	}
@@ -518,7 +519,72 @@ public class HomeController {
 		jsonObject.put("result", salesArray);
 
 		return callback + "(" + jsonObject +")";
+		
 	}
+	
+	@RequestMapping(value="productRank", method=RequestMethod.GET)
+	public @ResponseBody String productRank(HttpServletRequest request, String date, int standard) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.productRank(date, standard);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("goods_nm", list.get(i).get("goods_nm").toString());
+			salesJson.put("totalPurchsgoods_qy", list.get(i).get("totalPurchsgoods_qy"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesJson.put("goods_netIncome", list.get(i).get("goods_netIncome"));
+			salesArray.add(salesJson);
+
+		}
+	
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+		
+	}
+	
+	
+	@RequestMapping(value="productRankInfo", method=RequestMethod.GET)
+	public @ResponseBody String productRankInfo(HttpServletRequest request, String date, int standard) throws Exception{
+
+
+		String callback = request.getParameter("callback");
+
+		List<HashMap> list = billService.productRankInfo(date, standard);
+		
+		JSONObject salesJson;
+		JSONArray salesArray = new JSONArray();
+		
+		for(int i = 0; i < list.size(); i++){
+			salesJson = new JSONObject();
+			salesJson.put("goods_nm", list.get(i).get("goods_nm").toString());
+			salesJson.put("totalPurchsgoods_qy", list.get(i).get("totalPurchsgoods_qy"));
+			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
+			salesJson.put("goods_netIncome", list.get(i).get("goods_netIncome"));
+			salesJson.put("totalCouponCount", list.get(i).get("totalCouponCount"));
+			salesArray.add(salesJson);
+
+		}
+	
+		
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", salesArray);
+
+		return callback + "(" + jsonObject +")";
+		
+	}
+	
+	
 	
 	/////////////////////////////////////////////재고관리 //////////////////////////
 	
