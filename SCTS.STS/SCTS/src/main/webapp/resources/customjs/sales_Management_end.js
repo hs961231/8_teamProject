@@ -209,10 +209,6 @@ $(".productRank").click(function(){
 	productInfo(date, 1);
 	productRankInfo(date, 1);
 
-
-
-
-
 });
 
 
@@ -234,6 +230,250 @@ $(".customerProductRank").click(function(){
 	$('.tr').append($("<td></td>").text("총 매출"));
 
 });
+
+$("#age10").click(function(){
+	$("#salesChart").siblings().remove();
+	$(".chart").append($("<button class='btn btn-default m'>남자</button>"));
+	$(".chart").append($("<button class='btn btn-default w'>여자</button>"));
+	$("#customerProductRankInfo .income").removeAttr("disabled");
+	$("#customerProductRankInfo .income").attr("enabled", true);
+	$("#customerProductRankInfo .total").removeAttr("disabled");
+	$("#customerProductRankInfo .total").attr("enabled", true);
+	
+	
+	var date = $("#customerProductRankInfo #date").text();
+	$("#customerProductRankInfo #age").text("10");
+	ageSales(date, 10, 1, null);
+	ageSalesInfo(date, 10, 1, null);
+	
+});
+
+$("#age20").click(function(){
+	
+	$("#salesChart").siblings().remove();
+	$(".chart").append($("<button class='btn btn-default m'>남자</button>"));
+	$(".chart").append($("<button class='btn btn-default w'>여자</button>"));
+	
+	$("#customerProductRankInfo .income").removeAttr("disabled");
+	$("#customerProductRankInfo .income").attr("enabled", true);
+	$("#customerProductRankInfo .total").removeAttr("disabled");
+	$("#customerProductRankInfo .total").attr("enabled", true);
+	
+	var date = $("#customerProductRankInfo #date").text();
+	$("#customerProductRankInfo #age").text("20");
+	ageSales(date, 20, 1, null);
+	ageSalesInfo(date, 20, 1, null);
+	
+});
+
+
+$("#age30").click(function(){
+	
+	$("#salesChart").siblings().remove();
+	$(".chart").append($("<button class='btn btn-default m'>남자</button>"));
+	$(".chart").append($("<button class='btn btn-default w'>여자</button>"));
+	
+	$("#customerProductRankInfo .income").removeAttr("disabled");
+	$("#customerProductRankInfo .income").attr("enabled", true);
+	$("#customerProductRankInfo .total").removeAttr("disabled");
+	$("#customerProductRankInfo .total").attr("enabled", true);
+	
+	var date = $("#customerProductRankInfo #date").text();
+	$("#customerProductRankInfo #age").text("30");
+	ageSales(date, 30, 1, null);
+	ageSalesInfo(date, 30, 1, null);
+	
+});
+
+$("#age40").click(function(){
+	
+	$("#salesChart").siblings().remove();
+	$(".chart").append($("<button class='btn btn-default m'>남자</button>"));
+	$(".chart").append($("<button class='btn btn-default w'>여자</button>"));
+	
+	$("#customerProductRankInfo .income").removeAttr("disabled");
+	$("#customerProductRankInfo .income").attr("enabled", true);
+	$("#customerProductRankInfo .total").removeAttr("disabled");
+	$("#customerProductRankInfo .total").attr("enabled", true);
+	
+	var date = $("#customerProductRankInfo #date").text();
+	$("#customerProductRankInfo #age").text("40");
+	ageSales(date, 40, 1, null);
+	ageSalesInfo(date, 40, 1, null);
+	
+});
+
+$("#age50").click(function(){
+	
+	$("#salesChart").siblings().remove();
+	$(".chart").append($("<button class='btn btn-default'>남자</button>").addClass("m"));
+	$(".chart").append($("<button class='btn btn-default'>여자</button>").addClass("w"));
+	
+	$("#customerProductRankInfo .income").removeAttr("disabled");
+	$("#customerProductRankInfo .income").attr("enabled", true);
+	$("#customerProductRankInfo .total").removeAttr("disabled");
+	$("#customerProductRankInfo .total").attr("enabled", true);
+	
+	var date = $("#customerProductRankInfo #date").text();
+	$("#customerProductRankInfo #age").text("50");
+	ageSales(date, 50, 1, null);
+	ageSalesInfo(date, 50, 1, null);
+	
+});
+
+$(document).on("click",".m", function(){
+	
+	var date = $("#customerProductRankInfo  #date").text();
+	var age = $("#customerProductRankInfo #age").text();
+	ageSales(date, age, 1, "m");
+	ageSalesInfo(date, age, 1, "m");
+});
+
+$(document).on("click",".w", function(){
+	var date = $("#customerProductRankInfo  #date").text();
+	var age = $("#customerProductRankInfo #age").text();
+	ageSales(date, age, 1, "w");
+	ageSalesInfo(date, age, 1, "w");
+});
+
+
+function ageSales(date, age, standard, gender){
+	$.ajax({
+		url : "ageSales",
+		type : "GET",
+		data : {
+			date : date,
+			age : age,
+			standard : standard,
+			gender : gender
+		},
+		dataType : "jsonp",
+		success : function(data){
+			
+			$('.chartTitle').text(age + "대 고객별 선호 상품 순위");
+
+			var options = {
+
+					chart: {
+						type: 'column'
+					},
+
+					title: {
+						text: $('.chartTitle').text()
+					},
+
+					legend: {
+						align: 'right',
+						verticalAlign: 'middle',
+						layout: 'vertical'
+					},
+					xAxis : {
+						categories : []
+
+					},
+					yAxis: {
+						allowDecimals: false,
+						title: {
+							text: 'Amount'
+						}
+					},
+					series: [{
+						name: '순이익',
+						data: []
+					}, {
+						name: '총매출',
+						data: []
+					}],
+					responsive: {
+						rules: [{
+							condition: {
+								maxWidth: 500
+							},
+							chartOptions: {
+								legend: {
+									align: 'center',
+									verticalAlign: 'bottom',
+									layout: 'horizontal'
+								},
+								yAxis: {
+									labels: {
+										align: 'left',
+										x: 0,
+										y: -5
+									},
+									title: {
+										text: null
+									}
+								},
+								subtitle: {
+									text: null
+								},
+								credits: {
+									enabled: false
+								}
+							}
+						}]
+					}
+			}
+			var length = data.result.length;
+
+			for(var i=0; i < length; i++){
+				options.xAxis.categories[i] = data.result[i].goods_nm;
+				options.series[0].data[i] = data.result[i].goods_netIncome;
+				options.series[1].data[i] = data.result[i].totalPrice;
+
+			}
+
+
+
+			Highcharts.chart('salesChart', options);
+			
+		}
+	});
+	
+}
+
+function ageSalesInfo(date, age, standard, gender){
+	
+	$("#settleSales").children().remove();
+
+	$("#settleSales").append($("<tr></tr>").addClass('tr'));
+	$('.tr').append($("<td></td>").text("상품 이름"));
+	$('.tr').append($("<td></td>").text("쿠폰 사용량"));
+	$('.tr').append($("<td></td>").text("총 판매 수량"));
+	$('.tr').append($("<td></td>").text("순이익"));
+	$('.tr').append($("<td></td>").text("총 매출"));
+	
+	$.ajax({
+		url : "ageSalesInfo",
+		type : "GET",
+		data : {
+			date : date,
+			age : age,
+			standard : standard,
+			gender : gender
+		},
+		dataType : "jsonp",
+		success : function(data){
+			
+			
+			var length = data.result.length;
+			
+			for(var i = 0; i < length; i++){
+				$("#settleSales").append($("<tr></tr>").attr("data", i));
+
+				$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].goods_nm));
+				$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalCouponCount+"개"));
+				$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalPurchsgoods_qy+"개"));
+				$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].goods_netIncome+"원"));
+				$("tr[data="+i+"]").append($("<td></td>").text(data.result[i].totalPrice +"원"));
+
+			}
+
+		}
+	});
+	
+}
 
 
 function info(data){
@@ -483,6 +723,27 @@ $('#productSalesInfo .total').click(function () {
 
 });
 
+$('#customerProductRankInfo .income').click(function () {
+
+	var date = $("#customerProductRankInfo #date").text();
+	var age = $("#customerProductRankInfo #age").text();
+	
+	ageSales(date, age, 2, null);
+	ageSalesInfo(date, age, 2, null);
+
+
+
+});
+
+$('#customerProductRankInfo .total').click(function () {
+
+	var date = $("#customerProductRankInfo #date").text();
+	var age = $("#customerProductRankInfo #age").text();
+	ageSales(date, age, 1, null);
+	ageSalesInfo(date, age, 1, null);
+
+});
+
 var text = $("#productSalesInfo h3").text();
 
 var year = parseInt(text.split("-")[0]);
@@ -545,11 +806,74 @@ $('#productSalesInfo .next').click(function(){
 	
 	productInfo(date, 1);
 	productRankInfo(date, 1);
-	
-	
-
-
-	
-	
 
 });
+
+
+
+
+text = $("#customerProductRankInfo #date").text();
+
+year = parseInt(text.split("-")[0]);
+
+month = parseInt(text.split("-")[1].split("0")[1]);
+
+$('#customerProductRankInfo .prev').click(function(){
+	
+
+	month = month - 1;
+	if(month <= 0){
+		year = year -1;
+		month = 12;
+	}
+
+	if(month < 10){
+		month = "0"+month;
+	}
+
+	$("#customerProductRankInfo #date").text(year+"-"+month);
+	
+	var date = $("#customerProductRankInfo  #date").text();
+	var age = $("#customerProductRankInfo #age").text();
+	
+	ageSales(date, age, 1, null);
+	ageSalesInfo(date, age, 1, null);
+
+});
+
+$('#customerProductRankInfo .next').click(function(){
+	
+
+	if(month < 10){
+		month = parseInt( $("#customerProductRankInfo #date").text().split("-")[1].split("0")[1]);
+
+	}else{
+		month = parseInt( $("#customerProductRankInfo #date").text().split("-")[1]);
+	}
+	
+	
+	month = month + 1;
+	if(month >= 13){
+		year = year +1;
+		month = 1;
+	}
+
+	if(month < 10){
+		month = "0"+month;
+	}
+	
+	
+	$("#customerProductRankInfo #date").text(year+"-"+month);
+	
+	
+	if(month < 10){
+		month = parseInt(month.split("0")[1]);
+	}
+	
+	var date = $("#customerProductRankInfo  #date").text();
+	var age = $("#customerProductRankInfo #age").text();
+	ageSales(date, age, 1, null);
+	ageSalesInfo(date, age, 1, null);
+
+});
+

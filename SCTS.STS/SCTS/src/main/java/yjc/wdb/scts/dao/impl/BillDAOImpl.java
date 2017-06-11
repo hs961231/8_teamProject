@@ -155,4 +155,36 @@ public class BillDAOImpl implements BillDAO {
 		return sql.selectList(NAMESPACE+".yearToMonth", year);
 	}
 
+	@Override
+	public List<HashMap> genderSales(String date, String gender) throws Exception {
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("gender", gender);
+		
+		return sql.selectList(NAMESPACE+".genderSales", map);
+	}
+
+	@Override
+	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception {
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("age", age);
+		map.put("standard", standard);
+		map.put("gender", gender);
+		
+		return sql.selectList(NAMESPACE+".ageSales", map);
+	}
+
+	@Override
+	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
+		
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("age", age);
+		map.put("standard", standard);
+		map.put("gender", gender);
+		
+		return sql.selectList(NAMESPACE+".ageSalesInfo", map);
+	}
+
 }

@@ -114,4 +114,22 @@ public class BillServiceImpl implements BillService {
 		return dao.yearToMonth(year);
 	}
 
+	@Override
+	public List<HashMap> genderSales(String date, String gender) throws Exception {
+		
+		return dao.genderSales(date, gender);
+	}
+
+	@Override
+	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception {
+	
+		return dao.ageSales(date, age, standard, gender);
+	}
+
+	@Override
+	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.ageSalesInfo(date, age, standard, gender);
+	}
+
 }

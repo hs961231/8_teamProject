@@ -55,7 +55,7 @@ $(document).ready(function(){
 		}
 		
 
-		 /*$.ajax({
+		 $.ajax({
 			type : "GET",
 			url : "yearSales",
 			data : {
@@ -86,6 +86,13 @@ $(document).ready(function(){
 			
 			var index = $(".highcharts-drilldown-point").index(this);
 			var text = $(".highcharts-xaxis-labels tspan").eq(index).text();
+			
+			options.drilldown.series[index] = {}
+			options.drilldown.series[index].name =  text;
+			options.drilldown.series[index].id = text;
+			
+			
+			options.drilldown.series[index].data = [];
 		
 			
 			$.ajax({
@@ -98,12 +105,6 @@ $(document).ready(function(){
 				success : function(data) {
 					var length = data.yearToMonth.length;
 					
-					options.drilldown.series[index] = {}
-					options.drilldown.series[index].name =  text;
-					options.drilldown.series[index].id = text;
-					
-					
-					options.drilldown.series[index].data = [];
 					
 					for(var i=0; i < length; i++){
 						options.drilldown.series[index].data[i] = []
@@ -155,20 +156,18 @@ $(document).ready(function(){
 							options.series[0].data[i].y = data.yearSales[i].totalPrice;
 							options.series[0].data[i].drilldown = data.yearSales[i].year;
 						
-							alert(options.series[0].data[i].name);
 						}
 						
 						Highcharts.chart('salesChart', options);
 						
-						
-						
-						yearSalesSettleInfo(year1, year2);
 					
 						}
 								
 				});
+				
+				yearSalesSettleInfo(year1, year2);
 		
-		 });*/
+		 });
 });
 	
 	function yearSalesSettleInfo(year1, year2){
