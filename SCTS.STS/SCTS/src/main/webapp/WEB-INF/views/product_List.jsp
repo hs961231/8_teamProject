@@ -30,8 +30,8 @@
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>
 			</div>
-			<section class="panel" style="overflow: auto; height: 430px;">
-					<table class="table table-striped table-advance table-hover">
+			<section class="panel col-lg-12" style="overflow:scroll; height: 600px;">
+					<table class="table table-striped table-advance table-hover" >
 						<tbody>
 							<tr>
 								<th style="text-align: center;"><i class="icon_profile"></i>

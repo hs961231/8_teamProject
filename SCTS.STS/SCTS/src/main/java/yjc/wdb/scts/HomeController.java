@@ -226,9 +226,9 @@ public class HomeController {
 
 		model.addAttribute("main_content", ContentPage);
 
-		/*ProductVO product = productService.productOne(product_id);
+		GoodsVO goods = goodsService.selectGoodsOne(product_id);
 		
-		model.addAttribute("product", product);*/
+		model.addAttribute("goods", goods);
 		
 		return "mainPage";
 	}
@@ -659,7 +659,19 @@ public class HomeController {
 		
 		return new ResponseEntity<String>(str, HttpStatus.OK);
 	}
+	
+	/********************************* User Profile ***************************************/
+	/********************************* User Profile ***************************************/
+	@RequestMapping(value="myProfile", method=RequestMethod.GET)
+	public String myProfile(HttpServletRequest request, HttpSession session, Model model) {
+		
+		String ContentPage = "myProfile";
+		
+		model.addAttribute("main_content", ContentPage);
 
+		return "mainPage";
+	}
+	
 	/***************************************
 	 * 2017_05_09
 	 * 테스트용 페이지들

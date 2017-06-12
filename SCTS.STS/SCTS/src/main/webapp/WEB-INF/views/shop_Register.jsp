@@ -273,7 +273,7 @@ to {
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>	
 			</div>
-			<section class="panel" style="overflow: scroll; height: 430px;">
+			<section class="panel col-lg-12" style="overflow: scroll; height: 430px;">
 
 				<table class="table table-striped table-advance table-hover">
 					<tbody>
