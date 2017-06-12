@@ -1,16 +1,6 @@
 @CHARSET "UTF-8";
 
 
-.tileMap>div {
-	width: 100%;
-	height: 12.5%;
-}
-
-.tile {
-	width: 12.5%;
-	height: 100%;
-	float: left;
-}
 
 div.mouseover {
 	background-color: rgba(250, 226, 71, 0.2);

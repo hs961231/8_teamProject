@@ -13,16 +13,18 @@ values(#{drw_flpth})
 
 <insert id="insertFloor_information">
 insert into floor_information
-	(bhf_code, drw_code, floorinfo_floor, floorinfo_rgsde)
+	(bhf_code, drw_code, floorinfo_floor, floorinfo_rgsde, size_x, size_y)
 values 
-	( #{bhf_code}, (select max(drw_code) from drawing), #{floorinfo_floor}, date(now()) )
+	( #{bhf_code}, LAST_INSERT_ID(), #{floorinfo_floor}, date(now()), #{size_x}, #{size_y} )
 
 <!-- insert into FLOOR_INFORMATION
 	(BHF_CODE, DRW_CODE, FLOORINFO_FLOOR, FLOORINFO_RGSDE)
 values (#{bhf_code}, #{drw_code}, #{floorinfo_floor}, now()) -->
 </insert>
 
-
+<!-- 
+	현재 존재하는 그림 뽑아오기? 정확히기억안남 해석할 것
+ -->
 <select id="selectDrawingList" resultType="java.util.HashMap">
 select f.floorinfo_floor, d.drw_flpth
 from DRAWING d, FLOOR_INFORMATION f
@@ -31,15 +33,31 @@ and f.DRW_CODE = d.DRW_CODE
 order by FLOORINFO_RGSDE desc
 </select>
 
-<!-- 도면 한장 뽑기 위한 것 지금 테스트용으로 대충만들엇음
-	다시 만들어야함 -->
+<select id="selectLast_insert_id" resultType="Integer">
+select LAST_INSERT_ID();
+</select>
+
+<!--
+	도면 한장 뽑기 위한 것 
+	한층에 한개씩만 적용되며 적용 기준은 먼저 날짜, 날짜가 같을 경우 도면코드가 큰 순임.
+-->
 <select id="selectDrawingOne" resultType="java.util.HashMap">
-select f.floorinfo_floor, d.drw_flpth
-from DRAWING d, FLOOR_INFORMATION f
-where BHF_CODE = #{bhf_code}
-and f.DRW_CODE = d.DRW_CODE
-order by f.FLOORINFO_RGSDE desc, d.DRW_CODE desc
-limit #{floor}, 1
+select
+	f.floorinfo_floor, d.drw_flpth, d.drw_code, f.size_x, f.size_y
+from
+	DRAWING d, FLOOR_INFORMATION f
+where
+	f.DRW_CODE IN	(
+						select max(drw_code)
+						from
+							floor_information
+						where bhf_code = #{bhf_code}
+						group by floorinfo_floor
+					)
+and
+	f.DRW_CODE = d.DRW_CODE
+order by f.FLOORINFO_RGSDE desc, f.FLOORINFO_FLOOR asc
+limit #{floor},1
 </select>
 
 <select id="selectCountStory" resultType="integer">

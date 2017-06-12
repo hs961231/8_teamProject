@@ -53,4 +53,10 @@ public class Floor_informationDAOImpl implements Floor_informationDAO {
 		return sql.selectOne(NAMESPACE + ".selectDrawingOne", map);
 	}
 
+	@Override
+	public int selectLast_insert_id() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE + ".selectLast_insert_id");
+	}
+
 }

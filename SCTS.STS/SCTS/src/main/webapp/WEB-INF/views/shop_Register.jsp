@@ -118,6 +118,7 @@ to {
 			<div class="panel-body-map">
 			 	<input type="hidden" id="countStory" value="${ countStory }">
 			 	<input type="hidden" id="floor" value="0">
+			 	<input type="hidden" id="drw_code" value="0">
 				<div id="blueprint"
 					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
 					<!-- 
@@ -138,111 +139,6 @@ to {
 				<div class="tileMap"
 					style="position: absolute; width: 800px; height: 380px; z-index: 2;">
 					<!-- 타일영역 전체 감싸는 div -->
-
-					<div>
-						<!-- 타일영역 1번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 1번 줄 -->
-
-					<div>
-						<!-- 타일영역 2번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 2번 줄 -->
-
-					<div>
-						<!-- 타일영역 3번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 3번 줄 -->
-
-					<div>
-						<!-- 타일영역 4번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 4번 줄 -->
-
-					<div>
-						<!-- 타일영역 5번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 5번 줄 -->
-
-					<div>
-						<!-- 타일영역 6번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 6번 줄 -->
-
-					<div>
-						<!-- 타일영역 7번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 7번 줄 -->
-
-					<div>
-						<!-- 타일영역 8번 줄 -->
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-						<div class="tile"></div>
-					</div>
-					<!-- 타일영역 8번 줄 -->
-
 				</div>
 				<!-- 타일영역 전체 감싸는 div -->
 

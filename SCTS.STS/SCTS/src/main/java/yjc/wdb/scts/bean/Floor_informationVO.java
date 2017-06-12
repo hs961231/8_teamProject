@@ -7,7 +7,21 @@ public class Floor_informationVO {
 	private int		drw_code;
 	private String	floorinfo_floor;
 	private Date	floorinfo_rgsde;
+	private int		size_x;
+	private int		size_y;
 	
+	public int getSize_x() {
+		return size_x;
+	}
+	public void setSize_x(int size_x) {
+		this.size_x = size_x;
+	}
+	public int getSize_y() {
+		return size_y;
+	}
+	public void setSize_y(int size_y) {
+		this.size_y = size_y;
+	}
 	public int getBhf_code() {
 		return bhf_code;
 	}

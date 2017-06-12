@@ -11,11 +11,11 @@ $(document).ready(function() {
 	/* ********************************************************************************************************* /
 	 * 타일관련 선택시
 	 */
-	$("div.tile").on("mouseover", function() {
+	$("div.tileMap").on("mouseover", ".tile", function() {
 		$(this).addClass("mouseover");
 	});
 	
-	$("div.tile").on("mouseout", function() {
+	$("div.tileMap").on("mouseout", ".tile", function() {
 		$(this).removeClass("mouseover");
 	});
 	
@@ -93,7 +93,7 @@ $(document).ready(function() {
 	/**
 	 * 타일 클릭시 해당 타일 정보를 아작스로 서버에서 가져와서 도면 우측편에 표시하는 것
 	 */
-	$("div.tile").on("click", function() {
+	$("div.tileMap").on("click", ".tile", function() {
 		$(".tileMap .active").removeClass("active");
 		
 		$(this).addClass("active");
@@ -102,7 +102,7 @@ $(document).ready(function() {
 		var totalNum = $("div.tile").index($(this))
 		var RowNum = $("div.tileMap > div").length;
 
-		var floor = parseInt($("#floor").val());
+		var drw_code = parseInt($("#drw_code").val());
 		var X_index = parseInt(totalNum / RowNum);
 		var Y_index = totalNum % RowNum;
 		
@@ -110,7 +110,7 @@ $(document).ready(function() {
 			url: "shopTileClick",
 			type: "post",
 			data: {
-				floor : floor,
+				drw_code : drw_code,
 				X_index : X_index,
 				Y_index : Y_index
 			},
@@ -217,15 +217,46 @@ var imgLoad = function(floor) {
 		data: {
 			floor : floor
 		},
-		dataType: "text",
+		dataType: "json",
 		success: function(data) {
 			if(data != null) {
 				$('#blueprint').empty();
-				
+
 				console.log(data);
+				console.log(data.drw_flpth);
+				console.log(data.drw_code);
 				
-				var drawingImg = $('<img src="displayDrawing?fileName=/' + data + '" style="width: 800px; height: 380px;">');
+				var drawingImg = $('<img src="displayDrawing?fileName=/' + data.drw_flpth + '" style="width: 800px; height: 380px;">');
 				drawingImg.appendTo($('#blueprint'));
+				
+				$("#drw_code").val(data.drw_code);
+				
+				var tileMap = $(".tileMap");
+				
+				tileMap.empty();
+				
+				// 해당 층의 설정된 타일 갯수까지 가져올 수 있어야 함.
+				for(var i=0; i<data.size_y; i++) {
+					var tileRow = $("<div></div>");
+					
+					//tileRow.css("width", "100%");
+					//tileRow.css("height", heightSize + "%");
+					
+					for(var j=0; j<data.size_x; j++) {
+						var tileItem = $("<div></div>").addClass("tile");
+						//tileItem.css("width", widthSize + "%");
+						//tileItem.css("height", "100%");
+						//tileItem.css("float", "left");
+						
+						tileItem.appendTo(tileRow);
+					}
+					tileRow.appendTo(tileMap);
+				}
+				var heightSize = 100 / data.size_y;
+				var widthSize = 100 / data.size_x;
+				$(".tileMap > div").css("width", "100%").css("height", heightSize + "%");
+				$(".tile").css("width", widthSize + "%").css("height", "100%").css("float", "left");
+				
 				
 				//$("#floor").val(floor+1);
 			}

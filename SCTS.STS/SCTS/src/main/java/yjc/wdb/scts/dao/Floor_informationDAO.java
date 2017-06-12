@@ -11,4 +11,5 @@ public interface Floor_informationDAO {
 	public List<HashMap<String, String>> selectDrawingList(int bhf_code) throws Exception;
 	public int selectCountStory(int bhf_code) throws Exception;
 	public HashMap<String, String> selectDrawingOne(int bhf_code, int floor) throws Exception;
+	public int selectLast_insert_id() throws Exception;
 }

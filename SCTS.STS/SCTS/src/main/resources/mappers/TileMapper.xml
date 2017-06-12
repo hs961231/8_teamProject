@@ -12,6 +12,26 @@ insert into TILE
 values(#{tile_nm})
 </insert>
 
+<insert id="insertTile_location">
+insert into TILE_LOCATION
+	(DRW_CODE, TILE_CODE, TILELC_CRDNT_X, TILELC_CRDNT_Y)
+values (#{drw_code}, LAST_INSERT_ID(), #{tilelc_crdnt_x}, #{tilelc_crdnt_y})
+</insert>
+
+<!-- 
+	도면 등록할 때 처음 등록되는 타일을 한번에 등록시키기 위해서 사용하려 해보았지만 실패
+	이유는 한번에 두개 테이블에 동시에 데이터를 넣어야 해서임. 일단 쉽게짜고 추후에 수정 가능하다면 사용할 계획
+ -->
+<insert id="insertDrawingTile">
+insert into TILE
+	(TILE_NM)
+values
+<foreach collection="tileList" item="tile" separator=",">
+        ( #{tile_nm} )
+</foreach>
+</insert>
+
+
 <!-- 존재하는 타일리스트 전부를 뽑아옴, 여기서 비콘이 셋팅되어 있으면 셋팅된 비콘의 메이저 마이너를 얻어옴 -->
 <select id="selectTileList" resultType="java.util.HashMap">
 select
@@ -50,7 +70,7 @@ where
 						from
 							TILE_LOCATION
 						where
-							DRW_CODE = #{floor}
+							DRW_CODE = #{drw_code}
 						and
 							TILELC_CRDNT_X = #{tilelc_crdnt_x}
 						and

@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+
 import yjc.wdb.scts.bean.Floor_informationVO;
 import yjc.wdb.scts.service.Floor_informationService;
 import yjc.wdb.scts.util.MediaUtils;
@@ -68,6 +70,8 @@ public class FileUploadController {
 		
 		vo.setBhf_code(bhf_code);
 		vo.setFloorinfo_floor(floorinfo_floor);
+		vo.setSize_x(size_x);
+		vo.setSize_y(size_y);
 
 		floor_informationService.register_shop(savedName, vo);
 
@@ -82,11 +86,11 @@ public class FileUploadController {
 		int bhf_code = 1;
 		HashMap map = floor_informationService.selectDrawingOne(bhf_code, floor);
 		
-		String data = (String) map.get("drw_flpth");
+		String str = new Gson().toJson(map);
 		
-		System.out.println(data);
+		//System.out.println(str);
 		
-		return data;
+		return str;
 	}
 
 	@RequestMapping("displayDrawing")

@@ -22,8 +22,14 @@ import yjc.wdb.scts.service.CouponService;
 		locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"} )
 public class BaseTest {
 	
-	@Inject
-	private CouponService couponService;
+	@Test
+	public void asd() {
+		char s = 'A' + 1;
+		
+		String str = s + "11";
+		System.out.println("" + s + 11);
+		//System.out.println("Å×½ºÆ®");
+	}
 	
 	/*
 	@Test

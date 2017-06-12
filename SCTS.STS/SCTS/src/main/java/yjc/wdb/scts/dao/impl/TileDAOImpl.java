@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import yjc.wdb.scts.bean.TileVO;
+import yjc.wdb.scts.bean.Tile_locationVO;
 import yjc.wdb.scts.dao.TileDAO;
 
 @Repository
@@ -35,6 +36,18 @@ public class TileDAOImpl implements TileDAO {
 	public HashMap<String, String> selectTile_LocationOne(HashMap<String, String> Map_XY) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".selectTile_LocationOne", Map_XY);
+	}
+
+	@Override
+	public void insertDrawingTile(List<TileVO> tileList) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertDrawingTile", tileList);
+	}
+
+	@Override
+	public void insertTile_location(Tile_locationVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertTile_location", vo);
 	}
 	
 }

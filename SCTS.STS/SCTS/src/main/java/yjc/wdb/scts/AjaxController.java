@@ -45,13 +45,13 @@ public class AjaxController {
 	 */
 	@RequestMapping(value="shopTileClick", method=RequestMethod.POST)
 	@ResponseBody
-	public String shopTileClick(@RequestParam("floor") int floor,
+	public String shopTileClick(@RequestParam("drw_code") int drw_code,
 			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
 		
 		logger.info("X = " + X_index + "  Y = " + Y_index);
 		
 		HashMap<String, String> Map_XY = new HashMap<String, String>();
-		Map_XY.put("floor", "" + floor);
+		Map_XY.put("drw_code", "" + drw_code);
 		Map_XY.put("tilelc_crdnt_x", "" + X_index);
 		Map_XY.put("tilelc_crdnt_y", "" + Y_index);
 		
