@@ -2,13 +2,13 @@
 	pageEncoding="UTF-8"%>
 
 <form role="form" method="post">
-	<input type="hidden" name="product_id" value="${vo.goods_code}">
+	<input type="hidden" name="product_id" value="${goods_code}">
 </form>
 
 <div class="row">
 	<div class="col-lg-12">
 		<h3 class="page-header">
-			<i class="fa fa fa-bars"></i>물품 정보 등록
+			<i class="fa fa fa-bars"></i>물품 상세 정보
 		</h3>
 		<ol class="breadcrumb">
 			<li><i class="fa fa-home"></i><a href="index">Home</a></li>
@@ -21,9 +21,9 @@
 <!-- Form validations -->
 <div class="row">
 	<div class="col-lg-12">
-		<section class="panel">
-			<header class="panel-heading"> 물품 정보 등록 </header>
-			<div class="panel-body" style="overflow: scroll">
+		<section class="panel" >
+			<header class="panel-heading"> 물품 상세 정보 </header>
+			<div class="panel-body" style="height:500px;" >
 				<div class="form">
 					<form class="form-validate form-horizontal" id="feedback_form"
 						method="post">
@@ -42,7 +42,7 @@
 								</label>
 								<div class="col-lg-5">
 									<input class="form-control" id="name" name="fullname"
-										type="text" value="${vo.goods_nm}" required />
+										type="text" value="${goods.goods_nm}" required />
 								</div>
 								<br> <br> <br> <label for="amount"
 									class="control-label col-lg-2">카테고리 정보 <span
@@ -64,7 +64,7 @@
 								</label>
 								<div class="col-lg-5">
 									<input class="form-control" id="price" name="fullname"
-										type="text" value="${ vo.goods_pc }" required />
+										type="text" value="${goods.goods_pc}" required />
 								</div>
 								<br> <br> <br> <label for="price"
 									class="control-label col-lg-2">판매 수량 <span
@@ -82,7 +82,7 @@
 								부가 정보</label>
 							<div class="col-lg-20">
 								<textarea class="form-control " id="ccomment" name="comment"
-									required></textarea>
+									required>${goods.goods_dc}</textarea>
 							</div>
 						</div>
 
