@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
 <script>
 	$(document).ready(function() {
 
@@ -10,28 +11,189 @@
 		if (month < 10) {
 			month = "0" + month;
 		}
+		
+		
 		var day = date.getDate();
 		
-	
-
-		$('#calendar').fullCalendar({
-			header : {
-				left : 'prev,next today',
-				center : 'title',
-				right : 'month,agendaWeek,agendaDay,listWeek'
-			},
-			defaultDate : year + "-" + month + "-" + day,
-			navLinks : true, // can click day/week names to navigate views
-			selectable : true,
-			selectHelper : true,
-			select : registerEvent(),
-			editable : true,
-			eventLimit : true
-		});
+		var options = {
+				header : {
+					left : 'prev,next today',
+					center : 'title',
+					right : 'month,basicWeek,agendaDay,listWeek'
+				},
+				views : {
+					month : {
+						titleFormat : 'YYYY-MM'
+					},
+					week : {
+						titleFormat : 'YYYY-MM, DD'
+					}, 
+					day : {
+						titleFormat : 'YYYY-MM-D'
+					}
+				},
+				timeFormat: 'HH:mm',
+				defaultDate : year + "-" + month + "-" + day,
+				navLinks : true, // can click day/week names to navigate views
+				selectable : true,
+				selectHelper : true,
+				select : registerEvent()
+					
+				
+			}
+		
+		
+		$('#calendar').fullCalendar(options);
 		
 		viewCalendar();
 		
+
+		var text = $(".fc-center h2").text();
+
+		year = parseInt(text.split("-")[0]);
+
+		month = parseInt(text.split("-")[1].split("0")[1]);
+
+		$('.fc-prev-button').click(function(){
+
+
+			month = month - 1;
+			if(month <= 0){
+				year = year -1;
+				month = 12;
+			}
+
+			if(month < 10){
+				month = "0"+month;
+			}
+
+			$(".fc-center h2").text(year+"-"+month);
+			
+			var date = $(".fc-center h2").text();
+			
+
+
+		});
+
+		$('.fc-next-button').click(function(event){
 	
+			if(month < 10){
+				month = parseInt( $(".fc-center h2").text().split("-")[1].split("0")[1]);
+
+			}else{
+				month = parseInt( $(".fc-center h2").text().split("-")[1]);
+			}
+			
+			month = month + 1;
+			if(month >= 13){
+				year = year +1;
+				month = 1;
+			}
+
+			if(month < 10){
+				month = "0"+month;
+			}
+		
+			
+			
+			$(".fc-center h2").text(year+"-"+month);
+			
+			
+			if(month < 10){
+				month = parseInt(month.split("0")[1]);
+			}	
+
+		});
+		
+	
+		$(".fc-basicWeek-button").click(function(){
+			
+	
+			$(".fc-prev-button").attr("disabled", true);
+			$(".fc-next-button").attr("disabled", true);
+	
+				var date = new Date();
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				
+				if(month <= 10){
+					month = "0"+month;
+				}
+				
+			
+
+				var i = 3;
+				$(".fc-day-header").each(function(){
+					date.setDate(new Date().getDate()-i)
+					$(this).text(date.getMonth() + 1 + "/" + date.getDate());
+					i--;
+				});
+				
+				var a = parseInt($(".fc-day-header:first").text().split("/")[1]);
+				var b =parseInt($(".fc-day-header:last").text().split("/")[1]);
+				if(a <= 10){
+					a = "0"+a;
+				}
+				if(b <= 10){
+					b = "0"+b;
+				}
+				
+				$(".fc-center h2").text(year+"-"+month+", " + a +"-" + b);
+
+		});
+		
+		$(".fc-agendaDay-button").click(function(){
+			
+			
+			$(".fc-prev-button").attr("disabled", true);
+			$(".fc-next-button").attr("disabled", true);
+
+
+		});
+		
+
+		$(".fc-listWeek-button").click(function(){
+			
+			
+			$(".fc-prev-button").attr("disabled", true);
+			$(".fc-next-button").attr("disabled", true);
+			
+			var date = new Date();
+			var i = 3;
+			
+			$(".fc-list-heading").each(function(){
+				
+				date.setDate(new Date().getDate()-i)
+				
+				var month = date.getMonth()+1;
+				var day = date.getDate();
+				
+				if(month < 10){
+					month = "0"+month;
+				}
+				if(day < 10){
+					day = "0" + day;
+				}
+				
+				$(this).attr("data-date", date.getFullYear()+"-"+month+"-"+day);
+				
+				i--;
+			});
+			
+			$(".fc-list-heading-main").each(function(){
+				
+				$(this).attr("data-goto", $(this).parent().parent().attr("data-date"));
+			});
+
+			
+			$(".fc-list-heading-alt").each(function(){
+				
+				$(this).attr("data-goto", '{"date": "'+$(this).parent().parent().attr("data-date")
+					+'", "type": "day"}');
+			});
+
+		});
+		
 
 		/* 취소 버튼 클릭 */
 		$('.close').click(function() {
@@ -79,6 +241,9 @@
 		$(document).on('click', 'a', function(event){
 			event.stopImmediatePropagation();
 		});
+		
+		
+		
 	});
 	
 
@@ -153,11 +318,7 @@
 						
 						
 						$('#calendar').fullCalendar('renderEvent', eventData, true);
-						
-						$('.fc-content').append($("<span></span>").text(eventData.end));
-						
-						
-						
+					
 					}
 				}
 			});
@@ -241,7 +402,7 @@ body {
 
 	<button id="edit" class="btn btn-primary">등록</button>
 	<button class="btn btn-danger close">닫기</button>
-	
+
 </div>
 
 
@@ -260,3 +421,5 @@ body {
 	<button id="delete" class="btn btn-warning">삭제</button>
 	<button class="btn btn-danger close">닫기</button>
 </div>
+
+<script>
