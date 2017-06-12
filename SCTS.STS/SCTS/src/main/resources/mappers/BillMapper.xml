@@ -122,13 +122,12 @@
 
 	<resultMap id="productRank" type="java.util.HashMap">
 		<result property="goods_nm" column="goods_nm" />
-		<result property="totalPurchsgoods_py" column="totalPurchsgoods_py" />
 		<result property="goods_netIncome" column="goods_netIncome" />
 		<result property="totalPrice" column="totalPrice" />
 
 	</resultMap>
-	
-	
+
+
 	<resultMap id="productRankInfo" type="java.util.HashMap">
 		<result property="goods_nm" column="goods_nm" />
 		<result property="totalPurchsgoods_qy" column="totalPurchsgoods_qy" />
@@ -137,7 +136,14 @@
 		<result property="totalPrice" column="totalPrice" />
 
 	</resultMap>
-	
+
+
+	<resultMap id="genderSales" type="java.util.HashMap">
+		<result property="goods_nm" column="goods_nm" />
+		<result property="totalPrice" column="totalPrice" />
+
+	</resultMap>
+
 
 	<!-- 연매출 그래프 -->
 	<select id="yearSales" resultMap="yearSales">
@@ -162,6 +168,20 @@
 
 	</select>
 
+	<!-- 연매출 그래프 누를 시 월매출 -->
+	<select id="yearToMonth" resultMap="daySales">
+		select
+		date_format(b.BILL_ISSU_DE, '%Y-%m') as bill_issu_de,
+		sum(b.BILL_TOTAMT) as totalPrice
+		from bill b
+		where
+		date_format(b.BILL_ISSU_DE, '%Y-%m') between concat(#{year}, '-01')
+		and concat(#{year}, '-12')
+		group by date_format(b.BILL_ISSU_DE,
+		'%Y-%m')
+
+	</select>
+
 	<!-- 연매출 검색 -->
 	<select id="searchYear" resultMap="yearSales">
 
@@ -180,11 +200,15 @@
 	<select id="settleSalesInfo" resultMap="settleSalesInfo">
 
 		select
-		date_format((b.BILL_ISSU_DE), '%Y') as year, sm.setle_mth_nm as setle_mth_nm,
+		date_format((b.BILL_ISSU_DE), '%Y') as year, sm.setle_mth_nm as
+		setle_mth_nm,
 		sum(si.stprc) as totalPrice
-		from bill b, settlement_infomation si, settlement_method sm
-		where date_format((b.BILL_ISSU_DE), '%Y') between #{year1} and #{year2}
-		and b.BILL_CODE = si.bill_code and sm.setle_mth_code = si.setle_mth_code
+		from bill b,
+		settlement_infomation si, settlement_method sm
+		where
+		date_format((b.BILL_ISSU_DE), '%Y') between #{year1} and #{year2}
+		and
+		b.BILL_CODE = si.bill_code and sm.setle_mth_code = si.setle_mth_code
 		group by date_format((b.BILL_ISSU_DE), '%Y'), sm.setle_mth_code;
 
 
@@ -195,12 +219,15 @@
 	<select id="daySales" resultMap="daySales">
 
 		select b.BILL_ISSU_DE
-		as bill_issu_de, sum(b.BILL_TOTAMT) as
+		as
+		bill_issu_de, sum(b.BILL_TOTAMT) as
 		totalPrice
 		from bill b
-		where (b.BILL_ISSU_DE between subDate(curDate(),
+		where
+		(b.BILL_ISSU_DE between subDate(curDate(),
 		Interval 7 DAY)
-		and curDate())
+		and
+		curDate())
 		group by b.BILL_ISSU_DE;
 
 	</select>
@@ -210,14 +237,18 @@
 
 
 		select
-		b.BILL_ISSU_DE as year, sm.setle_mth_nm as setle_mth_nm,
+		b.BILL_ISSU_DE
+		as year, sm.setle_mth_nm as setle_mth_nm,
 		sum(si.stprc) as totalPrice
 		from bill b, settlement_infomation si, settlement_method
 		sm
-		where b.BILL_ISSU_DE between subDate(curDate(),
+		where
+		b.BILL_ISSU_DE between subDate(curDate(),
 		Interval 7 DAY) and
-		curDate() and
-		b.BILL_CODE = si.bill_code and sm.setle_mth_code = si.setle_mth_code
+		curDate()
+		and
+		b.BILL_CODE = si.bill_code and sm.setle_mth_code =
+		si.setle_mth_code
 		group by
 		b.BILL_ISSU_DE, sm.setle_mth_code;
 
@@ -227,10 +258,12 @@
 	<select id="searchDaySales" resultMap="daySales">
 
 		select b.BILL_ISSU_DE
-		as bill_issu_de, sum(b.BILL_TOTAMT) as
+		as
+		bill_issu_de, sum(b.BILL_TOTAMT) as
 		totalPrice from
 		bill b
-		where b.BILL_ISSU_DE between #{date2} and #{date1}
+		where
+		b.BILL_ISSU_DE between #{date2} and #{date1}
 		group by
 		b.BILL_ISSU_DE;
 
@@ -241,13 +274,18 @@
 	<select id="daySettle" resultMap="settleSalesInfo">
 
 		select
-		b.BILL_ISSU_DE as year, sm.setle_mth_nm as setle_mth_nm,
+		b.BILL_ISSU_DE as year,
+		sm.setle_mth_nm as setle_mth_nm,
 		sum(si.stprc) as totalPrice
-		from bill b, settlement_infomation si, settlement_method
+		from bill
+		b, settlement_infomation si, settlement_method
 		sm
-		where b.BILL_ISSU_DE between #{date2} and #{date1} and
-		b.BILL_CODE = si.bill_code and sm.setle_mth_code = si.setle_mth_code and
-		sm.setle_mth_code = #{setle_mth_code}
+		where b.BILL_ISSU_DE
+		between #{date2} and #{date1} and
+		b.BILL_CODE = si.bill_code and
+		sm.setle_mth_code = si.setle_mth_code and
+		sm.setle_mth_code =
+		#{setle_mth_code}
 		group by b.BILL_ISSU_DE,
 		sm.setle_mth_code;
 
@@ -264,15 +302,14 @@
 		date_format(b.BILL_ISSU_DE, '%Y-%m') between #{month2} and #{month1}
 		group by date_format(b.BILL_ISSU_DE, '%Y-%m')
 
-
-
 	</select>
 
 	<!-- 월 매출 월,결제수단, 총매출 -->
 	<select id="monthSalesSettleInfo" resultMap="settleSalesInfo">
 
 
-		select date_format(b.BILL_ISSU_DE, '%Y-%m') as year, sm.setle_mth_nm as
+		select
+		date_format(b.BILL_ISSU_DE, '%Y-%m') as year, sm.setle_mth_nm as
 		setle_mth_nm, sum(si.stprc) as totalPrice
 		from bill b,
 		settlement_infomation si, settlement_method sm
@@ -292,20 +329,76 @@
 	<select id="productRank" resultMap="productRank">
 		select g.GOODS_NM as
 		goods_nm,
-		sum(pg.purchsgoods_qy) as totalPurchsgoods_py,
 		sum(g.GOODS_PC
 		*
-		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
 		like '%@%' escape
 		'@',
 		g.GOODS_PC * (trim(trailing '%' from
 		c.COUPON_DSCNT)/100),
 		c.COUPON_DSCNT))) as totalPrice,
 		(sum(g.GOODS_PC *
-		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
 		like '%@%' escape
 		'@',
 		g.GOODS_PC * (trim(trailing '%' from
+		c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT))) - result.price *
+		sum(pg.purchsgoods_qy)) as
+		goods_netIncome
+		from purchase_goods pg left
+		outer join coupon c on
+		pg.COUPON_CODE =
+		c.COUPON_CODE, goods g, bill b,
+		(select sg.GOODS_CODE,
+		sum(sg.WRHOUSNG_QY) as wrhousing_qy,
+		sum(sg.PUCHAS_PC)
+		as puchas_pc,
+		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
+		from goods g,
+		supply_goods sg
+		where g.GOODS_CODE = sg.GOODS_CODE
+		group by
+		g.GOODS_CODE) as result
+		where g.goods_code = pg.goods_code and
+		b.BILL_CODE = pg.BILL_CODE and
+		date_format(b.BILL_ISSU_DE, '%Y-%m') =
+		#{date}
+		and result.goods_code = pg.goods_code
+		group by
+		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code
+		order by
+		<if test="standard == 1">
+			totalPrice desc
+		</if>
+		<if test="standard == 2">
+			goods_netIncome desc
+		</if>
+
+		limit 0, 10;
+	</select>
+
+	<!-- 상품 랭킹 정보 -->
+	<select id="productRankInfo" resultMap="productRankInfo">
+		select g.GOODS_NM as goods_nm, sum(pg.PURCHSGOODS_QY) as
+		totalPurchsgoods_qy,
+		count(c.COUPON_CODE) as totalCouponCount,
+		sum(g.GOODS_PC *
+		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0,
+		if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing '%'
+		from
+		c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT))) as totalPrice,
+		(sum(g.GOODS_PC *
+		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0,
+		if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing '%'
+		from
 		c.COUPON_DSCNT)/100),
 		c.COUPON_DSCNT))) - result.price *
 		sum(pg.purchsgoods_qy)) as goods_netIncome
@@ -322,50 +415,213 @@
 		group by
 		g.GOODS_CODE) as result
 		where g.goods_code = pg.goods_code and
-		b.BILL_CODE = pg.BILL_CODE and
-		date_format(b.BILL_ISSU_DE, '%Y-%m') =
-		#{date}
-		and result.goods_code = pg.goods_code
+		result.goods_code = pg.goods_code
+		and b.BILL_CODE = pg.bill_code and
+		date_format(b.BILL_ISSU_DE,
+		'%Y-%m') = #{date}
 		group by
-		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code
-		order by totalPrice
-		desc, totalPurchsgoods_py desc
+		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code, b.BILL_CODE
+		order
+		by
+		<if test="standard == 1">
+			totalPrice desc
+		</if>
+		<if test="standard == 2">
+			goods_netIncome desc
+		</if>
+
 		limit 0, 10;
+
 	</select>
 
-	<!-- 상품 랭킹 정보 -->
-	<select id="productRankInfo" resultMap="productRankInfo">
-		select g.GOODS_NM, sum(pg.PURCHSGOODS_QY) as totalPurchsgoods_qy,
-		count(c.COUPON_CODE) as totalCouponCount,
+	<!-- 고객 선호 매출 -->
+	<select id="genderSales" resultMap="genderSales">
+		select g.GOODS_NM as
+		goods_nm,
 		sum(g.GOODS_PC *
-		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
 		like '%@%' escape '@',
 		g.GOODS_PC * (trim(trailing '%' from
 		c.COUPON_DSCNT)/100),
-		c.COUPON_DSCNT))) as price,
+		c.COUPON_DSCNT))) as totalPrice
+		from purchase_goods pg left outer join
+		coupon c on pg.COUPON_CODE =
+		c.COUPON_CODE, goods g, bill b, user u
+		where g.goods_code = pg.goods_code and b.BILL_CODE = pg.BILL_CODE and
+		b.USER_ID = u.USER_ID and
+		date_format(b.BILL_ISSU_DE, '%Y-%m') =
+		#{date} and u.USER_SEXDSTN = #{gender}
+		group by
+		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code,
+		u.USER_SEXDSTN
+		order by totalPrice desc
+		limit 0, 10
+		;
+
+	</select>
+
+	<!-- 나이대별 고객 상품 선호 그래프 -->
+	<select id="ageSales" resultMap="productRank">
+
+		select g.GOODS_NM as goods_nm,
+		sum(g.GOODS_PC *
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0,
+		if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing
+		'%' from
+		c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT))) as totalPrice,
 		(sum(g.GOODS_PC *
-		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
+		pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
 		like '%@%' escape '@',
 		g.GOODS_PC * (trim(trailing '%' from
 		c.COUPON_DSCNT)/100),
 		c.COUPON_DSCNT))) - result.price *
-		sum(pg.purchsgoods_qy)) as goods_netIncome
-		from purchase_goods pg left outer join coupon c on pg.COUPON_CODE =
+		sum(pg.purchsgoods_qy)) as
+		goods_netIncome
+		from purchase_goods pg left
+		outer join coupon c on
+		pg.COUPON_CODE =
 		c.COUPON_CODE, goods g, bill b,
-		(select sg.GOODS_CODE, sum(sg.WRHOUSNG_QY) as wrhousing_qy, sum(sg.PUCHAS_PC)
-		as puchas_pc, ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
-		from goods g, supply_goods sg
+		user u,
+		(select
+		sg.GOODS_CODE, sum(sg.WRHOUSNG_QY) as wrhousing_qy,
+		sum(sg.PUCHAS_PC)
+		as puchas_pc,
+		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
+		from
+		goods g, supply_goods sg
 		where g.GOODS_CODE = sg.GOODS_CODE
-		group by g.GOODS_CODE) as result
-		where g.goods_code = pg.goods_code and result.goods_code = pg.goods_code
-		and b.BILL_CODE = pg.bill_code and date_format(b.BILL_ISSU_DE,
-		'%Y-%m') = #{date}
-		group by date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code, b.BILL_CODE;
+		group by
+		g.GOODS_CODE) as result
+		where g.goods_code = pg.goods_code and
+		b.BILL_CODE = pg.BILL_CODE and
+		date_format(b.BILL_ISSU_DE, '%Y-%m') =
+		#{date} and b.USER_ID =
+		u.USER_ID and result.goods_code =
+		g.GOODS_CODE
+		and
+		<if test="age lte 40">
+			floor((year(curDate()) - date_format(u.USER_BRTHDY,
+			'%Y') + 1)/10)
+			*10 = #{age}
+		</if>
+
+		<if test="age gte 50">
+			floor((year(curDate()) - date_format(u.USER_BRTHDY,
+			'%Y') + 1)/10)*10 >= #{age}
+		</if>
+
+		<if test="gender != null">
+			<if test='gender.equals("m")'>
+				and u.USER_SEXDSTN = 'm'
+			</if>
+			<if test='gender.equals("w")'>
+				and u.USER_SEXDSTN = 'w'
+			</if>
+		</if>
+
+		group by date_format(b.BILL_ISSU_DE, '%Y-%m'),
+		pg.goods_code
+		<if test="age lte 40">
+			,floor((year(curDate()) - date_format(u.USER_BRTHDY,
+			'%Y') + 1)/10)
+		</if>
+		order by
+		<if test="standard == 1">
+			totalPrice desc
+		</if>
+		<if test="standard == 2">
+			goods_netIncome desc
+		</if>
+		limit 0, 10
+		;
 
 	</select>
-	
-	<!--  -->
 
+
+	<select id="ageSalesInfo" resultMap="productRankInfo">
+		select g.GOODS_NM as goods_nm,
+		sum(pg.PURCHSGOODS_QY) as totalPurchsgoods_qy,
+		count(c.COUPON_CODE) as totalCouponCount,
+		sum(g.GOODS_PC *
+		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0,
+		if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing
+		'%'
+		from
+		c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT))) as totalPrice,
+		(sum(g.GOODS_PC *
+		pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0,
+		if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		g.GOODS_PC * (trim(trailing '%'
+		from
+		c.COUPON_DSCNT)/100),
+		c.COUPON_DSCNT))) - result.price *
+		sum(pg.purchsgoods_qy)) as goods_netIncome
+		from purchase_goods pg left
+		outer join coupon c on pg.COUPON_CODE =
+		c.COUPON_CODE, goods g, bill b,
+		user u,
+		(select sg.GOODS_CODE, sum(sg.WRHOUSNG_QY) as wrhousing_qy,
+		sum(sg.PUCHAS_PC) as puchas_pc,
+		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
+		from goods g,
+		supply_goods sg
+		where g.GOODS_CODE = sg.GOODS_CODE
+		group by
+		g.GOODS_CODE) as result
+		where g.goods_code = pg.goods_code and
+		b.BILL_CODE = pg.BILL_CODE and
+		date_format(b.BILL_ISSU_DE, '%Y-%m') =
+		#{date} and b.USER_ID =
+		u.USER_ID and result.goods_code =
+		g.GOODS_CODE
+		and
+		<if test="age lte 40">
+			floor((year(curDate()) - date_format(u.USER_BRTHDY,
+			'%Y') + 1)/10)
+			*10 = #{age}
+		</if>
+
+		<if test="age gte 50">
+			floor((year(curDate()) - date_format(u.USER_BRTHDY,
+			'%Y') + 1)/10)*10 >= #{age}
+		</if>
+
+		<if test="gender != null">
+			<if test='gender.equals("m")'>
+				and u.USER_SEXDSTN = 'm'
+			</if>
+			<if test='gender.equals("w")'>
+				and u.USER_SEXDSTN = 'w'
+			</if>
+		</if>
+
+		group by date_format(b.BILL_ISSU_DE, '%Y-%m'),
+		pg.goods_code
+		<if test="age lte 40">
+			,floor((year(curDate()) - date_format(u.USER_BRTHDY,
+			'%Y') + 1)/10)
+		</if>
+		order by
+		<if test="standard == 1">
+			totalPrice desc
+		</if>
+		<if test="standard == 2">
+			goods_netIncome desc
+		</if>
+		limit 0, 10
+		;
+
+	</select>
 
 
 

@@ -11,12 +11,15 @@
 	display: none;
 }
 
-#productSalesInfo{
+#productSalesInfo {
 	display: none;
 }
-#customerProductRankInfo{
+
+#customerProductRankInfo {
 	display: none;
+	font-size: 20px;
 }
+
 </style>
 
 <script src="resources/customjs/sales_Management._start.js"></script>
@@ -88,7 +91,7 @@
 			<td>주문일</td>
 			<td><input type="date" id="date2" /> ~ <input type="date"
 				id="date1" /></td>
-			<td rowspan="2">
+			<td>
 				<button class="btn btn-primary" id="searchDate">검색</button>
 			</td>
 		</tr>
@@ -102,6 +105,11 @@
 					<option value="4">포인트</option>
 
 			</select></td>
+			<td>
+				<button class="plain btn btn-default" >Plain</button>
+				<button class="inverted btn btn-default">Inverted</button>
+				<button class="polar btn btn-default">Polar</button>
+			</td>
 		</tr>
 	</table>
 
@@ -118,6 +126,7 @@
 			</select> ~ <select class="year" id="year2">
 			</select></td>
 			<td>
+				
 				<button class="btn btn-primary" id="searchYear">검색</button>
 			</td>
 		</tr>
@@ -132,7 +141,7 @@
 			<td>날짜</td>
 			<td><input type="month" id="month2" /> <input type="month"
 				id="month1" />
-			<td rowspan="2">
+			<td>
 				<button class="btn btn-primary" id="searchMonth">검색</button>
 			</td>
 		</tr>
@@ -146,6 +155,11 @@
 					<option value="4">포인트</option>
 
 			</select></td>
+			<td>
+				<button class="plain btn btn-default" >Plain</button>
+				<button class="inverted btn btn-default">Inverted</button>
+				<button class="polar btn btn-default">Polar</button>
+			</td>
 		</tr>
 	</table>
 
@@ -156,17 +170,18 @@
 		<tr>
 			<td width="23%">
 				<!-- 아이콘!! < 이모양이랑 > 이모양 -->
-				<button id="prev" class="btn btn-default" style="width:70px">&lt</button>
-				<button id="next" class="btn btn-default" style="width:70px">&gt</button>
+				<button  class="btn btn-default prev" style="width: 70px">&lt</button>
+				<button  class="btn btn-default next" style="width: 70px">&gt</button>
 			</td>
 			<td width="50%">
 				<h3>2017-06</h3>
 			</td>
-			
-			<td><button id="income" class="btn btn-default" style="width:85px">순이익순</button>
-				<button id="total" class="btn btn-default" style="width:85px">총매출순</button>
+
+			<td><button class="btn btn-default income"
+					style="width: 85px">순이익순</button>
+				<button class="btn btn-default total" style="width: 85px">총매출순</button>
 			</td>
-			
+
 		</tr>
 
 
@@ -175,28 +190,28 @@
 </div>
 
 <div id="customerProductRankInfo">
-<table class="table">
+	<table class="table">
 		<tr>
 			<td width="23%">
 				<!-- 아이콘!! < 이모양이랑 > 이모양 -->
-				<button id="prev" class="btn btn-default" style="width:70px">&lt</button>
-				<button id="next" class="btn btn-default" style="width:70px">&gt</button>
+				<button  class="btn btn-default prev" style="width: 70px">&lt</button>
+				<button  class="btn btn-default next" style="width: 70px">&gt</button>
 			</td>
 			<td width="45%">
-				<h3>성별</h3>
+				<span id="date">2017-06</span>
+				<span id="age">10</span>대
 			</td>
-			
+
 			<td>
-				<button id="gender" class="btn btn-default">성별</button>
 				<button id="age10" class="btn btn-default">10대</button>
 				<button id="age20" class="btn btn-default">20대</button>
 				<button id="age30" class="btn btn-default">30대</button>
 				<button id="age40" class="btn btn-default">40대</button>
 				<button id="age50" class="btn btn-default">50대 이후</button>
-				<button id="income" class="btn btn-default" style="width:85px">순이익순</button>
-				<button id="total" class="btn btn-default" style="width:85px">총매출순</button>
+				<button id="income" class="btn btn-default income" style="width: 85px" disabled>순이익순</button>
+				<button id="total" class="btn btn-default total" style="width: 85px" disabled>총매출순</button>
 			</td>
-			
+
 		</tr>
 
 
@@ -210,8 +225,9 @@
 	<div class="col-lg-12">
 		<section class="panel panel-default">
 			<header class="panel-heading chartTitle"> 연매출 </header>
-			<div class="panel-body text-center">
-				<canvas id="bar" height="450" width="800"></canvas>
+			<div class="panel-body text-center chart">
+				<div id="salesChart"
+					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 			</div>
 		</section>
 	</div>
@@ -226,8 +242,6 @@
 			<th>결제수단</th>
 			<th>총매출</th>
 		</tr>
-
-
 	</table>
 
 </div>

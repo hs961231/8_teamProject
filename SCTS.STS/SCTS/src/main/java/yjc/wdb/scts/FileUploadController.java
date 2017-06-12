@@ -51,7 +51,9 @@ public class FileUploadController {
 	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.POST)
 	public String shop_RegisterFormPost(HttpSession session, Model model,
 			@RequestParam("file") MultipartFile file, @RequestParam("bhf_code") int bhf_code, 
-			@RequestParam("floorinfo_floor") String floorinfo_floor) throws Exception {
+			@RequestParam("floorinfo_floor") String floorinfo_floor,
+			@RequestParam("size_x") int size_x,
+			@RequestParam("size_y") int size_y) throws Exception {
 		// 메인 콘텐츠에서 어떤 페이지를 보여 줄 것인지 저장할 변수.
 		String ContentPage = "dashBoard";
 
@@ -82,7 +84,6 @@ public class FileUploadController {
 		
 		String data = (String) map.get("drw_flpth");
 		
-		System.out.println("여기 통과하면 아작스는 끝난거임");
 		System.out.println(data);
 		
 		return data;

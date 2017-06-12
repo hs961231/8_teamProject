@@ -131,15 +131,60 @@ public class BillDAOImpl implements BillDAO {
 	}
 
 	@Override
-	public List<HashMap> productRank(String date) throws Exception {
+	public List<HashMap> productRank(String date, int standard) throws Exception {
 		
-		return sql.selectList(NAMESPACE+".productRank", date);
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("standard", standard);
+		
+		return sql.selectList(NAMESPACE+".productRank", map);
 	}
 
 	@Override
-	public List<HashMap> productRankInfo(String date) throws Exception {
+	public List<HashMap> productRankInfo(String date ,int standard) throws Exception {
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("standard", standard);
 		
-		return sql.selectList(NAMESPACE+".productRankInfo", date);
+		return sql.selectList(NAMESPACE+".productRankInfo", map);
+	}
+
+	@Override
+	public List<HashMap> yearToMonth(int year) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".yearToMonth", year);
+	}
+
+	@Override
+	public List<HashMap> genderSales(String date, String gender) throws Exception {
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("gender", gender);
+		
+		return sql.selectList(NAMESPACE+".genderSales", map);
+	}
+
+	@Override
+	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception {
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("age", age);
+		map.put("standard", standard);
+		map.put("gender", gender);
+		
+		return sql.selectList(NAMESPACE+".ageSales", map);
+	}
+
+	@Override
+	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
+		
+		Map map = new HashMap();
+		map.put("date", date);
+		map.put("age", age);
+		map.put("standard", standard);
+		map.put("gender", gender);
+		
+		return sql.selectList(NAMESPACE+".ageSalesInfo", map);
 	}
 
 }

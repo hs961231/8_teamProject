@@ -33,26 +33,29 @@ where
 
 <!-- 매장 등록 페이지에서 셋팅된 타일 클릭시 해당 타일 셋팅정보 끌고오는 쿼리문 -->
 <select id="selectTile_LocationOne" resultType="java.util.HashMap">
-
 select
 	t.tile_code, t.tile_nm, b.beacon_code, b.beacon_mjr, b.beacon_mnr
-
+	
 from	
-	TILE_LOCATION tl
-LEFT OUTER JOIN	
 	TILE t
-ON 
-	tl.TILE_CODE = t.TILE_CODE
-LEFT OUTER JOIN	
+LEFT OUTER JOIN
 	BEACON b
 ON 
 	t.BEACON_CODE = b.BEACON_CODE
 
 where
-	tl.TILELC_CRDNT_X = #{tilelc_crdnt_x}
-and
-	tl.TILELC_CRDNT_Y = #{tilelc_crdnt_y}
-
+	t.tile_code =	(
+						select
+							tile_code
+						from
+							TILE_LOCATION
+						where
+							DRW_CODE = #{floor}
+						and
+							TILELC_CRDNT_X = #{tilelc_crdnt_x}
+						and
+							TILELC_CRDNT_Y = #{tilelc_crdnt_y}
+					)
 </select>
 
 <!-- <update id="">

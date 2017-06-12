@@ -107,15 +107,17 @@ to {
 					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
 				</h2>
 				<div class="panel-actions">
-					<a href="#" class="btn-setting" id="leftBtns"><i id="leftBtns"
+					<a href="#" class="btn-setting" id="leftDrawingBtns"><i id="leftBtns"
 						class="fa fa-chevron-left" aria-hidden="true"></i></a>
-					<a href="#" class="btn-setting" id="rightBtns"><i id="rightBtns"
+					<a href="#" class="btn-setting" id="rightDrawingBtns"><i id="rightBtns"
 						class="fa fa-chevron-right" aria-hidden="true"></i></a>
 					<a href="#" class="btn-setting" id="MyBtn"><i id="MyBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>
 			</div>
 			<div class="panel-body-map">
+			 	<input type="hidden" id="countStory" value="${ countStory }">
+			 	<input type="hidden" id="floor" value="0">
 				<div id="blueprint"
 					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
 					<!-- 
@@ -123,10 +125,9 @@ to {
 					<br>
 					<p>설계도면 파일을 등록해주세요.</p>
 				 -->
-				 	<input type="hidden" id="countStory" value="${ countStory }">
-				 	<input type="hidden" id="floor" value="0">
 				 	<%-- 
 					<img
+					
 						src="displayDrawing?fileName=/${ drawingList.get(0).drw_flpth }"
 						style="width: 800px; height: 380px;"> --%>
 
@@ -354,8 +355,11 @@ to {
 									class="required">*</span>
 								</label>
 								<div class="col-lg-10">
-									<input class="form-control" id="name" name="bhf_code"
-										type="text" required />
+									<!-- <input class="form-control" id="name" name="bhf_code"
+										type="text" required /> -->
+									<select name="bhf_code" id="bhf_code">
+										<option value="">지점선택</option>
+									</select>
 								</div>
 
 							</div>
@@ -365,11 +369,25 @@ to {
 									class="required">*</span>
 								</label>
 								<div class="col-lg-10">
-									<input class="form-control" id="level_info"
-										name="floorinfo_floor" type="text" required />
+									<!-- <input class="form-control" id="level_info"
+										name="floorinfo_floor" type="text" required /> -->
+									<select name="floorinfo_floor" id="floorinfo_floor">
+										<option value="">층선택</option>
+									</select>
 								</div>
 							</div>
-
+							
+							<div class="form-group ">
+								<label for="cname" class="control-label col-lg-2">타일 XY<span
+									class="required">*</span>
+								</label>
+								<div class="col-lg-10">
+									<input type="number" name="size_x" required value="8" min="5" max="20">
+									X
+									<input type="number" name="size_y" required value="8" min="5" max="20">
+								</div>
+							</div>
+							
 							<div class="form-group ">
 								<label for="cname" class="control-label col-lg-2">첨부파일 <span
 									class="required">*</span>
