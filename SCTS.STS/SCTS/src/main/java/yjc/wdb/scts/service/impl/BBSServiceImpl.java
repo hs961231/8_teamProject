@@ -33,4 +33,10 @@ public class BBSServiceImpl implements BBSService {
 		dao.insertEvent(eventVO);
 	}
 
+	@Override
+	public List<HashMap> eventOne(int code) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.eventOne(code);
+	}
+
 }

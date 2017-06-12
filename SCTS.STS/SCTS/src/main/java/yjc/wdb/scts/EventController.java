@@ -42,6 +42,7 @@ public class EventController {
 				
 				viewCalJson.put("bbsctt_code", list.get(i).get("bbsctt_code"));
 				viewCalJson.put("title", list.get(i).get("bbsctt_sj"));
+				viewCalJson.put("bbsctt_cn", list.get(i).get("bbsctt_cn"));
 				viewCalJson.put("start", list.get(i).get("event_begin_de").toString());
 				viewCalJson.put("end", list.get(i).get("event_end_de").toString());
 				
@@ -54,6 +55,8 @@ public class EventController {
 			
 			return callback + "(" + json +")";
 		}
+		
+
 		
 		// 이벤트 등록
 		@RequestMapping(value="insertEvent", method=RequestMethod.GET)

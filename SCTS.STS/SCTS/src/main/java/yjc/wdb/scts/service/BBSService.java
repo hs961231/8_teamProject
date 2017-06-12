@@ -11,5 +11,6 @@ public interface BBSService {
 	public List<HashMap> viewCalendar() throws Exception;
 	
 	public void insertEvent(EventVO eventVO, BBScttVO bbscttVO) throws Exception;
+	public List<HashMap> eventOne(int code) throws Exception;
 
 }

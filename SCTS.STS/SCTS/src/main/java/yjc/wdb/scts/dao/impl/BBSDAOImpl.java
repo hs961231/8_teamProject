@@ -37,4 +37,10 @@ public class BBSDAOImpl implements BBSDAO {
 		sql.insert(NAMESPACE+".eventInsert", eventVO);
 	}
 
+	@Override
+	public List<HashMap> eventOne(int code) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".eventOne", code);
+	}
+
 }
