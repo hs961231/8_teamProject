@@ -1,12 +1,14 @@
 package yjc.wdb.scts.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import yjc.wdb.scts.bean.Tile_locationVO;
 import yjc.wdb.scts.dao.CourseDAO;
 
 @Repository
@@ -27,6 +29,18 @@ public class CourseDAOImpl implements CourseDAO {
 	public void insertCourse(HashMap<String, String> vo) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.insert(NAMESPACE + ".insertCourse", vo);
+	}
+
+	@Override
+	public HashMap<String, String> tileProbability(Tile_locationVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".tileProbability", vo);
+	}
+
+	@Override
+	public List<HashMap<String, String>> tileUserinfo(Tile_locationVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE + ".tileUserinfo", vo);
 	}
 
 }

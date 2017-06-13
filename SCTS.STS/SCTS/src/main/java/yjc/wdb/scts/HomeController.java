@@ -25,12 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.BBScttVO;
+import yjc.wdb.scts.bean.BeaconVO;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.BBSService;
+import yjc.wdb.scts.service.BeaconService;
 import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
@@ -63,6 +65,9 @@ public class HomeController {
 	
 	@Inject
 	private BBSService bbsService;
+	
+	@Inject
+	private BeaconService beaconService;
 	
 	
 	@Inject
@@ -137,11 +142,15 @@ public class HomeController {
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 		
-		List<HashMap<String, String>> tileList = tileService.selectTileList();
+		// 현재 이부분 수정해야함.
+		List<HashMap<String, String>> tileList = tileService.selectTileListUp();
 		model.addAttribute("tileList", tileList);
+
+		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
+		List<BeaconVO> beaconList = beaconService.selectBeaconList(bhf_code);
+		model.addAttribute("beaconList", beaconList);
 		
 		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김
-		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
 		int countStory = floor_informationService.selectCountStory(bhf_code);
 		model.addAttribute("countStory", countStory);
 		

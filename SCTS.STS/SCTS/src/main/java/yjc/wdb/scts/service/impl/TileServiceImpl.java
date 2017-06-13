@@ -6,8 +6,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import yjc.wdb.scts.bean.TileVO;
+import yjc.wdb.scts.dao.BeaconDAO;
 import yjc.wdb.scts.dao.TileDAO;
 import yjc.wdb.scts.service.TileService;
 
@@ -15,24 +17,45 @@ import yjc.wdb.scts.service.TileService;
 public class TileServiceImpl implements TileService {
 
 	@Inject
-	private TileDAO dao;
+	private TileDAO tiledao;
+	
+	@Inject
+	private BeaconDAO beacondao;
 	
 	@Override
 	public List<HashMap<String, String>> selectTileList() throws Exception {
 		// TODO Auto-generated method stub
-		return dao.selectTileList();
+		return tiledao.selectTileList();
 	}
 
 	@Override
 	public void insertTile(TileVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		dao.insertTile(vo);
+		tiledao.insertTile(vo);
 	}
 
 	@Override
 	public HashMap<String, String> selectTile_LocationOne(HashMap<String, String> Map_XY) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.selectTile_LocationOne(Map_XY);
+		return tiledao.selectTile_LocationOne(Map_XY);
+	}
+
+	@Override
+	@Transactional
+	public void updateTileBeaconSet(HashMap<String, String> vo) throws Exception {
+		// TODO Auto-generated method stub
+		tiledao.updateTileBeaconSet(vo);
+		
+		vo.remove("tile_code");
+		vo.put("beacon_sttus", "USE");
+		
+		beacondao.updateBeaconSttus(vo);
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectTileListUp() throws Exception {
+		// TODO Auto-generated method stub
+		return tiledao.selectTileListUp();
 	}
 
 }

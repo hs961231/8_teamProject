@@ -38,15 +38,36 @@ select
 	t.TILE_NM tile_nm, b.BEACON_MJR beacon_mjr, b.BEACON_MNR beacon_mnr
 from
 	TILE t LEFT OUTER JOIN BEACON b
-	ON t.BEACON_CODE = b.BEACON_CODE
+ON
+	t.BEACON_CODE = b.BEACON_CODE
+</select>
+
+<select id="selectTileListUp" resultType="java.util.HashMap">
+select
+	t.TILE_NM, tl.TILELC_CRDNT_X, tl.TILELC_CRDNT_Y, if(isnull(t.BEACON_CODE), 'X', 'O') beaconset
+from 
+	tile t
+JOIN
+	tile_location tl
+ON
+	t.TILE_CODE = tl.TILE_CODE
 </select>
 
 <!-- 타일 비콘 등록할 때 쓸 것 -->
-<update id="updateTile">
+<update id="updateTileBeaconSet">
 update
 	TILE
 set
-	BEACON_CODE = #{beacon_code}
+	BEACON_CODE =	(
+						select
+							BEACON_CODE
+						from
+							BEACON
+						where
+							BEACON_MJR = #{beacon_mjr}
+						and
+							BEACON_MNR = #{beacon_mnr}
+					)
 where
 	TILE_CODE = #{tile_code}
 </update>
