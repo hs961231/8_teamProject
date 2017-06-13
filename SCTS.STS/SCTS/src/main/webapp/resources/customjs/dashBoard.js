@@ -4,20 +4,61 @@
 
 
 $(document).ready(function() {
-	imgLoad();
-	
-	$("div.tile").on("mouseover", function() {
+	if($("#countStory").val() > 0)
+		imgLoad(0);
+
+	/* ********************************************************************************************************* /
+	 * 타일관련 선택시
+	 */
+	$("div.tileMap").on("mouseover", ".tile", function() {
 		$(this).addClass("mouseover");
 	});
 	
-	$("div.tile").on("mouseout", function() {
+	$("div.tileMap").on("mouseout", ".tile", function() {
 		$(this).removeClass("mouseover");
 	});
 	
+	// 버튼 클릭시 업로드 되어있는 사진들 전환
+	$("#leftDrawingBtns").on("click", function() {
+		var countStory = parseInt($("#countStory").val());
+		var floor = parseInt($("#floor").val());
+
+		if(floor > 0) {
+			floor--;
+			$("#floor").val(floor);
+			imgLoad(floor);
+		}
+	});
+	
+	$("#rightDrawingBtns").on("click", function() {
+		var countStory = parseInt($("#countStory").val());
+		var floor = parseInt($("#floor").val());
+
+		if(floor < countStory-1) {
+			floor++;
+			$("#floor").val(floor);
+			imgLoad(floor);
+		}
+		else if(floor == countStory-1) {
+			floor++;
+			$("#floor").val(floor);
+			$('#blueprint').empty();
+			
+			var blueprint = $('#blueprint');
+			$("<p>새로운 도면을 등록해주세요 </p>").appendTo(blueprint);
+		}
+	});
+	/* 
+	 * 타일관련 선택시
+	 * *********************************************************************************************************/
+	
+	
 	/**
 	 * 타일 클릭시 해당 타일 정보를 아작스로 서버에서 가져와서 도면 우측편에 표시하는 것
+	 * 실제 매장등록부분과 가장 다른 타일 클릭시 데이터를 뿌려주는 아작스
+	 * 
 	 */
-	$("div.tile").on("click", function() {
+	$("div.tileMap").on("click", ".tile", function() {
 		$(".tileMap .active").removeClass("active");
 		
 		$(this).addClass("active");
@@ -25,56 +66,73 @@ $(document).ready(function() {
 		
 		var totalNum = $("div.tile").index($(this))
 		var RowNum = $("div.tileMap > div").length;
-		
+
+		var drw_code = parseInt($("#drw_code").val());
 		var X_index = parseInt(totalNum / RowNum);
 		var Y_index = totalNum % RowNum;
 		
-		console.log("X = " + X_index + " Y = " + Y_index);
-		
 		$.ajax({
-			url: "dashBoardTile",
+			url: "getTileData",
 			type: "post",
 			data: {
+				drw_code : drw_code,
 				X_index : X_index,
 				Y_index : Y_index
 			},
 			dataType: "json",
 			success: function(data) {
-				if(data != null) {
-					var tile_info = $("#tile_info");
-					tile_info.empty();
+				var tile_info = $("#tile_info");
+				tile_info.empty();
+				
+				if(data.status == "success") {
+					$("<p></p>").text("일단 콘솔에 데이터 찍혀있음.").appendTo(tile_info);
+					$("<p></p>").text("null 찍혀있으면 데이터 없는거.").appendTo(tile_info);
 					
-					$("<p></p>").text("tile_code = " + data.tile_code).appendTo(tile_info);
-					$("<p></p>").text("tile_nm = " + data.tile_nm).appendTo(tile_info);
-					if(data.beacon_code != null) {
-						$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
-						$("<p></p>").text("beacon_mjr = " + data.beacon_mjr).appendTo(tile_info);
-						$("<p></p>").text("beacon_mnr = " + data.beacon_mnr).appendTo(tile_info);
-					}
-					else {
-						$("<button id='getBeacon'></button>").text("비콘설정").appendTo(tile_info);
-					}
+					// 일단 콘솔에 오는 데이터만 출력햇음
+					console.log(data);
+					console.log(data.jsonPro);
+					console.log(data.jsonUser);
+					
+					// 데이터 넘어오는 형식
+					/*
+					data.jsonPro.tile_visit; // 해당 타일 방문자 수
+					data.jsonPro.total_visit; // 매장 방문자 수
+					for(var i=0; i< data.jsonUser.length; i++) {
+						data.jsonUser[i].user_id; // 유저 아이디
+						data.jsonUser[i].user_nm; // 유저 이름
+						data.jsonUser[i].agegroup; // 유저 연령대
+						data.jsonUser[i].user_sexdstn; // 유저 성별
+						data.jsonUser[i].user_mrrg_at; // 유저 혼인여부
+					};
+					
+					$.each(data.jsonUser, function(index) {
+						this.user_id; // 유저 아이디
+						this.user_nm; // 유저 이름
+						this.agegroup; // 유저 연령대
+						this.user_sexdstn; // 유저 성별
+						this.user_mrrg_at; // 유저 혼인여부
+					});*/
 					
 				}
 				else {
-					window.alert("현재 해당 타일은 등록되어있지 않습니다.");
+					$("<p></p>").text("해당 타일은 등록되어 있지 않거나 데이터가 없습니다.").appendTo(tile_info);
 				}
 			},
 			error: function(data) {
-				
+				console.log("데이터 전송 에러");
 			}
 		});
-		
 	});
+	
 	
 });
 
 /**
  * 도면 이미지를 페이지에 뿌려줌
  */
-var imgLoad = function() {
-	var countStory = $("#countStory").val();
-	var floor = $("#floor").val();
+var imgLoad = function(floor) {
+	//var countStory = $("#countStory").val();
+	//var floor = $("#floor").val();
 	
 	$.ajax({
 		url: "getDrawingFileName",
@@ -82,18 +140,46 @@ var imgLoad = function() {
 		data: {
 			floor : floor
 		},
-		dataType: "text",
+		dataType: "json",
 		success: function(data) {
 			if(data != null) {
-				$('#blueprint > img').remove();
+				$('#blueprint').empty();
 				
-				console.log(data);
-				
-				var drawingImg = $('<img src="displayDrawing?fileName=/' + data + '" style="width: 800px; height: 380px;">');
+				var drawingImg = $('<img src="displayDrawing?fileName=/' + data.drw_flpth + '" style="width: 800px; height: 380px;">');
 				drawingImg.appendTo($('#blueprint'));
 				
-				$("#floor").val(floor+1);
+				$("#drw_code").val(data.drw_code);
+				
+				var tileMap = $(".tileMap");
+				
+				tileMap.empty();
+				
+				// 해당 층의 설정된 타일 갯수까지 가져올 수 있어야 함.
+				for(var i=0; i<data.size_y; i++) {
+					var tileRow = $("<div></div>");
+					
+					//tileRow.css("width", "100%");
+					//tileRow.css("height", heightSize + "%");
+					
+					for(var j=0; j<data.size_x; j++) {
+						var tileItem = $("<div></div>").addClass("tile");
+						//tileItem.css("width", widthSize + "%");
+						//tileItem.css("height", "100%");
+						//tileItem.css("float", "left");
+						
+						tileItem.appendTo(tileRow);
+					}
+					tileRow.appendTo(tileMap);
+				}
+				var heightSize = 100 / data.size_y;
+				var widthSize = 100 / data.size_x;
+				$(".tileMap > div").css("width", "100%").css("height", heightSize + "%");
+				$(".tile").css("width", widthSize + "%").css("height", "100%").css("float", "left");
+				
+				
+				//$("#floor").val(floor+1);
 			}
+			
 			else {
 				window.alert("도면이 없습니다. 등록해주세요");
 			}

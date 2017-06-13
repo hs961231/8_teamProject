@@ -1,5 +1,6 @@
 package yjc.wdb.scts.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,6 +23,12 @@ public class BeaconDAOImpl implements BeaconDAO {
 	public List<BeaconVO> selectBeaconList(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectList(NAMESPACE + ".selectBeaconList", bhf_code);
+	}
+
+	@Override
+	public void updateBeaconSttus(HashMap<String, String> vo) throws Exception {
+		// TODO Auto-generated method stub
+		sql.update(NAMESPACE + ".updateBeaconSttus", vo);
 	}
 
 }

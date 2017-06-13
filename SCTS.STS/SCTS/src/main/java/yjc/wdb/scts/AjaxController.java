@@ -13,16 +13,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import yjc.wdb.scts.bean.BeaconVO;
+import yjc.wdb.scts.bean.Tile_locationVO;
 import yjc.wdb.scts.service.BeaconService;
 import yjc.wdb.scts.service.Branch_officeService;
+import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.TileService;
 
 @Controller
@@ -38,6 +42,9 @@ public class AjaxController {
 	
 	@Inject
 	Branch_officeService branchService;
+	
+	@Inject
+	CourseService courseService;
 
 	/* shop_Register.js
 	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
@@ -107,11 +114,21 @@ public class AjaxController {
 	}
 	
 	/* shop_Register.js
-	 * 
+	 * 타일에 비콘정보를 셋팅하는 아작스
 	 */
 	@RequestMapping(value="setTileBeacon", method=RequestMethod.POST)
 	@ResponseBody
-	public String setTileBeacon() throws Exception {
+	public String setTileBeacon(@RequestBody JSONObject json) throws Exception {
+		
+		System.out.println( json.get("tile_code") + "  타일  " + json.get("beacon_mjr") + "  비콘 데이터  " + json.get("beacon_mnr") );
+		
+		HashMap<String, String> vo = new HashMap<String, String>();
+
+		vo.put("tile_code", json.get("tile_code").toString());
+		vo.put("beacon_mjr", json.get("beacon_mjr").toString());
+		vo.put("beacon_mnr", json.get("beacon_mnr").toString());
+		
+		tileService.updateTileBeaconSet(vo);
 		
 		// 현재 이부분에 실제 비콘정보가 타일로 들어가야함.
 		/*
@@ -138,5 +155,44 @@ public class AjaxController {
 		System.out.println(str);
 		
 		return str;
+	}
+	
+
+	/* dashBoard.js
+	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
+	 * 해당 타일에서 발생한 고객들의 정보에 따른 데이터들을 여러 분류로 나눠서
+	 * 대쉬보드에서 표시할 수 있도록 보내줌
+	 */
+	@RequestMapping(value="getTileData", method=RequestMethod.POST)
+	@ResponseBody
+	public String getTileData(@RequestParam("drw_code") int drw_code,
+			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
+		
+		logger.info("X = " + X_index + "  Y = " + Y_index);
+		
+		Tile_locationVO vo = new Tile_locationVO();
+		vo.setDrw_code(drw_code);
+		vo.setTilelc_crdnt_x(X_index);
+		vo.setTilelc_crdnt_y(Y_index);
+		
+		// HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
+
+		// 필요한 데이터들 디비에서 끌어와서 저장
+		HashMap<String, String> pro = courseService.tileProbability(vo);
+		List<HashMap<String, String>> user = courseService.tileUserinfo(vo);
+
+		// 가져온 데이터 전체 넣기 위한 jsonObject
+		JSONObject json = new JSONObject();
+
+		// db에서 가져온 데이터들 json으로 변환
+		JsonArray jsonUser = (JsonArray) new JSONParser().parse(new Gson().toJson(user));
+		JSONObject jsonPro = (JSONObject) new JSONParser().parse(new Gson().toJson(pro));
+		
+		// jsonObject에 모든 데이터들을 저장
+		json.put("jsonUser", jsonUser);
+		json.put("jsonPro", jsonPro);
+		json.put("status", "success");
+		
+		return json.toString();
 	}
 }

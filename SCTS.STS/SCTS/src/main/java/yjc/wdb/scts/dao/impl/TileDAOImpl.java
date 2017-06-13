@@ -27,6 +27,12 @@ public class TileDAOImpl implements TileDAO {
 	}
 
 	@Override
+	public List<HashMap<String, String>> selectTileListUp() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".selectTileListUp");
+	}
+	
+	@Override
 	public void insertTile(TileVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.insert(NAMESPACE + ".insertTile", vo);
@@ -49,5 +55,12 @@ public class TileDAOImpl implements TileDAO {
 		// TODO Auto-generated method stub
 		sqlSession.insert(NAMESPACE + ".insertTile_location", vo);
 	}
+
+	@Override
+	public void updateTileBeaconSet(HashMap<String, String> vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateTileBeaconSet", vo);
+	}
+
 	
 }

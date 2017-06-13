@@ -116,14 +116,15 @@ $(document).ready(function() {
 			},
 			dataType: "json",
 			success: function(data) {
+				var tile_info = $("#tile_info");
+				tile_info.empty();
+				
 				if(data != null) {
-					var tile_info = $("#tile_info");
-					tile_info.empty();
 					
-					$("<p></p>").text("tile_code = " + data.tile_code).appendTo(tile_info);
+					$("<p></p>").attr("id", "tile_code").val(data.tile_code).text("tile_code = " + data.tile_code).appendTo(tile_info);
 					$("<p></p>").text("tile_nm = " + data.tile_nm).appendTo(tile_info);
 					if(data.beacon_code != null) {
-						$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
+						//$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
 						$("<p></p>").text("beacon_mjr = " + data.beacon_mjr).appendTo(tile_info);
 						$("<p></p>").text("beacon_mnr = " + data.beacon_mnr).appendTo(tile_info);
 					}
@@ -133,7 +134,7 @@ $(document).ready(function() {
 					
 				}
 				else {
-					window.alert("현재 해당 타일은 등록되어있지 않습니다.");
+					$("<p></p>").text("해당 타일은 등록되어 있지 않습니다.").appendTo(tile_info);
 				}
 			},
 			error: function(data) {
@@ -149,15 +150,32 @@ $(document).ready(function() {
 	 * 아직 제대로 코딩 안됨
 	 */
 	$("#beaconList").on("click", ".beacon", function() {
-		console.log($(this));
+		var tile_code = parseInt($("#tile_code").val());
+		var beacon_mjr = parseInt($("#beacon_mjr").text());
+		var beacon_mnr = parseInt($("#beacon_mnr").text());
+		
+		console.log(beacon_mjr + "  비콘 정보들  " + beacon_mnr);
 		
 		$.ajax({
 			url: "setTileBeacon",
 			type: "post",
 			dataType: "text",
+			contentType: "application/json",
+			data: JSON.stringify({
+				tile_code : tile_code,
+				beacon_mjr : beacon_mjr,
+				beacon_mnr : beacon_mnr
+			}),
 			success: function(data) {
-				$('#listModal').css('display', 'none');
-				alert("성공");
+				if(data == "success") {
+					$('#listModal').css('display', 'none');
+					var tile_info = $("#tile_info");
+					
+					//$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
+					$("<p></p>").text("beacon_mjr = " + beacon_mjr).appendTo(tile_info);
+					$("<p></p>").text("beacon_mnr = " + beacon_mnr).appendTo(tile_info);
+					$("#getBeacon").remove();
+				}
 			},
 			error: function(data) {
 				
@@ -184,8 +202,8 @@ $(document).ready(function() {
 					
 					for(var i=0; i<data.length; i++) {
 						var beaconItem = $("<tr class='beacon'></tr>");
-						$("<td></td>").text(data[i].beacon_mjr).appendTo(beaconItem);
-						$("<td></td>").text(data[i].beacon_mnr).appendTo(beaconItem);
+						$("<td></td>").attr("id", "beacon_mjr").text(data[i].beacon_mjr).appendTo(beaconItem);
+						$("<td></td>").attr("id", "beacon_mnr").text(data[i].beacon_mnr).appendTo(beaconItem);
 						$("<td></td>").text(data[i].beacon_sttus).appendTo(beaconItem);
 						
 						beaconItem.appendTo($("#beaconList"));
@@ -221,10 +239,6 @@ var imgLoad = function(floor) {
 		success: function(data) {
 			if(data != null) {
 				$('#blueprint').empty();
-
-				console.log(data);
-				console.log(data.drw_flpth);
-				console.log(data.drw_code);
 				
 				var drawingImg = $('<img src="displayDrawing?fileName=/' + data.drw_flpth + '" style="width: 800px; height: 380px;">');
 				drawingImg.appendTo($('#blueprint'));

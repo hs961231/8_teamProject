@@ -178,17 +178,20 @@ to {
 							<th style="text-align: center;"><i class="fa fa-square"></i>
 								타일명</th>
 							<th style="text-align: center;"><i class="fa fa-clock-o"></i>
-								평균머문시간</th>
+								X축</th>
 							<th style="text-align: center;"><i class="fa fa-users"></i>
-								방문횟수</th>
+								Y축</th>
+							<th style="text-align: center;"><i class="fa fa-users"></i>
+								비콘설정</th>
 						</tr>
 
 
 						<c:forEach items="${ tileList }" var="vo">
 							<tr>
-								<td style="text-align: center;">${ vo.get("tile_nm") }</td>
-								<td style="text-align: center;">${ vo.get("avg") }</td>
-								<td style="text-align: center;">${ vo.get("cnt") }</td>
+								<td style="text-align: center;">${ vo.get("TILE_NM") }</td>
+								<td style="text-align: center;">${ vo.get("TILELC_CRDNT_X") }</td>
+								<td style="text-align: center;">${ vo.get("TILELC_CRDNT_Y") }</td>
+								<td style="text-align: center;">${ vo.get("beaconset") }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -222,11 +225,11 @@ to {
 								상태</th>
 						</tr>
 
-						<c:forEach items="" var="vo">
+						<c:forEach items="${ beaconList }" var="beacon">
 							<tr>
-								<td style="text-align: center;"></td>
-								<td style="text-align: center;"></td>
-								<td style="text-align: center;"></td>
+								<td style="text-align: center;">${ beacon.beacon_mjr }</td>
+								<td style="text-align: center;">${ beacon.beacon_mnr }</td>
+								<td style="text-align: center;">${ beacon.beacon_sttus }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
