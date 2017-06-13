@@ -39,4 +39,33 @@ public class BBSServiceImpl implements BBSService {
 		return dao.eventOne(code);
 	}
 
+	
+	@Transactional
+	@Override
+	public void updateEvent(EventVO eventVO, BBScttVO bbscttVO) throws Exception {
+		dao.updateEvent(eventVO);
+		dao.updateBbsctt(bbscttVO);
+	}
+
+	@Transactional
+	@Override
+	public void deleteEvent(int bbsctt_code) throws Exception {
+	
+		dao.deleteEvent(bbsctt_code);
+		dao.deleteBbsctt(bbsctt_code);
+		
+	}
+
+	@Override
+	public List<HashMap> listEvent(String date1, String date2) throws Exception {
+		return dao.listEvent(date1, date2);
+	}
+
+	@Override
+	public void updateDropEvent(EventVO eventVO) throws Exception {
+		dao.updateEvent(eventVO);
+	}
+
+
+
 }

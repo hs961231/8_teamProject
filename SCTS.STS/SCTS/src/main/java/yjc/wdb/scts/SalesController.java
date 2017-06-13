@@ -373,29 +373,32 @@ public class SalesController {
 		JSONArray salesArray = new JSONArray();
 		JSONArray ytmArray = new JSONArray();
 		
+		System.out.println(list.toString());
+		System.out.println(list2.toString());
+		
 		
 		for(int i = 0; i < list.size(); i++){
 			salesJson = new JSONObject();
 			salesJson.put("goods_nm", list.get(i).get("goods_nm"));
 			salesJson.put("totalPrice", list.get(i).get("totalPrice"));
 			
-			/*for(int j=i; j <= i; j++){
+			
 				
-				if(list.get(i).get("goods_nm") != list2.get(j).get("goods_nm")){
+				/*if(list.get(i).get("goods_nm") != list2.get(i).get("goods_nm")){
 					HashMap map = new HashMap();
 					map.put("goods_nm", list.get(i).get("goods_nm"));
 					map.put("totalPrice", 0);
 					
 					
 					list2.add(map);
-				}
-				
-			}*/
-			
-	
-			
-			
-			salesArray.add(salesJson);
+					
+					System.out.println(list.toString());
+					System.out.println(list2.toString());
+					
+					
+				}*/
+
+				salesArray.add(salesJson);
 
 		}
 		

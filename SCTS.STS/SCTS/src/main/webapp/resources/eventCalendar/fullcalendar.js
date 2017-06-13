@@ -1,5 +1,5 @@
 /*!
- * FullCalendar v3.4.0
+ * FullCalendar v3.3.0
  * Docs & License: https://fullcalendar.io/
  * (c) 2017 Adam Shaw
  */
@@ -19,11 +19,11 @@
 ;;
 
 var FC = $.fullCalendar = {
-	version: "3.4.0",
+	version: "3.3.0",
 	// When introducing internal API incompatibilities (where fullcalendar plugins would break),
 	// the minor version of the calendar should be upped (ex: 2.7.2 -> 2.8.0)
 	// and the below integer should be incremented.
-	internalApiVersion: 9
+	internalApiVersion: 8
 };
 var fcViews = FC.views = {};
 
@@ -277,7 +277,6 @@ function getOuterRect(el, origin) {
 // Queries the area within the margin/border/scrollbars of a jQuery element. Does not go within the padding.
 // Returns a rectangle with absolute coordinates: left, right (exclusive), top, bottom (exclusive).
 // Origin is optional.
-// WARNING: given element can't have borders
 // NOTE: should use clientLeft/clientTop, but very unreliable cross-browser.
 function getClientRect(el, origin) {
 	var offset = el.offset();
@@ -314,11 +313,10 @@ function getContentRect(el, origin) {
 
 
 // Returns the computed left/right/top/bottom scrollbar widths for the given jQuery element.
-// WARNING: given element can't have borders (which will cause offsetWidth/offsetHeight to be larger).
 // NOTE: should use clientLeft/clientTop, but very unreliable cross-browser.
 function getScrollbarWidths(el) {
-	var leftRightWidth = el[0].offsetWidth - el[0].clientWidth;
-	var bottomWidth = el[0].offsetHeight - el[0].clientHeight;
+	var leftRightWidth = el.innerWidth() - el[0].clientWidth; // the paddings cancel out, leaving the scrollbars
+	var bottomWidth = el.innerHeight() - el[0].clientHeight; // "
 	var widths;
 
 	leftRightWidth = sanitizeScrollbarWidth(leftRightWidth);
@@ -679,19 +677,6 @@ function computeGreatestUnit(start, end) {
 	}
 
 	return unit; // will be "milliseconds" if nothing else matches
-}
-
-
-// like computeGreatestUnit, but has special abilities to interpret the source input for clues
-function computeDurationGreatestUnit(duration, durationInput) {
-	var unit = computeGreatestUnit(duration);
-
-	// prevent days:7 from being interpreted as a week
-	if (unit === 'week' && typeof durationInput === 'object' && durationInput.days) {
-		unit = 'day';
-	}
-
-	return unit;
 }
 
 
@@ -1402,47 +1387,27 @@ newMomentProto.utcOffset = function(tzo) {
 // -------------------------------------------------------------------------------------------------
 
 newMomentProto.format = function() {
-
 	if (this._fullCalendar && arguments[0]) { // an enhanced moment? and a format string provided?
 		return formatDate(this, arguments[0]); // our extended formatting
 	}
 	if (this._ambigTime) {
-		return oldMomentFormat(englishMoment(this), 'YYYY-MM-DD');
+		return oldMomentFormat(this, 'YYYY-MM-DD');
 	}
 	if (this._ambigZone) {
-		return oldMomentFormat(englishMoment(this), 'YYYY-MM-DD[T]HH:mm:ss');
+		return oldMomentFormat(this, 'YYYY-MM-DD[T]HH:mm:ss');
 	}
-	if (this._fullCalendar) { // enhanced non-ambig moment?
-		// moment.format() doesn't ensure english, but we want to.
-		return oldMomentFormat(englishMoment(this));
-	}
-
 	return oldMomentProto.format.apply(this, arguments);
 };
 
 newMomentProto.toISOString = function() {
-
 	if (this._ambigTime) {
-		return oldMomentFormat(englishMoment(this), 'YYYY-MM-DD');
+		return oldMomentFormat(this, 'YYYY-MM-DD');
 	}
 	if (this._ambigZone) {
-		return oldMomentFormat(englishMoment(this), 'YYYY-MM-DD[T]HH:mm:ss');
+		return oldMomentFormat(this, 'YYYY-MM-DD[T]HH:mm:ss');
 	}
-	if (this._fullCalendar) { // enhanced non-ambig moment?
-		// depending on browser, moment might not output english. ensure english.
-		// https://github.com/moment/moment/blob/2.18.1/src/lib/moment/format.js#L22
-		return oldMomentProto.toISOString.apply(englishMoment(this), arguments);
-	}
-
 	return oldMomentProto.toISOString.apply(this, arguments);
 };
-
-function englishMoment(mom) {
-	if (mom.locale() !== 'en') {
-		return mom.clone().locale('en');
-	}
-	return mom;
-}
 
 ;;
 (function() {
@@ -1926,647 +1891,198 @@ function mixIntoClass(theClass, members) {
 }
 ;;
 
-var Model = Class.extend(EmitterMixin, ListenerMixin, {
+/*
+Wrap jQuery's Deferred Promise object to be slightly more Promise/A+ compliant.
+With the added non-standard feature of synchronously executing handlers on resolved promises,
+which doesn't always happen otherwise (esp with nested .then handlers!?),
+so, this makes things a lot easier, esp because jQuery 3 changed the synchronicity for Deferred objects.
 
-	_props: null,
-	_watchers: null,
-	_globalWatchArgs: null,
+TODO: write tests and more comments
+*/
 
-	constructor: function() {
-		this._watchers = {};
-		this._props = {};
-		this.applyGlobalWatchers();
-	},
+function Promise(executor) {
+	var deferred = $.Deferred();
+	var promise = deferred.promise();
 
-	applyGlobalWatchers: function() {
-		var argSets = this._globalWatchArgs || [];
-		var i;
-
-		for (i = 0; i < argSets.length; i++) {
-			this.watch.apply(this, argSets[i]);
-		}
-	},
-
-	has: function(name) {
-		return name in this._props;
-	},
-
-	get: function(name) {
-		if (name === undefined) {
-			return this._props;
-		}
-
-		return this._props[name];
-	},
-
-	set: function(name, val) {
-		var newProps;
-
-		if (typeof name === 'string') {
-			newProps = {};
-			newProps[name] = val === undefined ? null : val;
-		}
-		else {
-			newProps = name;
-		}
-
-		this.setProps(newProps);
-	},
-
-	reset: function(newProps) {
-		var oldProps = this._props;
-		var changeset = {}; // will have undefined's to signal unsets
-		var name;
-
-		for (name in oldProps) {
-			changeset[name] = undefined;
-		}
-
-		for (name in newProps) {
-			changeset[name] = newProps[name];
-		}
-
-		this.setProps(changeset);
-	},
-
-	unset: function(name) { // accepts a string or array of strings
-		var newProps = {};
-		var names;
-		var i;
-
-		if (typeof name === 'string') {
-			names = [ name ];
-		}
-		else {
-			names = name;
-		}
-
-		for (i = 0; i < names.length; i++) {
-			newProps[names[i]] = undefined;
-		}
-
-		this.setProps(newProps);
-	},
-
-	setProps: function(newProps) {
-		var changedProps = {};
-		var changedCnt = 0;
-		var name, val;
-
-		for (name in newProps) {
-			val = newProps[name];
-
-			// a change in value?
-			// if an object, don't check equality, because might have been mutated internally.
-			// TODO: eventually enforce immutability.
-			if (
-				typeof val === 'object' ||
-				val !== this._props[name]
-			) {
-				changedProps[name] = val;
-				changedCnt++;
-			}
-		}
-
-		if (changedCnt) {
-
-			this.trigger('before:batchChange', changedProps);
-
-			for (name in changedProps) {
-				val = changedProps[name];
-
-				this.trigger('before:change', name, val);
-				this.trigger('before:change:' + name, val);
-			}
-
-			for (name in changedProps) {
-				val = changedProps[name];
-
-				if (val === undefined) {
-					delete this._props[name];
+	if (typeof executor === 'function') {
+		executor(
+			function(value) { // resolve
+				if (Promise.immediate) {
+					promise._value = value;
 				}
-				else {
-					this._props[name] = val;
-				}
-
-				this.trigger('change:' + name, val);
-				this.trigger('change', name, val);
-			}
-
-			this.trigger('batchChange', changedProps);
-		}
-	},
-
-	watch: function(name, depList, startFunc, stopFunc) {
-		var _this = this;
-
-		this.unwatch(name);
-
-		this._watchers[name] = this._watchDeps(depList, function(deps) {
-			var res = startFunc.call(_this, deps);
-
-			if (res && res.then) {
-				_this.unset(name); // put in an unset state while resolving
-				res.then(function(val) {
-					_this.set(name, val);
-				});
-			}
-			else {
-				_this.set(name, res);
-			}
-		}, function() {
-			_this.unset(name);
-
-			if (stopFunc) {
-				stopFunc.call(_this);
-			}
-		});
-	},
-
-	unwatch: function(name) {
-		var watcher = this._watchers[name];
-
-		if (watcher) {
-			delete this._watchers[name];
-			watcher.teardown();
-		}
-	},
-
-	_watchDeps: function(depList, startFunc, stopFunc) {
-		var _this = this;
-		var queuedChangeCnt = 0;
-		var depCnt = depList.length;
-		var satisfyCnt = 0;
-		var values = {}; // what's passed as the `deps` arguments
-		var bindTuples = []; // array of [ eventName, handlerFunc ] arrays
-		var isCallingStop = false;
-
-		function onBeforeDepChange(depName, val, isOptional) {
-			queuedChangeCnt++;
-			if (queuedChangeCnt === 1) { // first change to cause a "stop" ?
-				if (satisfyCnt === depCnt) { // all deps previously satisfied?
-					isCallingStop = true;
-					stopFunc();
-					isCallingStop = false;
-				}
-			}
-		}
-
-		function onDepChange(depName, val, isOptional) {
-
-			if (val === undefined) { // unsetting a value?
-
-				// required dependency that was previously set?
-				if (!isOptional && values[depName] !== undefined) {
-					satisfyCnt--;
-				}
-
-				delete values[depName];
-			}
-			else { // setting a value?
-
-				// required dependency that was previously unset?
-				if (!isOptional && values[depName] === undefined) {
-					satisfyCnt++;
-				}
-
-				values[depName] = val;
-			}
-
-			queuedChangeCnt--;
-			if (!queuedChangeCnt) { // last change to cause a "start"?
-
-				// now finally satisfied or satisfied all along?
-				if (satisfyCnt === depCnt) {
-
-					// if the stopFunc initiated another value change, ignore it.
-					// it will be processed by another change event anyway.
-					if (!isCallingStop) {
-						startFunc(values);
-					}
-				}
-			}
-		}
-
-		// intercept for .on() that remembers handlers
-		function bind(eventName, handler) {
-			_this.on(eventName, handler);
-			bindTuples.push([ eventName, handler ]);
-		}
-
-		// listen to dependency changes
-		depList.forEach(function(depName) {
-			var isOptional = false;
-
-			if (depName.charAt(0) === '?') { // TODO: more DRY
-				depName = depName.substring(1);
-				isOptional = true;
-			}
-
-			bind('before:change:' + depName, function(val) {
-				onBeforeDepChange(depName, val, isOptional);
-			});
-
-			bind('change:' + depName, function(val) {
-				onDepChange(depName, val, isOptional);
-			});
-		});
-
-		// process current dependency values
-		depList.forEach(function(depName) {
-			var isOptional = false;
-
-			if (depName.charAt(0) === '?') { // TODO: more DRY
-				depName = depName.substring(1);
-				isOptional = true;
-			}
-
-			if (_this.has(depName)) {
-				values[depName] = _this.get(depName);
-				satisfyCnt++;
-			}
-			else if (isOptional) {
-				satisfyCnt++;
-			}
-		});
-
-		// initially satisfied
-		if (satisfyCnt === depCnt) {
-			startFunc(values);
-		}
-
-		return {
-			teardown: function() {
-				// remove all handlers
-				for (var i = 0; i < bindTuples.length; i++) {
-					_this.off(bindTuples[i][0], bindTuples[i][1]);
-				}
-				bindTuples = null;
-
-				// was satisfied, so call stopFunc
-				if (satisfyCnt === depCnt) {
-					stopFunc();
-				}
+				deferred.resolve(value);
 			},
-			flash: function() {
-				if (satisfyCnt === depCnt) {
-					stopFunc();
-					startFunc(values);
+			function() { // reject
+				deferred.reject();
+			}
+		);
+	}
+	
+	if (Promise.immediate) {
+		var origThen = promise.then;
+
+		promise.then = function(onFulfilled, onRejected) {
+			var state = promise.state();
+			
+			if (state === 'resolved') {
+				if (typeof onFulfilled === 'function') {
+					return Promise.resolve(onFulfilled(promise._value));
 				}
 			}
-		};
-	},
-
-	flash: function(name) {
-		var watcher = this._watchers[name];
-
-		if (watcher) {
-			watcher.flash();
-		}
-	}
-
-});
-
-
-Model.watch = function(/* same arguments as this.watch() */) {
-	var proto = this.prototype;
-
-	if (!proto._globalWatchArgs) {
-		proto._globalWatchArgs = [];
-	}
-
-	proto._globalWatchArgs.push(arguments);
-};
-
-
-FC.Model = Model;
-
-
-;;
-
-var Promise = {
-
-	construct: function(executor) {
-		var deferred = $.Deferred();
-		var promise = deferred.promise();
-
-		if (typeof executor === 'function') {
-			executor(
-				function(val) { // resolve
-					deferred.resolve(val);
-					attachImmediatelyResolvingThen(promise, val);
-				},
-				function() { // reject
-					deferred.reject();
-					attachImmediatelyRejectingThen(promise);
+			else if (state === 'rejected') {
+				if (typeof onRejected === 'function') {
+					onRejected();
+					return promise; // already rejected
 				}
-			);
-		}
+			}
 
-		return promise;
-	},
-
-	resolve: function(val) {
-		var deferred = $.Deferred().resolve(val);
-		var promise = deferred.promise();
-
-		attachImmediatelyResolvingThen(promise, val);
-
-		return promise;
-	},
-
-	reject: function() {
-		var deferred = $.Deferred().reject();
-		var promise = deferred.promise();
-
-		attachImmediatelyRejectingThen(promise);
-
-		return promise;
+			return origThen.call(promise, onFulfilled, onRejected);
+		};
 	}
 
-};
-
-
-function attachImmediatelyResolvingThen(promise, val) {
-	promise.then = function(onResolve) {
-		if (typeof onResolve === 'function') {
-			onResolve(val);
-		}
-		return promise; // for chaining
-	};
+	return promise; // instanceof Promise will break :( TODO: make Promise a real class
 }
-
-
-function attachImmediatelyRejectingThen(promise) {
-	promise.then = function(onResolve, onReject) {
-		if (typeof onReject === 'function') {
-			onReject();
-		}
-		return promise; // for chaining
-	};
-}
-
 
 FC.Promise = Promise;
 
-;;
-
-var TaskQueue = Class.extend(EmitterMixin, {
-
-	q: null,
-	isPaused: false,
-	isRunning: false,
+Promise.immediate = true;
 
 
-	constructor: function() {
-		this.q = [];
-	},
+Promise.resolve = function(value) {
+	if (value && typeof value.resolve === 'function') {
+		return value.promise();
+	}
+	if (value && typeof value.then === 'function') {
+		return value;
+	}
+	else {
+		var deferred = $.Deferred().resolve(value);
+		var promise = deferred.promise();
 
+		if (Promise.immediate) {
+			var origThen = promise.then;
 
-	queue: function(/* taskFunc, taskFunc... */) {
-		this.q.push.apply(this.q, arguments); // append
-		this.tryStart();
-	},
+			promise._value = value;
 
-
-	pause: function() {
-		this.isPaused = true;
-	},
-
-
-	resume: function() {
-		this.isPaused = false;
-		this.tryStart();
-	},
-
-
-	tryStart: function() {
-		if (!this.isRunning && this.canRunNext()) {
-			this.isRunning = true;
-			this.trigger('start');
-			this.runNext();
-		}
-	},
-
-
-	canRunNext: function() {
-		return !this.isPaused && this.q.length;
-	},
-
-
-	runNext: function() { // does not check canRunNext
-		this.runTask(this.q.shift());
-	},
-
-
-	runTask: function(task) {
-		this.runTaskFunc(task);
-	},
-
-
-	runTaskFunc: function(taskFunc) {
-		var _this = this;
-		var res = taskFunc();
-
-		if (res && res.then) {
-			res.then(done);
-		}
-		else {
-			done();
+			promise.then = function(onFulfilled, onRejected) {
+				if (typeof onFulfilled === 'function') {
+					return Promise.resolve(onFulfilled(value));
+				}
+				return origThen.call(promise, onFulfilled, onRejected);
+			};
 		}
 
-		function done() {
-			if (_this.canRunNext()) {
-				_this.runNext();
+		return promise;
+	}
+};
+
+
+Promise.reject = function() {
+	return $.Deferred().reject().promise();
+};
+
+
+Promise.all = function(inputs) {
+	var hasAllValues = false;
+	var values;
+	var i, input;
+
+	if (Promise.immediate) {
+		hasAllValues = true;
+		values = [];
+
+		for (i = 0; i < inputs.length; i++) {
+			input = inputs[i];
+
+			if (input && typeof input.state === 'function' && input.state() === 'resolved' && ('_value' in input)) {
+				values.push(input._value);
+			}
+			else if (input && typeof input.then === 'function') {
+				hasAllValues = false;
+				break;
 			}
 			else {
-				_this.isRunning = false;
-				_this.trigger('stop');
+				values.push(input);
 			}
 		}
 	}
 
-});
+	if (hasAllValues) {
+		return Promise.resolve(values);
+	}
+	else {
+		return $.when.apply($.when, inputs).then(function() {
+			return $.when($.makeArray(arguments));
+		});
+	}
+};
+
+;;
+
+// TODO: write tests and clean up code
+
+function TaskQueue(debounceWait) {
+	var q = []; // array of runFuncs
+
+	function addTask(taskFunc) {
+		return new Promise(function(resolve) {
+
+			// should run this function when it's taskFunc's turn to run.
+			// responsible for popping itself off the queue.
+			var runFunc = function() {
+				Promise.resolve(taskFunc()) // result might be async, coerce to promise
+					.then(resolve) // resolve TaskQueue::push's promise, for the caller. will receive result of taskFunc.
+					.then(function() {
+						q.shift(); // pop itself off
+
+						// run the next task, if any
+						if (q.length) {
+							q[0]();
+						}
+					});
+			};
+
+			// always put the task at the end of the queue, BEFORE running the task
+			q.push(runFunc);
+
+			// if it's the only task in the queue, run immediately
+			if (q.length === 1) {
+				runFunc();
+			}
+		});
+	}
+
+	this.add = // potentially debounce, for the public method
+		typeof debounceWait === 'number' ?
+			debounce(addTask, debounceWait) :
+			addTask; // if not a number (null/undefined/false), no debounce at all
+
+	this.addQuickly = addTask; // guaranteed no debounce
+}
 
 FC.TaskQueue = TaskQueue;
 
-;;
+/*
+q = new TaskQueue();
 
-var RenderQueue = TaskQueue.extend({
+function work(i) {
+	return q.push(function() {
+		trigger();
+		console.log('work' + i);
+	});
+}
 
-	waitsByNamespace: null,
-	waitNamespace: null,
-	waitId: null,
+var cnt = 0;
 
-
-	constructor: function(waitsByNamespace) {
-		TaskQueue.call(this); // super-constructor
-
-		this.waitsByNamespace = waitsByNamespace || {};
-	},
-
-
-	queue: function(taskFunc, namespace, type) {
-		var task = {
-			func: taskFunc,
-			namespace: namespace,
-			type: type
-		};
-		var waitMs;
-
-		if (namespace) {
-			waitMs = this.waitsByNamespace[namespace];
-		}
-
-		if (this.waitNamespace) {
-			if (namespace === this.waitNamespace && waitMs != null) {
-				this.delayWait(waitMs);
-			}
-			else {
-				this.clearWait();
-				this.tryStart();
-			}
-		}
-
-		if (this.compoundTask(task)) { // appended to queue?
-
-			if (!this.waitNamespace && waitMs != null) {
-				this.startWait(namespace, waitMs);
-			}
-			else {
-				this.tryStart();
-			}
-		}
-	},
-
-
-	startWait: function(namespace, waitMs) {
-		this.waitNamespace = namespace;
-		this.spawnWait(waitMs);
-	},
-
-
-	delayWait: function(waitMs) {
-		clearTimeout(this.waitId);
-		this.spawnWait(waitMs);
-	},
-
-
-	spawnWait: function(waitMs) {
-		var _this = this;
-
-		this.waitId = setTimeout(function() {
-			_this.waitNamespace = null;
-			_this.tryStart();
-		}, waitMs);
-	},
-
-
-	clearWait: function() {
-		if (this.waitNamespace) {
-			clearTimeout(this.waitId);
-			this.waitId = null;
-			this.waitNamespace = null;
-		}
-	},
-
-
-	canRunNext: function() {
-		if (!TaskQueue.prototype.canRunNext.apply(this, arguments)) {
-			return false;
-		}
-
-		// waiting for a certain namespace to stop receiving tasks?
-		if (this.waitNamespace) {
-
-			// if there was a different namespace task in the meantime,
-			// that forces all previously-waiting tasks to suddenly execute.
-			// TODO: find a way to do this in constant time.
-			for (var q = this.q, i = 0; i < q.length; i++) {
-				if (q[i].namespace !== this.waitNamespace) {
-					return true; // allow execution
-				}
-			}
-
-			return false;
-		}
-
-		return true;
-	},
-
-
-	runTask: function(task) {
-		this.runTaskFunc(task.func);
-	},
-
-
-	compoundTask: function(newTask) {
-		var q = this.q;
-		var shouldAppend = true;
-		var i, task;
-
-		if (newTask.namespace) {
-
-			if (newTask.type === 'destroy' || newTask.type === 'init') {
-
-				// remove all add/remove ops with same namespace, regardless of order
-				for (i = q.length - 1; i >= 0; i--) {
-					task = q[i];
-
-					if (
-						task.namespace === newTask.namespace &&
-						(task.type === 'add' || task.type === 'remove')
-					) {
-						q.splice(i, 1); // remove task
-					}
-				}
-
-				if (newTask.type === 'destroy') {
-					// eat away final init/destroy operation
-					if (q.length) {
-						task = q[q.length - 1]; // last task
-
-						if (task.namespace === newTask.namespace) {
-
-							// the init and our destroy cancel each other out
-							if (task.type === 'init') {
-								shouldAppend = false;
-								q.pop();
-							}
-							// prefer to use the destroy operation that's already present
-							else if (task.type === 'destroy') {
-								shouldAppend = false;
-							}
-						}
-					}
-				}
-				else if (newTask.type === 'init') {
-					// eat away final init operation
-					if (q.length) {
-						task = q[q.length - 1]; // last task
-
-						if (
-							task.namespace === newTask.namespace &&
-							task.type === 'init'
-						) {
-							// our init operation takes precedence
-							q.pop();
-						}
-					}
-				}
-			}
-		}
-
-		if (shouldAppend) {
-			q.push(newTask);
-		}
-
-		return shouldAppend;
+function trigger() {
+	if (cnt < 5) {
+		cnt++;
+		work(cnt);
 	}
+}
 
-});
-
-FC.RenderQueue = RenderQueue;
+work(9);
+*/
 
 ;;
 
@@ -5203,7 +4719,7 @@ Grid.mixin({
 		if (businessHours == null) {
 			// fallback
 			// access from calendawr. don't access from view. doesn't update with dynamic options.
-			businessHours = calendar.opt('businessHours');
+			businessHours = calendar.options.businessHours;
 		}
 
 		events = calendar.computeBusinessHourEvents(wholeDay, businessHours);
@@ -6271,9 +5787,7 @@ Grid.mixin({
 				});
 			}
 
-			if (range.end > start) {
-				start = range.end;
-			}
+			start = range.end;
 		}
 
 		// add the span of time after the last event (if there is any)
@@ -9157,7 +8671,7 @@ function isSlotSegCollision(seg1, seg2) {
 /* An abstract class from which other views inherit from
 ----------------------------------------------------------------------------------------------------------------------*/
 
-var View = FC.View = Model.extend({
+var View = FC.View = Class.extend(EmitterMixin, ListenerMixin, {
 
 	type: null, // subclass' view name (string)
 	name: null, // deprecated. use `type` instead
@@ -9168,13 +8682,14 @@ var View = FC.View = Model.extend({
 	options: null, // hash containing all options. already merged with view-specific-options
 	el: null, // the view's containing element. set by Calendar
 
-	renderQueue: null,
-	batchRenderDepth: 0,
-	isDatesRendered: false,
-	isEventsRendered: false,
-	isBaseRendered: false, // related to viewRender/viewDestroy triggers
+	isDateSet: false,
+	isDateRendered: false,
+	dateRenderQueue: null,
 
-	queuedScroll: null,
+	isEventsBound: false,
+	isEventsSet: false,
+	isEventsRendered: false,
+	eventRenderQueue: null,
 
 	isRTL: false,
 	isSelected: false, // boolean whether a range of time is user-selected or not
@@ -9200,7 +8715,6 @@ var View = FC.View = Model.extend({
 
 
 	constructor: function(calendar, viewSpec) {
-		Model.prototype.constructor.call(this);
 
 		this.calendar = calendar;
 		this.viewSpec = viewSpec;
@@ -9219,57 +8733,10 @@ var View = FC.View = Model.extend({
 
 		this.eventOrderSpecs = parseFieldSpecs(this.opt('eventOrder'));
 
-		this.renderQueue = this.buildRenderQueue();
-		this.initAutoBatchRender();
+		this.dateRenderQueue = new TaskQueue();
+		this.eventRenderQueue = new TaskQueue(this.opt('eventRenderWait'));
 
 		this.initialize();
-	},
-
-
-	buildRenderQueue: function() {
-		var _this = this;
-		var renderQueue = new RenderQueue({
-			event: this.opt('eventRenderWait')
-		});
-
-		renderQueue.on('start', function() {
-			_this.freezeHeight();
-			_this.addScroll(_this.queryScroll());
-		});
-
-		renderQueue.on('stop', function() {
-			_this.thawHeight();
-			_this.popScroll();
-		});
-
-		return renderQueue;
-	},
-
-
-	initAutoBatchRender: function() {
-		var _this = this;
-
-		this.on('before:change', function() {
-			_this.startBatchRender();
-		});
-
-		this.on('change', function() {
-			_this.stopBatchRender();
-		});
-	},
-
-
-	startBatchRender: function() {
-		if (!(this.batchRenderDepth++)) {
-			this.renderQueue.pause();
-		}
-	},
-
-
-	stopBatchRender: function() {
-		if (!(--this.batchRenderDepth)) {
-			this.renderQueue.resume();
-		}
 	},
 
 
@@ -9296,6 +8763,29 @@ var View = FC.View = Model.extend({
 				[ this ] // always make the last argument a reference to the view. TODO: deprecate
 			)
 		);
+	},
+
+
+	// Returns a proxy of the given promise that will be rejected if the given event fires
+	// before the promise resolves.
+	rejectOn: function(eventName, promise) {
+		var _this = this;
+
+		return new Promise(function(resolve, reject) {
+			_this.one(eventName, reject);
+
+			function cleanup() {
+				_this.off(eventName, reject);
+			}
+
+			promise.then(function(res) { // success
+				cleanup();
+				resolve(res);
+			}, function() { // failure
+				cleanup();
+				reject();
+			});
+		});
 	},
 
 
@@ -9431,7 +8921,6 @@ var View = FC.View = Model.extend({
 	setElement: function(el) {
 		this.el = el;
 		this.bindGlobalHandlers();
-		this.bindBaseRenderHandlers();
 		this.renderSkeleton();
 	},
 
@@ -9443,7 +8932,6 @@ var View = FC.View = Model.extend({
 		this.unrenderSkeleton();
 
 		this.unbindGlobalHandlers();
-		this.unbindBaseRenderHandlers();
 
 		this.el.remove();
 		// NOTE: don't null-out this.el in case the View was destroyed within an API callback.
@@ -9469,108 +8957,64 @@ var View = FC.View = Model.extend({
 
 
 	setDate: function(date) {
-		var currentDateProfile = this.get('dateProfile');
-		var newDateProfile = this.buildDateProfile(date, null, true); // forceToValid=true
+		var isReset = this.isDateSet;
 
-		if (
-			!currentDateProfile ||
-			!isRangesEqual(currentDateProfile.activeRange, newDateProfile.activeRange)
-		) {
-			this.set('dateProfile', newDateProfile);
-		}
-
-		return newDateProfile.date;
+		this.isDateSet = true;
+		this.handleDate(date, isReset);
+		this.trigger(isReset ? 'dateReset' : 'dateSet', date);
 	},
 
 
 	unsetDate: function() {
-		this.unset('dateProfile');
+		if (this.isDateSet) {
+			this.isDateSet = false;
+			this.handleDateUnset();
+			this.trigger('dateUnset');
+		}
 	},
 
 
-	// Date Rendering
+	// Date Handling
 	// -----------------------------------------------------------------------------------------------------------------
 
 
-	requestDateRender: function(dateProfile) {
+	handleDate: function(date, isReset) {
 		var _this = this;
 
-		this.renderQueue.queue(function() {
-			_this.executeDateRender(dateProfile);
-		}, 'date', 'init');
+		this.unbindEvents(); // will do nothing if not already bound
+		this.requestDateRender(date).then(function() {
+			// wish we could start earlier, but setRangeFromDate needs to execute first
+			_this.bindEvents(); // will request events
+		});
+	},
+
+
+	handleDateUnset: function() {
+		this.unbindEvents();
+		this.requestDateUnrender();
+	},
+
+
+	// Date Render Queuing
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	// if date not specified, uses current
+	requestDateRender: function(date) {
+		var _this = this;
+
+		return this.dateRenderQueue.add(function() {
+			return _this.executeDateRender(date);
+		});
 	},
 
 
 	requestDateUnrender: function() {
 		var _this = this;
 
-		this.renderQueue.queue(function() {
-			_this.executeDateUnrender();
-		}, 'date', 'destroy');
-	},
-
-
-	// Event Data
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	fetchInitialEvents: function(dateProfile) {
-		return this.calendar.requestEvents(
-			dateProfile.activeRange.start,
-			dateProfile.activeRange.end
-		);
-	},
-
-
-	bindEventChanges: function() {
-		this.listenTo(this.calendar, 'eventsReset', this.resetEvents);
-	},
-
-
-	unbindEventChanges: function() {
-		this.stopListeningTo(this.calendar, 'eventsReset');
-	},
-
-
-	setEvents: function(events) {
-		this.set('currentEvents', events);
-		this.set('hasEvents', true);
-	},
-
-
-	unsetEvents: function() {
-		this.unset('currentEvents');
-		this.unset('hasEvents');
-	},
-
-
-	resetEvents: function(events) {
-		this.startBatchRender();
-		this.unsetEvents();
-		this.setEvents(events);
-		this.stopBatchRender();
-	},
-
-
-	// Event Rendering
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	requestEventsRender: function(events) {
-		var _this = this;
-
-		this.renderQueue.queue(function() {
-			_this.executeEventsRender(events);
-		}, 'event', 'init');
-	},
-
-
-	requestEventsUnrender: function() {
-		var _this = this;
-
-		this.renderQueue.queue(function() {
-			_this.executeEventsUnrender();
-		}, 'event', 'destroy');
+		return this.dateRenderQueue.add(function() {
+			return _this.executeDateUnrender();
+		});
 	},
 
 
@@ -9578,46 +9022,85 @@ var View = FC.View = Model.extend({
 	// -----------------------------------------------------------------------------------------------------------------
 
 
-	// if dateProfile not specified, uses current
-	executeDateRender: function(dateProfile, skipScroll) {
+	// if date not specified, uses current
+	executeDateRender: function(date) {
+		var _this = this;
+		var rangeChanged = false;
 
-		this.setDateProfileForRendering(dateProfile);
-		this.updateTitle();
-		this.calendar.updateToolbarButtons();
-
-		if (this.render) {
-			this.render(); // TODO: deprecate
+		if (date) {
+			rangeChanged = _this.setRangeFromDate(date);
 		}
 
-		this.renderDates();
-		this.updateSize();
-		this.renderBusinessHours(); // might need coordinates, so should go after updateSize()
-		this.startNowIndicator();
+		if (!date || rangeChanged || !_this.isDateRendered) { // should render?
 
-		if (!skipScroll) {
-			this.addScroll(this.computeInitialDateScroll());
+			// if rendering a new date, reset scroll to initial state (scrollTime)
+			if (date) {
+				this.captureInitialScroll();
+			}
+			else {
+				this.captureScroll(); // a rerender of the current date
+			}
+
+			this.freezeHeight();
+
+			// potential issue: date-unrendering will happen with the *new* range
+			return this.executeDateUnrender().then(function() {
+
+				if (_this.render) {
+					_this.render(); // TODO: deprecate
+				}
+
+				_this.renderDates();
+				_this.updateSize();
+				_this.renderBusinessHours(); // might need coordinates, so should go after updateSize()
+				_this.startNowIndicator();
+
+				_this.thawHeight();
+				_this.releaseScroll();
+
+				_this.isDateRendered = true;
+				_this.onDateRender();
+				_this.trigger('dateRender');
+			});
 		}
-
-		this.isDatesRendered = true;
-		this.trigger('datesRendered');
+		else {
+			return Promise.resolve();
+		}
 	},
 
 
 	executeDateUnrender: function() {
+		var _this = this;
 
-		this.unselect();
-		this.stopNowIndicator();
+		if (_this.isDateRendered) {
+			return this.requestEventsUnrender().then(function() {
 
-		this.trigger('before:datesUnrendered');
+				_this.unselect();
+				_this.stopNowIndicator();
+				_this.triggerUnrender();
+				_this.unrenderBusinessHours();
+				_this.unrenderDates();
 
-		this.unrenderBusinessHours();
-		this.unrenderDates();
+				if (_this.destroy) {
+					_this.destroy(); // TODO: deprecate
+				}
 
-		if (this.destroy) {
-			this.destroy(); // TODO: deprecate
+				_this.isDateRendered = false;
+				_this.trigger('dateUnrender');
+			});
 		}
+		else {
+			return Promise.resolve();
+		}
+	},
 
-		this.isDatesRendered = false;
+
+	// Date Rendering Triggers
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	onDateRender: function() {
+		this.triggerRender();
 	},
 
 
@@ -9637,42 +9120,20 @@ var View = FC.View = Model.extend({
 	},
 
 
-	// Determing when the "meat" of the view is rendered (aka the base)
-	// -----------------------------------------------------------------------------------------------------------------
+	// Misc view rendering utils
+	// -------------------------
 
 
-	bindBaseRenderHandlers: function() {
-		var _this = this;
-
-		this.on('datesRendered.baseHandler', function() {
-			_this.onBaseRender();
-		});
-
-		this.on('before:datesUnrendered.baseHandler', function() {
-			_this.onBeforeBaseUnrender();
-		});
-	},
-
-
-	unbindBaseRenderHandlers: function() {
-		this.off('.baseHandler');
-	},
-
-
-	onBaseRender: function() {
-		this.applyScreenState();
+	// Signals that the view's content has been rendered
+	triggerRender: function() {
 		this.publiclyTrigger('viewRender', this, this, this.el);
 	},
 
 
-	onBeforeBaseUnrender: function() {
-		this.applyScreenState();
+	// Signals that the view's content is about to be unrendered
+	triggerUnrender: function() {
 		this.publiclyTrigger('viewDestroy', this, this, this.el);
 	},
-
-
-	// Misc view rendering utils
-	// -----------------------------------------------------------------------------------------------------------------
 
 
 	// Binds DOM handlers to elements that reside outside the view container, such as the document
@@ -9810,10 +9271,9 @@ var View = FC.View = Model.extend({
 
 	// Refreshes anything dependant upon sizing of the container element of the grid
 	updateSize: function(isResize) {
-		var scroll;
 
 		if (isResize) {
-			scroll = this.queryScroll();
+			this.captureScroll();
 		}
 
 		this.updateHeight(isResize);
@@ -9821,7 +9281,7 @@ var View = FC.View = Model.extend({
 		this.updateNowIndicator();
 
 		if (isResize) {
-			this.applyScroll(scroll);
+			this.releaseScroll();
 		}
 	},
 
@@ -9854,65 +9314,90 @@ var View = FC.View = Model.extend({
 	------------------------------------------------------------------------------------------------------------------*/
 
 
-	addForcedScroll: function(scroll) {
-		this.addScroll(
-			$.extend(scroll, { isForced: true })
-		);
+	capturedScroll: null,
+	capturedScrollDepth: 0,
+
+
+	captureScroll: function() {
+		if (!(this.capturedScrollDepth++)) {
+			this.capturedScroll = this.isDateRendered ? this.queryScroll() : {}; // require a render first
+			return true; // root?
+		}
+		return false;
 	},
 
 
-	addScroll: function(scroll) {
-		var queuedScroll = this.queuedScroll || (this.queuedScroll = {});
+	captureInitialScroll: function(forcedScroll) {
+		if (this.captureScroll()) { // root?
+			this.capturedScroll.isInitial = true;
 
-		if (!queuedScroll.isForced) {
-			$.extend(queuedScroll, scroll);
+			if (forcedScroll) {
+				$.extend(this.capturedScroll, forcedScroll);
+			}
+			else {
+				this.capturedScroll.isComputed = true;
+			}
 		}
 	},
 
 
-	popScroll: function() {
-		this.applyQueuedScroll();
-		this.queuedScroll = null;
+	releaseScroll: function() {
+		var scroll = this.capturedScroll;
+		var isRoot = this.discardScroll();
+
+		if (scroll.isComputed) {
+			if (isRoot) {
+				// only compute initial scroll if it will actually be used (is the root capture)
+				$.extend(scroll, this.computeInitialScroll());
+			}
+			else {
+				scroll = null; // scroll couldn't be computed. don't apply it to the DOM
+			}
+		}
+
+		if (scroll) {
+			// we act immediately on a releaseScroll operation, as opposed to captureScroll.
+			// if capture/release wraps a render operation that screws up the scroll,
+			// we still want to restore it a good state after, regardless of depth.
+
+			if (scroll.isInitial) {
+				this.hardSetScroll(scroll); // outsmart how browsers set scroll on initial DOM
+			}
+			else {
+				this.setScroll(scroll);
+			}
+		}
 	},
 
 
-	applyQueuedScroll: function() {
-		if (this.queuedScroll) {
-			this.applyScroll(this.queuedScroll);
+	discardScroll: function() {
+		if (!(--this.capturedScrollDepth)) {
+			this.capturedScroll = null;
+			return true; // root?
 		}
+		return false;
+	},
+
+
+	computeInitialScroll: function() {
+		return {};
 	},
 
 
 	queryScroll: function() {
-		var scroll = {};
-
-		if (this.isDatesRendered) {
-			$.extend(scroll, this.queryDateScroll());
-		}
-
-		return scroll;
+		return {};
 	},
 
 
-	applyScroll: function(scroll) {
-		if (this.isDatesRendered) {
-			this.applyDateScroll(scroll);
-		}
+	hardSetScroll: function(scroll) {
+		var _this = this;
+		var exec = function() { _this.setScroll(scroll); };
+		exec();
+		setTimeout(exec, 0); // to surely clear the browser's initial scroll for the DOM
 	},
 
 
-	computeInitialDateScroll: function() {
-		return {}; // subclasses must implement
-	},
-
-
-	queryDateScroll: function() {
-		return {}; // subclasses must implement
-	},
-
-
-	applyDateScroll: function(scroll) {
-		; // subclasses must implement
+	setScroll: function(scroll) {
 	},
 
 
@@ -9930,27 +9415,165 @@ var View = FC.View = Model.extend({
 	},
 
 
+	// Event Binding/Unbinding
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	bindEvents: function() {
+		var _this = this;
+
+		if (!this.isEventsBound) {
+			this.isEventsBound = true;
+			this.rejectOn('eventsUnbind', this.requestEvents()).then(function(events) { // TODO: test rejection
+				_this.listenTo(_this.calendar, 'eventsReset', _this.setEvents);
+				_this.setEvents(events);
+			});
+		}
+	},
+
+
+	unbindEvents: function() {
+		if (this.isEventsBound) {
+			this.isEventsBound = false;
+			this.stopListeningTo(this.calendar, 'eventsReset');
+			this.unsetEvents();
+			this.trigger('eventsUnbind');
+		}
+	},
+
+
+	// Event Setting/Unsetting
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	setEvents: function(events) {
+		var isReset = this.isEventSet;
+
+		this.isEventsSet = true;
+		this.handleEvents(events, isReset);
+		this.trigger(isReset ? 'eventsReset' : 'eventsSet', events);
+	},
+
+
+	unsetEvents: function() {
+		if (this.isEventsSet) {
+			this.isEventsSet = false;
+			this.handleEventsUnset();
+			this.trigger('eventsUnset');
+		}
+	},
+
+
+	whenEventsSet: function() {
+		var _this = this;
+
+		if (this.isEventsSet) {
+			return Promise.resolve(this.getCurrentEvents());
+		}
+		else {
+			return new Promise(function(resolve) {
+				_this.one('eventsSet', resolve);
+			});
+		}
+	},
+
+
+	// Event Handling
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	handleEvents: function(events, isReset) {
+		this.requestEventsRender(events);
+	},
+
+
+	handleEventsUnset: function() {
+		this.requestEventsUnrender();
+	},
+
+
+	// Event Render Queuing
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	// assumes any previous event renders have been cleared already
+	requestEventsRender: function(events) {
+		var _this = this;
+
+		return this.eventRenderQueue.add(function() { // might not return a promise if debounced!? bad
+			return _this.executeEventsRender(events);
+		});
+	},
+
+
+	requestEventsUnrender: function() {
+		var _this = this;
+
+		if (this.isEventsRendered) {
+			return this.eventRenderQueue.addQuickly(function() {
+				return _this.executeEventsUnrender();
+			});
+		}
+		else {
+			return Promise.resolve();
+		}
+	},
+
+
+	requestCurrentEventsRender: function() {
+		if (this.isEventsSet) {
+			this.requestEventsRender(this.getCurrentEvents());
+		}
+		else {
+			return Promise.reject();
+		}
+	},
+
+
 	// Event High-level Rendering
 	// -----------------------------------------------------------------------------------------------------------------
 
 
 	executeEventsRender: function(events) {
-		this.renderEvents(events);
-		this.isEventsRendered = true;
+		var _this = this;
 
-		this.onEventsRender();
+		this.captureScroll();
+		this.freezeHeight();
+
+		return this.executeEventsUnrender().then(function() {
+			_this.renderEvents(events);
+
+			_this.thawHeight();
+			_this.releaseScroll();
+
+			_this.isEventsRendered = true;
+			_this.onEventsRender();
+			_this.trigger('eventsRender');
+		});
 	},
 
 
 	executeEventsUnrender: function() {
-		this.onBeforeEventsUnrender();
+		if (this.isEventsRendered) {
+			this.onBeforeEventsUnrender();
 
-		if (this.destroyEvents) {
-			this.destroyEvents(); // TODO: deprecate
+			this.captureScroll();
+			this.freezeHeight();
+
+			if (this.destroyEvents) {
+				this.destroyEvents(); // TODO: deprecate
+			}
+
+			this.unrenderEvents();
+
+			this.thawHeight();
+			this.releaseScroll();
+
+			this.isEventsRendered = false;
+			this.trigger('eventsUnrender');
 		}
 
-		this.unrenderEvents();
-		this.isEventsRendered = false;
+		return Promise.resolve(); // always synchronous
 	},
 
 
@@ -9960,8 +9583,6 @@ var View = FC.View = Model.extend({
 
 	// Signals that all events have been rendered
 	onEventsRender: function() {
-		this.applyScreenState();
-
 		this.renderedEventSegEach(function(seg) {
 			this.publiclyTrigger('eventAfterRender', seg.event, seg.event, seg.el);
 		});
@@ -9971,18 +9592,9 @@ var View = FC.View = Model.extend({
 
 	// Signals that all event elements are about to be removed
 	onBeforeEventsUnrender: function() {
-		this.applyScreenState();
-
 		this.renderedEventSegEach(function(seg) {
 			this.publiclyTrigger('eventDestroy', seg.event, seg.event, seg.el);
 		});
-	},
-
-
-	applyScreenState: function() {
-		this.thawHeight();
-		this.freezeHeight();
-		this.applyQueuedScroll();
 	},
 
 
@@ -9999,6 +9611,23 @@ var View = FC.View = Model.extend({
 	// Removes event elements from the view.
 	unrenderEvents: function() {
 		// subclasses should implement
+	},
+
+
+	// Event Data Access
+	// -----------------------------------------------------------------------------------------------------------------
+
+
+	requestEvents: function() {
+		return this.calendar.requestEvents(
+			this.activeRange.start,
+			this.activeRange.end
+		);
+	},
+
+
+	getCurrentEvents: function() {
+		return this.calendar.getPrunedEventCache();
 	},
 
 
@@ -10406,34 +10035,6 @@ var View = FC.View = Model.extend({
 
 });
 
-
-View.watch('displayingDates', [ 'dateProfile' ], function(deps) {
-	this.requestDateRender(deps.dateProfile);
-}, function() {
-	this.requestDateUnrender();
-});
-
-
-View.watch('initialEvents', [ 'dateProfile' ], function(deps) {
-	return this.fetchInitialEvents(deps.dateProfile);
-});
-
-
-View.watch('bindingEvents', [ 'initialEvents' ], function(deps) {
-	this.setEvents(deps.initialEvents);
-	this.bindEventChanges();
-}, function() {
-	this.unbindEventChanges();
-	this.unsetEvents();
-});
-
-
-View.watch('displayingEvents', [ 'displayingDates', 'hasEvents' ], function() {
-	this.requestEventsRender(this.get('currentEvents')); // if there were event mutations after initialEvents
-}, function() {
-	this.requestEventsUnrender();
-});
-
 ;;
 
 View.mixin({
@@ -10457,6 +10058,10 @@ View.mixin({
 	// how far the current date will move for a prev/next operation
 	dateIncrement: null,
 
+	// stores the *calendar's* current date after setDate
+	// TODO: entirely Calendar's responsibility
+	currentDate: null,
+
 	minTime: null, // Duration object that denotes the first visible time of any given day
 	maxTime: null, // Duration object that denotes the exclusive visible end time of any given day
 	usesMinMaxTime: false, // whether minTime/maxTime will affect the activeRange. Views must opt-in.
@@ -10472,45 +10077,63 @@ View.mixin({
 	------------------------------------------------------------------------------------------------------------------*/
 
 
-	setDateProfileForRendering: function(dateProfile) {
-		this.currentRange = dateProfile.currentRange;
-		this.currentRangeUnit = dateProfile.currentRangeUnit;
-		this.renderRange = dateProfile.renderRange;
-		this.activeRange = dateProfile.activeRange;
-		this.validRange = dateProfile.validRange;
-		this.dateIncrement = dateProfile.dateIncrement;
-		this.minTime = dateProfile.minTime;
-		this.maxTime = dateProfile.maxTime;
+	// Updates all internal dates/ranges for eventual rendering around the given date.
+	// Returns a boolean about whether there was some sort of change.
+	setRangeFromDate: function(date) {
 
-		// DEPRECATED, but we need to keep it updated
-		this.start = dateProfile.activeRange.start;
-		this.end = dateProfile.activeRange.end;
-		this.intervalStart = dateProfile.currentRange.start;
-		this.intervalEnd = dateProfile.currentRange.end;
+		var rangeInfo = this.buildRangeInfo(date);
+
+		// some sort of change? (TODO: compare other ranges too?)
+		if (!this.activeRange || !isRangesEqual(this.activeRange, rangeInfo.activeRange)) {
+
+			this.currentRange = rangeInfo.currentRange;
+			this.currentRangeUnit = rangeInfo.currentRangeUnit;
+			this.renderRange = rangeInfo.renderRange;
+			this.activeRange = rangeInfo.activeRange;
+			this.validRange = rangeInfo.validRange;
+			this.dateIncrement = rangeInfo.dateIncrement;
+			this.currentDate = rangeInfo.date;
+			this.minTime = rangeInfo.minTime;
+			this.maxTime = rangeInfo.maxTime;
+
+			// DEPRECATED, but we need to keep it updated
+			this.start = rangeInfo.activeRange.start;
+			this.end = rangeInfo.activeRange.end;
+			this.intervalStart = rangeInfo.currentRange.start;
+			this.intervalEnd = rangeInfo.currentRange.end;
+
+			this.updateTitle();
+			this.calendar.updateToolbarButtons();
+
+			return true;
+		}
+
+		return false;
 	},
 
 
 	// Builds a structure with info about what the dates/ranges will be for the "prev" view.
-	buildPrevDateProfile: function(date) {
+	buildPrevRangeInfo: function(date) {
 		var prevDate = date.clone().startOf(this.currentRangeUnit).subtract(this.dateIncrement);
 
-		return this.buildDateProfile(prevDate, -1);
+		return this.buildRangeInfo(prevDate, -1);
 	},
 
 
 	// Builds a structure with info about what the dates/ranges will be for the "next" view.
-	buildNextDateProfile: function(date) {
+	buildNextRangeInfo: function(date) {
 		var nextDate = date.clone().startOf(this.currentRangeUnit).add(this.dateIncrement);
 
-		return this.buildDateProfile(nextDate, 1);
+		return this.buildRangeInfo(nextDate, 1);
 	},
 
 
 	// Builds a structure holding dates/ranges for rendering around the given date.
 	// Optional direction param indicates whether the date is being incremented/decremented
 	// from its previous value. decremented = -1, incremented = 1 (default).
-	buildDateProfile: function(date, direction, forceToValid) {
+	buildRangeInfo: function(givenDate, direction) {
 		var validRange = this.buildValidRange();
+		var constrainedDate = constrainDate(givenDate, validRange);
 		var minTime = null;
 		var maxTime = null;
 		var currentInfo;
@@ -10518,11 +10141,7 @@ View.mixin({
 		var activeRange;
 		var isValid;
 
-		if (forceToValid) {
-			date = constrainDate(date, validRange);
-		}
-
-		currentInfo = this.buildCurrentRangeInfo(date, direction);
+		currentInfo = this.buildCurrentRangeInfo(constrainedDate, direction);
 		renderRange = this.buildRenderRange(currentInfo.range, currentInfo.unit);
 		activeRange = cloneRange(renderRange);
 
@@ -10535,11 +10154,12 @@ View.mixin({
 		this.adjustActiveRange(activeRange, minTime, maxTime);
 
 		activeRange = constrainRange(activeRange, validRange);
-		date = constrainDate(date, activeRange);
+		constrainedDate = constrainDate(constrainedDate, activeRange);
 
 		// it's invalid if the originally requested date is not contained,
 		// or if the range is completely outside of the valid range.
-		isValid = doRangesIntersect(currentInfo.range, validRange);
+		isValid = isDateWithinRange(givenDate, currentInfo.range) &&
+			doRangesIntersect(currentInfo.range, validRange);
 
 		return {
 			validRange: validRange,
@@ -10550,7 +10170,7 @@ View.mixin({
 			minTime: minTime,
 			maxTime: maxTime,
 			isValid: isValid,
-			date: date,
+			date: constrainedDate,
 			dateIncrement: this.buildDateIncrement(currentInfo.duration)
 				// pass a fallback (might be null) ^
 		};
@@ -10566,7 +10186,7 @@ View.mixin({
 
 	// Builds a structure with info about the "current" range, the range that is
 	// highlighted as being the current month for example.
-	// See buildDateProfile for a description of `direction`.
+	// See buildRangeInfo for a description of `direction`.
 	// Guaranteed to have `range` and `unit` properties. `duration` is optional.
 	buildCurrentRangeInfo: function(date, direction) {
 		var duration = null;
@@ -10654,11 +10274,9 @@ View.mixin({
 	// Builds the "current" range when it is specified as an explicit duration.
 	// `unit` is the already-computed computeGreatestUnit value of duration.
 	buildRangeFromDuration: function(date, direction, duration, unit) {
-		var alignment = this.opt('dateAlignment');
+		var customAlignment = this.opt('dateAlignment');
 		var start = date.clone();
 		var end;
-		var dateIncrementInput;
-		var dateIncrementDuration;
 
 		// if the view displays a single day or smaller
 		if (duration.as('days') <= 1) {
@@ -10668,27 +10286,7 @@ View.mixin({
 			}
 		}
 
-		// compute what the alignment should be
-		if (!alignment) {
-			dateIncrementInput = this.opt('dateIncrement');
-
-			if (dateIncrementInput) {
-				dateIncrementDuration = moment.duration(dateIncrementInput);
-
-				// use the smaller of the two units
-				if (dateIncrementDuration < duration) {
-					alignment = computeDurationGreatestUnit(dateIncrementDuration, dateIncrementInput);
-				}
-				else {
-					alignment = unit;
-				}
-			}
-			else {
-				alignment = unit;
-			}
-		}
-
-		start.startOf(alignment);
+		start.startOf(customAlignment || unit);
 		end = start.clone().add(duration);
 
 		return { start: start, end: end };
@@ -11034,7 +10632,7 @@ function Toolbar(calendar, toolbarOptions) {
 	function render() {
 		var sections = toolbarOptions.layout;
 
-		tm = calendar.opt('theme') ? 'ui' : 'fc';
+		tm = calendar.options.theme ? 'ui' : 'fc';
 
 		if (sections) {
 			if (!el) {
@@ -11065,8 +10663,6 @@ function Toolbar(calendar, toolbarOptions) {
 	function renderSection(position) {
 		var sectionEl = $('<div class="fc-' + position + '"/>');
 		var buttonStr = toolbarOptions.layout[position];
-		var calendarCustomButtons = calendar.opt('customButtons') || {};
-		var calendarButtonText = calendar.opt('buttonText') || {};
 
 		if (buttonStr) {
 			$.each(buttonStr.split(' '), function(i) {
@@ -11091,7 +10687,7 @@ function Toolbar(calendar, toolbarOptions) {
 						isOnlyButtons = false;
 					}
 					else {
-						if ((customButtonProps = calendarCustomButtons[buttonName])) {
+						if ((customButtonProps = (calendar.options.customButtons || {})[buttonName])) {
 							buttonClick = function(ev) {
 								if (customButtonProps.click) {
 									customButtonProps.click.call(button[0], ev);
@@ -11113,7 +10709,7 @@ function Toolbar(calendar, toolbarOptions) {
 								calendar[buttonName]();
 							};
 							overrideText = (calendar.overrides.buttonText || {})[buttonName];
-							defaultText = calendarButtonText[buttonName]; // everything else is considered default
+							defaultText = calendar.options.buttonText[buttonName]; // everything else is considered default
 						}
 
 						if (buttonClick) {
@@ -11121,20 +10717,20 @@ function Toolbar(calendar, toolbarOptions) {
 							themeIcon =
 								customButtonProps ?
 									customButtonProps.themeIcon :
-									calendar.opt('themeButtonIcons')[buttonName];
+									calendar.options.themeButtonIcons[buttonName];
 
 							normalIcon =
 								customButtonProps ?
 									customButtonProps.icon :
-									calendar.opt('buttonIcons')[buttonName];
+									calendar.options.buttonIcons[buttonName];
 
 							if (overrideText) {
 								innerHtml = htmlEscape(overrideText);
 							}
-							else if (themeIcon && calendar.opt('theme')) {
+							else if (themeIcon && calendar.options.theme) {
 								innerHtml = "<span class='ui-icon ui-icon-" + themeIcon + "'></span>";
 							}
-							else if (normalIcon && !calendar.opt('theme')) {
+							else if (normalIcon && !calendar.options.theme) {
 								innerHtml = "<span class='fc-icon fc-icon-" + normalIcon + "'></span>";
 							}
 							else {
@@ -11275,373 +10871,28 @@ function Toolbar(calendar, toolbarOptions) {
 
 ;;
 
-var Calendar = FC.Calendar = Class.extend(EmitterMixin, {
-
-	view: null, // current View object
-	viewsByType: null, // holds all instantiated view instances, current or not
-	currentDate: null, // unzoned moment. private (public API should use getDate instead)
-	loadingLevel: 0, // number of simultaneous loading tasks
-
-
-	constructor: function(el, overrides) {
-
-		// declare the current calendar instance relies on GlobalEmitter. needed for garbage collection.
-		// unneeded() is called in destroy.
-		GlobalEmitter.needed();
-
-		this.el = el;
-		this.viewsByType = {};
-		this.viewSpecCache = {};
-
-		this.initOptionsInternals(overrides);
-		this.initMomentInternals(); // needs to happen after options hash initialized
-		this.initCurrentDate();
-
-		EventManager.call(this); // needs options immediately
-		this.initialize();
-	},
-
-
-	// Subclasses can override this for initialization logic after the constructor has been called
-	initialize: function() {
-	},
-
-
-	// Public API
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	getCalendar: function() {
-		return this;
-	},
-
-
-	getView: function() {
-		return this.view;
-	},
-
-
-	publiclyTrigger: function(name, thisObj) {
-		var args = Array.prototype.slice.call(arguments, 2);
-		var optHandler = this.opt(name);
-
-		thisObj = thisObj || this.el[0];
-		this.triggerWith(name, thisObj, args); // Emitter's method
-
-		if (optHandler) {
-			return optHandler.apply(thisObj, args);
-		}
-	},
-
-
-	// View
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	// Given a view name for a custom view or a standard view, creates a ready-to-go View object
-	instantiateView: function(viewType) {
-		var spec = this.getViewSpec(viewType);
-
-		return new spec['class'](this, spec);
-	},
-
-
-	// Returns a boolean about whether the view is okay to instantiate at some point
-	isValidViewType: function(viewType) {
-		return Boolean(this.getViewSpec(viewType));
-	},
-
-
-	changeView: function(viewName, dateOrRange) {
-
-		if (dateOrRange) {
-
-			if (dateOrRange.start && dateOrRange.end) { // a range
-				this.recordOptionOverrides({ // will not rerender
-					visibleRange: dateOrRange
-				});
-			}
-			else { // a date
-				this.currentDate = this.moment(dateOrRange).stripZone(); // just like gotoDate
-			}
-		}
-
-		this.renderView(viewName);
-	},
-
-
-	// Forces navigation to a view for the given date.
-	// `viewType` can be a specific view name or a generic one like "week" or "day".
-	zoomTo: function(newDate, viewType) {
-		var spec;
-
-		viewType = viewType || 'day'; // day is default zoom
-		spec = this.getViewSpec(viewType) || this.getUnitViewSpec(viewType);
-
-		this.currentDate = newDate.clone();
-		this.renderView(spec ? spec.type : null);
-	},
-
-
-	// Current Date
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	initCurrentDate: function() {
-		var defaultDateInput = this.opt('defaultDate');
-
-		// compute the initial ambig-timezone date
-		if (defaultDateInput != null) {
-			this.currentDate = this.moment(defaultDateInput).stripZone();
-		}
-		else {
-			this.currentDate = this.getNow(); // getNow already returns unzoned
-		}
-	},
-
-
-	prev: function() {
-		var prevInfo = this.view.buildPrevDateProfile(this.currentDate);
-
-		if (prevInfo.isValid) {
-			this.currentDate = prevInfo.date;
-			this.renderView();
-		}
-	},
-
-
-	next: function() {
-		var nextInfo = this.view.buildNextDateProfile(this.currentDate);
-
-		if (nextInfo.isValid) {
-			this.currentDate = nextInfo.date;
-			this.renderView();
-		}
-	},
-
-
-	prevYear: function() {
-		this.currentDate.add(-1, 'years');
-		this.renderView();
-	},
-
-
-	nextYear: function() {
-		this.currentDate.add(1, 'years');
-		this.renderView();
-	},
-
-
-	today: function() {
-		this.currentDate = this.getNow(); // should deny like prev/next?
-		this.renderView();
-	},
-
-
-	gotoDate: function(zonedDateInput) {
-		this.currentDate = this.moment(zonedDateInput).stripZone();
-		this.renderView();
-	},
-
-
-	incrementDate: function(delta) {
-		this.currentDate.add(moment.duration(delta));
-		this.renderView();
-	},
-
-
-	// for external API
-	getDate: function() {
-		return this.applyTimezone(this.currentDate); // infuse the calendar's timezone
-	},
-
-
-	// Loading Triggering
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	// Should be called when any type of async data fetching begins
-	pushLoading: function() {
-		if (!(this.loadingLevel++)) {
-			this.publiclyTrigger('loading', null, true, this.view);
-		}
-	},
-
-
-	// Should be called when any type of async data fetching completes
-	popLoading: function() {
-		if (!(--this.loadingLevel)) {
-			this.publiclyTrigger('loading', null, false, this.view);
-		}
-	},
-
-
-	// Selection
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	// this public method receives start/end dates in any format, with any timezone
-	select: function(zonedStartInput, zonedEndInput) {
-		this.view.select(
-			this.buildSelectSpan.apply(this, arguments)
-		);
-	},
-
-
-	unselect: function() { // safe to be called before renderView
-		if (this.view) {
-			this.view.unselect();
-		}
-	},
-
-
-	// Given arguments to the select method in the API, returns a span (unzoned start/end and other info)
-	buildSelectSpan: function(zonedStartInput, zonedEndInput) {
-		var start = this.moment(zonedStartInput).stripZone();
-		var end;
-
-		if (zonedEndInput) {
-			end = this.moment(zonedEndInput).stripZone();
-		}
-		else if (start.hasTime()) {
-			end = start.clone().add(this.defaultTimedEventDuration);
-		}
-		else {
-			end = start.clone().add(this.defaultAllDayEventDuration);
-		}
-
-		return { start: start, end: end };
-	},
-
-
-	// Misc
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	// will return `null` if invalid range
-	parseRange: function(rangeInput) {
-		var start = null;
-		var end = null;
-
-		if (rangeInput.start) {
-			start = this.moment(rangeInput.start).stripZone();
-		}
-
-		if (rangeInput.end) {
-			end = this.moment(rangeInput.end).stripZone();
-		}
-
-		if (!start && !end) {
-			return null;
-		}
-
-		if (start && end && end.isBefore(start)) {
-			return null;
-		}
-
-		return { start: start, end: end };
-	},
-
-
-	rerenderEvents: function() { // API method. destroys old events if previously rendered.
-		if (this.elementVisible()) {
-			this.reportEventChange(); // will re-trasmit events to the view, causing a rerender
-		}
-	}
-
-});
-
-;;
-/*
-Options binding/triggering system.
-*/
-Calendar.mixin({
+var Calendar = FC.Calendar = Class.extend({
 
 	dirDefaults: null, // option defaults related to LTR or RTL
 	localeDefaults: null, // option defaults related to current locale
 	overrides: null, // option overrides given to the fullCalendar constructor
 	dynamicOverrides: null, // options set with dynamic setter method. higher precedence than view overrides.
-	optionsModel: null, // all defaults combined with overrides
+	options: null, // all defaults combined with overrides
+	viewSpecCache: null, // cache of view definitions
+	view: null, // current View object
+	currentDate: null, // unzoned moment. private (public API should use getDate instead)
+	header: null,
+	footer: null,
+	loadingLevel: 0, // number of simultaneous loading tasks
 
 
-	initOptionsInternals: function(overrides) {
-		this.overrides = $.extend({}, overrides); // make a copy
-		this.dynamicOverrides = {};
-		this.optionsModel = new Model();
-
-		this.populateOptionsHash();
-	},
+	// a lot of this class' OOP logic is scoped within this constructor function,
+	// but in the future, write individual methods on the prototype.
+	constructor: Calendar_constructor,
 
 
-	// public getter/setter
-	option: function(name, value) {
-		var newOptionHash;
-
-		if (typeof name === 'string') {
-			if (value === undefined) { // getter
-				return this.optionsModel.get(name);
-			}
-			else { // setter for individual option
-				newOptionHash = {};
-				newOptionHash[name] = value;
-				this.setOptions(newOptionHash);
-			}
-		}
-		else if (typeof name === 'object') { // compound setter with object input
-			this.setOptions(name);
-		}
-	},
-
-
-	// private getter
-	opt: function(name) {
-		return this.optionsModel.get(name);
-	},
-
-
-	setOptions: function(newOptionHash) {
-		var optionCnt = 0;
-		var optionName;
-
-		this.recordOptionOverrides(newOptionHash);
-
-		for (optionName in newOptionHash) {
-			optionCnt++;
-		}
-
-		// special-case handling of single option change.
-		// if only one option change, `optionName` will be its name.
-		if (optionCnt === 1) {
-			if (optionName === 'height' || optionName === 'contentHeight' || optionName === 'aspectRatio') {
-				this.updateSize(true); // true = allow recalculation of height
-				return;
-			}
-			else if (optionName === 'defaultDate') {
-				return; // can't change date this way. use gotoDate instead
-			}
-			else if (optionName === 'businessHours') {
-				if (this.view) {
-					this.view.unrenderBusinessHours();
-					this.view.renderBusinessHours();
-				}
-				return;
-			}
-			else if (optionName === 'timezone') {
-				this.rezoneArrayEventSources();
-				this.refetchEvents();
-				return;
-			}
-		}
-
-		// catch-all. rerender the header and footer and rebuild/rerender the current view
-		this.renderHeader();
-		this.renderFooter();
-
-		// even non-current views will be affected by this option change. do before rerender
-		// TODO: detangle
-		this.viewsByType = {};
-
-		this.reinitView();
+	// Subclasses can override this for initialization logic after the constructor has been called
+	initialize: function() {
 	},
 
 
@@ -11650,7 +10901,6 @@ Calendar.mixin({
 	populateOptionsHash: function() {
 		var locale, localeDefaults;
 		var isRTL, dirDefaults;
-		var rawOptions;
 
 		locale = firstDefined( // explicit locale option given?
 			this.dynamicOverrides.locale,
@@ -11672,230 +10922,15 @@ Calendar.mixin({
 
 		this.dirDefaults = dirDefaults;
 		this.localeDefaults = localeDefaults;
-
-		rawOptions = mergeOptions([ // merge defaults and overrides. lowest to highest precedence
+		this.options = mergeOptions([ // merge defaults and overrides. lowest to highest precedence
 			Calendar.defaults, // global defaults
 			dirDefaults,
 			localeDefaults,
 			this.overrides,
 			this.dynamicOverrides
 		]);
-		populateInstanceComputableOptions(rawOptions); // fill in gaps with computed options
-
-		this.optionsModel.reset(rawOptions);
+		populateInstanceComputableOptions(this.options); // fill in gaps with computed options
 	},
-
-
-	// stores the new options internally, but does not rerender anything.
-	recordOptionOverrides: function(newOptionHash) {
-		var optionName;
-
-		for (optionName in newOptionHash) {
-			this.dynamicOverrides[optionName] = newOptionHash[optionName];
-		}
-
-		this.viewSpecCache = {}; // the dynamic override invalidates the options in this cache, so just clear it
-		this.populateOptionsHash(); // this.options needs to be recomputed after the dynamic override
-	}
-
-});
-
-;;
-
-Calendar.mixin({
-
-	defaultAllDayEventDuration: null,
-	defaultTimedEventDuration: null,
-	localeData: null,
-
-
-	initMomentInternals: function() {
-		var _this = this;
-
-		this.defaultAllDayEventDuration = moment.duration(this.opt('defaultAllDayEventDuration'));
-		this.defaultTimedEventDuration = moment.duration(this.opt('defaultTimedEventDuration'));
-
-		// Called immediately, and when any of the options change.
-		// Happens before any internal objects rebuild or rerender, because this is very core.
-		this.optionsModel.watch('buildingMomentLocale', [
-			'?locale', '?monthNames', '?monthNamesShort', '?dayNames', '?dayNamesShort',
-			'?firstDay', '?weekNumberCalculation'
-		], function(opts) {
-			var weekNumberCalculation = opts.weekNumberCalculation;
-			var firstDay = opts.firstDay;
-			var _week;
-
-			// normalize
-			if (weekNumberCalculation === 'iso') {
-				weekNumberCalculation = 'ISO'; // normalize
-			}
-
-			var localeData = createObject( // make a cheap copy
-				getMomentLocaleData(opts.locale) // will fall back to en
-			);
-
-			if (opts.monthNames) {
-				localeData._months = opts.monthNames;
-			}
-			if (opts.monthNamesShort) {
-				localeData._monthsShort = opts.monthNamesShort;
-			}
-			if (opts.dayNames) {
-				localeData._weekdays = opts.dayNames;
-			}
-			if (opts.dayNamesShort) {
-				localeData._weekdaysShort = opts.dayNamesShort;
-			}
-
-			if (firstDay == null && weekNumberCalculation === 'ISO') {
-				firstDay = 1;
-			}
-			if (firstDay != null) {
-				_week = createObject(localeData._week); // _week: { dow: # }
-				_week.dow = firstDay;
-				localeData._week = _week;
-			}
-
-			if ( // whitelist certain kinds of input
-				weekNumberCalculation === 'ISO' ||
-				weekNumberCalculation === 'local' ||
-				typeof weekNumberCalculation === 'function'
-			) {
-				localeData._fullCalendar_weekCalc = weekNumberCalculation; // moment-ext will know what to do with it
-			}
-
-			_this.localeData = localeData;
-
-			// If the internal current date object already exists, move to new locale.
-			// We do NOT need to do this technique for event dates, because this happens when converting to "segments".
-			if (_this.currentDate) {
-				_this.localizeMoment(_this.currentDate); // sets to localeData
-			}
-		});
-	},
-
-
-	// Builds a moment using the settings of the current calendar: timezone and locale.
-	// Accepts anything the vanilla moment() constructor accepts.
-	moment: function() {
-		var mom;
-
-		if (this.opt('timezone') === 'local') {
-			mom = FC.moment.apply(null, arguments);
-
-			// Force the moment to be local, because FC.moment doesn't guarantee it.
-			if (mom.hasTime()) { // don't give ambiguously-timed moments a local zone
-				mom.local();
-			}
-		}
-		else if (this.opt('timezone') === 'UTC') {
-			mom = FC.moment.utc.apply(null, arguments); // process as UTC
-		}
-		else {
-			mom = FC.moment.parseZone.apply(null, arguments); // let the input decide the zone
-		}
-
-		this.localizeMoment(mom); // TODO
-
-		return mom;
-	},
-
-
-	// Updates the given moment's locale settings to the current calendar locale settings.
-	localizeMoment: function(mom) {
-		mom._locale = this.localeData;
-	},
-
-
-	// Returns a boolean about whether or not the calendar knows how to calculate
-	// the timezone offset of arbitrary dates in the current timezone.
-	getIsAmbigTimezone: function() {
-		return this.opt('timezone') !== 'local' && this.opt('timezone') !== 'UTC';
-	},
-
-
-	// Returns a copy of the given date in the current timezone. Has no effect on dates without times.
-	applyTimezone: function(date) {
-		if (!date.hasTime()) {
-			return date.clone();
-		}
-
-		var zonedDate = this.moment(date.toArray());
-		var timeAdjust = date.time() - zonedDate.time();
-		var adjustedZonedDate;
-
-		// Safari sometimes has problems with this coersion when near DST. Adjust if necessary. (bug #2396)
-		if (timeAdjust) { // is the time result different than expected?
-			adjustedZonedDate = zonedDate.clone().add(timeAdjust); // add milliseconds
-			if (date.time() - adjustedZonedDate.time() === 0) { // does it match perfectly now?
-				zonedDate = adjustedZonedDate;
-			}
-		}
-
-		return zonedDate;
-	},
-
-
-	// Returns a moment for the current date, as defined by the client's computer or from the `now` option.
-	// Will return an moment with an ambiguous timezone.
-	getNow: function() {
-		var now = this.opt('now');
-		if (typeof now === 'function') {
-			now = now();
-		}
-		return this.moment(now).stripZone();
-	},
-
-
-	// Produces a human-readable string for the given duration.
-	// Side-effect: changes the locale of the given duration.
-	humanizeDuration: function(duration) {
-		return duration.locale(this.opt('locale')).humanize();
-	},
-
-
-
-	// Event-Specific Date Utilities. TODO: move
-	// -----------------------------------------------------------------------------------------------------------------
-
-
-	// Get an event's normalized end date. If not present, calculate it from the defaults.
-	getEventEnd: function(event) {
-		if (event.end) {
-			return event.end.clone();
-		}
-		else {
-			return this.getDefaultEventEnd(event.allDay, event.start);
-		}
-	},
-
-
-	// Given an event's allDay status and start date, return what its fallback end date should be.
-	// TODO: rename to computeDefaultEventEnd
-	getDefaultEventEnd: function(allDay, zonedStart) {
-		var end = zonedStart.clone();
-
-		if (allDay) {
-			end.stripTime().add(this.defaultAllDayEventDuration);
-		}
-		else {
-			end.add(this.defaultTimedEventDuration);
-		}
-
-		if (this.getIsAmbigTimezone()) {
-			end.stripZone(); // we don't know what the tzo should be
-		}
-
-		return end;
-	}
-
-});
-
-;;
-
-Calendar.mixin({
-
-	viewSpecCache: null, // cache of view definitions (initialized in Calendar.js)
 
 
 	// Gets information about how to create a view. Will use a cache.
@@ -11986,7 +11021,12 @@ Calendar.mixin({
 
 			if (duration.valueOf()) { // valid?
 
-				unit = computeDurationGreatestUnit(duration, durationInput);
+				unit = computeGreatestUnit(duration);
+
+				// prevent days:7 from being interpreted as a week
+				if (unit === 'week' && typeof durationInput === 'object' && durationInput.days) {
+					unit = 'day';
+				}
 
 				spec.duration = duration;
 				spec.durationUnit = unit;
@@ -12053,48 +11093,450 @@ Calendar.mixin({
 			queryButtonText(Calendar.defaults) ||
 			(spec.duration ? this.humanizeDuration(spec.duration) : null) || // like "3 days"
 			requestedViewType; // fall back to given view name
-	}
-
-});
-
-;;
-
-Calendar.mixin({
-
-	el: null,
-	contentEl: null,
-	suggestedViewHeight: null,
-	windowResizeProxy: null,
-	ignoreWindowResize: 0,
+	},
 
 
-	render: function() {
-		if (!this.contentEl) {
-			this.initialRender();
+	// Given a view name for a custom view or a standard view, creates a ready-to-go View object
+	instantiateView: function(viewType) {
+		var spec = this.getViewSpec(viewType);
+
+		return new spec['class'](this, spec);
+	},
+
+
+	// Returns a boolean about whether the view is okay to instantiate at some point
+	isValidViewType: function(viewType) {
+		return Boolean(this.getViewSpec(viewType));
+	},
+
+
+	// Should be called when any type of async data fetching begins
+	pushLoading: function() {
+		if (!(this.loadingLevel++)) {
+			this.publiclyTrigger('loading', null, true, this.view);
 		}
-		else if (this.elementVisible()) {
-			// mainly for the public API
-			this.calcSize();
+	},
+
+
+	// Should be called when any type of async data fetching completes
+	popLoading: function() {
+		if (!(--this.loadingLevel)) {
+			this.publiclyTrigger('loading', null, false, this.view);
+		}
+	},
+
+
+	// Given arguments to the select method in the API, returns a span (unzoned start/end and other info)
+	buildSelectSpan: function(zonedStartInput, zonedEndInput) {
+		var start = this.moment(zonedStartInput).stripZone();
+		var end;
+
+		if (zonedEndInput) {
+			end = this.moment(zonedEndInput).stripZone();
+		}
+		else if (start.hasTime()) {
+			end = start.clone().add(this.defaultTimedEventDuration);
+		}
+		else {
+			end = start.clone().add(this.defaultAllDayEventDuration);
+		}
+
+		return { start: start, end: end };
+	},
+
+
+	// Current Date
+	// ------------
+
+
+	/*
+	Called before initialize()
+	*/
+	initCurrentDate: function() {
+		// compute the initial ambig-timezone date
+		if (this.options.defaultDate != null) {
+			this.currentDate = this.moment(this.options.defaultDate).stripZone();
+		}
+		else {
+			this.currentDate = this.getNow(); // getNow already returns unzoned
+		}
+	},
+
+
+	changeView: function(viewName, dateOrRange) {
+
+		if (dateOrRange) {
+
+			if (dateOrRange.start && dateOrRange.end) { // a range
+				this.recordOptionOverrides({ // will not rerender
+					visibleRange: dateOrRange
+				});
+			}
+			else { // a date
+				this.currentDate = this.moment(dateOrRange).stripZone(); // just like gotoDate
+			}
+		}
+
+		this.renderView(viewName);
+	},
+
+
+	prev: function() {
+		var prevInfo = this.view.buildPrevRangeInfo(this.currentDate);
+
+		if (prevInfo.isValid) {
+			this.currentDate = prevInfo.date;
 			this.renderView();
 		}
 	},
 
 
-	initialRender: function() {
-		var _this = this;
-		var el = this.el;
+	next: function() {
+		var nextInfo = this.view.buildNextRangeInfo(this.currentDate);
 
-		el.addClass('fc');
+		if (nextInfo.isValid) {
+			this.currentDate = nextInfo.date;
+			this.renderView();
+		}
+	},
+
+
+	prevYear: function() {
+		this.currentDate.add(-1, 'years');
+		this.renderView();
+	},
+
+
+	nextYear: function() {
+		this.currentDate.add(1, 'years');
+		this.renderView();
+	},
+
+
+	today: function() {
+		this.currentDate = this.getNow(); // should deny like prev/next?
+		this.renderView();
+	},
+
+
+	gotoDate: function(zonedDateInput) {
+		this.currentDate = this.moment(zonedDateInput).stripZone();
+		this.renderView();
+	},
+
+
+	incrementDate: function(delta) {
+		this.currentDate.add(moment.duration(delta));
+		this.renderView();
+	},
+
+
+	// for external API
+	getDate: function() {
+		return this.applyTimezone(this.currentDate); // infuse the calendar's timezone
+	},
+
+
+	// will return `null` if invalid range
+	parseRange: function(rangeInput) {
+		var start = null;
+		var end = null;
+
+		if (rangeInput.start) {
+			start = this.moment(rangeInput.start).stripZone();
+		}
+
+		if (rangeInput.end) {
+			end = this.moment(rangeInput.end).stripZone();
+		}
+
+		if (!start && !end) {
+			return null;
+		}
+
+		if (start && end && end.isBefore(start)) {
+			return null;
+		}
+
+		return { start: start, end: end };
+	}
+
+});
+
+
+Calendar.mixin(EmitterMixin);
+
+
+function Calendar_constructor(element, overrides) {
+	var t = this;
+
+	// declare the current calendar instance relies on GlobalEmitter. needed for garbage collection.
+	GlobalEmitter.needed();
+
+
+	// Exports
+	// -----------------------------------------------------------------------------------
+
+	t.render = render;
+	t.destroy = destroy;
+	t.rerenderEvents = rerenderEvents;
+	t.select = select;
+	t.unselect = unselect;
+	t.zoomTo = zoomTo;
+	t.getCalendar = getCalendar;
+	t.getView = getView;
+	t.option = option; // getter/setter method
+	t.recordOptionOverrides = recordOptionOverrides;
+	t.publiclyTrigger = publiclyTrigger;
+
+
+	// Options
+	// -----------------------------------------------------------------------------------
+
+	t.dynamicOverrides = {};
+	t.viewSpecCache = {};
+	t.optionHandlers = {}; // for Calendar.options.js
+	t.overrides = $.extend({}, overrides); // make a copy
+
+	t.populateOptionsHash(); // sets this.options
+
+
+
+	// Locale-data Internals
+	// -----------------------------------------------------------------------------------
+	// Apply overrides to the current locale's data
+
+	var localeData;
+
+	// Called immediately, and when any of the options change.
+	// Happens before any internal objects rebuild or rerender, because this is very core.
+	t.bindOptions([
+		'locale', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort', 'firstDay', 'weekNumberCalculation'
+	], function(locale, monthNames, monthNamesShort, dayNames, dayNamesShort, firstDay, weekNumberCalculation) {
+
+		// normalize
+		if (weekNumberCalculation === 'iso') {
+			weekNumberCalculation = 'ISO'; // normalize
+		}
+
+		localeData = createObject( // make a cheap copy
+			getMomentLocaleData(locale) // will fall back to en
+		);
+
+		if (monthNames) {
+			localeData._months = monthNames;
+		}
+		if (monthNamesShort) {
+			localeData._monthsShort = monthNamesShort;
+		}
+		if (dayNames) {
+			localeData._weekdays = dayNames;
+		}
+		if (dayNamesShort) {
+			localeData._weekdaysShort = dayNamesShort;
+		}
+
+		if (firstDay == null && weekNumberCalculation === 'ISO') {
+			firstDay = 1;
+		}
+		if (firstDay != null) {
+			var _week = createObject(localeData._week); // _week: { dow: # }
+			_week.dow = firstDay;
+			localeData._week = _week;
+		}
+
+		if ( // whitelist certain kinds of input
+			weekNumberCalculation === 'ISO' ||
+			weekNumberCalculation === 'local' ||
+			typeof weekNumberCalculation === 'function'
+		) {
+			localeData._fullCalendar_weekCalc = weekNumberCalculation; // moment-ext will know what to do with it
+		}
+
+		// If the internal current date object already exists, move to new locale.
+		// We do NOT need to do this technique for event dates, because this happens when converting to "segments".
+		if (t.currentDate) {
+			localizeMoment(t.currentDate); // sets to localeData
+		}
+	});
+
+
+	// Calendar-specific Date Utilities
+	// -----------------------------------------------------------------------------------
+
+
+	t.defaultAllDayEventDuration = moment.duration(t.options.defaultAllDayEventDuration);
+	t.defaultTimedEventDuration = moment.duration(t.options.defaultTimedEventDuration);
+
+
+	// Builds a moment using the settings of the current calendar: timezone and locale.
+	// Accepts anything the vanilla moment() constructor accepts.
+	t.moment = function() {
+		var mom;
+
+		if (t.options.timezone === 'local') {
+			mom = FC.moment.apply(null, arguments);
+
+			// Force the moment to be local, because FC.moment doesn't guarantee it.
+			if (mom.hasTime()) { // don't give ambiguously-timed moments a local zone
+				mom.local();
+			}
+		}
+		else if (t.options.timezone === 'UTC') {
+			mom = FC.moment.utc.apply(null, arguments); // process as UTC
+		}
+		else {
+			mom = FC.moment.parseZone.apply(null, arguments); // let the input decide the zone
+		}
+
+		localizeMoment(mom);
+
+		return mom;
+	};
+
+
+	// Updates the given moment's locale settings to the current calendar locale settings.
+	function localizeMoment(mom) {
+		mom._locale = localeData;
+	}
+	t.localizeMoment = localizeMoment;
+
+
+	// Returns a boolean about whether or not the calendar knows how to calculate
+	// the timezone offset of arbitrary dates in the current timezone.
+	t.getIsAmbigTimezone = function() {
+		return t.options.timezone !== 'local' && t.options.timezone !== 'UTC';
+	};
+
+
+	// Returns a copy of the given date in the current timezone. Has no effect on dates without times.
+	t.applyTimezone = function(date) {
+		if (!date.hasTime()) {
+			return date.clone();
+		}
+
+		var zonedDate = t.moment(date.toArray());
+		var timeAdjust = date.time() - zonedDate.time();
+		var adjustedZonedDate;
+
+		// Safari sometimes has problems with this coersion when near DST. Adjust if necessary. (bug #2396)
+		if (timeAdjust) { // is the time result different than expected?
+			adjustedZonedDate = zonedDate.clone().add(timeAdjust); // add milliseconds
+			if (date.time() - adjustedZonedDate.time() === 0) { // does it match perfectly now?
+				zonedDate = adjustedZonedDate;
+			}
+		}
+
+		return zonedDate;
+	};
+
+
+	// Returns a moment for the current date, as defined by the client's computer or from the `now` option.
+	// Will return an moment with an ambiguous timezone.
+	t.getNow = function() {
+		var now = t.options.now;
+		if (typeof now === 'function') {
+			now = now();
+		}
+		return t.moment(now).stripZone();
+	};
+
+
+	// Get an event's normalized end date. If not present, calculate it from the defaults.
+	t.getEventEnd = function(event) {
+		if (event.end) {
+			return event.end.clone();
+		}
+		else {
+			return t.getDefaultEventEnd(event.allDay, event.start);
+		}
+	};
+
+
+	// Given an event's allDay status and start date, return what its fallback end date should be.
+	// TODO: rename to computeDefaultEventEnd
+	t.getDefaultEventEnd = function(allDay, zonedStart) {
+		var end = zonedStart.clone();
+
+		if (allDay) {
+			end.stripTime().add(t.defaultAllDayEventDuration);
+		}
+		else {
+			end.add(t.defaultTimedEventDuration);
+		}
+
+		if (t.getIsAmbigTimezone()) {
+			end.stripZone(); // we don't know what the tzo should be
+		}
+
+		return end;
+	};
+
+
+	// Produces a human-readable string for the given duration.
+	// Side-effect: changes the locale of the given duration.
+	t.humanizeDuration = function(duration) {
+		return duration.locale(t.options.locale).humanize();
+	};
+
+
+
+	// Imports
+	// -----------------------------------------------------------------------------------
+
+
+	EventManager.call(t);
+
+
+
+	// Locals
+	// -----------------------------------------------------------------------------------
+
+
+	var _element = element[0];
+	var toolbarsManager;
+	var header;
+	var footer;
+	var content;
+	var tm; // for making theme classes
+	var currentView; // NOTE: keep this in sync with this.view
+	var viewsByType = {}; // holds all instantiated view instances, current or not
+	var suggestedViewHeight;
+	var windowResizeProxy; // wraps the windowResize function
+	var ignoreWindowResize = 0;
+
+
+	this.initCurrentDate();
+
+
+	// Main Rendering
+	// -----------------------------------------------------------------------------------
+
+
+	function render() {
+		if (!content) {
+			initialRender();
+		}
+		else if (elementVisible()) {
+			// mainly for the public API
+			calcSize();
+			renderView();
+		}
+	}
+
+
+	function initialRender() {
+		element.addClass('fc');
 
 		// event delegation for nav links
-		el.on('click.fc', 'a[data-goto]', function(ev) {
+		element.on('click.fc', 'a[data-goto]', function(ev) {
 			var anchorEl = $(this);
 			var gotoOptions = anchorEl.data('goto'); // will automatically parse JSON
-			var date = _this.moment(gotoOptions.date);
+			var date = t.moment(gotoOptions.date);
 			var viewType = gotoOptions.type;
 
 			// property like "navLinkDayClick". might be a string or a function
-			var customAction = _this.view.opt('navLink' + capitaliseFirstLetter(viewType) + 'Click');
+			var customAction = currentView.opt('navLink' + capitaliseFirstLetter(viewType) + 'Click');
 
 			if (typeof customAction === 'function') {
 				customAction(date, ev);
@@ -12103,68 +11545,69 @@ Calendar.mixin({
 				if (typeof customAction === 'string') {
 					viewType = customAction;
 				}
-				_this.zoomTo(date, viewType);
+				zoomTo(date, viewType);
 			}
 		});
 
 		// called immediately, and upon option change
-		this.optionsModel.watch('applyingThemeClasses', [ '?theme' ], function(opts) {
-			el.toggleClass('ui-widget', opts.theme);
-			el.toggleClass('fc-unthemed', !opts.theme);
+		t.bindOption('theme', function(theme) {
+			tm = theme ? 'ui' : 'fc'; // affects a larger scope
+			element.toggleClass('ui-widget', theme);
+			element.toggleClass('fc-unthemed', !theme);
 		});
 
 		// called immediately, and upon option change.
 		// HACK: locale often affects isRTL, so we explicitly listen to that too.
-		this.optionsModel.watch('applyingDirClasses', [ '?isRTL', '?locale' ], function(opts) {
-			el.toggleClass('fc-ltr', !opts.isRTL);
-			el.toggleClass('fc-rtl', opts.isRTL);
+		t.bindOptions([ 'isRTL', 'locale' ], function(isRTL) {
+			element.toggleClass('fc-ltr', !isRTL);
+			element.toggleClass('fc-rtl', isRTL);
 		});
 
-		this.contentEl = $("<div class='fc-view-container'/>").prependTo(el);
+		content = $("<div class='fc-view-container'/>").prependTo(element);
 
-		this.initToolbars();
-		this.renderHeader();
-		this.renderFooter();
-		this.renderView(this.opt('defaultView'));
+		var toolbars = buildToolbars();
+		toolbarsManager = new Iterator(toolbars);
 
-		if (this.opt('handleWindowResize')) {
-			$(window).resize(
-				this.windowResizeProxy = debounce( // prevents rapid calls
-					this.windowResize.bind(this),
-					this.opt('windowResizeDelay')
-				)
-			);
+		header = t.header = toolbars[0];
+		footer = t.footer = toolbars[1];
+
+		renderHeader();
+		renderFooter();
+		renderView(t.options.defaultView);
+
+		if (t.options.handleWindowResize) {
+			windowResizeProxy = debounce(windowResize, t.options.windowResizeDelay); // prevents rapid calls
+			$(window).resize(windowResizeProxy);
 		}
-	},
+	}
 
 
-	destroy: function() {
+	function destroy() {
 
-		if (this.view) {
-			this.view.removeElement();
+		if (currentView) {
+			currentView.removeElement();
 
-			// NOTE: don't null-out this.view in case API methods are called after destroy.
+			// NOTE: don't null-out currentView/t.view in case API methods are called after destroy.
 			// It is still the "current" view, just not rendered.
 		}
 
-		this.toolbarsManager.proxyCall('removeElement');
-		this.contentEl.remove();
-		this.el.removeClass('fc fc-ltr fc-rtl fc-unthemed ui-widget');
+		toolbarsManager.proxyCall('removeElement');
+		content.remove();
+		element.removeClass('fc fc-ltr fc-rtl fc-unthemed ui-widget');
 
-		this.el.off('.fc'); // unbind nav link handlers
+		element.off('.fc'); // unbind nav link handlers
 
-		if (this.windowResizeProxy) {
-			$(window).unbind('resize', this.windowResizeProxy);
-			this.windowResizeProxy = null;
+		if (windowResizeProxy) {
+			$(window).unbind('resize', windowResizeProxy);
 		}
 
 		GlobalEmitter.unneeded();
-	},
+	}
 
 
-	elementVisible: function() {
-		return this.el.is(':visible');
-	},
+	function elementVisible() {
+		return element.is(':visible');
+	}
 
 
 
@@ -12175,278 +11618,501 @@ Calendar.mixin({
 	// Renders a view because of a date change, view-type change, or for the first time.
 	// If not given a viewType, keep the current view but render different dates.
 	// Accepts an optional scroll state to restore to.
-	renderView: function(viewType, forcedScroll) {
+	function renderView(viewType, forcedScroll) {
+		ignoreWindowResize++;
 
-		this.ignoreWindowResize++;
-
-		var needsClearView = this.view && viewType && this.view.type !== viewType;
+		var needsClearView = currentView && viewType && currentView.type !== viewType;
 
 		// if viewType is changing, remove the old view's rendering
 		if (needsClearView) {
-			this.freezeContentHeight(); // prevent a scroll jump when view element is removed
-			this.clearView();
+			freezeContentHeight(); // prevent a scroll jump when view element is removed
+			clearView();
 		}
 
 		// if viewType changed, or the view was never created, create a fresh view
-		if (!this.view && viewType) {
-			this.view =
-				this.viewsByType[viewType] ||
-				(this.viewsByType[viewType] = this.instantiateView(viewType));
+		if (!currentView && viewType) {
+			currentView = t.view =
+				viewsByType[viewType] ||
+				(viewsByType[viewType] = t.instantiateView(viewType));
 
-			this.view.setElement(
-				$("<div class='fc-view fc-" + viewType + "-view' />").appendTo(this.contentEl)
+			currentView.setElement(
+				$("<div class='fc-view fc-" + viewType + "-view' />").appendTo(content)
 			);
-			this.toolbarsManager.proxyCall('activateButton', viewType);
+			toolbarsManager.proxyCall('activateButton', viewType);
 		}
 
-		if (this.view) {
+		if (currentView) {
 
-			if (forcedScroll) {
-				this.view.addForcedScroll(forcedScroll);
-			}
+			if (elementVisible()) {
 
-			if (this.elementVisible()) {
-				this.currentDate = this.view.setDate(this.currentDate);
+				if (forcedScroll) {
+					currentView.captureInitialScroll(forcedScroll);
+				}
+
+				currentView.setDate(t.currentDate);
+
+				// TODO: make setDate return the revised date.
+				// Difficult because of the pseudo-async nature, promises.
+				t.currentDate = currentView.currentDate;
+
+				if (forcedScroll) {
+					currentView.releaseScroll();
+				}
 			}
 		}
 
 		if (needsClearView) {
-			this.thawContentHeight();
+			thawContentHeight();
 		}
 
-		this.ignoreWindowResize--;
-	},
+		ignoreWindowResize--;
+	}
+	t.renderView = renderView;
 
 
 	// Unrenders the current view and reflects this change in the Header.
-	// Unregsiters the `view`, but does not remove from viewByType hash.
-	clearView: function() {
-		this.toolbarsManager.proxyCall('deactivateButton', this.view.type);
-		this.view.removeElement();
-		this.view = null;
-	},
+	// Unregsiters the `currentView`, but does not remove from viewByType hash.
+	function clearView() {
+		toolbarsManager.proxyCall('deactivateButton', currentView.type);
+		currentView.removeElement();
+		currentView = t.view = null;
+	}
 
 
 	// Destroys the view, including the view object. Then, re-instantiates it and renders it.
 	// Maintains the same scroll state.
 	// TODO: maintain any other user-manipulated state.
-	reinitView: function() {
-		this.ignoreWindowResize++;
-		this.freezeContentHeight();
+	function reinitView() {
+		ignoreWindowResize++;
+		freezeContentHeight();
 
-		var viewType = this.view.type;
-		var scrollState = this.view.queryScroll();
-		this.clearView();
-		this.calcSize();
-		this.renderView(viewType, scrollState);
+		var viewType = currentView.type;
+		var scrollState = currentView.queryScroll();
+		clearView();
+		calcSize();
+		renderView(viewType, scrollState);
 
-		this.thawContentHeight();
-		this.ignoreWindowResize--;
-	},
+		thawContentHeight();
+		ignoreWindowResize--;
+	}
+
 
 
 	// Resizing
 	// -----------------------------------------------------------------------------------
 
 
-	getSuggestedViewHeight: function() {
-		if (this.suggestedViewHeight === null) {
-			this.calcSize();
+	t.getSuggestedViewHeight = function() {
+		if (suggestedViewHeight === undefined) {
+			calcSize();
 		}
-		return this.suggestedViewHeight;
-	},
+		return suggestedViewHeight;
+	};
 
 
-	isHeightAuto: function() {
-		return this.opt('contentHeight') === 'auto' || this.opt('height') === 'auto';
-	},
+	t.isHeightAuto = function() {
+		return t.options.contentHeight === 'auto' || t.options.height === 'auto';
+	};
 
 
-	updateSize: function(shouldRecalc) {
-		if (this.elementVisible()) {
+	function updateSize(shouldRecalc) {
+		if (elementVisible()) {
 
 			if (shouldRecalc) {
-				this._calcSize();
+				_calcSize();
 			}
 
-			this.ignoreWindowResize++;
-			this.view.updateSize(true); // isResize=true. will poll getSuggestedViewHeight() and isHeightAuto()
-			this.ignoreWindowResize--;
+			ignoreWindowResize++;
+			currentView.updateSize(true); // isResize=true. will poll getSuggestedViewHeight() and isHeightAuto()
+			ignoreWindowResize--;
 
 			return true; // signal success
 		}
-	},
+	}
 
 
-	calcSize: function() {
-		if (this.elementVisible()) {
-			this._calcSize();
+	function calcSize() {
+		if (elementVisible()) {
+			_calcSize();
 		}
-	},
+	}
 
 
-	_calcSize: function() { // assumes elementVisible
-		var contentHeightInput = this.opt('contentHeight');
-		var heightInput = this.opt('height');
+	function _calcSize() { // assumes elementVisible
+		var contentHeightInput = t.options.contentHeight;
+		var heightInput = t.options.height;
 
 		if (typeof contentHeightInput === 'number') { // exists and not 'auto'
-			this.suggestedViewHeight = contentHeightInput;
+			suggestedViewHeight = contentHeightInput;
 		}
 		else if (typeof contentHeightInput === 'function') { // exists and is a function
-			this.suggestedViewHeight = contentHeightInput();
+			suggestedViewHeight = contentHeightInput();
 		}
 		else if (typeof heightInput === 'number') { // exists and not 'auto'
-			this.suggestedViewHeight = heightInput - this.queryToolbarsHeight();
+			suggestedViewHeight = heightInput - queryToolbarsHeight();
 		}
 		else if (typeof heightInput === 'function') { // exists and is a function
-			this.suggestedViewHeight = heightInput() - this.queryToolbarsHeight();
+			suggestedViewHeight = heightInput() - queryToolbarsHeight();
 		}
 		else if (heightInput === 'parent') { // set to height of parent element
-			this.suggestedViewHeight = this.el.parent().height() - this.queryToolbarsHeight();
+			suggestedViewHeight = element.parent().height() - queryToolbarsHeight();
 		}
 		else {
-			this.suggestedViewHeight = Math.round(
-				this.contentEl.width() /
-				Math.max(this.opt('aspectRatio'), .5)
-			);
+			suggestedViewHeight = Math.round(content.width() / Math.max(t.options.aspectRatio, .5));
 		}
-	},
+	}
 
 
-	windowResize: function(ev) {
+	function queryToolbarsHeight() {
+		return toolbarsManager.items.reduce(function(accumulator, toolbar) {
+			var toolbarHeight = toolbar.el ? toolbar.el.outerHeight(true) : 0; // includes margin
+			return accumulator + toolbarHeight;
+		}, 0);
+	}
+
+
+	function windowResize(ev) {
 		if (
-			!this.ignoreWindowResize &&
+			!ignoreWindowResize &&
 			ev.target === window && // so we don't process jqui "resize" events that have bubbled up
-			this.view.renderRange // view has already been rendered
+			currentView.renderRange // view has already been rendered
 		) {
-			if (this.updateSize(true)) {
-				this.view.publiclyTrigger('windowResize', this.el[0]);
+			if (updateSize(true)) {
+				currentView.publiclyTrigger('windowResize', _element);
 			}
 		}
-	},
+	}
 
 
-	/* Height "Freezing"
+
+	/* Event Rendering
 	-----------------------------------------------------------------------------*/
 
 
-	freezeContentHeight: function() {
-		this.contentEl.css({
-			width: '100%',
-			height: this.contentEl.height(),
-			overflow: 'hidden'
-		});
-	},
-
-
-	thawContentHeight: function() {
-		this.contentEl.css({
-			width: '',
-			height: '',
-			overflow: ''
-		});
+	function rerenderEvents() { // API method. destroys old events if previously rendered.
+		if (elementVisible()) {
+			t.reportEventChange(); // will re-trasmit events to the view, causing a rerender
+		}
 	}
 
-});
-
-;;
-
-Calendar.mixin({
-
-	header: null,
-	footer: null,
-	toolbarsManager: null,
 
 
-	initToolbars: function() {
-		this.header = new Toolbar(this, this.computeHeaderOptions());
-		this.footer = new Toolbar(this, this.computeFooterOptions());
-		this.toolbarsManager = new Iterator([ this.header, this.footer ]);
-	},
+	/* Toolbars
+	-----------------------------------------------------------------------------*/
 
 
-	computeHeaderOptions: function() {
+	function buildToolbars() {
+		return [
+			new Toolbar(t, computeHeaderOptions()),
+			new Toolbar(t, computeFooterOptions())
+		];
+	}
+
+
+	function computeHeaderOptions() {
 		return {
 			extraClasses: 'fc-header-toolbar',
-			layout: this.opt('header')
+			layout: t.options.header
 		};
-	},
+	}
 
 
-	computeFooterOptions: function() {
+	function computeFooterOptions() {
 		return {
 			extraClasses: 'fc-footer-toolbar',
-			layout: this.opt('footer')
+			layout: t.options.footer
 		};
-	},
+	}
 
 
 	// can be called repeatedly and Header will rerender
-	renderHeader: function() {
-		var header = this.header;
-
-		header.setToolbarOptions(this.computeHeaderOptions());
+	function renderHeader() {
+		header.setToolbarOptions(computeHeaderOptions());
 		header.render();
-
 		if (header.el) {
-			this.el.prepend(header.el);
+			element.prepend(header.el);
 		}
-	},
+	}
 
 
 	// can be called repeatedly and Footer will rerender
-	renderFooter: function() {
-		var footer = this.footer;
-
-		footer.setToolbarOptions(this.computeFooterOptions());
+	function renderFooter() {
+		footer.setToolbarOptions(computeFooterOptions());
 		footer.render();
-
 		if (footer.el) {
-			this.el.append(footer.el);
+			element.append(footer.el);
 		}
-	},
+	}
 
 
-	setToolbarsTitle: function(title) {
-		this.toolbarsManager.proxyCall('updateTitle', title);
-	},
+	t.setToolbarsTitle = function(title) {
+		toolbarsManager.proxyCall('updateTitle', title);
+	};
 
 
-	updateToolbarButtons: function() {
-		var now = this.getNow();
-		var view = this.view;
-		var todayInfo = view.buildDateProfile(now);
-		var prevInfo = view.buildPrevDateProfile(this.currentDate);
-		var nextInfo = view.buildNextDateProfile(this.currentDate);
+	t.updateToolbarButtons = function() {
+		var now = t.getNow();
+		var todayInfo = currentView.buildRangeInfo(now);
+		var prevInfo = currentView.buildPrevRangeInfo(t.currentDate);
+		var nextInfo = currentView.buildNextRangeInfo(t.currentDate);
 
-		this.toolbarsManager.proxyCall(
-			(todayInfo.isValid && !isDateWithinRange(now, view.currentRange)) ?
+		toolbarsManager.proxyCall(
+			(todayInfo.isValid && !isDateWithinRange(now, currentView.currentRange)) ?
 				'enableButton' :
 				'disableButton',
 			'today'
 		);
 
-		this.toolbarsManager.proxyCall(
+		toolbarsManager.proxyCall(
 			prevInfo.isValid ?
 				'enableButton' :
 				'disableButton',
 			'prev'
 		);
 
-		this.toolbarsManager.proxyCall(
+		toolbarsManager.proxyCall(
 			nextInfo.isValid ?
 				'enableButton' :
 				'disableButton',
 			'next'
 		);
+	};
+
+
+
+	/* Selection
+	-----------------------------------------------------------------------------*/
+
+
+	// this public method receives start/end dates in any format, with any timezone
+	function select(zonedStartInput, zonedEndInput) {
+		currentView.select(
+			t.buildSelectSpan.apply(t, arguments)
+		);
+	}
+
+
+	function unselect() { // safe to be called before renderView
+		if (currentView) {
+			currentView.unselect();
+		}
+	}
+
+
+	// Forces navigation to a view for the given date.
+	// `viewType` can be a specific view name or a generic one like "week" or "day".
+	function zoomTo(newDate, viewType) {
+		var spec;
+
+		viewType = viewType || 'day'; // day is default zoom
+		spec = t.getViewSpec(viewType) || t.getUnitViewSpec(viewType);
+
+		t.currentDate = newDate.clone();
+		renderView(spec ? spec.type : null);
+	}
+
+
+
+	/* Height "Freezing"
+	-----------------------------------------------------------------------------*/
+
+
+	t.freezeContentHeight = freezeContentHeight;
+	t.thawContentHeight = thawContentHeight;
+
+	var freezeContentHeightDepth = 0;
+
+
+	function freezeContentHeight() {
+		if (!(freezeContentHeightDepth++)) {
+			content.css({
+				width: '100%',
+				height: content.height(),
+				overflow: 'hidden'
+			});
+		}
+	}
+
+
+	function thawContentHeight() {
+		if (!(--freezeContentHeightDepth)) {
+			content.css({
+				width: '',
+				height: '',
+				overflow: ''
+			});
+		}
+	}
+
+
+
+	/* Misc
+	-----------------------------------------------------------------------------*/
+
+
+	function getCalendar() {
+		return t;
+	}
+
+
+	function getView() {
+		return currentView;
+	}
+
+
+	function option(name, value) {
+		var newOptionHash;
+
+		if (typeof name === 'string') {
+			if (value === undefined) { // getter
+				return t.options[name];
+			}
+			else { // setter for individual option
+				newOptionHash = {};
+				newOptionHash[name] = value;
+				setOptions(newOptionHash);
+			}
+		}
+		else if (typeof name === 'object') { // compound setter with object input
+			setOptions(name);
+		}
+	}
+
+
+	function setOptions(newOptionHash) {
+		var optionCnt = 0;
+		var optionName;
+
+		recordOptionOverrides(newOptionHash);
+
+		for (optionName in newOptionHash) {
+			optionCnt++;
+		}
+
+		// special-case handling of single option change.
+		// if only one option change, `optionName` will be its name.
+		if (optionCnt === 1) {
+			if (optionName === 'height' || optionName === 'contentHeight' || optionName === 'aspectRatio') {
+				updateSize(true); // true = allow recalculation of height
+				return;
+			}
+			else if (optionName === 'defaultDate') {
+				return; // can't change date this way. use gotoDate instead
+			}
+			else if (optionName === 'businessHours') {
+				if (currentView) {
+					currentView.unrenderBusinessHours();
+					currentView.renderBusinessHours();
+				}
+				return;
+			}
+			else if (optionName === 'timezone') {
+				t.rezoneArrayEventSources();
+				t.refetchEvents();
+				return;
+			}
+		}
+
+		// catch-all. rerender the header and footer and rebuild/rerender the current view
+		renderHeader();
+		renderFooter();
+		viewsByType = {}; // even non-current views will be affected by this option change. do before rerender
+		reinitView();
+	}
+
+
+	// stores the new options internally, but does not rerender anything.
+	function recordOptionOverrides(newOptionHash) {
+		var optionName;
+
+		for (optionName in newOptionHash) {
+			t.dynamicOverrides[optionName] = newOptionHash[optionName];
+		}
+
+		t.viewSpecCache = {}; // the dynamic override invalidates the options in this cache, so just clear it
+		t.populateOptionsHash(); // this.options needs to be recomputed after the dynamic override
+
+		// trigger handlers after this.options has been updated
+		for (optionName in newOptionHash) {
+			t.triggerOptionHandlers(optionName); // recall bindOption/bindOptions
+		}
+	}
+
+
+	function publiclyTrigger(name, thisObj) {
+		var args = Array.prototype.slice.call(arguments, 2);
+
+		thisObj = thisObj || _element;
+		this.triggerWith(name, thisObj, args); // Emitter's method
+
+		if (t.options[name]) {
+			return t.options[name].apply(thisObj, args);
+		}
+	}
+
+	t.initialize();
+}
+
+;;
+/*
+Options binding/triggering system.
+*/
+Calendar.mixin({
+
+	// A map of option names to arrays of handler objects. Initialized to {} in Calendar.
+	// Format for a handler object:
+	// {
+	//   func // callback function to be called upon change
+	//   names // option names whose values should be given to func
+	// }
+	optionHandlers: null, 
+
+	// Calls handlerFunc immediately, and when the given option has changed.
+	// handlerFunc will be given the option value.
+	bindOption: function(optionName, handlerFunc) {
+		this.bindOptions([ optionName ], handlerFunc);
 	},
 
+	// Calls handlerFunc immediately, and when any of the given options change.
+	// handlerFunc will be given each option value as ordered function arguments.
+	bindOptions: function(optionNames, handlerFunc) {
+		var handlerObj = { func: handlerFunc, names: optionNames };
+		var i;
 
-	queryToolbarsHeight: function() {
-		return this.toolbarsManager.items.reduce(function(accumulator, toolbar) {
-			var toolbarHeight = toolbar.el ? toolbar.el.outerHeight(true) : 0; // includes margin
-			return accumulator + toolbarHeight;
-		}, 0);
+		for (i = 0; i < optionNames.length; i++) {
+			this.registerOptionHandlerObj(optionNames[i], handlerObj);
+		}
+
+		this.triggerOptionHandlerObj(handlerObj);
+	},
+
+	// Puts the given handler object into the internal hash
+	registerOptionHandlerObj: function(optionName, handlerObj) {
+		(this.optionHandlers[optionName] || (this.optionHandlers[optionName] = []))
+			.push(handlerObj);
+	},
+
+	// Reports that the given option has changed, and calls all appropriate handlers.
+	triggerOptionHandlers: function(optionName) {
+		var handlerObjs = this.optionHandlers[optionName] || [];
+		var i;
+
+		for (i = 0; i < handlerObjs.length; i++) {
+			this.triggerOptionHandlerObj(handlerObjs[i]);
+		}
+	},
+
+	// Calls the callback for a specific handler object, passing in the appropriate arguments.
+	triggerOptionHandlerObj: function(handlerObj) {
+		var optionNames = handlerObj.names;
+		var optionValues = [];
+		var i;
+
+		for (i = 0; i < optionNames.length; i++) {
+			optionValues.push(this.options[optionNames[i]]);
+		}
+
+		handlerObj.func.apply(this, optionValues); // maintain the Calendar's `this` context
 	}
 
 });
@@ -12759,7 +12425,6 @@ var instanceComputableOptions = {
 
 };
 
-// TODO: make these computable properties in optionsModel
 function populateInstanceComputableOptions(options) {
 	$.each(instanceComputableOptions, function(name, func) {
 		if (options[name] == null) {
@@ -12830,7 +12495,7 @@ function EventManager() { // assumed to be a calendar
 
 
 	$.each(
-		(t.opt('events') ? [ t.opt('events') ] : []).concat(t.opt('eventSources') || []),
+		(t.options.events ? [ t.options.events ] : []).concat(t.options.eventSources || []),
 		function(i, sourceInput) {
 			var source = buildEventSource(sourceInput);
 			if (source) {
@@ -12842,7 +12507,7 @@ function EventManager() { // assumed to be a calendar
 
 
 	function requestEvents(start, end) {
-		if (!t.opt('lazyFetching') || isFetchNeeded(start, end)) {
+		if (!t.options.lazyFetching || isFetchNeeded(start, end)) {
 			return fetchEvents(start, end);
 		}
 		else {
@@ -12878,6 +12543,11 @@ function EventManager() { // assumed to be a calendar
 
 	t.getEventCache = function() {
 		return cache;
+	};
+
+
+	t.getPrunedEventCache = function() {
+		return prunedCache;
 	};
 
 
@@ -12942,7 +12612,7 @@ function EventManager() { // assumed to be a calendar
 		}
 
 		if (pendingSourceCnt) {
-			return Promise.construct(function(resolve) {
+			return new Promise(function(resolve) {
 				t.one('eventsReceived', resolve); // will send prunedCache
 			});
 		}
@@ -13026,7 +12696,7 @@ function EventManager() { // assumed to be a calendar
 				source,
 				rangeStart.clone(),
 				rangeEnd.clone(),
-				t.opt('timezone'),
+				t.options.timezone,
 				callback
 			);
 
@@ -13049,7 +12719,7 @@ function EventManager() { // assumed to be a calendar
 					t, // this, the Calendar object
 					rangeStart.clone(),
 					rangeEnd.clone(),
-					t.opt('timezone'),
+					t.options.timezone,
 					function(events) {
 						callback(events);
 						t.popLoading();
@@ -13084,9 +12754,9 @@ function EventManager() { // assumed to be a calendar
 				// and not affect the passed-in object.
 				var data = $.extend({}, customData || {});
 
-				var startParam = firstDefined(source.startParam, t.opt('startParam'));
-				var endParam = firstDefined(source.endParam, t.opt('endParam'));
-				var timezoneParam = firstDefined(source.timezoneParam, t.opt('timezoneParam'));
+				var startParam = firstDefined(source.startParam, t.options.startParam);
+				var endParam = firstDefined(source.endParam, t.options.endParam);
+				var timezoneParam = firstDefined(source.timezoneParam, t.options.timezoneParam);
 
 				if (startParam) {
 					data[startParam] = rangeStart.format();
@@ -13094,8 +12764,8 @@ function EventManager() { // assumed to be a calendar
 				if (endParam) {
 					data[endParam] = rangeEnd.format();
 				}
-				if (t.opt('timezone') && t.opt('timezone') != 'local') {
-					data[timezoneParam] = t.opt('timezone');
+				if (t.options.timezone && t.options.timezone != 'local') {
+					data[timezoneParam] = t.options.timezone;
 				}
 
 				t.pushLoading();
@@ -13504,13 +13174,12 @@ function EventManager() { // assumed to be a calendar
 	// Will return `false` when input is invalid.
 	// `source` is optional
 	function buildEventFromInput(input, source) {
-		var calendarEventDataTransform = t.opt('eventDataTransform');
 		var out = {};
 		var start, end;
 		var allDay;
 
-		if (calendarEventDataTransform) {
-			input = calendarEventDataTransform(input);
+		if (t.options.eventDataTransform) {
+			input = t.options.eventDataTransform(input);
 		}
 		if (source && source.eventDataTransform) {
 			input = source.eventDataTransform(input);
@@ -13576,7 +13245,7 @@ function EventManager() { // assumed to be a calendar
 			if (allDay === undefined) { // still undefined? fallback to default
 				allDay = firstDefined(
 					source ? source.allDayDefault : undefined,
-					t.opt('allDayDefault')
+					t.options.allDayDefault
 				);
 				// still undefined? normalizeEventDates will calculate it
 			}
@@ -13613,7 +13282,7 @@ function EventManager() { // assumed to be a calendar
 		}
 
 		if (!eventProps.end) {
-			if (t.opt('forceEventDuration')) {
+			if (t.options.forceEventDuration) {
 				eventProps.end = t.getDefaultEventEnd(eventProps.allDay, eventProps.start);
 			}
 			else {
@@ -13966,22 +13635,21 @@ function backupEventDates(event) {
 // Determines if the given event can be relocated to the given span (unzoned start/end with other misc data)
 Calendar.prototype.isEventSpanAllowed = function(span, event) {
 	var source = event.source || {};
-	var eventAllowFunc = this.opt('eventAllow');
 
 	var constraint = firstDefined(
 		event.constraint,
 		source.constraint,
-		this.opt('eventConstraint')
+		this.options.eventConstraint
 	);
 
 	var overlap = firstDefined(
 		event.overlap,
 		source.overlap,
-		this.opt('eventOverlap')
+		this.options.eventOverlap
 	);
 
 	return this.isSpanAllowed(span, constraint, overlap, event) &&
-		(!eventAllowFunc || eventAllowFunc(span, event) !== false);
+		(!this.options.eventAllow || this.options.eventAllow(span, event) !== false);
 };
 
 
@@ -14010,10 +13678,8 @@ Calendar.prototype.isExternalSpanAllowed = function(eventSpan, eventLocation, ev
 
 // Determines the given span (unzoned start/end with other misc data) can be selected.
 Calendar.prototype.isSelectionSpanAllowed = function(span) {
-	var selectAllowFunc = this.opt('selectAllow');
-
-	return this.isSpanAllowed(span, this.opt('selectConstraint'), this.opt('selectOverlap')) &&
-		(!selectAllowFunc || selectAllowFunc(span) !== false);
+	return this.isSpanAllowed(span, this.options.selectConstraint, this.options.selectOverlap) &&
+		(!this.options.selectAllow || this.options.selectAllow(span) !== false);
 };
 
 
@@ -14137,7 +13803,7 @@ var BUSINESS_HOUR_EVENT_DEFAULTS = {
 // Return events objects for business hours within the current view.
 // Abuse of our event system :(
 Calendar.prototype.getCurrentBusinessHourEvents = function(wholeDay) {
-	return this.computeBusinessHourEvents(wholeDay, this.opt('businessHours'));
+	return this.computeBusinessHourEvents(wholeDay, this.options.businessHours);
 };
 
 // Given a raw input value from options, return events objects for business hours within the current view.
@@ -14434,20 +14100,18 @@ var BasicView = FC.BasicView = View.extend({
 	------------------------------------------------------------------------------------------------------------------*/
 
 
-	computeInitialDateScroll: function() {
+	computeInitialScroll: function() {
 		return { top: 0 };
 	},
 
 
-	queryDateScroll: function() {
+	queryScroll: function() {
 		return { top: this.scroller.getScrollTop() };
 	},
 
 
-	applyDateScroll: function(scroll) {
-		if (scroll.top !== undefined) {
-			this.scroller.setScrollTop(scroll.top);
-		}
+	setScroll: function(scroll) {
+		this.scroller.setScrollTop(scroll.top);
 	},
 
 
@@ -14964,7 +14628,7 @@ var AgendaView = FC.AgendaView = View.extend({
 
 
 	// Computes the initial pre-configured scroll state prior to allowing the user to change it
-	computeInitialDateScroll: function() {
+	computeInitialScroll: function() {
 		var scrollTime = moment.duration(this.opt('scrollTime'));
 		var top = this.timeGrid.computeTimeTop(scrollTime);
 
@@ -14979,15 +14643,13 @@ var AgendaView = FC.AgendaView = View.extend({
 	},
 
 
-	queryDateScroll: function() {
+	queryScroll: function() {
 		return { top: this.scroller.getScrollTop() };
 	},
 
 
-	applyDateScroll: function(scroll) {
-		if (scroll.top !== undefined) {
-			this.scroller.setScrollTop(scroll.top);
-		}
+	setScroll: function(scroll) {
+		this.scroller.setScrollTop(scroll.top);
 	},
 
 

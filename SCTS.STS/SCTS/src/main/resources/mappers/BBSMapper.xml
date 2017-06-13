@@ -34,15 +34,40 @@
 	</select>
 	
 	<select id="eventOne" resultMap="viewCalendar">
-	select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj, 
+	select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj, bc.bbsctt_cn as bbsctt_cn,
 		e.event_begin_de as event_begin_de, e.event_end_de as event_end_de
 		from bbsctt bc, event e
 		where bc.bbsctt_code = e.bbsctt_code and bc.bbsctt_code = #{code}
 	
 	</select>
 	
+	<update id="updateEvent">
+		update event
+		set event_begin_de = #{event_begin_de}, event_end_de = #{event_end_de}
+		where bbsctt_code = #{bbsctt_code}
+	</update>
 	
+	<update id="updateBbsctt">
+		update bbsctt
+		set bbsctt_sj = #{bbsctt_sj}, bbsctt_cn = #{bbsctt_cn}
+		where bbsctt_code = #{bbsctt_code}
+	</update>
 	
+	<delete id="deleteEvent">
+		delete from event where bbsctt_code = #{bbsctt_code}
+	</delete>
 
+	<delete id="deleteBbsctt">
+		delete from bbsctt where bbsctt_code = #{bbsctt_code}
+	</delete>
+	
+	<select id="listEvent" resultMap="viewCalendar">
+		select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj, bc.bbsctt_cn as bbsctt_cn,
+		e.event_begin_de as event_begin_de, e.event_end_de as event_end_de
+		from bbsctt bc, event e
+		where bc.bbsctt_code = e.bbsctt_code and date_format(e.event_begin_de, '%Y-%m-%d') between #{date1} and #{date2} 
+		
+	
+	</select>
 
 </mapper>
