@@ -12,4 +12,5 @@ public interface BBSDAO {
 	public List<HashMap> viewCalendar() throws Exception;
 	public void insertBBSctt(BBScttVO bbscttVO) throws Exception;
 	public void insertEvent(EventVO eventVO) throws Exception;
+	public List<HashMap> eventOne(int code) throws Exception;
 }
