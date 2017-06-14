@@ -69,12 +69,14 @@ $(document).ready(function() {
 			success: function(data) {
 				// 지점 정보들 셀렉트 리스트에 등록
 				var branchList = $("#bhf_code");
+				branchList.empty();
 				for(var i=0; i<data.length; i++) {
 					$("<option></option>").val(data[i].bhf_code).text(data[i].bhf_nm).appendTo(branchList);
 				}
 				
 				// 층 정보 셀렉트 리스트에 등록
 				var floorList = $("#floorinfo_floor");
+				floorList.empty();
 				for(var i=0; i<countStory+1; i++) {
 					$("<option></option>").val(i+1).text((i+1) + "층").appendTo(floorList);
 				}

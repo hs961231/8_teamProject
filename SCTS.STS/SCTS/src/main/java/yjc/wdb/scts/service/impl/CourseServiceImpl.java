@@ -41,4 +41,10 @@ public class CourseServiceImpl implements CourseService {
 		return dao.tileUserinfo(vo);
 	}
 
+	@Override
+	public void updateStayTime(HashMap<String, String> vo) throws Exception {
+		// TODO Auto-generated method stub
+		dao.updateStayTime(vo);
+	}
+
 }

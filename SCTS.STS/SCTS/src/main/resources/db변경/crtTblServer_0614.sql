@@ -73,7 +73,7 @@ create table user (
 create table course (
 	USER_ID varchar(10),
 	TILE_CODE int not null,
-	COURS_STAY_TIME int default 0, /* 머문 시간 */
+	COURS_STAY_TIME int, /* 머문 시간 */
 	COURS_PASNG_TIME timestamp default now(), /* 지나간 시간*/
 	FOREIGN KEY(USER_ID) REFERENCES user(USER_ID) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(TILE_CODE) REFERENCES tile(TILE_CODE) ON UPDATE CASCADE ON DELETE CASCADE

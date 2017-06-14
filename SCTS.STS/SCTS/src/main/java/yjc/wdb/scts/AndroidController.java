@@ -87,18 +87,90 @@ public class AndroidController {
 
 
 	// 안드로이드에서 비콘정보 전송
-	@RequestMapping(value="/setPositionData")
+	/*
+	 * 처음 비콘을 감지햇을때 해당하는 감지된 비콘을 바로 서버측으로 전송해서 
+	 * 감지된 비콘을 저장하여 실시간에 사용할 수 있도록 하는 역할
+	 */
+	@RequestMapping(value="/firstCourse")
 	@ResponseBody
-	public String setPositionData(HttpServletRequest request) throws Exception{
+	public String firstCourse(HttpServletRequest request) throws Exception{
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
-		String str = request.getParameter("PositionVO");
+		String str = request.getParameter("CourseVO");
 		
-		JSONObject json = new JSONObject();
+		JSONObject resultData = new JSONObject();
 		
 		if(str == null) {
-			json.put("status", "ERROR");
-			return json.toString();
+			resultData.put("status", "ERROR");
+			return resultData.toString();
+		}
+
+		// 넘어온 문자열을 json 객체로 변환
+		JSONObject courseJson = (JSONObject) new JSONParser().parse( str );
+
+		//PositionVO position = new PositionVO();
+		HashMap<String, String> vo = new HashMap<String, String>();
+		
+		try {
+			// 문자열 형태의 날짜시간 값을 timestamp값으로 변환
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
+			java.util.Date parsedDate = dateFormat.parse( (String) courseJson.get("cours_pasng_time") );
+			Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
+			vo.put("beacon_mjr", courseJson.get("beacon_mjr").toString() );
+			vo.put("beacon_mnr", courseJson.get("beacon_mnr").toString() );
+			vo.put("user_id", courseJson.get("user_id").toString() );
+			vo.put("cours_pasng_time", timestamp.toString() );
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			logger.debug("깨짐");
+		}
+
+		logger.debug(str);
+		logger.debug(vo.toString());
+
+		// 디비에 저장
+		//positionService.insertPosition(position);
+		courseService.insertCourse(vo);
+
+		
+		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
+		CouponVO coupon = couponService.selectSendAndroidCoupon();
+		
+		if(coupon == null) {
+			resultData.put("status", "SUCCESS");
+			resultData.put("command", "emptycoupon");
+			return resultData.toString();
+		}
+		
+		str = new Gson().toJson(coupon);
+		resultData = (JSONObject) new JSONParser().parse(str);
+		
+		resultData.put("status", "SUCCESS");
+		resultData.put("command", "fullcoupon");
+		
+		logger.debug(resultData.toString());
+		
+		return resultData.toString();
+	}
+
+	/*
+	 * 두번째 비콘 전송, 이 명령이 실행 될때는
+	 * 안드로이드 측에서의 현재 가장 가까운 비콘의 변경이 일어나서 기존에 감지하고 있던 비콘의 머문 시간을 저장 시킬 때 이 명령이 실행 됨
+	 */
+	@RequestMapping(value="/secondCourse")
+	@ResponseBody
+	public String secondCourse(HttpServletRequest request) throws Exception{
+		// 에러 방지하기 위해 추가함
+		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
+		String str = request.getParameter("CourseVO");
+		
+		JSONObject resultData = new JSONObject();
+		
+		if(str == null) {
+			resultData.put("status", "ERROR");
+			return resultData.toString();
 		}
 
 		// 넘어온 문자열을 json 객체로 변환
@@ -127,29 +199,18 @@ public class AndroidController {
 		logger.debug(str);
 		logger.debug(vo.toString());
 
-		// 디비에 저장
+		// 디비에 머문시간 저장
 		//positionService.insertPosition(position);
-		courseService.insertCourse(vo);
+		courseService.updateStayTime(vo);
 
 		
-		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
-		CouponVO coupon = couponService.selectSendAndroidCoupon();
+		resultData.put("status", "SUCCESS");
+		resultData.put("command", "emptycoupon");
 		
-		if(coupon == null) {
-			logger.debug("보낼 쿠폰 없음");
-			return "SUCCESS";
-		}
+		logger.debug(resultData.toString());
 		
-		str = new Gson().toJson(coupon);
-		json = (JSONObject) new JSONParser().parse(str);
-		
-		json.put("status", "SUCCESS");
-		
-		logger.debug(json.toString());
-		
-		return json.toString();
+		return resultData.toString();
 	}
-
 
 	// 회원가입
 	@RequestMapping(value="checkUser", method=RequestMethod.POST)

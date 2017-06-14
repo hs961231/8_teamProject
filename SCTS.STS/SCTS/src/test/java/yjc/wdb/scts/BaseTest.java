@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +23,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
+import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Tile_locationVO;
 import yjc.wdb.scts.dao.CourseDAO;
+import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,6 +43,46 @@ public class BaseTest {
 	private WebApplicationContext wac;
 	
 	private MockMvc mockMvc;
+	
+	@Inject
+	CouponService couponService;
+
+	@Test
+	public void couponSend() {
+
+		try {
+
+			CouponVO coupon = couponService.selectSendAndroidCoupon();
+			
+			JSONObject resultData = new JSONObject();
+			
+			if(coupon == null) {
+				resultData.put("status", "SUCCESS");
+				resultData.put("command", "emptycoupon");
+				System.out.println(resultData.toJSONString());
+				System.out.println(resultData.toString());
+				return;
+			}
+			String str;
+			
+			str = new Gson().toJson(coupon);
+			resultData = (JSONObject) new JSONParser().parse(str);
+			
+			resultData.put("status", "SUCCESS");
+			resultData.put("command", "fullcoupon");
+	
+			System.out.println(resultData.toJSONString());
+			System.out.println(resultData.toString());
+			
+			logger.debug(resultData.toString());
+			
+			return;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void asd() {
 		try {
@@ -68,7 +111,6 @@ public class BaseTest {
 	CourseService courseService;
 	//CourseDAO dao;
 	
-	@Test
 	public void kkk() {
 		try {
 			

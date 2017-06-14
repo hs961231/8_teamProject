@@ -16,16 +16,48 @@ values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
 
 <!-- 안드로이드에서 비콘정보 쏴줄 때 서버 측에서 비콘 정보 인설트용 쿼리 -->
 <insert id="insertCourse">
-insert into course (USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
+insert into course
+	(USER_ID, TILE_CODE, COURS_PASNG_TIME)
 values (#{user_id},
 		(select t.TILE_CODE
 			from tile t, beacon b
 			where b.BEACON_MJR = #{beacon_mjr}
 			and b.BEACON_MNR = #{beacon_mnr}
 			and b.BEACON_CODE = t.BEACON_CODE) ,
-		#{cours_stay_time},
 		#{cours_pasng_time} );
 </insert>
+
+<update id="updateStayTime">
+update
+	course
+set
+	COURS_STAY_TIME = #{cours_stay_time}
+where
+	USER_ID = #{user_id}
+and
+	TILE_CODE =	(
+					select
+						TILE_CODE
+					from
+						tile
+					where
+						BEACON_CODE =	(
+											select
+												BEACON_CODE
+											from
+												beacon
+											where
+												BEACON_MJR = #{beacon_mjr}
+											and
+												BEACON_MNR = #{beacon_mnr}
+										)
+				)
+and
+	COURS_PASNG_TIME = #{cours_pasng_time}
+and
+	COURS_STAY_TIME is null
+</update>
+
 			
 
 <!-- 오늘 방문자 수 계산 -->

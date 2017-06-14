@@ -10,7 +10,6 @@ import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +42,8 @@ public class BeaconM{
     private BeaconTimeData beaconTimeData;
 
     // 멈춰 있을 때 비콘에서 머문 시간을 계산하기 위한 시간데이터
-    private Timestamp currentTime;
+    private long currentTime;
+
     // 머문 시간 계산용
     private int stayTimeMil = 0;
 
@@ -103,11 +103,14 @@ public class BeaconM{
         return str;
     }
 
-    public void sendBeaconData() {
+    // 비콘 서버로 전송
+    public void sendBeaconData(String mode) {
 
         // 비콘 타임데이터에 머문 시간 저장
-        beaconTimeData.setCours_stay_time( stayTimeMil/1000 );
-        stayTimeMil = 0;
+        if(mode.equals("second")) {
+            beaconTimeData.setCours_stay_time(stayTimeMil / 1000);
+            stayTimeMil = 0;
+        }
 
         // 서버로 전송시키기 위해 비콘 감지 데이터를 json형태 문자열로 변환
         String json = new GsonBuilder()
@@ -119,7 +122,18 @@ public class BeaconM{
         Toast.makeText(mContext, "logic: 서버전송 stayTimeMil = " + json, Toast.LENGTH_LONG).show();
         // 서버로 전송시킴
         BeaconSet networkTask = new BeaconSet();
-        networkTask.execute(json);
+
+        // 첫번째 감지되자마자 전송하는 것과 두번째 더이상 감지되지 않을때 전송하는 것을 나누기 위해서
+        // 해주는 조건들
+        String select = "firstSend";
+        if(mode.equals("secondSend"))
+            select = "secondSend";
+
+        networkTask.execute(select, json);
+    }
+
+    public long getCurrent_Time() {
+        return Calendar.getInstance().getTimeInMillis();
     }
 
     public void logic() {
@@ -131,39 +145,43 @@ public class BeaconM{
             /********************************* 비콘 감지됨 *********************************/
             if(beaconCnt > 0) {
 
-                // 그 전에 감지된 비콘이 없다
+                // 그 전에 감지된 비콘이 없다 ( 어찌되든 이부분에서는 무조건 비콘감지가 처음에 이루어진 것임
                 if(oldnearBeacon == null) {
                     oldnearBeacon = currentNearBeacon;
                     // 처음 감지된 시점에서 비콘의 메이저와, 마이너, 그리고 감지된 시간을 생성
                     // 감지된 시간은 해당 BeaconTimeData클래스 자체에서 객체 생성시 자동으로 생성함.
                     beaconTimeData = new BeaconTimeData(oldnearBeacon.getMajor(), oldnearBeacon.getMinor());
                     beaconTimeData.setUser_id( getId() );
+                    // 서버로 전송시킴 첫번째 전송
+                    sendBeaconData("firstSend");
                 }
-                // 그 전에 감지된 비콘과 다르다
+                // 그 전에 감지된 비콘과 다르다 // 이부분은 감지된 비콘이 기존에 한개 존재하는 상태에서 해당 비콘이 멀어지고 다른 비콘이 가까워졋을때임
                 else if( oldnearBeacon.getMajor() != currentNearBeacon.getMajor() || oldnearBeacon.getMinor() != currentNearBeacon.getMinor() ) {
+                    if(currentTime != 0) {
+                        stayTimeMil += (int) (getCurrent_Time() - currentTime);
+                        currentTime = 0;
+                        Log.d(TAG, "logic: 움직였는데 다른비콘 감지 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
+                    }
+                    // 그전에 감지되어있던 비콘은 서버로 머문시간을 함께 저장한 것을 보냄. ( mode second )
+                    // 서버로 전송시킴 , 두번째 전송은 머문 시간까지 저장
+                    sendBeaconData("secondSend");
+
+                    // 서버로 기존에 감지된 것을 보냇으니 새롭게 감지된 비콘을 올드 비콘에 주입
                     oldnearBeacon = currentNearBeacon;
 
                     // 처음 감지된 시점에서 비콘의 메이저와, 마이너, 그리고 감지된 시간을 생성
                     // 감지된 시간은 해당 BeaconTimeData클래스 자체에서 객체 생성시 자동으로 생성함.
                     beaconTimeData = new BeaconTimeData(oldnearBeacon.getMajor(), oldnearBeacon.getMinor());
                     beaconTimeData.setUser_id( getId() );
-
-                    if(currentTime != null) {
-                        Calendar cal = Calendar.getInstance();
-                        stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
-                        currentTime = null;
-                        Log.d(TAG, "logic: 움직였는데 다른비콘 감지 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
-                    }
-                    // 서버로 전송시킴
-                    sendBeaconData();
-
+                    // 서버로 전송시킴 첫번째 전송
+                    sendBeaconData("firstSend");
                 }
                 // 그 전에 감지된 비콘과 같다
+                // 어찌됫든 원래 감지된 비콘이 있었고 해당 비콘이 다시 감지된 것이므로 서버에 재전송 할 필요도 없고, 그렇다고 바꿔줄 필요도 없음
                 else {
-;                   if(currentTime != null) {
-                        Calendar cal = Calendar.getInstance();
-                        stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
-                        currentTime = null;
+;                   if(currentTime != 0) {
+                        stayTimeMil += (int) (getCurrent_Time() - currentTime);
+                        currentTime = 0;
                         Toast.makeText(mContext, "logic: 멈춘 시간 계산 stayTimeMil = " + stayTimeMil, Toast.LENGTH_LONG).show();
                         Log.d(TAG, "logic: 움직였는데 그전과 같은 비콘 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
                     }
@@ -173,19 +191,19 @@ public class BeaconM{
             /********************************* 비콘 감지안됨 *********************************/
             else {
                 if(oldnearBeacon != null) {
-                    // 시간 계산 해놓고 비콘 널로 바꾸기
-                    oldnearBeacon = null;
 
-                    if(currentTime != null) {
-                        Calendar cal = Calendar.getInstance();
-                        stayTimeMil += (int) (cal.getTimeInMillis() - currentTime.getTime());
-                        currentTime = null;
+                    if(currentTime != 0) {
+                        stayTimeMil += (int) (getCurrent_Time() - currentTime);
+                        currentTime = 0;
                         Log.d(TAG, "logic: 움직였는데 비콘 감지 안됨 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
                     }
 
-                    // 서버로 전송시킴
-                    sendBeaconData();
+                    //그전에 감지되어있던 비콘은 서버로 머문시간을 함께 저장한 것을 보냄. ( mode second )
+                    // 서버로 전송시킴 , 두번째 전송은 머문 시간까지 저장
+                    sendBeaconData("secondSend");
 
+                    // 시간 계산 해놓고 비콘 널로 바꾸기
+                    oldnearBeacon = null;
                 }
             }
         }
@@ -194,9 +212,8 @@ public class BeaconM{
         else {
             Log.d(TAG, "logic: beaconCnt = " + beaconCnt);
             if(beaconCnt > 0) {
-                if(oldnearBeacon != null && currentTime == null) {
-                    Calendar cal = Calendar.getInstance();
-                    currentTime = new Timestamp(cal.getTimeInMillis());
+                if(oldnearBeacon != null && currentTime == 0) {
+                    currentTime = getCurrent_Time();
                     Toast.makeText(mContext, "logic: 멈춘 시간 저장", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "logic: 지금 멈춰서 시간계산 시작한다" ); // 디버깅용 시스템 로그
                     Log.d(TAG, "oldBeacon = " + oldnearBeacon.toString() ); // 디버깅용 시스템 로그

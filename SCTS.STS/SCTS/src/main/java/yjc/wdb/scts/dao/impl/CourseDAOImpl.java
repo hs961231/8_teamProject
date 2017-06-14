@@ -43,4 +43,10 @@ public class CourseDAOImpl implements CourseDAO {
 		return sqlSession.selectOne(NAMESPACE + ".tileUserinfo", vo);
 	}
 
+	@Override
+	public void updateStayTime(HashMap<String, String> vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(NAMESPACE + ".updateStayTime", vo);
+	}
+
 }
