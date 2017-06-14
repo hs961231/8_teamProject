@@ -20,17 +20,17 @@
 							header : {
 								left : 'prev,next today',
 								center : 'title',
-								right : 'month,yearRange,agendaDay,listWeek'
+								right : 'month,basicWeek,agendaDay,listWeek'
 							},
 							views : {
 								month : {
 									titleFormat : 'YYYY-MM',
 									eventLimit : 3
 								},
-								yearRange : {
-									type : "basicWeek",
-									titleFormat : 'YYYY-MM, DD',
-									buttonText: 'year'
+								week : {
+		
+									titleFormat : 'YYYY-MM, DD'
+								
 								},
 								day : {
 									titleFormat : 'YYYY-MM-D'
@@ -133,283 +133,12 @@
 						
 						$('#calendar').fullCalendar(options);
 
-						var text = $(".fc-center h2").text();
+						
 
 						viewCalendar();
 
-						year = parseInt(text.split("-")[0]);
 
-						month = parseInt(text.split("-")[1].split("0")[1]);
-
-						$('.fc-prev-button').click(function() {
-
-							month = month - 1;
-							if (month <= 0) {
-								year = year - 1;
-								month = 12;
-							}
-
-							if (month < 10) {
-								month = "0" + month;
-							}
-
-							$(".fc-center h2").text(year + "-" + month);
-
-							var date = $(".fc-center h2").text();
-
-						});
-
-						$('.fc-next-button')
-								.click(
-										function(event) {
-
-											if (month < 10) {
-												month = parseInt($(
-														".fc-center h2").text()
-														.split("-")[1]
-														.split("0")[1]);
-
-											} else {
-												month = parseInt($(
-														".fc-center h2").text()
-														.split("-")[1]);
-											}
-
-											month = month + 1;
-											if (month >= 13) {
-												year = year + 1;
-												month = 1;
-											}
-
-											if (month < 10) {
-												month = "0" + month;
-											}
-
-											$(".fc-center h2").text(
-													year + "-" + month);
-
-											if (month < 10) {
-												month = parseInt(month
-														.split("0")[1]);
-											}
-
-										});
-
-						$(".fc-basicWeek-button")
-								.click(
-										function() {
-											
-											// 포기
-
-											/* $('#calendar').fullCalendar('changeView', 'yearRange', {
-												start: '2017-06-04',
-							                    end: '2017-06-10' 
-											}); */
-									
-
-											
-
-											$(".fc-prev-button").attr(
-													"disabled", true);
-											$(".fc-next-button").attr(
-													"disabled", true);
-
-											var date = new Date();
-
-											var year = date.getFullYear();
-											var month = date.getMonth() + 1;
-
-											if (month <= 10) {
-												month = "0" + month;
-											}
-											var i = 3;
-
-											// $(".fc-day-header").removeClass("fc-today");
-											  /* $(".fc-day-header").each(function(){
-												date.setDate(new Date().getDate()-i)
-												
-												$(this).attr("data-date", year+"-"+month+"-"+date.getDate());
-												$(this).children().remove();
-												$(this).append($('<a data-goto="{&quot;date&quot;:&quot;'+ $(this).attr("data-date")+'&quot;,&quot;type&quot;:&quot;day&quot;}"></a>')
-														.text(date.getMonth() + 1 + "/" + date.getDate()));
-												i--;
-											});
- */
-											var a = parseInt($(
-													".fc-day-header:first")
-													.text().split("/")[1]);
-											var b = parseInt($(
-													".fc-day-header:last")
-													.text().split("/")[1]);
-											if (a < 10) {
-												a = "0" + a;
-											}
-											if (b < 10) {
-												b = "0" + b;
-											}
-
-											/* var date1 =year + "-" + month + "-" + a;
-											var date2 = year + "-" + month + "-" + b;
-											
-
-											listEvent(date1, date2); */ 
-
-											$(".fc-center h2").text(
-													parseInt(year) + "-"
-															+ month + ", " + a
-															+ "-" + b);
-
-										});
-
-						$(".fc-agendaDay-button").click(function() {
-
-							$(".fc-prev-button").attr("disabled", true);
-							$(".fc-next-button").attr("disabled", true);
-
-						});
-
-						$(".fc-listWeek-button")
-								.click(
-										function() {
-
-											$(".fc-prev-button").attr(
-													"disabled", true);
-											$(".fc-next-button").attr(
-													"disabled", true);
-
-											var date = new Date();
-											var i = 3;
-
-											$(".fc-list-heading")
-													.each(
-															function() {
-
-																date
-																		.setDate(new Date()
-																				.getDate()
-																				- i)
-
-																var month = date
-																		.getMonth() + 1;
-																var day = date
-																		.getDate();
-
-																if (month < 10) {
-																	month = "0"
-																			+ month;
-																}
-																if (day < 10) {
-																	day = "0"
-																			+ day;
-																}
-
-																$(this)
-																		.attr(
-																				"data-date",
-																				date
-																						.getFullYear()
-																						+ "-"
-																						+ month
-																						+ "-"
-																						+ day);
-
-																i--;
-															});
-
-											$(".fc-list-heading-main")
-													.each(
-															function() {
-
-																$(this)
-																		.attr(
-																				"data-goto",
-																				$(
-																						this)
-																						.parent()
-																						.parent()
-																						.attr(
-																								"data-date"));
-															});
-
-											$(".fc-list-heading-alt")
-													.each(
-															function() {
-
-																var dayList = new Array(
-																		'일',
-																		'월',
-																		'화',
-																		'수',
-																		'목',
-																		'금',
-																		'토');
-
-																var day = new Date(
-																		$(this)
-																				.parent()
-																				.parent()
-																				.attr(
-																						"data-date"))
-																		.getDay();
-
-																$(this)
-																		.attr(
-																				"data-goto",
-																				'{"date": "'
-																						+ $(
-																								this)
-																								.parent()
-																								.parent()
-																								.attr(
-																										"data-date")
-																						+ '", "type": "day"}');
-																$(this)
-																		.text(
-																				$(
-																						this)
-																						.parent()
-																						.parent()
-																						.attr(
-																								"data-date")
-																						+ " "
-																						+ dayList[day]);
-															});
-
-											var year = $(
-													".fc-list-heading:first")
-													.attr("data-date").split(
-															"-")[0];
-											var month = $(
-													".fc-list-heading:first")
-													.attr("data-date").split(
-															"-")[1];
-											var date = $(
-													".fc-list-heading:first")
-													.attr("data-date").split(
-															"-")[2];
-
-											if (date.match("0.")) {
-												date = parseInt(date.split("0")[1]);
-											} else {
-												date = parseInt(date);
-											}
-
-											var date2 = date + 7;
-
-											if (date < 10) {
-												date = "0" + date;
-											}
-
-											if (date2 < 10) {
-												date2 = "0" + date2;
-											}
-
-											$(".fc-center h2").text(
-													year + "-" + month + ", "
-															+ date + " - "
-															+ date2);
-
-										});
+						
 
 						/* 취소 버튼 클릭 */
 						$('.close').click(function() {
@@ -627,43 +356,6 @@
 
 	}
 
-	function listEvent(date1, date2) {
-		$
-				.ajax({
-					type : "GET",
-					url : "listEvent",
-					dataType : "jsonp",
-					data : {
-						date1 : date1,
-						date2 : date2
-					},
-					success : function(data) {
-
-						var length = data.result.length;
-
-						for (var i = 0; i < length; i++) {
-
-							var start = (data.result[i].start).split(".")[0];
-							var end = (data.result[i].end).split(".")[0];
-
-							var eventData = {
-								title : data.result[i].title,
-								start : moment(start).format(),
-								end : moment(end).format(),
-								id : data.result[i].bbsctt_code,
-								bbsctt_cn : data.result[i].bbsctt_cn
-
-							}
-
-							$('#calendar').fullCalendar('renderEvent',
-									eventData, true);
-
-						}
-
-					}
-				});
-
-	}
 </script>
 <style>
 body {
