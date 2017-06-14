@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Branch_officeMapper">
 
 <insert id="insertBranch_office">
-insert into BRANCH_OFFICE
+insert into branch_office
 	(BHF_NM, BHF_ADRES, BHF_TELNO)
 values (#{bhf_nm}, #{bhf_adres}, #{bhf_telno})
 </insert>
@@ -16,7 +16,7 @@ values (#{bhf_nm}, #{bhf_adres}, #{bhf_telno})
 select
 	bhf_code, bhf_nm
 from
-	BRANCH_OFFICE
+	branch_office
 </select>
 
 <!-- <update id="">

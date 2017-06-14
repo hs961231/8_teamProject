@@ -8,7 +8,7 @@
 
 	<!-- 쿠폰 등록 -->
 	<insert id="insertCoupon">
-		insert into COUPON
+		insert into coupon
 		(COUPON_NM, COUPON_CNTNTS,
 		COUPON_DSCNT, COUPON_BEGIN_DE, COUPON_END_DE)
 		values (#{coupon_nm},

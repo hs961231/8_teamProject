@@ -1,6 +1,6 @@
 function IPSetting() {
   var str = "http://";
-        var selectMode = 2;
+        var selectMode = 0;
         var chk = 0;
 
         switch (selectMode) {
@@ -27,7 +27,7 @@ function IPSetting() {
                 break;
         }
         if(chk == 1)
-            str += "SCTS/";
+            str += "3MS/";
         else
             str += "scts/";
 

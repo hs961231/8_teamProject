@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -35,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /****************************************************** 로그인 세션 생성하는법 *********************************************************************/
-        test();
-        //loginButton();
+        //test();
+        loginButton();
 
         /***************************************************** 회원가입 화면 전환 ****************************************************************/
 
@@ -50,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-/*    @Override
+    @Override
     protected void onResume() {
         super.onResume();
         // 블루투스 권한 및 활성화 코드
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
-    }*/
+    }
 
   protected void test() {
 

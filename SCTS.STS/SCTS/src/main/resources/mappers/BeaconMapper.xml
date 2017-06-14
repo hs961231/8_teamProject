@@ -7,14 +7,14 @@
 <mapper namespace="yjc.wdb.mapper.BeaconMapper">
 
 <insert id="insertBeacon">
-insert into BEACON
+insert into beacon
 	(BEACON_MJR, BEACON_MNR, BEACON_STTUS, BHF_CODE)
 values (#{beacon_mjr}, #{beacon_mnr}, #{beacon_sttus}, #{bhf_code})
 </insert>
 
 <update id="updateBeaconSttus">
 update
-	BEACON
+	beacon
 set
 	BEACON_STTUS = #{beacon_sttus}
 where
@@ -27,7 +27,7 @@ and
 select
 	beacon_mjr, beacon_mnr, beacon_sttus
 from
-	BEACON
+	beacon
 where
 	BHF_CODE = #{bhf_code}
 </select>

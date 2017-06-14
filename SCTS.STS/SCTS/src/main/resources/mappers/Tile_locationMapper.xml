@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Tile_locationMapper">
 
 <insert id="insertTile_location">
-insert into TILE_LOCATION
+insert into tile_location
 	(DRW_CODE, TILE_CODE, TILELC_CRDNT_X, TILELC_CRDNT_Y, TILELC_HG, TILELC_AR)
 values (#{drw_code}, #{tile_code}, #{tilelc_crdnt_x}, #{tilelc_crdnt_y}, #{tilelc_hg}, #{tilelc_ar})
 </insert>

@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.EmployeeMapper">
 
 <insert id="insertEmployee">
-insert into EMPLOYEE
+insert into employee
 	(USER_ID, EMP_IHIDNUM, EMP_ANSLRY, EMP_ACNUTO, EMP_ENCPN)
 values (#{user_id}, #{emp_ihidnum}, #{emp_anslry}, #{emp_acnuto}, #{emp_encpn})
 </insert>

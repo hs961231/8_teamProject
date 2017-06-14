@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Large_classification_categoryMapper">
 
 <insert id="insertLarge_classification_category">
-insert into LARGE_CLASSIFICATION_CATEGORY
+insert into large_classification_category
 	(LCLASCTGRY_NM, LCLASCTGRY_COLOR)
 values (#{lclasctgry_nm}, #{lclasctgry_color})
 </insert>

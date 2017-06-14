@@ -16,10 +16,10 @@ values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
 
 <!-- 안드로이드에서 비콘정보 쏴줄 때 서버 측에서 비콘 정보 인설트용 쿼리 -->
 <insert id="insertCourse">
-insert into COURSE (USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
+insert into course (USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
 values (#{user_id},
 		(select t.TILE_CODE
-			from TILE t, BEACON b
+			from tile t, beacon b
 			where b.BEACON_MJR = #{beacon_mjr}
 			and b.BEACON_MNR = #{beacon_mnr}
 			and b.BEACON_CODE = t.BEACON_CODE) ,
@@ -33,7 +33,7 @@ values (#{user_id},
 select
 	count(DISTINCT user_id)
 from
-	COURSE
+	course
 where
 	date(COURS_PASNG_TIME) >= date(subdate(now(), INTERVAL 0 DAY))
 </select>
@@ -56,13 +56,13 @@ from
 		select
 			count(DISTINCT user_id) AS tile_visit
 		from
-			COURSE
+			course
 		where
 			TILE_CODE =	(
 							select
 								TILE_CODE
 							from
-								TILE_LOCATION
+								tile_location
 							where
 								DRW_CODE = #{drw_code}
 							and
@@ -78,7 +78,7 @@ from
 		select
 			count(DISTINCT user_id) AS total_visit
 		from
-			COURSE
+			course
 		where
 			date(COURS_PASNG_TIME) >= date(subdate(curDate(), INTERVAL 0 DAY)) 
 	) T
@@ -98,13 +98,13 @@ from
 		select
 			user_id
 		from
-			COURSE
+			course
 		where
 			TILE_CODE =	(
 							select
 								TILE_CODE
 							from
-								TILE_LOCATION
+								tile_location
 							where
 								DRW_CODE = #{drw_code}
 							and
@@ -121,7 +121,7 @@ from
 			USER_ID, USER_NM, floor((year(curDate()) - date_format(USER_BRTHDY, '%Y') + 1)/10) agegroup,
 			USER_SEXDSTN, USER_MRRG_AT
 		from
-			USER
+			user
 	) U
 
 where

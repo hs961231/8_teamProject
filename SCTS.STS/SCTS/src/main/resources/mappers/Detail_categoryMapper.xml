@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Detail_categoryMapper">
 
 <insert id="insertDetail_category">
-insert into DETAIL_CATEGORY
+insert into detail_category
 	(LCLASCTGRY_CODE, DETAILCTGRY_NM)
 values (#{lclasctgry_code} #{detailctgry_nm})
 </insert>

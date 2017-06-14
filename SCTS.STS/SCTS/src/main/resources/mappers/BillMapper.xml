@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.BillMapper">
 
 	<insert id="insertBill">
-		insert into BILL
+		insert into bill
 		(USER_ID, BILL_ISSU_DE
 		values
 		(#{user_id}, now())

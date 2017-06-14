@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Floor_informationMapper">
 
 <insert id="insertDrawing">
-insert into DRAWING (DRW_FLPTH)
+insert into drawing (DRW_FLPTH)
 values(#{drw_flpth})
 </insert>
 
@@ -27,7 +27,7 @@ values (#{bhf_code}, #{drw_code}, #{floorinfo_floor}, now()) -->
  -->
 <select id="selectDrawingList" resultType="java.util.HashMap">
 select f.floorinfo_floor, d.drw_flpth
-from DRAWING d, FLOOR_INFORMATION f
+from drawing d, floor_information f
 where BHF_CODE = #{bhf_code}
 and f.DRW_CODE = d.DRW_CODE
 order by FLOORINFO_RGSDE desc
@@ -45,7 +45,7 @@ select LAST_INSERT_ID();
 select
 	f.floorinfo_floor, d.drw_flpth, d.drw_code, f.size_x, f.size_y
 from
-	DRAWING d, FLOOR_INFORMATION f
+	drawing d, floor_information f
 where
 	f.DRW_CODE IN	(
 						select max(drw_code)
@@ -62,7 +62,7 @@ limit #{floor},1
 
 <select id="selectCountStory" resultType="integer">
 select count(DISTINCT FLOORINFO_FLOOR)
-from FLOOR_INFORMATION
+from floor_information
 where BHF_CODE = #{bhf_code}
 </select>
 

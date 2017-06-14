@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Employee_positionMapper">
 
 <insert id="insertEmployee_position">
-insert into EMPLOYEE_POSITION
+insert into employee_position
 	(USER_ID, DEPT_CODE, EMPPSITN_RSPOFC, EMPPSITN_GNFD_DE)
 values (#{user_id}, #{dept_code}, #{emppsitn_rspofc}, now()) 
 </insert>

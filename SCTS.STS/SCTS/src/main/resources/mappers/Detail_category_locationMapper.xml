@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Detail_category_locationMapper">
 
 <insert id="insertDetail_category_location">
-insert into DETAIL_CATEGORY_LOCATION
+insert into detail_category_location
 	(DETAILCTGRY_CODE, TILE_CODE, DETAILCTGRYLC_APPLC_DE)
 values (#{detailctgry_code}, #{tile_code}, now())
 </insert>

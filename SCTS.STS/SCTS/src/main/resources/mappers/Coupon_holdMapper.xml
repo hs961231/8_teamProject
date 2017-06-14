@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.Coupon_holdMapper">
 
 <insert id="insertCoupon_hold">
-insert into COUPON_HOLD
+insert into coupon_hold
 	(USER_ID, COUPON_CODE, COUPONHOLD_USE_AT)
 values (#{user_id}, #{coupon_code}, #{couponhold_use_at})
 </insert>

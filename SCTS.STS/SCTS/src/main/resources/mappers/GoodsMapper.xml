@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.GoodsMapper">
 
 <insert id="insertGoods">
-insert into GOODS
+insert into goods
 	(GOODS_NM, GOODS_PC, GOODS_DC, DETAILCTGRY_CODE)
 values (#{goods_nm}, #{goods_pc}, #{goods_dc}, #{detailctgry_code})
 </insert>
@@ -16,14 +16,14 @@ values (#{goods_nm}, #{goods_pc}, #{goods_dc}, #{detailctgry_code})
 select
 	*
 from
-	GOODS
+	goods
 </select>
 
 <select id="likeGoodsList" resultType="GoodsVO">
 	select
 		*
 	from
-		GOODS
+		goods
 	where
 		GOODS_NM
 	like concat
@@ -33,7 +33,7 @@ from
 select
 	*
 from
-	GOODS
+	goods
 where GOODS_CODE = #{goods_code}
 </select>
 

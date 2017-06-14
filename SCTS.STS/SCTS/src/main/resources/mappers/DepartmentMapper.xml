@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.DepartmentMapper">
 
 <insert id="insertDepartment">
-insert into DEPARTMENT
+insert into department
 	(DEPT_NM)
 values (#{dept_nm})
 </insert>
