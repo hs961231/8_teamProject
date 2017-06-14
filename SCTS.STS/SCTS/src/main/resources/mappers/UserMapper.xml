@@ -7,7 +7,7 @@
 <mapper namespace="yjc.wdb.mapper.UserMapper">
 
 	<insert id="insertUser">
-		insert into User
+		insert into user
 		(USER_ID, USER_PASSWORD, USER_ADRES,
 		USER_NM, USER_BRTHDY,
 		USER_MBTLNUM, USER_EMAIL, USER_SEXDSTN,
@@ -22,7 +22,7 @@
 
 	<select id="loginUser" resultType="int">
 		select count(*)
-		from USER
+		from user
 		where
 		USER_ID = #{user_id} and USER_PASSWORD = #{user_password}
 	</select>
