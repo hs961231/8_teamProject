@@ -7,9 +7,11 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import yjc.wdb.scts.bean.BBScttVO;
+import yjc.wdb.scts.bean.BBSctt_WritingVO;
 import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.dao.BBSDAO;
 
@@ -22,20 +24,20 @@ public class BBSDAOImpl implements BBSDAO {
 	private SqlSession sql;
 	
 	@Override
-	public List<HashMap> viewCalendar() throws Exception {
+	public List<HashMap> viewCalendar(int bhf_code) throws Exception {
 		
-		return sql.selectList(NAMESPACE+".viewCalendar");
+		return sql.selectList(NAMESPACE+".viewCalendar", bhf_code);
 	}
 
 	@Override
-	public void insertBBSctt(BBScttVO bbscttVO) throws Exception {
+	public void insertBBSctt(JSONObject json) throws Exception {
 		
-		sql.insert(NAMESPACE+".bbscttInsert", bbscttVO);
+		sql.insert(NAMESPACE+".bbscttInsert", json);
 	}
 
 	@Override
-	public void insertEvent(EventVO eventVO) throws Exception {
-		sql.insert(NAMESPACE+".eventInsert", eventVO);
+	public void insertEvent(JSONObject json) throws Exception {
+		sql.insert(NAMESPACE+".eventInsert", json);
 	}
 
 	@Override
@@ -74,6 +76,18 @@ public class BBSDAOImpl implements BBSDAO {
 		map.put("date2", date2);
 		
 		return sql.selectList(NAMESPACE+".listEvent", map);
+	}
+
+	@Override
+	public void insertBbsctt_writing(JSONObject json) throws Exception {
+		
+		sql.insert(NAMESPACE+".bbsctt_writingInsert", json);
+		
+	}
+
+	@Override
+	public void deleteBbscttWriting(int bbsctt_code) throws Exception {
+		sql.delete(NAMESPACE+".deleteBbscttWriting", bbsctt_code);
 	}
 
 }

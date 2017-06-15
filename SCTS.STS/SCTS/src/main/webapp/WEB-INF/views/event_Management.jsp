@@ -53,7 +53,7 @@
 								
 								$("#registerEvent").modal();
 								
-								var start = date.format("YYYY-MM-DD HH:mm:ss");
+								var start = date.format("YYYY-MM-DD HH:mm");
 								start = start.replace(" ", "T");
 								
 								$("#registerEvent .eventStart").val(start);
@@ -139,8 +139,9 @@
 						$('#calendar').fullCalendar(options);
 
 						
+						var bhf_code = 1;
 
-						viewCalendar();
+						viewCalendar(bhf_code);
 
 
 						
@@ -262,31 +263,60 @@
 					var title = $("#registerEvent .eventName").val();
 					var start = $("#registerEvent .eventStart").val();
 					start = start.replace("T", " ");
-					start = start + ":00";
+					start = start +":00";
 
 					var end = $("#registerEvent .eventEnd").val();
 					end = end.replace("T", " ") + ":00";
+					
+		
+					var user_id = "${user_id}";
+					
+					var bhf_code = 1; 
 
-					var eventInfo = $("#registerEvent .eventInfo").val();
 
+					var event_info = $("#registerEvent .eventInfo").val();
+		
 					$.ajax({
-						type : "GET",
+						type : "POST",
 						url : "insertEvent",
 						headers : {
 							"Content-Type" : "application/json",
-							"X-HTTP-Method-Override" : "GET"
+							"X-HTTP-Method-Override" : "POST"
 						},
-						data : {
+						data : JSON.stringify({
 
 							bbsctt_sj : title,
-							bbsctt_cn : eventInfo,
+							bbsctt_cn : event_info,
 							event_begin_de : start,
-							event_end_de : end
+							event_end_de : end,
+							bhf_code : bhf_code,
+							user_id : user_id
 
-						},
+						}),
 						dataType : "text",
 						success : function(result) {
 							if (result == "success") {
+								
+								
+								var temp = end.split(" ")[0];
+								
+								var end2 = temp.split("-")[2];
+								
+								if(end2.match("^0")){
+									end2 = parseInt(end2.split("0")[1]) +1;
+								}else{
+									end2 = parseInt(end2) +1;
+								}
+								
+								
+								if(end2 < 10){
+									end2 = "0"+end2;
+								}
+								
+								
+								end = temp.split("-")[0] + "-" + temp.split("-")[1]
+								+ "-" + end2 + " " + end.split(" ")[1];
+			
 
 								eventData = {
 									title : title,
@@ -297,6 +327,7 @@
 								};
 
 								j++;
+								
 								if (j > 10) {
 									j = 0;
 								}
@@ -313,18 +344,24 @@
 				});
 
 	}
+	
+	
+	
 
 	// 페이지 로딩시 디비에 있는 이벤트 불러옴
-	function viewCalendar() {
+	function viewCalendar(bhf_code) {
 		$
 				.ajax({
 					type : "GET",
 					url : "viewCalendar",
 					dataType : "json",
+					data : {
+						bhf_code : bhf_code
+					},
 					success : function(data) {
 
 						var length = data.result.length;
-						console.log(data);
+			
 
 						var colorArray = new Array('#FAE0D4', '#FFA7A7',
 								'#F15F5F', '#00005B', '#FFBA85', '#4D48E1',
@@ -342,10 +379,7 @@
 							 
 							
 							var end2 = temp.split(" ")[0].split("-")[2];
-							
-							
-							
-							
+					
 							if(end2.match("^0")){
 								end2 = parseInt(end2.split("0")[1]) + 1;
 								
@@ -361,7 +395,7 @@
 							
 							var end3 = temp.split(" ")[1];
 							
-							console.log(end3);
+						
 							var end = end1 + "-" +end2 + " " + end3;
 						
 							var eventData = {
@@ -408,10 +442,14 @@ body {
 <div id="calendar"></div>
 
 <div id="registerEvent" class="modal-layout">
-	<label for="eventName">이벤트 이름</label><input class="eventName"
-		name="eventName" type="text" /> <br> <label for="eventStart">이벤트
-		시작일자</label> <input class="eventStart" name="eventStart" type="datetime-local" />
-	<br> <label for="eventEnd">이벤트 종료일자</label><input class="eventEnd"
+	<label for="eventName">이벤트 이름</label>
+	<input class="eventName"
+		name="eventName" type="text" /> <br> 
+	<label for="eventStart">이벤트
+		시작일자</label> 
+	<input class="eventStart" name="eventStart" type="datetime-local" />
+	<br> <label for="eventEnd">이벤트 종료일자</label>
+	<input class="eventEnd"
 		name="eventEnd" type="datetime-local" /> <br> <label
 		for="eventInfo">이벤트 설명</label>
 	<textarea class="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>

@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import yjc.wdb.scts.bean.BBScttVO;
+import yjc.wdb.scts.bean.BBSctt_WritingVO;
 import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.dao.BBSDAO;
 import yjc.wdb.scts.service.BBSService;
@@ -20,17 +22,18 @@ public class BBSServiceImpl implements BBSService {
 	private BBSDAO dao;
 
 	@Override
-	public List<HashMap> viewCalendar() throws Exception {
+	public List<HashMap> viewCalendar(int bhf_code) throws Exception {
 		
-		return dao.viewCalendar();
+		return dao.viewCalendar(bhf_code);
 	}
 	
 	@Transactional
 	@Override
-	public void insertEvent(EventVO eventVO, BBScttVO bbscttVO) throws Exception {
+	public void insertEvent(JSONObject json) throws Exception {
 		
-		dao.insertBBSctt(bbscttVO);
-		dao.insertEvent(eventVO);
+		dao.insertBBSctt(json);
+		dao.insertEvent(json);
+		dao.insertBbsctt_writing(json);
 	}
 
 	@Override
@@ -51,8 +54,11 @@ public class BBSServiceImpl implements BBSService {
 	@Override
 	public void deleteEvent(int bbsctt_code) throws Exception {
 	
+		
 		dao.deleteEvent(bbsctt_code);
 		dao.deleteBbsctt(bbsctt_code);
+		dao.deleteBbscttWriting(bbsctt_code);
+		
 		
 	}
 
@@ -65,6 +71,8 @@ public class BBSServiceImpl implements BBSService {
 	public void updateDropEvent(EventVO eventVO) throws Exception {
 		dao.updateEvent(eventVO);
 	}
+
+
 
 
 

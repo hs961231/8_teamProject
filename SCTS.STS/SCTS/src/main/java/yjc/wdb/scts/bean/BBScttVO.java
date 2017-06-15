@@ -5,6 +5,7 @@ public class BBScttVO {
 	private int bbsctt_code;
 	private String bbsctt_sj;
 	private String bbsctt_cn;
+	
 	public int getBbsctt_code() {
 		return bbsctt_code;
 	}

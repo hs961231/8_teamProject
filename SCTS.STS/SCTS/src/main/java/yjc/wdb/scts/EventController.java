@@ -11,11 +11,13 @@ import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.BBScttVO;
+import yjc.wdb.scts.bean.BBSctt_WritingVO;
 import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.service.BBSService;
 
@@ -28,10 +30,10 @@ public class EventController {
 	// 캘린더 위 일정 뿌리기
 		@RequestMapping(value="viewCalendar", method=RequestMethod.GET,
 				produces = "text/plain; charset=UTF-8")
-		public @ResponseBody String viewCalendar() throws Exception{
+		public @ResponseBody String viewCalendar(int bhf_code) throws Exception{
 			
 			
-			List<HashMap> list = bbsService.viewCalendar();
+			List<HashMap> list = bbsService.viewCalendar(bhf_code);
 			
 			JSONObject viewCalJson;
 			JSONArray viewCalArray = new JSONArray();
@@ -52,7 +54,7 @@ public class EventController {
 			 
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
-			System.out.println(json.toString());
+		 
 			
 			return json.toString();
 		}
@@ -60,13 +62,18 @@ public class EventController {
 
 		
 		// 이벤트 등록
-		@RequestMapping(value="insertEvent", method=RequestMethod.GET)
-		public ResponseEntity<String> insertEvent(EventVO eventVO, BBScttVO bbscttVO){
+		@RequestMapping(value="insertEvent", method=RequestMethod.POST)
+		//public ResponseEntity<String> insertEvent(EventVO eventVO, BBScttVO bbscttVO, BBSctt_WritingVO bbsctt_writingVO){
+		public ResponseEntity<String> insertEvent(@RequestBody JSONObject json){
 		
 			ResponseEntity<String> entity = null;
+		
+			//System.out.println(json.toString());
+			System.out.println("여기 컨트롤러");
+	
 			
 			try {
-				bbsService.insertEvent(eventVO, bbscttVO);
+				bbsService.insertEvent(json);
 				
 				
 				entity = new ResponseEntity<String>("success", HttpStatus.OK);
