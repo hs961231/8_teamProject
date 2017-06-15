@@ -23,7 +23,18 @@ and
 	BEACON_MNR = #{beacon_mnr}
 </update>
 
-<select id="selectBeaconList" resultType="BeaconVO">
+<select id="selectSetBeaconList" resultType="BeaconVO">
+select
+	beacon_mjr, beacon_mnr, beacon_sttus
+from
+	beacon
+where
+	BHF_CODE = #{bhf_code}
+and
+	beacon_sttus = 'ON'
+</select>
+
+<select id="selectAllBeaconList" resultType="BeaconVO">
 select
 	beacon_mjr, beacon_mnr, beacon_sttus
 from

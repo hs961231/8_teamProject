@@ -107,7 +107,7 @@ public class BeaconM{
     public void sendBeaconData(String mode) {
 
         // 비콘 타임데이터에 머문 시간 저장
-        if(mode.equals("second")) {
+        if(mode.equals("secondSend")) {
             beaconTimeData.setCours_stay_time(stayTimeMil / 1000);
             stayTimeMil = 0;
         }
@@ -117,7 +117,7 @@ public class BeaconM{
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
                 .create()
                 .toJson(beaconTimeData);
-
+        Log.d(TAG, "sendBeaconData: " + json);
         // 제이슨 형태 확인
         Toast.makeText(mContext, "logic: 서버전송 stayTimeMil = " + json, Toast.LENGTH_LONG).show();
         // 서버로 전송시킴

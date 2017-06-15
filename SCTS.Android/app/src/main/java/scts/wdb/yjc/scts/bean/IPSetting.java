@@ -43,7 +43,7 @@ public class IPSetting {
                 break;
         }
         if(chk == 1)
-            str += "3MS/";
+            str += "SCTS/";
         else
             str += "scts/";
 

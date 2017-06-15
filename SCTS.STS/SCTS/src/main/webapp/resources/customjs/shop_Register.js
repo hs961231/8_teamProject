@@ -153,8 +153,8 @@ $(document).ready(function() {
 	 */
 	$("#beaconList").on("click", ".beacon", function() {
 		var tile_code = parseInt($("#tile_code").val());
-		var beacon_mjr = parseInt($("#beacon_mjr").text());
-		var beacon_mnr = parseInt($("#beacon_mnr").text());
+		var beacon_mjr = parseInt($(this).children(".beacon_mjr").text());
+		var beacon_mnr = parseInt($(this).children(".beacon_mnr").text());
 		
 		console.log(beacon_mjr + "  비콘 정보들  " + beacon_mnr);
 		
@@ -204,8 +204,10 @@ $(document).ready(function() {
 					
 					for(var i=0; i<data.length; i++) {
 						var beaconItem = $("<tr class='beacon'></tr>");
-						$("<td></td>").attr("id", "beacon_mjr").text(data[i].beacon_mjr).appendTo(beaconItem);
-						$("<td></td>").attr("id", "beacon_mnr").text(data[i].beacon_mnr).appendTo(beaconItem);
+						//$("<td></td>").attr("id", "beacon_mjr").text(data[i].beacon_mjr).appendTo(beaconItem);
+						//$("<td></td>").attr("id", "beacon_mnr").text(data[i].beacon_mnr).appendTo(beaconItem);
+						$("<td></td>").addClass("beacon_mjr").text(data[i].beacon_mjr).appendTo(beaconItem);
+						$("<td></td>").addClass("beacon_mnr").text(data[i].beacon_mnr).appendTo(beaconItem);
 						$("<td></td>").text(data[i].beacon_sttus).appendTo(beaconItem);
 						
 						beaconItem.appendTo($("#beaconList"));

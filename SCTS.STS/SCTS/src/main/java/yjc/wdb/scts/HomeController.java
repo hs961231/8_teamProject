@@ -147,7 +147,7 @@ public class HomeController {
 		model.addAttribute("tileList", tileList);
 
 		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
-		List<BeaconVO> beaconList = beaconService.selectBeaconList(bhf_code);
+		List<BeaconVO> beaconList = beaconService.selectAllBeaconList(bhf_code);
 		model.addAttribute("beaconList", beaconList);
 		
 		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김

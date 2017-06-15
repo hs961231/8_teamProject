@@ -125,6 +125,8 @@ public class AndroidController {
 			// TODO: handle exception
 			e.printStackTrace();
 			logger.debug("±úÁü");
+			resultData.put("status", "ERROR");
+			return resultData.toString();
 		}
 
 		logger.debug(str);
@@ -194,6 +196,8 @@ public class AndroidController {
 			// TODO: handle exception
 			e.printStackTrace();
 			logger.debug("±úÁü");
+			resultData.put("status", "ERROR");
+			return resultData.toString();
 		}
 
 		logger.debug(str);

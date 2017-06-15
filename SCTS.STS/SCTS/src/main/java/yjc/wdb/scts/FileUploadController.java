@@ -75,7 +75,7 @@ public class FileUploadController {
 
 		floor_informationService.register_shop(savedName, vo);
 
-		return "mainPage";
+		return "redirect:mainPage";
 	}
 
 	//@RequestMapping(value="uploadAjax", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")

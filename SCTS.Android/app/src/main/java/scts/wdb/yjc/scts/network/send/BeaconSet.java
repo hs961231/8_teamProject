@@ -1,12 +1,15 @@
 package scts.wdb.yjc.scts.network.send;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import scts.wdb.yjc.scts.HttpClient;
 import scts.wdb.yjc.scts.bean.IPSetting;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by JYH on 2017-04-06.
@@ -33,6 +36,7 @@ public class BeaconSet extends AsyncTask<String, String, String> {
             http.addOrReplace("" + i,params[i]);
         }
         */
+
         // HTTP 요청 전송
         HttpClient post = http.create();
 
@@ -51,6 +55,7 @@ public class BeaconSet extends AsyncTask<String, String, String> {
     /**************************** 이부분이 쿠폰 받은 부분이다!!!!!!!!!!!!!!! **************************/
 
     protected void onPostExecute(String s){
+        Log.d(TAG, "onPostExecute: " + s);
         JsonObject json = (JsonObject) new JsonParser().parse(s);
 
         // 성공시 처리

@@ -15,11 +15,18 @@ public class BeaconServiceImpl implements BeaconService {
 	
 	@Inject
 	private BeaconDAO dao;
+	
 
 	@Override
-	public List<BeaconVO> selectBeaconList(int bhf_code) throws Exception {
+	public List<BeaconVO> selectSetBeaconList(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.selectBeaconList(bhf_code);
+		return dao.selectSetBeaconList(bhf_code);
+	}
+
+	@Override
+	public List<BeaconVO> selectAllBeaconList(int bhf_code) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectAllBeaconList(bhf_code);
 	}
 
 }

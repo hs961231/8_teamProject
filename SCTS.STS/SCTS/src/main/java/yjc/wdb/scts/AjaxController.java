@@ -80,7 +80,7 @@ public class AjaxController {
 	public String getBeacon() throws Exception {
 		
 		int bhf_code = 1;
-		List<BeaconVO> beaconList = beaconService.selectBeaconList(bhf_code);
+		List<BeaconVO> beaconList = beaconService.selectSetBeaconList(bhf_code);
 		
 		String str = new Gson().toJson(beaconList);
 		
@@ -123,6 +123,7 @@ public class AjaxController {
 		System.out.println( json.get("tile_code") + "  타일  " + json.get("beacon_mjr") + "  비콘 데이터  " + json.get("beacon_mnr") );
 		
 		HashMap<String, String> vo = new HashMap<String, String>();
+		
 
 		vo.put("tile_code", json.get("tile_code").toString());
 		vo.put("beacon_mjr", json.get("beacon_mjr").toString());

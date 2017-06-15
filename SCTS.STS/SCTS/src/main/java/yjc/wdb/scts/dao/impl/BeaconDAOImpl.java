@@ -18,17 +18,23 @@ public class BeaconDAOImpl implements BeaconDAO {
 	
 	@Inject
 	private SqlSession sql;
-
-	@Override
-	public List<BeaconVO> selectBeaconList(int bhf_code) throws Exception {
-		// TODO Auto-generated method stub
-		return sql.selectList(NAMESPACE + ".selectBeaconList", bhf_code);
-	}
-
+	
 	@Override
 	public void updateBeaconSttus(HashMap<String, String> vo) throws Exception {
 		// TODO Auto-generated method stub
 		sql.update(NAMESPACE + ".updateBeaconSttus", vo);
+	}
+
+	@Override
+	public List<BeaconVO> selectSetBeaconList(int bhf_code) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE + ".selectSetBeaconList", bhf_code);
+	}
+
+	@Override
+	public List<BeaconVO> selectAllBeaconList(int bhf_code) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE + ".selectAllBeaconList", bhf_code);
 	}
 
 }
