@@ -17,11 +17,13 @@
 						var day = date.getDate();
 
 						var options = {
+						
 							header : {
 								left : 'prev,next today',
 								center : 'title',
 								right : 'month,basicWeek,agendaDay,listWeek'
 							},
+							locale : "ko",
 							views : {
 								month : {
 									titleFormat : 'YYYY-MM',
@@ -46,8 +48,15 @@
 							selectHelper : true,
 							visible : true,
 							select : registerEvent(),
-							dayClick : function() {
+							dayClick : function(date) {
+								
+								
 								$("#registerEvent").modal();
+								
+								var start = date.format("YYYY-MM-DD HH:mm:ss");
+								start = start.replace(" ", "T");
+								
+								$("#registerEvent .eventStart").val(start);
 							},
 							
 							eventClick : function(event) {
@@ -60,7 +69,7 @@
 									data : {
 										code : code
 									},
-									dataType : "jsonp",
+									dataType : "json",
 									success : function(data) {
 
 										var start = data.result[0].start;
@@ -111,15 +120,11 @@
 								$.ajax({
 									type : "GET",
 									url : "updateDropEvent",
-									headers : {
-										"Content-Type" : "application/json",
-										"X-HTTP-Method-Override" : "GET"
-									},
 									data : {
 
 										bbsctt_code : code,
 										event_begin_de : eventStart,
-										event_end_de : eventEnd
+										event_end_de : eventEnd 
 
 									},
 									dataType : "text"
@@ -254,15 +259,15 @@
 							'#00005B', '#FFBA85', '#4D48E1', '#F25A5A',
 							'#008299', '#005766', '#9C8136');
 
-					var title = $("#eventName").val();
-					var start = $("#eventStart").val();
+					var title = $("#registerEvent .eventName").val();
+					var start = $("#registerEvent .eventStart").val();
 					start = start.replace("T", " ");
 					start = start + ":00";
 
-					var end = $("#eventEnd").val();
+					var end = $("#registerEvent .eventEnd").val();
 					end = end.replace("T", " ") + ":00";
 
-					var eventInfo = $("#eventInfo").val();
+					var eventInfo = $("#registerEvent .eventInfo").val();
 
 					$.ajax({
 						type : "GET",
@@ -315,10 +320,11 @@
 				.ajax({
 					type : "GET",
 					url : "viewCalendar",
-					dataType : "jsonp",
+					dataType : "json",
 					success : function(data) {
 
 						var length = data.result.length;
+						console.log(data);
 
 						var colorArray = new Array('#FAE0D4', '#FFA7A7',
 								'#F15F5F', '#00005B', '#FFBA85', '#4D48E1',
@@ -329,12 +335,39 @@
 						for (var i = 0; i < length; i++) {
 
 							var start = (data.result[i].start).split(".")[0];
-							var end = (data.result[i].end).split(".")[0];
-
+							
+							var temp = (data.result[i].end).split(".")[0];
+							
+							var end1 = temp.split("-")[0] + "-"+ temp.split("-")[1];
+							 
+							
+							var end2 = temp.split(" ")[0].split("-")[2];
+							
+							
+							
+							
+							if(end2.match("^0")){
+								end2 = parseInt(end2.split("0")[1]) + 1;
+								
+					
+							}else{
+								end2 = parseInt(end2) + 1;
+							}
+							
+							
+							if(end2 < 10){
+								end2 = "0"+end2;
+							}
+							
+							var end3 = temp.split(" ")[1];
+							
+							console.log(end3);
+							var end = end1 + "-" +end2 + " " + end3;
+						
 							var eventData = {
 								title : data.result[i].title,
-								start : moment(start).format(),
-								end : moment(end).format(),
+								start : start,
+								end : end,
 								id : data.result[i].bbsctt_code,
 								bbsctt_cn : data.result[i].bbsctt_cn,
 								color : colorArray[j]
@@ -375,13 +408,13 @@ body {
 <div id="calendar"></div>
 
 <div id="registerEvent" class="modal-layout">
-	<label for="eventName">이벤트 이름</label><input id="eventName"
+	<label for="eventName">이벤트 이름</label><input class="eventName"
 		name="eventName" type="text" /> <br> <label for="eventStart">이벤트
-		시작일자</label> <input id="eventStart" name="eventStart" type="datetime-local" />
-	<br> <label for="eventEnd">이벤트 종료일자</label><input id="eventEnd"
+		시작일자</label> <input class="eventStart" name="eventStart" type="datetime-local" />
+	<br> <label for="eventEnd">이벤트 종료일자</label><input class="eventEnd"
 		name="eventEnd" type="datetime-local" /> <br> <label
 		for="eventInfo">이벤트 설명</label>
-	<textarea id="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>
+	<textarea class="eventInfo" name="eventInfo" cols="30" rows="5"></textarea>
 	<br>
 
 	<button id="edit" class="btn btn-primary">등록</button>

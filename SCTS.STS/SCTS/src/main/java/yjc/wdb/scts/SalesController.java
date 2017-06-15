@@ -24,10 +24,7 @@ public class SalesController {
 	private BillService billService;
 	
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
-	public @ResponseBody String yearSales(HttpServletRequest request, int year) throws Exception{
-
-
-		String callback = request.getParameter("callback");
+	public @ResponseBody String yearSales(int year) throws Exception{
 
 		List<HashMap> list = billService.yearSales(year);
 		
@@ -50,15 +47,12 @@ public class SalesController {
 		jsonObject.put("yearSales", salesArray);
 	
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 	@RequestMapping(value="yearToMonth", method=RequestMethod.GET)
-	public @ResponseBody String yearToMonth(HttpServletRequest request, int year) throws Exception{
+	public @ResponseBody String yearToMonth(int year) throws Exception{
 
-		System.out.println(year);
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> yearToMonth = billService.yearToMonth(year);
 
@@ -79,15 +73,13 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("yearToMonth", ytmArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 	
 	@RequestMapping(value="searchYear", method=RequestMethod.GET)
-	public @ResponseBody String searchYear(HttpServletRequest request, int year1, int year2) throws Exception{
+	public @ResponseBody String searchYear(int year1, int year2) throws Exception{
 
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.searchYear(year1, year2);
 		
@@ -106,15 +98,12 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("yearSales", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 	
 	@RequestMapping(value="settleSalesInfo", method=RequestMethod.GET)
-	public @ResponseBody String settleSalesInfo(HttpServletRequest request, int year1, int year2) throws Exception{
-
-
-		String callback = request.getParameter("callback");
+	public @ResponseBody String settleSalesInfo(int year1, int year2) throws Exception{
 
 		List<HashMap> list = billService.settleSalesInfo(year1, year2);
 
@@ -134,16 +123,12 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 
 	@RequestMapping(value="daySales", method=RequestMethod.GET)
-	public @ResponseBody String daySales(HttpServletRequest request) throws Exception{
-
-
-		String callback = request.getParameter("callback");
-
+	public @ResponseBody String daySales() throws Exception{
 		List<HashMap> list = billService.daySales();
 
 		JSONObject salesJson;
@@ -159,16 +144,14 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 
 	
 	@RequestMapping(value="daySettle", method=RequestMethod.GET)
-	public @ResponseBody String daySettle(HttpServletRequest request, Date date1, Date date2, int setle_mth_code) throws Exception{
+	public @ResponseBody String daySettle(Date date1, Date date2, int setle_mth_code) throws Exception{
 
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.daySettle(date1, date2, setle_mth_code);
 		
@@ -188,14 +171,11 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 	@RequestMapping(value="searchDaySales", method=RequestMethod.GET)
-	public @ResponseBody String searchDaySales(HttpServletRequest request, Date date1, Date date2) throws Exception{
-
-
-		String callback = request.getParameter("callback");
+	public @ResponseBody String searchDaySales(Date date1, Date date2) throws Exception{
 
 		List<HashMap> list = billService.searchDaySales(date1, date2);
 
@@ -212,16 +192,13 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 
 	
 	@RequestMapping(value="daySalesSettleInfo", method=RequestMethod.GET)
-	public @ResponseBody String daySalesSettleInfo(HttpServletRequest request) throws Exception{
-
-
-		String callback = request.getParameter("callback");
+	public @ResponseBody String daySalesSettleInfo() throws Exception{
 
 		List<HashMap> list = billService.daySalesSettleInfo();
 		
@@ -241,14 +218,12 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 	@RequestMapping(value="monthSales", method=RequestMethod.GET)
-	public @ResponseBody String monthSales(HttpServletRequest request, String month1, String month2) throws Exception{
+	public @ResponseBody String monthSales(String month1, String month2) throws Exception{
 
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.monthSales(month1, month2);
 
@@ -265,16 +240,14 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 
 	
 	@RequestMapping(value="monthSalesSettleInfo", method=RequestMethod.GET)
-	public @ResponseBody String monthSalesSettleInfo(HttpServletRequest request, String month1, String month2, int setle_mth_code) throws Exception{
+	public @ResponseBody String monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception{
 
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.monthSalesSettleInfo(month1, month2, setle_mth_code);
 		
@@ -294,15 +267,13 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 		
 	}
 	
 	@RequestMapping(value="productRank", method=RequestMethod.GET)
-	public @ResponseBody String productRank(HttpServletRequest request, String date, int standard) throws Exception{
+	public @ResponseBody String productRank(String date, int standard) throws Exception{
 
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.productRank(date, standard);
 		
@@ -324,16 +295,13 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 		
 	}
 	
 	
 	@RequestMapping(value="productRankInfo", method=RequestMethod.GET)
-	public @ResponseBody String productRankInfo(HttpServletRequest request, String date, int standard) throws Exception{
-
-
-		String callback = request.getParameter("callback");
+	public @ResponseBody String productRankInfo(String date, int standard) throws Exception{
 
 		List<HashMap> list = billService.productRankInfo(date, standard);
 		
@@ -356,15 +324,12 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 		
 	}
 	
 	@RequestMapping(value="genderSales", method=RequestMethod.GET)
-	public @ResponseBody String genderSales(HttpServletRequest request, String date) throws Exception{
-
-
-		String callback = request.getParameter("callback");
+	public @ResponseBody String genderSales(String date) throws Exception{
 
 		List<HashMap> list = billService.genderSales(date, "m");
 		List<HashMap> list2 = billService.genderSales(date, "w");
@@ -416,16 +381,13 @@ public class SalesController {
 		jsonObject.put("w", ytmArray);
 	
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 	}
 	
 	
 	@RequestMapping(value="ageSales", method=RequestMethod.GET)
 	public @ResponseBody String ageSales(HttpServletRequest request, String date, int age, 
 			int standard, String gender) throws Exception{
-
-
-		String callback = request.getParameter("callback");
 
 		List<HashMap> list = billService.ageSales(date, age, standard, gender);
 	
@@ -445,17 +407,16 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 		
 	}
 	
 	@RequestMapping(value="ageSalesInfo", method=RequestMethod.GET)
-	public @ResponseBody String ageSalesInfo(HttpServletRequest request, String date, int age, 
+	public @ResponseBody String ageSalesInfo(String date, int age, 
 			int standard, String gender) throws Exception{
 
 
-		String callback = request.getParameter("callback");
-
+		
 		List<HashMap> list = billService.ageSalesInfo(date, age, standard, gender);
 	
 		JSONObject salesJson;
@@ -476,7 +437,7 @@ public class SalesController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", salesArray);
 
-		return callback + "(" + jsonObject +")";
+		return jsonObject.toString();
 		
 	}
 

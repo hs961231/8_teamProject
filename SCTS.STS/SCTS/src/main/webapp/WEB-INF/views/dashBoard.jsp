@@ -90,7 +90,7 @@ $(document).ready(function () {
     $.ajax({
 		type : "GET",
 		url : "daySales",
-		dataType: 'jsonp',
+		dataType: 'json',
 		success : function(data) {
 			
 			var length = data.result.length;
@@ -394,45 +394,4 @@ $(document).ready(function () {
 	</div>
 </div>
 
-
-<script>
-	/* $(document).ready( function() {
-		// 연매출 barchart!!!
-		var year = new Date().getFullYear();
-
-		$.ajax({
-			type : "GET",
-			url : "daySales",
-			dataType: 'jsonp',
-			success : function(data) {
-
-				var barChartData = {};
-				barChartData.labels = [];
-				barChartData.datasets = [];
-				barChartData.datasets[0] = {};
-				barChartData.datasets[0].fillColor = "#FF3359";
-				barChartData.datasets[0].strokeColor = "#FF3359";
-				barChartData.datasets[0].data = [];
-				
-				var length = data.result.length;
-				
-				for(var i=0; i<length; i++){
-					
-					barChartData.labels[i] = data.result[i].bill_issu_de;
-					barChartData.datasets[0].data[i] = data.result[i].totalPrice;
-
-				}
-			
-				new Chart(document.getElementById("barDay").getContext(
-						"2d")).Bar(barChartData);
-
-			}
-		
-		});
-
-		$('.daySales').on('click', function(){
-				
-		});
-	}); */
-</script>
 

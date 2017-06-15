@@ -3,7 +3,6 @@ $(document).ready(function(){
 	
 	highchartTheme();
 
-			
 			var options = {
 				    chart: {
 				        type: 'column'
@@ -61,7 +60,7 @@ $(document).ready(function(){
 			data : {
 				year: year
 			},
-			dataType: 'jsonp',
+			dataType: 'json',
 			success : function(data) {
 
 				var length = data.yearSales.length;
@@ -101,7 +100,7 @@ $(document).ready(function(){
 				data : {
 					year : text
 				},
-				dataType: 'jsonp',
+				dataType: 'json',
 				success : function(data) {
 					var length = data.yearToMonth.length;
 					
@@ -128,11 +127,6 @@ $(document).ready(function(){
 				var year1 = $("#year1 option:selected").val();
 				var year2 = $("#year2 option:selected").val();
 				
-				
-				$(".chart").children().remove(); 
-				
-				$(".chart").append($('<div id="salesChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>'));
-							
 							
 					$.ajax({
 					type : "GET",
@@ -141,7 +135,7 @@ $(document).ready(function(){
 								year1 : year1,
 								year2 : year2
 						},
-					dataType: 'jsonp',
+					dataType: 'json',
 					success : function(data) {
 						
 						delete options.series[0].data;
@@ -186,7 +180,7 @@ $(document).ready(function(){
 						year1: year1,
 						year2: year2,
 					},
-			dataType: 'jsonp',
+			dataType: 'json',
 			success : function(data) {
 			
 					var length = data.result.length;

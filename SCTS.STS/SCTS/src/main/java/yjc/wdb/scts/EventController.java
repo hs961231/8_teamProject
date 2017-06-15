@@ -26,10 +26,10 @@ public class EventController {
 	private BBSService bbsService;
 	
 	// Ä¶¸°´õ À§ ÀÏÁ¤ »Ñ¸®±â
-		@RequestMapping(value="viewCalendar", method=RequestMethod.GET)
-		public @ResponseBody String viewCalendar(HttpServletRequest request) throws Exception{
+		@RequestMapping(value="viewCalendar", method=RequestMethod.GET,
+				produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String viewCalendar() throws Exception{
 			
-			String callback = request.getParameter("callback");
 			
 			List<HashMap> list = bbsService.viewCalendar();
 			
@@ -52,8 +52,9 @@ public class EventController {
 			 
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
+			System.out.println(json.toString());
 			
-			return callback + "(" + json +")";
+			return json.toString();
 		}
 		
 
@@ -98,7 +99,7 @@ public class EventController {
 						entity =  new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 						e.printStackTrace();
 				}
-					
+	 				
 				return entity;
 								
 		}
@@ -145,10 +146,9 @@ public class EventController {
 		
 		// list event
 		
-		@RequestMapping(value="listEvent", method=RequestMethod.GET)
-		public @ResponseBody String listEvent(HttpServletRequest request, String date1, String date2) throws Exception{
-			
-			String callback = request.getParameter("callback");
+		@RequestMapping(value="listEvent", method=RequestMethod.GET,
+				produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String listEvent(String date1, String date2) throws Exception{
 			
 			List<HashMap> list = bbsService.listEvent(date1, date2);
 			
@@ -172,14 +172,13 @@ public class EventController {
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
 			
-			return callback + "(" + json +")";
+			return json.toString();
 		}
 		
 		
-		@RequestMapping(value="eventOne", method=RequestMethod.GET)
-		public @ResponseBody String eventOne(HttpServletRequest request, int code) throws Exception{
-			
-			String callback = request.getParameter("callback");
+		@RequestMapping(value="eventOne", method=RequestMethod.GET
+				,produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String eventOne(int code) throws Exception{
 			
 			List<HashMap> list = bbsService.eventOne(code);
 			
@@ -203,7 +202,7 @@ public class EventController {
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
 			
-			return callback + "(" + json +")";
+			return json.toString();
 		}
 		
 		
