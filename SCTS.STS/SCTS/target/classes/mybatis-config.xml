@@ -22,7 +22,6 @@
 		<typeAlias alias="GoodsVO" 							type="yjc.wdb.scts.bean.GoodsVO"></typeAlias>
 		<typeAlias alias="Large_classification_categoryVO"	type="yjc.wdb.scts.bean.Large_classification_categoryVO"></typeAlias>
 		<typeAlias alias="Purchase_goodsVO" 				type="yjc.wdb.scts.bean.Purchase_goodsVO"></typeAlias>
-		<typeAlias alias="Tile_locationVO" 					type="yjc.wdb.scts.bean.Tile_locationVO"></typeAlias>
 		<typeAlias alias="TileVO" 							type="yjc.wdb.scts.bean.TileVO"></typeAlias>
 		<typeAlias alias="UserVO" 							type="yjc.wdb.scts.bean.UserVO"></typeAlias>
 		<typeAlias alias="EventVO" 							type="yjc.wdb.scts.bean.EventVO"></typeAlias>

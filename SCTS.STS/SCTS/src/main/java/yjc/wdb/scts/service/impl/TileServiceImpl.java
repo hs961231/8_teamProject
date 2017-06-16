@@ -35,9 +35,9 @@ public class TileServiceImpl implements TileService {
 	}
 
 	@Override
-	public HashMap<String, String> selectTile_LocationOne(HashMap<String, String> Map_XY) throws Exception {
+	public HashMap<String, String> selectTile_LocationOne(TileVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return tiledao.selectTile_LocationOne(Map_XY);
+		return tiledao.selectTile_LocationOne(vo);
 	}
 
 	@Override

@@ -94,13 +94,13 @@ from
 							select
 								TILE_CODE
 							from
-								tile_location
+								tile
 							where
 								DRW_CODE = #{drw_code}
 							and
-								TILELC_CRDNT_X = #{tilelc_crdnt_x}
+								TILE_CRDNT_X = #{tile_crdnt_x}
 							and
-								TILELC_CRDNT_Y = #{tilelc_crdnt_y}
+								TILE_CRDNT_Y = #{tile_crdnt_y}
 						)
 		and
 			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY)) 
@@ -136,13 +136,13 @@ from
 							select
 								TILE_CODE
 							from
-								tile_location
+								tile
 							where
 								DRW_CODE = #{drw_code}
 							and
-								TILELC_CRDNT_X = #{tilelc_crdnt_x}
+								TILE_CRDNT_X = #{tile_crdnt_x}
 							and
-								TILELC_CRDNT_Y = #{tilelc_crdnt_y}
+								TILE_CRDNT_Y = #{tile_crdnt_y}
 						)
 		and
 			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY)) 
