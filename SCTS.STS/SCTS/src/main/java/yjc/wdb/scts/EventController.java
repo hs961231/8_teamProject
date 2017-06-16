@@ -11,11 +11,13 @@ import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.BBScttVO;
+import yjc.wdb.scts.bean.BBSctt_WritingVO;
 import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.service.BBSService;
 
@@ -26,12 +28,12 @@ public class EventController {
 	private BBSService bbsService;
 	
 	// 캘린더 위 일정 뿌리기
-		@RequestMapping(value="viewCalendar", method=RequestMethod.GET)
-		public @ResponseBody String viewCalendar(HttpServletRequest request) throws Exception{
+		@RequestMapping(value="viewCalendar", method=RequestMethod.GET,
+				produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String viewCalendar(int bhf_code) throws Exception{
 			
-			String callback = request.getParameter("callback");
 			
-			List<HashMap> list = bbsService.viewCalendar();
+			List<HashMap> list = bbsService.viewCalendar(bhf_code);
 			
 			JSONObject viewCalJson;
 			JSONArray viewCalArray = new JSONArray();
@@ -52,20 +54,26 @@ public class EventController {
 			 
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
+		 
 			
-			return callback + "(" + json +")";
+			return json.toString();
 		}
 		
 
 		
 		// 이벤트 등록
-		@RequestMapping(value="insertEvent", method=RequestMethod.GET)
-		public ResponseEntity<String> insertEvent(EventVO eventVO, BBScttVO bbscttVO){
+		@RequestMapping(value="insertEvent", method=RequestMethod.POST)
+		//public ResponseEntity<String> insertEvent(EventVO eventVO, BBScttVO bbscttVO, BBSctt_WritingVO bbsctt_writingVO){
+		public ResponseEntity<String> insertEvent(@RequestBody JSONObject json){
 		
 			ResponseEntity<String> entity = null;
+		
+			//System.out.println(json.toString());
+			System.out.println("여기 컨트롤러");
+	
 			
 			try {
-				bbsService.insertEvent(eventVO, bbscttVO);
+				bbsService.insertEvent(json);
 				
 				
 				entity = new ResponseEntity<String>("success", HttpStatus.OK);
@@ -98,7 +106,7 @@ public class EventController {
 						entity =  new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 						e.printStackTrace();
 				}
-					
+	 				
 				return entity;
 								
 		}
@@ -145,10 +153,9 @@ public class EventController {
 		
 		// list event
 		
-		@RequestMapping(value="listEvent", method=RequestMethod.GET)
-		public @ResponseBody String listEvent(HttpServletRequest request, String date1, String date2) throws Exception{
-			
-			String callback = request.getParameter("callback");
+		@RequestMapping(value="listEvent", method=RequestMethod.GET,
+				produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String listEvent(String date1, String date2) throws Exception{
 			
 			List<HashMap> list = bbsService.listEvent(date1, date2);
 			
@@ -172,14 +179,13 @@ public class EventController {
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
 			
-			return callback + "(" + json +")";
+			return json.toString();
 		}
 		
 		
-		@RequestMapping(value="eventOne", method=RequestMethod.GET)
-		public @ResponseBody String eventOne(HttpServletRequest request, int code) throws Exception{
-			
-			String callback = request.getParameter("callback");
+		@RequestMapping(value="eventOne", method=RequestMethod.GET
+				,produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String eventOne(int code) throws Exception{
 			
 			List<HashMap> list = bbsService.eventOne(code);
 			
@@ -203,7 +209,7 @@ public class EventController {
 			JSONObject json = new JSONObject();
 			json.put("result", viewCalArray);
 			
-			return callback + "(" + json +")";
+			return json.toString();
 		}
 		
 		

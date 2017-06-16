@@ -12,9 +12,14 @@
 		values(#{bbsctt_sj}, #{bbsctt_cn})
 	</insert>
 	
-	<insert id="eventInsert" parameterType="EventVO">
+	<insert id="eventInsert">
 		insert into event 
 		values(last_insert_id(), #{event_begin_de}, #{event_end_de});
+	</insert>
+	
+	<insert id="bbsctt_writingInsert">
+		insert into bbsctt_writing(bhf_code, user_id, bbsctgry_code, bbsctt_code, bbsctt_rgsde) 
+		values(#{bhf_code}, #{user_id}, 1, last_insert_id(), now());
 	</insert>
 
 	<!-- 캘린더위의 이벤트 일정 표시 -->
@@ -29,8 +34,8 @@
 	<select id="viewCalendar" resultMap="viewCalendar">
 		select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj, bc.bbsctt_cn as bbsctt_cn,
 		e.event_begin_de as event_begin_de, e.event_end_de as event_end_de
-		from bbsctt bc, event e
-		where bc.bbsctt_code = e.bbsctt_code
+		from bbsctt bc, event e, bbsctt_writing bw
+		where bc.bbsctt_code = e.bbsctt_code and bw.bbsctt_code = e.bbsctt_code and bw.bhf_code = #{bhf_code};
 	</select>
 	
 	<select id="eventOne" resultMap="viewCalendar">
@@ -61,13 +66,17 @@
 		delete from bbsctt where bbsctt_code = #{bbsctt_code}
 	</delete>
 	
+	<delete id="deleteBbscttWriting">
+		delete from bbsctt_writing where bbsctt_code = #{bbsctt_code}
+	</delete>
+	
 	<select id="listEvent" resultMap="viewCalendar">
 		select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj, bc.bbsctt_cn as bbsctt_cn,
 		e.event_begin_de as event_begin_de, e.event_end_de as event_end_de
 		from bbsctt bc, event e
 		where bc.bbsctt_code = e.bbsctt_code and date_format(e.event_begin_de, '%Y-%m-%d') between #{date1} and #{date2} 
-		
 	
 	</select>
+
 
 </mapper>

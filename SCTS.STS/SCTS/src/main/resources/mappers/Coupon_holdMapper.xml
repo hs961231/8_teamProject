@@ -12,6 +12,37 @@ insert into coupon_hold
 values (#{user_id}, #{coupon_code}, #{couponhold_use_at})
 </insert>
 
+<select id="selectCouponHoldGoods" resultType="java.util.HashMap">
+select
+	g.GOODS_NM, c.COUPON_NM, c.COUPON_DSCNT, c.COUPON_CODE
+from
+	goods g,
+	coupon c,
+	(
+		select
+			goods_code, coupon_code
+		from
+			coupon_goods_creation
+		where
+			goods_code IN (1,2,3)  /* #{goods_code} */
+		and
+			coupon_code IN	(
+								select
+									coupon_code
+								from
+									coupon_hold
+								where
+									user_id = 'S2user' /* #{user_id} */
+							)
+	) ch
+where
+	g.GOODS_CODE = ch.goods_code
+and
+	c.COUPON_CODE = ch.coupon_code
+and
+	now()	BETWEEN c.COUPON_BEGIN_DE 
+			AND c.COUPON_END_DE;
+</select>
 
 <!-- <update id="">
 </update>

@@ -24,7 +24,7 @@ $('.daySales').click(function(){
 	$.ajax({
 		type : "GET",
 		url : "daySalesSettleInfo",
-		dataType: 'jsonp',
+		dataType: 'json',
 		success : function(data) {
 			info(data);	
 		}
@@ -35,7 +35,7 @@ $('.daySales').click(function(){
 	$.ajax({
 		type : "GET",
 		url : "daySales",
-		dataType: 'jsonp',
+		dataType: 'json',
 		success : function(data) {
 			graphInfo(data);
 
@@ -56,7 +56,7 @@ $("#searchDate").click(function(event){
 	$.ajax({
 		type : "GET",
 		url : "searchDaySales",
-		dataType: 'jsonp',
+		dataType: 'json',
 		data : {
 			date1 : date1,
 			date2 : date2
@@ -83,7 +83,7 @@ $("#searchDate").click(function(event){
 	$.ajax({
 		type : "GET",
 		url : "daySettle",
-		dataType: 'jsonp',
+		dataType: 'json',
 		data : {
 			date1 : date1,
 			date2 : date2,
@@ -149,7 +149,7 @@ $("#searchMonth").click(function(){
 	$.ajax({
 		type : "GET",
 		url : "monthSalesSettleInfo",
-		dataType: 'jsonp',
+		dataType: 'json',
 		data : {
 			month1 : month1,
 			month2 : month2,
@@ -171,7 +171,7 @@ function monthlyChart(month1, month2){
 	$.ajax({
 		type : "GET",
 		url : "monthSales",
-		dataType: 'jsonp',
+		dataType: 'json',
 		data : {
 			month1 : month1,
 			month2 : month2
@@ -347,7 +347,7 @@ function ageSales(date, age, standard, gender){
 			standard : standard,
 			gender : gender
 		},
-		dataType : "jsonp",
+		dataType : "json",
 		success : function(data){
 			
 			$('.chartTitle').text(age + "대 고객별 선호 상품 순위");
@@ -453,7 +453,7 @@ function ageSalesInfo(date, age, standard, gender){
 			standard : standard,
 			gender : gender
 		},
-		dataType : "jsonp",
+		dataType : "json",
 		success : function(data){
 			
 			
@@ -537,7 +537,7 @@ function productInfo(date, standard){
 			date : date,
 			standard : standard
 		},
-		dataType : "jsonp",
+		dataType : "json",
 		success : function(data){
 
 			$('.chartTitle').text("상품별 순위");
@@ -616,7 +616,6 @@ function productInfo(date, standard){
 			}
 
 
-
 			Highcharts.chart('salesChart', options);
 
 		}
@@ -644,7 +643,7 @@ function productRankInfo(date, standard){
 			date : date,
 			standard : standard
 		},
-		dataType: "jsonp",
+		dataType: "json",
 		success : function(data){
 
 			var length = data.result.length;

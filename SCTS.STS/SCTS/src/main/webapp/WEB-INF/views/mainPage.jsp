@@ -73,6 +73,8 @@
 <!-- jQuery full calendar -->
 <script src='resources/eventCalendar/lib/moment.min.js'></script>
 <script src='resources/eventCalendar/fullcalendar.js'></script>
+<script src='resources/eventCalendar/locale/ko.js'></script>
+
 
 <script src="resources/js/jquery.rateit.min.js"></script>
 <!-- custom select -->
