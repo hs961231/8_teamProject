@@ -56,37 +56,111 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
+
+	/*
+	 * 쿠폰 포인트 모달 창에서 사용자의 아이디를 입력하였을 때
+	 * 사용자가 현재 구매목록에서 사용할 수 있는 쿠폰들을 아작스로 디비에서 가져와서
+	 * 모달창에 뿌려주는 역할을 함
+	 */
 	$('#getUserCoupon').on("click", function() {
-		var user_id = $('#user_id').text();
 		
+		if($('#goodsList').find(".goodsItem").length == 0 ) {
+			window.alert("구매할 상품을 먼저 등록 해주세요.");
+			return;
+		}
+		
+		var goods_code_Array = new Array(); 
+		
+		$('#goodsList').find(".active").each(function(i, e) {
+			goods_code_Array.push( parseInt($(this).find(".goods_code").text()) );
+		});
+		
+		console.log(goods_code_Array);
+		var user_id = $('#user_id').val();
+		console.log(user_id);
+
 		$.ajax({
 
 			url: "getUserCoupon",
 			type: "post",
 			contentType: "application/json",
-			data: {user_id : user_id},
+			data: JSON.stringify({
+				user_id : user_id,
+				goods_code_Array : goods_code_Array
+			}),
 			dataType: "json",
 			
 			success: function(data){
-				
+				if(data.length > 0) {
+					$("#inputMode").css("display", "none");
+					$("#couponMode").css("display", "block");
+					
+					console.log(data);
+					
+					var couponList = $("#couponList");
+					
+					for(var i=0; i<data.length; i++) {
+						var couponItem = $("<tr></tr>").addClass("couponItem");
+						$('<input type="hidden"/>').addClass("coupon_code").val(data[i].coupon_code).appendTo(couponItem);
+						$('<input type="hidden"/>').addClass("couponGoods_code").val(data[i].goods_code).appendTo(couponItem);
+						$('<td></td>').text(data[i].goods_nm).appendTo(couponItem);
+						$('<td></td>').text(data[i].coupon_nm).appendTo(couponItem);
+						$('<td></td>').text(data[i].coupon_dscnt).appendTo(couponItem);
+						$('<td></td>').text(data[i].coupon_end_de).appendTo(couponItem);
+						
+						couponItem.appendTo(couponList);
+					}
+				}
+				else {
+					window.alert("사용할 수 있는 쿠폰이 없습니다.");
+				}
 			},
 			error: function(data) {
-				//console.log("에러뜸");
-				window.alert("해당 상품이 존재하지 않습니다.");
-				$("#goods_code").val("");
+				console.log("에러뜸");
 			}
 		});
 	});
 	
+	$("#useCoupon").on("click", function() {
+		var useCouponArray = new Array();
+		var useGoodsArray = new Array();
+		
+		/* 쿠폰 리스트 아래에서 선택된 쿠폰들의 쿠폰코드와 적용될 물품코드를 저장한다. */
+		$("#couponList").find(".active").each(function(i, e) {
+			useGoodsArray.push($(this).find(".couponGoods_code").val());
+			useCouponArray.push($(this).find(".coupon_code").val());
+		});
+		
+		if(useGoodsArray.length == 0) {
+			window.alert("선택된 쿠폰이 없습니다.");
+			return;
+		}
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			for(var i=0; i<useGoodsArray.length; i++) {
+				if($(this).find('.goods_code').text() == useGoodsArray[i]) {
+					
+				}
+			}
+		});
+		
+		
+	});
+
+	/* 쿠폰 리스트(모달창) 에서 쿠폰 클릭햇을때 사용한다는 의미로 강조 표시 해줄 것 */
+	$("#couponList").on("click", ".couponItem", function() {
+		$(this).addClass("active");
+	
+	});
+	
+	$("#goodsList").on("click", ".active", function() {
+		$(this).removeClass("active");
+	});
 	
 	/* 상품 리스트에서 상품 한개 클릭했을때 해당열에 강조 표시 */
 	$("#goodsList").on("click", ".goodsItem", function() {
 		$("#goodsList > .active").removeClass("active");
 		
 		$(this).addClass("active");
-		
-		console.log($(this));
 	});
 	
 	$("#goodsList").on("click", ".active", function() {
@@ -165,7 +239,10 @@ $(document).ready(function() {
 			$("#goods_code").val( str + num );
 		}
 	});
-
+	
+	$(window).click(function(e) {
+		
+	});
 	/* 추후에 가격 입력시 ',' 를 찍어주는 것을 추가할 예정,
 	 * 2개의 함수로 나누어서
 	 * 1개는 숫자에 ','를 찍어서 반환 해주는 것과
