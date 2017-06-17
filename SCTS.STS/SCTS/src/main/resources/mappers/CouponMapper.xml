@@ -24,6 +24,13 @@
 			coupon
 	</select>
 	
+	<!--  특정 쿠폰 정보 출력 -->
+	<select id="selectCouponOne" resultType="CouponVO">
+		select *
+		from coupon
+		where coupon_code=#{coupon_code};
+	</select>
+	
 	<!-- 쿠폰 수정 -->
 	<update id="updateCoupon">
 		update coupon set coupon_nm =#{coupon_nm}, coupon_cntnts =#{coupon_cntnts},

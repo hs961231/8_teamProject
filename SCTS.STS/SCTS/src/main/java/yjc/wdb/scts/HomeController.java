@@ -288,48 +288,6 @@ public class HomeController {
 
 		return "mainPage";
 	}
-	
-	
-	
-	/********************************* 쿠폰 관리 부분 ***************************************/
-	/********************************* 쿠폰 관리 부분 ***************************************/
-
-	@RequestMapping(value="insertCoupon", method=RequestMethod.POST)
-	public String insertCoupon(CouponVO couponVO) throws Exception{
-		
-		System.out.println(couponVO);
-		couponService.insertCoupon(couponVO);
-		return "redirect:coupon_Management";
-	}
-	
-	@RequestMapping(value="updateCoupon", method=RequestMethod.POST)
-	public String modifyCoupon(CouponVO couponVO, int coupon_code) throws Exception{
-		
-		return "redirect:coupon_Management";
-	}
-
-	@RequestMapping(value="deleteCoupon", method=RequestMethod.POST)
-	public String remove(int coupon_code)throws Exception{
-
-		System.out.println("넘어온 쿠폰 코드는 " + coupon_code);
-		couponService.deleteCoupon(coupon_code);
-
-		return "redirect:coupon_Management";
-	}
-
-
-	@RequestMapping(value="coupon_Management", method=RequestMethod.GET)
-	public String coupon(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-		String ContentPage = "coupon_Management";
-
-		model.addAttribute("main_content", ContentPage);
-		
-		List<CouponVO> Couponlist = couponService.selectCouponList();
-
-		model.addAttribute("list", Couponlist);
-		
-		return "mainPage";
-	}
 
 	
 	/********************************* User Profile ***************************************/
