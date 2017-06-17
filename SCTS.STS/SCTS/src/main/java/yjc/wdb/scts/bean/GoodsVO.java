@@ -6,7 +6,14 @@ public class GoodsVO {
 	private int		goods_pc;
 	private String	goods_dc;
 	private int		detailctgry_code;
+	private String 	goods_flpth;
 	
+	public String getGoods_flpth() {
+		return goods_flpth;
+	}
+	public void setGoods_flpth(String goods_flpth) {
+		this.goods_flpth = goods_flpth;
+	}
 	public String getGoods_nm() {
 		return goods_nm;
 	}

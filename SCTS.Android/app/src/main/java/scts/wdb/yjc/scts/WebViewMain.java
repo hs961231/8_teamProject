@@ -1,19 +1,26 @@
 package scts.wdb.yjc.scts;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.estimote.sdk.BeaconManager;
 
+import scts.wdb.yjc.scts.bean.IPSetting;
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
 import scts.wdb.yjc.scts.hardwaremanager.SensorM;
 
@@ -30,6 +37,11 @@ public class WebViewMain extends AppCompatActivity {
     private String point;
     private SharedPreferences.Editor editor;
 
+
+    private EditText productInput;
+    private String productName;
+    private Button button;
+
     private final static String MAIN_URL = "file:///android_asset/index.html";
 
     @Override
@@ -39,6 +51,8 @@ public class WebViewMain extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setLogo(R.drawable.logo);
+
+
 
         sp = getSharedPreferences("test", 0);
 
@@ -51,6 +65,24 @@ public class WebViewMain extends AppCompatActivity {
 
         webView.setWebViewClient(new WebViewClientTest());
         webView.loadUrl(MAIN_URL);
+
+        productInput = (EditText) findViewById(R.id.productInput);
+
+        button = (Button) findViewById(R.id.productSearch);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                productName = productInput.getText().toString();
+                NetworkTask networkTask = new NetworkTask();
+                networkTask.execute(productName);
+
+            }
+        });
+
+
+
 
 
 
@@ -134,5 +166,45 @@ public class WebViewMain extends AppCompatActivity {
 
 
         }
+    }
+
+    private class NetworkTask extends AsyncTask<String, String, String> {
+
+        protected  void onPreExcute(){
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... json) {
+            // bean 안에 있는 ip 셋팅 정보를 꼭 바꾸도록 할 것
+            HttpClient.Builder http = new HttpClient.Builder("POST", IPSetting.getIpAddress() + "productSearch");
+
+            http.addOrReplace("productName", json[0]);
+
+            Log.d("param", json[0]);
+
+            // HTTP 요청 전송
+            HttpClient post = http.create();
+
+            post.request();
+
+
+            // 응답 상태코드 가져오기
+            int statusCode = post.getHttpStatusCode();
+
+            // 응답 본문 가져오기
+            String body = post.getBody();
+
+
+            return body;
+        }
+
+        protected void onPostExecute(String s){
+
+        Log.i("json", s);
+
+        }
+
     }
 }

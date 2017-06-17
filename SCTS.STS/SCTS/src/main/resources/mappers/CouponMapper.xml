@@ -45,16 +45,7 @@
 		limit 0,1
 	</select>
 
-	<!-- 쿠폰 바구니 들고있는 목록 -->
-	<select resultType="CouponVO" id="couponList"> 
-		select * from coupon_hold ch, coupon c where
-		ch.user_id = #{user_id} and ch.COUPONHOLD_USE_AT = 'no' and ch.coupon_code = c.coupon_code
-	</select>
-
-	<delete id="delCouponBasket"> 
-		delete from coupon_hold 
-		where user_id = #{user_id}
-		and coupon_code = #{coupon_code}; </delete>
+	
 
 	<!-- <update id=""> </update> <delete id="" > </delete> <select id="" resultType=""> 
 		</select> -->

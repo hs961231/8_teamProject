@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -12,28 +11,23 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.bean.BillVO;
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Coupon_holdVO;
+import yjc.wdb.scts.bean.GoodsVO;
 import yjc.wdb.scts.service.UserService;
-import yjc.wdb.scts.service.BillService;
-import yjc.wdb.scts.service.CouponService;
-import yjc.wdb.scts.service.Coupon_holdService;
+import yjc.wdb.scts.service.AndroidService;
 import yjc.wdb.scts.service.CourseService;
 
 @Controller
@@ -46,12 +40,10 @@ public class AndroidController {
 	@Inject
 	private CourseService courseService;
 
+
 	@Inject
-	private CouponService couponService;
-	
-	@Inject
-	private BillService billService;
-	
+	private AndroidService androidService;
+
 
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
 
@@ -97,9 +89,9 @@ public class AndroidController {
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
 		String str = request.getParameter("CourseVO");
-		
+
 		JSONObject resultData = new JSONObject();
-		
+
 		if(str == null) {
 			resultData.put("status", "ERROR");
 			return resultData.toString();
@@ -110,7 +102,7 @@ public class AndroidController {
 
 		//PositionVO position = new PositionVO();
 		HashMap<String, String> vo = new HashMap<String, String>();
-		
+
 		try {
 			// 문자열 형태의 날짜시간 값을 timestamp값으로 변환
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
@@ -136,24 +128,24 @@ public class AndroidController {
 		//positionService.insertPosition(position);
 		courseService.insertCourse(vo);
 
-		
+
 		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
-		CouponVO coupon = couponService.selectSendAndroidCoupon();
-		
+		CouponVO coupon = androidService.selectSendAndroidCoupon();
+
 		if(coupon == null) {
 			resultData.put("status", "SUCCESS");
 			resultData.put("command", "emptycoupon");
 			return resultData.toString();
 		}
-		
+
 		str = new Gson().toJson(coupon);
 		resultData = (JSONObject) new JSONParser().parse(str);
-		
+
 		resultData.put("status", "SUCCESS");
 		resultData.put("command", "fullcoupon");
-		
+
 		logger.debug(resultData.toString());
-		
+
 		return resultData.toString();
 	}
 
@@ -167,9 +159,9 @@ public class AndroidController {
 		// 에러 방지하기 위해 추가함
 		// request 객체 안에 넘어오는 파라미터가 원하는 것이 있으면 계속 진행되지만 없을 경우 error 라는 문자열을 리턴함
 		String str = request.getParameter("CourseVO");
-		
+
 		JSONObject resultData = new JSONObject();
-		
+
 		if(str == null) {
 			resultData.put("status", "ERROR");
 			return resultData.toString();
@@ -180,7 +172,7 @@ public class AndroidController {
 
 		//PositionVO position = new PositionVO();
 		HashMap<String, String> vo = new HashMap<String, String>();
-		
+
 		try {
 			// 문자열 형태의 날짜시간 값을 timestamp값으로 변환
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S");
@@ -207,12 +199,12 @@ public class AndroidController {
 		//positionService.insertPosition(position);
 		courseService.updateStayTime(vo);
 
-		
+
 		resultData.put("status", "SUCCESS");
 		resultData.put("command", "emptycoupon");
-		
+
 		logger.debug(resultData.toString());
-		
+
 		return resultData.toString();
 	}
 
@@ -295,15 +287,15 @@ public class AndroidController {
 		return callback + "(" + eventJson + ")";
 
 	}*/
-	
-	
+
+
 
 	// 쿠폰 바구니에 담긴 쿠폰 보기
 	@RequestMapping(value="couponList", method=RequestMethod.GET)
 	public @ResponseBody String couponList(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
-		List<CouponVO> list = couponService.couponBasket(user_id);
+		List<CouponVO> list = androidService.couponBasket(user_id);
 		JSONObject couponJson;
 		JSONObject coupon;
 		JSONArray couponArray = new JSONArray();
@@ -329,9 +321,9 @@ public class AndroidController {
 	public @ResponseBody String delCouponBasket(Coupon_holdVO coupon_holdVO, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
-		couponService.delCouponBasket(coupon_holdVO);
+		androidService.delCouponBasket(coupon_holdVO);
 
-	
+
 		JSONObject coupon;
 
 		coupon = new JSONObject();
@@ -348,7 +340,7 @@ public class AndroidController {
 
 		String callback = request.getParameter("callback");
 
-		List<BillVO> list = billService.billList(user_id,day);
+		List<BillVO> list = androidService.billList(user_id,day);
 
 
 		JSONObject billJson;
@@ -371,15 +363,16 @@ public class AndroidController {
 
 		return callback+"("+billList+")";
 	}
+
 	// 계산서 상세정보
 	@RequestMapping(value="billOne", method=RequestMethod.GET)
 	public @ResponseBody String billOne(int bill_code, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = billService.billOne(bill_code); 
+		List<HashMap> list = androidService.billOne(bill_code); 
 
-		
+
 		JSONObject billJson;
 
 		JSONArray billArray = new JSONArray();
@@ -401,17 +394,17 @@ public class AndroidController {
 
 		return callback+"("+billList+")";
 	}
-	
+
 	// 계산서를 결제하다 정보
 	@RequestMapping(value="settleInfo", method=RequestMethod.GET)
 	public @ResponseBody String settleInfo(String user_id, int bill_code,
 			HttpServletRequest request) 
-			throws Exception{
-		
+					throws Exception{
+
 		String callback = request.getParameter("callback");
-		
-		List<HashMap> list = billService.settleInfo(user_id, bill_code);
-		
+
+		List<HashMap> list = androidService.settleInfo(user_id, bill_code);
+
 		JSONObject settleJson;
 
 		JSONArray settleArray = new JSONArray();
@@ -432,19 +425,17 @@ public class AndroidController {
 
 
 		return callback+"("+settleList+")";
-		
-		
-		
-		
+
+
 	}
 
-
+	// 추천상품
 	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
 	public @ResponseBody String recommandProduct(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
 
-		List<HashMap> list = billService.recommandProduct(user_id); 
+		List<HashMap> list = androidService.recommandProduct(user_id); 
 
 		// 이부분 더 생각 해보기
 		JSONObject recommandJSON;
@@ -469,16 +460,59 @@ public class AndroidController {
 		return callback+"("+recommandList+")";
 	}
 
-	
+
 	// 포인트
 	@RequestMapping(value="point", method=RequestMethod.POST)
 	public @ResponseBody String point(HttpServletRequest request) throws Exception{
-		
+
 		System.out.println(request.getParameter("user_id"));
 		int point = userService.point(request.getParameter("user_id"));
 		System.out.println(point);
 		return ""+point;
 	}
+
+	// 물품검색
+	@RequestMapping(value="productSearch", method=RequestMethod.POST)
+	public @ResponseBody String productSearch(String productName, HttpServletRequest request) throws Exception{
+
+		
+		System.out.println(request.getParameter("productName"));
+
+		List<GoodsVO> list = androidService.productSearch(productName);
+		// 이부분 더 생각 해보기
+		JSONObject productJSON;
+
+		JSONArray productArray = new JSONArray();
+		JSONObject productSearchList = new JSONObject();
+
+		if(list == null){
+			
+			productArray = null;
+			productSearchList.put("data", productArray);
+			return productSearchList.toString();
+
+		}
+
+
+
+		for(int i=0; i < list.size(); i++){
+			productJSON = new JSONObject();	
+			productJSON.put("goods_code", list.get(i).getGoods_code());
+			productJSON.put("goods_nm", list.get(i).getGoods_nm());
+			productJSON.put("goods_pc", list.get(i).getGoods_pc());
+			productJSON.put("goods_flpth", list.get(i).getGoods_flpth());
+
+			productArray.add(productJSON);
+		}
+
+		productSearchList.put("data", productArray);
+
+		System.out.println(productSearchList.toString());
+
+
+		return productSearchList.toString();
+	}
+
 
 
 

@@ -21,37 +21,6 @@ public class BillDAOImpl implements BillDAO {
 	@Inject
 	private SqlSession sql;
 
-	@Override
-	public List<BillVO> billList(String user_id, int day) throws Exception {
-		
-		Map map = new HashMap();
-		map.put("user_id", user_id);
-		map.put("day", day);
-		
-		return sql.selectList(NAMESPACE + ".billList", map);
-	}
-
-	@Override
-	public List<HashMap> billOne(int bill_code) throws Exception {
-		
-		return sql.selectList(NAMESPACE+".billOne", bill_code);
-	}
-
-	@Override
-	public List<HashMap> settleInfo(String user_id, int bill_code) throws Exception {
-		
-		Map map = new HashMap();
-		map.put("user_id", user_id);
-		map.put("bill_code", bill_code);
-		
-		return sql.selectList(NAMESPACE+".settleInfo", map);
-	}
-
-	@Override
-	public List<HashMap> recommandProduct(String user_id) throws Exception {
-		
-		return sql.selectList(NAMESPACE+".recommandProduct", user_id);
-	}
 
 	@Override
 	public List<HashMap> yearSales(int year) throws Exception {
