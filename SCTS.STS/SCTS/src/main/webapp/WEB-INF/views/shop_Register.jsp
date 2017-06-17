@@ -189,8 +189,8 @@ to {
 						<c:forEach items="${ tileList }" var="vo">
 							<tr>
 								<td style="text-align: center;">${ vo.get("TILE_NM") }</td>
-								<td style="text-align: center;">${ vo.get("TILELC_CRDNT_X") }</td>
-								<td style="text-align: center;">${ vo.get("TILELC_CRDNT_Y") }</td>
+								<td style="text-align: center;">${ vo.get("TILE_CRDNT_X") }</td>
+								<td style="text-align: center;">${ vo.get("TILE_CRDNT_Y") }</td>
 								<td style="text-align: center;">${ vo.get("beaconset") }</td>
 							</tr>
 						</c:forEach>

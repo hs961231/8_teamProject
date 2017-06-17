@@ -4,6 +4,37 @@
 
 <script src="resources/customjs/posSystem.js"></script>
 
+<style>
+.white_content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+.white_content:target {
+    opacity:1;
+    pointer-events: auto;
+}
+.white_content > div {
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	border: 16px solid orange;
+	background-color: white;
+	overflow: auto;	
+}
+</style>
+
 <%-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 상품리스트 부분 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ --%>
 <div class="row">
 	<div class="col-lg-12">
@@ -22,41 +53,6 @@
 					</tr>
 				</thead>
 				<tbody id="goodsList">
-					<tr>
-						<td>1</td>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td colspan="2">Larry the Bird</td>
-						<td>@twitter</td>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>Sumon</td>
-						<td>Mosa</td>
-						<td>@twitter</td>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
 				</tbody>
 			</table>
 		</section>
@@ -86,15 +82,15 @@
 					<tbody>
 						<tr>
 							<td>소계</td>
-							<td>60,000</td>
+							<td id="totalPrice">0</td>
 						</tr>
 						<tr>
 							<td>할인</td>
-							<td>3,000</td>
+							<td id="totalDiscount">3,000</td>
 						</tr>
 						<tr>
 							<td>합계</td>
-							<td>57,000</td>
+							<td id="totalAmount">57,000</td>
 						</tr>
 					</tbody>
 				</table>
@@ -145,48 +141,74 @@
 	<div class="col-lg-2">
 		<section class="panel">
 			<div class="panel-body">
-				<button class="btn btn-default" type="button" id="searchGoods">상품검섹</button>
+				<a href="#searchGoodsOpen"><button class="btn btn-default" type="button" id="searchGoods">상품검색</button></a>
 				<br>
-				<button class="btn btn-default" type="button">상품삭제</button>
+				<a href="#couponPointOpen"><button class="btn btn-default" type="button" id="couponPoint">쿠폰 포인트</button></a>
 				<br>
-				<button class="btn btn-default" type="button">신용카드결제</button>
+				<a href="#cardOpen"><button class="btn btn-default" type="button" id="card">신용카드 결제</button></a>
 				<br>
-				<button class="btn btn-default" type="button">현금결제</button>
+				<a href="#moneyOpen"><button class="btn btn-default" type="button" id="money">현금 결제</button></a>
 				<br>
-				<button class="btn btn-default" type="button">복합결제</button>
+				<a href="#mixOpen"><button class="btn btn-default" type="button" id="mix">복합 결제</button></a>
 				<br>
 			</div>
 		</section>
 	</div>
 </div>
 
-<div class="modal-layout">
-	<h4>
-		쿠폰 이름 : <input type="text" name="coupon_nm">
-	</h4>
+<div class="white_content" id="searchGoodsOpen">
+	<div>
+		<p>상품검색 모달 </p>
+		<a href="#">닫기</a>
+	</div>
+</div>
 
-	<h4>
-		쿠폰 내용 : <input type="text" name="coupon_cntnts">
-	</h4>
+<div class="white_content" id="couponPointOpen">
+	<div id="inputMode">
+		<p>쿠폰 포인트 </p>
+		고객아이디 <input type="text" name="user_id" id="user_id" />
+		<button class="btn btn-default" type="button" id="getUserCoupon">등록</button> <br>
+		<a href="#">닫기</a>
+	</div>
+	<div id="couponMode" style="display:none;">
+		<section class="panel">
+			<table class="table table-hover" style="overflow: scroll;">
+				<thead>
+					<tr>
+						<th>적용가능상품</th>
+						<th>쿠폰이름</th>
+						<th>할인율</th>
+						<th>사용가능기간</th>
+					</tr>
+				</thead>
+				<tbody id="couponList">
+				</tbody>
+			</table>
+		</section>
+		<div>
+			<button class="btn btn-default" type="button" id="useCoupon">등록</button>
+			<a href="#"><button class="btn btn-default" type="button" id="exitCouponList">취소</button></a>
+		</div>
+	</div>
+</div>
 
-	<h4>
-		쿠폰 할인율 : <select name="coupon_dscnt">
-			<option value="10">10</option>
-			<option value="20">20</option>
-			<option value="30">30</option>
-		</select>
-	</h4>
+<div class="white_content" id="cardOpen">
+	<div>
+		<p>신용카드 결제 </p>
+		<a href="#">닫기</a>
+	</div>
+</div>
 
-	<h4>
-		쿠폰 등록날짜 : <input type="date" name="coupon_begin_de">
-	</h4>
+<div class="white_content" id="moneyOpen">
+	<div>
+		<p>현금 결제</p>
+		<a href="#">닫기</a>
+	</div>
+</div>
 
-	<h4>
-		쿠폰 마감날짜 : <input type="date" name="coupon_end_de">
-	</h4>
-
-
-
-	<input type="button" class="close" value="취소" /> <input type="submit"
-		class="close regiBtn" value="등록" />
+<div class="white_content" id="mixOpen">
+	<div>
+		<p>복합 결제 </p>
+		<a href="#">닫기</a>
+	</div>
 </div>

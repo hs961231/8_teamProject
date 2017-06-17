@@ -48,9 +48,14 @@ create table beacon (
 create table tile (
 	TILE_CODE int AUTO_INCREMENT,
 	TILE_NM varchar(10) not null,
+	TILE_CRDNT_X int,
+	TILE_CRDNT_Y int,
+	DRW_CODE int,
 	BEACON_CODE int,
+
 	PRIMARY KEY(TILE_CODE),
-	FOREIGN KEY(BEACON_CODE) REFERENCES beacon(BEACON_CODE) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(BEACON_CODE) REFERENCES beacon(BEACON_CODE) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(DRW_CODE) REFERENCES drawing(DRW_CODE) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 /* 회원 테이블 */
@@ -207,8 +212,11 @@ create table detail_category_location (
  */
 create table goods (
 	GOODS_CODE int AUTO_INCREMENT,
+	GOODS_NM varchar(20) not null, /* 상품 이름 */
 	GOODS_PC int not null,	/* 상품가격 */
 	GOODS_DC varchar(500) not null,	/* 상품설명 */
+	GOODS_FLPTH varchar(100),
+	
 	DETAILCTGRY_CODE int not null,
 
 	PRIMARY KEY(GOODS_CODE),
@@ -230,19 +238,6 @@ create table purchase_goods (
 	FOREIGN KEY(COUPON_CODE) REFERENCES coupon(COUPON_CODE) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-/* 타일이 속한다 ( 배정 ) 테이블
-	도면, 타일 테이블을 참조함
- */
-create table tile_location (
-	DRW_CODE int not null,
-	TILE_CODE int not null,
-	TILELC_CRDNT_X int,
-	TILELC_CRDNT_Y int,
-
-	PRIMARY KEY(DRW_CODE, TILE_CODE),
-	FOREIGN KEY(DRW_CODE) REFERENCES drawing(DRW_CODE) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(TILE_CODE) REFERENCES tile(TILE_CODE) ON UPDATE CASCADE ON DELETE CASCADE
-);
 
 
 
@@ -292,11 +287,13 @@ create table event (
 
 /* 게시글을 작성할 수 있다*/
 create table bbsctt_writing (
-	user_id varchar(10) not null references user_id(user),
-	bbsctgry_code integer not null references bbsctgry_code(bbs_category),
-	bbsctt_code integer not null references bbsctt_code(bbsctt),
-	bbsctt_rgsde date not null,
-	bbsctt_rdcnt integer default 0
+	`bhf_code` int(11) not null,
+	`user_id` VARCHAR(10) NOT NULL,
+	`bbsctgry_code` INT(11) NOT NULL,
+	`bbsctt_code` INT(11) NOT NULL,	`bbsctt_rgsde` DATE NOT NULL,
+	`bbsctt_rdcnt` INT(11) NULL DEFAULT '0',
+	CONSTRAINT `bbsctt_writing_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`USER_ID`) ON UPDATE CASCADE ON DELETE CASCADE,
+CONSTRAINT `bbsctt_writing_ibfk_3` FOREIGN KEY (`BHF_CODE`) REFERENCES `branch_office` (`BHF_CODE`) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -346,8 +343,9 @@ create table supply_enterprise (
 
 
 create table supply_goods (
-   `USER_ID` varchar(10) NOT NULL,
+   `USER_ID` VARCHAR(10) NOT NULL,
    `GOODS_CODE` INT(11) NOT NULL,
+   `BHF_CODE` INT(11) NOT NULL,
    `WRHOUSNG_QY` INT(11) NOT NULL,
    `WRHOUSNG_DE` DATE NOT NULL,
    `PUCHAS_PC` INT(11) NOT NULL,
@@ -356,7 +354,9 @@ create table supply_goods (
    `INVNTRY_QY` INT(11) NOT NULL,
    PRIMARY KEY (`USER_ID`, `GOODS_CODE`),
    INDEX `GOODS_CODE` (`GOODS_CODE`),
-   CONSTRAINT `supply_goods_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `supply_enterprise` (`USER_ID`) ON UPDATE CASCADE ON DELETE CASCADE,
-   CONSTRAINT `supply_goods_ibfk_2` FOREIGN KEY (`GOODS_CODE`) REFERENCES `goods` (`GOODS_CODE`) ON UPDATE CASCADE ON DELETE CASCADE
-);
+   INDEX `bhf_code` (`BHF_CODE`),
+   CONSTRAINT `supply_goods_ibfk_1` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`USER_ID`) ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT `supply_goods_ibfk_2` FOREIGN KEY (`GOODS_CODE`) REFERENCES `goods` (`GOODS_CODE`) ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT `supply_goods_ibfk_3` FOREIGN KEY (`BHF_CODE`) REFERENCES `branch_office` (`BHF_CODE`) ON UPDATE CASCADE ON DELETE CASCADE
+)
 

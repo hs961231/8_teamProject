@@ -1,19 +1,15 @@
 package yjc.wdb.scts;
 
 import java.util.HashMap;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -21,11 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import yjc.wdb.scts.bean.CouponVO;
-import yjc.wdb.scts.bean.Tile_locationVO;
-import yjc.wdb.scts.dao.CourseDAO;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 
@@ -111,39 +104,6 @@ public class BaseTest {
 	CourseService courseService;
 	//CourseDAO dao;
 	
-	public void kkk() {
-		try {
-			
-			int drw_code = 1;
-			int X_index = 0;
-			int Y_index = 0;
-			
-			Tile_locationVO vo = new Tile_locationVO();
-			vo.setDrw_code(drw_code);
-			vo.setTilelc_crdnt_x(X_index);
-			vo.setTilelc_crdnt_y(Y_index);
-			
-			// HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
-
-			HashMap<String, String> pro = courseService.tileProbability(vo);
-			List<HashMap<String, String>> userinfo = courseService.tileUserinfo(vo);
-			//HashMap<String, String> pro = dao.tileProbability(vo);
-			//List<HashMap<String, String>> userinfo = dao.tileUserinfo(vo);
-	
-			JSONObject json = new JSONObject();
-			
-			JsonArray jsonUser = (JsonArray) new JSONParser().parse(new Gson().toJson(userinfo));
-			JSONObject jsonPro = (JSONObject) new JSONParser().parse(new Gson().toJson(pro));
-					
-			json.put("jsonUser", jsonUser);
-			json.put("jsonPro", jsonPro);
-			
-			System.out.println(json.toString());
-		
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
 	
 	/*
 	@Test

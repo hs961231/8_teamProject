@@ -4,15 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import yjc.wdb.scts.bean.BeaconVO;
-import yjc.wdb.scts.bean.Tile_locationVO;
+import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.service.BeaconService;
 import yjc.wdb.scts.service.Branch_officeService;
 import yjc.wdb.scts.service.CourseService;
@@ -57,12 +54,12 @@ public class AjaxController {
 		
 		logger.info("X = " + X_index + "  Y = " + Y_index);
 		
-		HashMap<String, String> Map_XY = new HashMap<String, String>();
-		Map_XY.put("drw_code", "" + drw_code);
-		Map_XY.put("tilelc_crdnt_x", "" + X_index);
-		Map_XY.put("tilelc_crdnt_y", "" + Y_index);
+		TileVO clickTile = new TileVO();
+		clickTile.setDrw_code(drw_code);
+		clickTile.setTile_crdnt_x(X_index);
+		clickTile.setTile_crdnt_y(Y_index);
 		
-		HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
+		HashMap<String, String> tile = tileService.selectTile_LocationOne(clickTile);
 		
 		String str = new Gson().toJson(tile);
 		
@@ -96,15 +93,17 @@ public class AjaxController {
 	 */
 	@RequestMapping(value="dashBoardTile", method=RequestMethod.POST)
 	@ResponseBody
-	public String dashBoardTile(@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
+	public String dashBoardTile(@RequestParam("drw_code") int drw_code,
+			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
 		
 		logger.info("X = " + X_index + "  Y = " + Y_index);
+
+		TileVO clickTile = new TileVO();
+		clickTile.setDrw_code(drw_code);
+		clickTile.setTile_crdnt_x(X_index);
+		clickTile.setTile_crdnt_y(Y_index);
 		
-		HashMap<String, String> Map_XY = new HashMap<String, String>();
-		Map_XY.put("tilelc_crdnt_x", "" + X_index);
-		Map_XY.put("tilelc_crdnt_y", "" + Y_index);
-		
-		HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
+		HashMap<String, String> tile = tileService.selectTile_LocationOne(clickTile);
 		
 		String str = new Gson().toJson(tile);
 		
@@ -171,10 +170,10 @@ public class AjaxController {
 		
 		logger.info("X = " + X_index + "  Y = " + Y_index);
 		
-		Tile_locationVO vo = new Tile_locationVO();
+		TileVO vo = new TileVO();
 		vo.setDrw_code(drw_code);
-		vo.setTilelc_crdnt_x(X_index);
-		vo.setTilelc_crdnt_y(Y_index);
+		vo.setTile_crdnt_x(X_index);
+		vo.setTile_crdnt_y(Y_index);
 		
 		// HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
 

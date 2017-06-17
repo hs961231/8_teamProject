@@ -3,6 +3,7 @@ package yjc.wdb.scts.service.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import yjc.wdb.scts.bean.Floor_informationVO;
 import yjc.wdb.scts.bean.TileVO;
-import yjc.wdb.scts.bean.Tile_locationVO;
 import yjc.wdb.scts.dao.Floor_informationDAO;
 import yjc.wdb.scts.dao.TileDAO;
 import yjc.wdb.scts.service.Floor_informationService;
@@ -35,7 +35,7 @@ public class Floor_informationServiceImpl implements Floor_informationService {
 		
 		dao.insertFloor_information(vo);
 		
-		//List<TileVO> tileList = new ArrayList<TileVO>();
+		List<TileVO> tileList = new ArrayList<TileVO>();
 		
 		int floor = dao.selectCountStory(vo.getBhf_code());
 		
@@ -47,20 +47,20 @@ public class Floor_informationServiceImpl implements Floor_informationService {
 			for(int j=0; j<vo.getSize_y(); j++) {
 				TileVO tile = new TileVO();
 				tile.setTile_nm(first + "_" + i + "_" + j);
+				tile.setDrw_code(drw_code);
+				tile.setTile_crdnt_x(i);
+				tile.setTile_crdnt_y(j);
+		
+				// 타일 한개씩 넣을때 쓰던 거
+				//tiledao.insertTile(tile);
 				
-				tiledao.insertTile(tile);
-				
-				Tile_locationVO location = new Tile_locationVO();
-				location.setDrw_code(drw_code);
-				location.setTilelc_crdnt_x(i);
-				location.setTilelc_crdnt_y(j);
-				
-				tiledao.insertTile_location(location);
-				//tileList.add(tile);
+				tileList.add(tile);
 			}
 		}
 		
-		//tiledao.insertDrawingTile(tileList);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tileList", tileList);
+		tiledao.insertDrawingTile(map);
 		
 	}
 

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import yjc.wdb.scts.bean.Tile_locationVO;
+import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.dao.CourseDAO;
 
 @Repository
@@ -32,13 +32,13 @@ public class CourseDAOImpl implements CourseDAO {
 	}
 
 	@Override
-	public HashMap<String, String> tileProbability(Tile_locationVO vo) throws Exception {
+	public HashMap<String, String> tileProbability(TileVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".tileProbability", vo);
 	}
 
 	@Override
-	public List<HashMap<String, String>> tileUserinfo(Tile_locationVO vo) throws Exception {
+	public List<HashMap<String, String>> tileUserinfo(TileVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(NAMESPACE + ".tileUserinfo", vo);
 	}

@@ -2,6 +2,7 @@ package yjc.wdb.scts.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -9,7 +10,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import yjc.wdb.scts.bean.TileVO;
-import yjc.wdb.scts.bean.Tile_locationVO;
 import yjc.wdb.scts.dao.TileDAO;
 
 @Repository
@@ -39,21 +39,15 @@ public class TileDAOImpl implements TileDAO {
 	}
 
 	@Override
-	public HashMap<String, String> selectTile_LocationOne(HashMap<String, String> Map_XY) throws Exception {
+	public HashMap<String, String> selectTile_LocationOne(TileVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE + ".selectTile_LocationOne", Map_XY);
+		return sqlSession.selectOne(NAMESPACE + ".selectTile_LocationOne", vo);
 	}
 
 	@Override
-	public void insertDrawingTile(List<TileVO> tileList) throws Exception {
+	public void insertDrawingTile(Map<String, Object> map) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.insert(NAMESPACE + ".insertDrawingTile", tileList);
-	}
-
-	@Override
-	public void insertTile_location(Tile_locationVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		sqlSession.insert(NAMESPACE + ".insertTile_location", vo);
+		sqlSession.insert(NAMESPACE + ".insertDrawingTile", map);
 	}
 
 	@Override
