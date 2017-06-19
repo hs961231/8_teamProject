@@ -1,6 +1,7 @@
 package yjc.wdb.scts;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -19,8 +20,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.CouponVO;
+import yjc.wdb.scts.bean.Purchase_goodsVO;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
+import yjc.wdb.scts.service.Purchase_goodsService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -39,8 +42,33 @@ public class BaseTest {
 	
 	@Inject
 	CouponService couponService;
-
+	
+	@Inject
+	Purchase_goodsService PService;
+	
 	@Test
+	public void dbinput() {
+		//Purchase_goodsVO vo = new Purchase_goodsVO();
+		/*
+		vo.setBill_code(5);
+		vo.setGoods_code(4);
+		vo.setPurchsgoods_qy(10);
+		*/
+		
+		HashMap<String, String> vo = new HashMap<String, String>();
+
+		vo.put("bill_code", "5");
+		vo.put("goods_code", "4");
+		vo.put("purchsgoods_qy", "10");
+		
+		try {
+			PService.insertPurchase_goods(vo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void couponSend() {
 
 		try {
