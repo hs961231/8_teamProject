@@ -7,6 +7,7 @@ public class PageVO {
 	
 	private String startAmount;
 	private String endAmount;
+	private String check; /* 재고 관리에서 검색할 때 필요한 부분 */
 	private String searchType;
 	private String keyword;
 	
@@ -89,6 +90,14 @@ public class PageVO {
 
 	public void setMsg(boolean msg) {
 		this.msg = msg;
+	}
+
+	public String getCheck() {
+		return check;
+	}
+
+	public void setCheck(String check) {
+		this.check = check;
 	}
 
 

@@ -14,8 +14,8 @@
 
 		<div class="navbar-inner">
 			<form class="navbar-form">
-				재고수량 <input type="text" id="startAmount" value='${cri.startAmount }'> 이상 <input
-					type="text" id="endAmount" value='${cri.endAmount }'> 이하
+				재고수량 <input type="text" id="start" name="startAmount" value='${cri.startAmount }'> 이상 <input
+					type="text" name="endAmount" id="end" value='${cri.endAmount }'> 이하
 					<select name="searchType" id="searchType">
 						<option value="n"
 						<c:out value="${cri.searchType == null?'selected':''}"/>>
@@ -43,8 +43,7 @@
 						주류</option>
 					</select>
 					 <input type="text" name="keyword" class="form-control searchForm"
-					placeholder="Search" value='${cri.keyword }'> <input type="button" id="mySearch"
-					value="검색">
+					placeholder="Search" value='${cri.keyword }'> <button id="mySearch">Search</button>
 			</form>
 		</div>
 		<div class="panel panel-default">
@@ -72,7 +71,7 @@
 					<c:forEach items="${list }" var="stockList">
 						<tbody>
 							<tr class="active">
-							<%-- 	<c:choose>
+							 	<c:choose>
 									<c:when test="${stockList.invntry_qy == '0'}">
 										<td>품절</td>
 									</c:when>
@@ -83,7 +82,7 @@
 									<c:when test="${stockList.invntry_qy >= '30'}">
 										<td>정상</td>
 									</c:when>
-								</c:choose> --%>
+								</c:choose>
 								<td>${stockList.user_id}</td>
 								<td>${stockList.wrhousng_de }</td>
 								<td>${stockList.lclasctgry_code }</td>
@@ -105,21 +104,33 @@
 	<ul class="pagination">
 	<c:if test="${msg == true}">
 		<c:if test="${pageMaker.prev }">
-			<li><a href="stock_Management?page=${pageMaker.makeSearch(pageMaker.startPage -1)}">&laquo;</a></li>
+			<li><a href="stock_Management?page=${pageMaker.stockSearch(pageMaker.startPage -1)}">&laquo;</a></li>
 		</c:if>
 
 		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 			var="idx">
 			<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-				<a href="stock_Management${pageMaker.makeSearch(idx)}">${idx}</a>
+				<a href="stock_Management${pageMaker.stockSearch(idx)}">${idx}</a>
 			</li>
 		</c:forEach>
 		<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-			<li><a href="stock_Management${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+			<li><a href="stock_Management${pageMaker.stockSearch(pageMaker.endPage +1) }">&raquo;</a></li>
 		</c:if>
 	</c:if>
 	<c:if test="${msg != true}">
-		sadf
+		<c:if test="${pageMaker.prev }">
+			<li><a href="stock_Management?page=${pageMaker.stockSearch(pageMaker.startPage -1)}">&laquo;</a></li>
+		</c:if>
+
+		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+			var="idx">
+			<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+				<a href="stock_Management${pageMaker.stockSearch(idx)}">${idx}</a>
+			</li>
+		</c:forEach>
+		<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+			<li><a href="stock_Management${pageMaker.stockSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+		</c:if>
 	</c:if>
 	</ul>
 </div>

@@ -39,10 +39,4 @@ public class StockServiceImpl implements StockService {
 		return dao.countSearch(cri);
 	}
 
-/*	@Override
-	public List<HashMap> searchStockList(String goods_nm, int lclasctgry_code, int start_amount, int end_amount, int check) throws Exception {
-		// TODO Auto-generated method stub
-		return dao.searchStockList(goods_nm, lclasctgry_code, start_amount, end_amount, check);
-	}*/
-
 }

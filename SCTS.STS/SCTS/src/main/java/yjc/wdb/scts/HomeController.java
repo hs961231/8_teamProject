@@ -415,8 +415,6 @@ public class HomeController {
 	@RequestMapping(value="stock_Management", method=RequestMethod.GET)
 	public String stockManagement(@ModelAttribute("cri") PageVO cri, Model model) throws Exception{
 		String ContentPage = "stock_Management";
-		System.out.println("由ъ뒪�듃�쓽 �럹�씠吏� : " + cri.getPage() + "媛쒖닔 : " + cri.getPerPageNum() +
-				"�꽌移섑��엯 : " + cri.getSearchType() + "�궎�썙�뱶 : " +cri.getKeyword());
 
 		System.out.println(cri.isMsg());
 		
@@ -437,28 +435,37 @@ public class HomeController {
 	@RequestMapping(value="searchStock", method=RequestMethod.GET)
 	public String searchStock(@ModelAttribute("cri") PageVO cri, Model model)throws Exception{
 		String ContentPage = "stock_Management";
-				
-		System.out.println("�럹�씠吏� : " + cri.getPage() + "媛쒖닔 : " + cri.getPerPageNum() +
-				"�꽌移섑��엯 : " + cri.getSearchType() + "�궎�썙�뱶 : " +cri.getKeyword() + "�떆�옉�뼱紐ы듃: "+cri.getStartAmount() + "�뿏�뱶�뼱紐ы듃 : "+cri.getEndAmount());
+		System.out.println("여기는 서치 스톡" + "check는 " +cri.getCheck());
 		
-		System.out.println("�꽌移� �뒪�넚 keyword : " + cri.getKeyword());
+		List<StockVO> StockList = stockService.searchStockList(cri);
 		
-		model.addAttribute("list", stockService.searchStockList(cri));
 		PageMaker pageMaker = new PageMaker();
-
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(stockService.countSearch(cri));
 		
+		model.addAttribute("msg", cri.isMsg());
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("main_cotent", ContentPage);
-		
+		model.addAttribute("main_content", ContentPage);
+		model.addAttribute("list", StockList);
+
 		return "mainPage";
 	}
 	
-	@RequestMapping(value="deleteStock", method=RequestMethod.POST)
-	public String deleteStock(String user_id,int goods_code)throws Exception{
+	@RequestMapping(value="deleteStock", method=RequestMethod.GET)
+	public String deleteStock(String user_id, int goods_code, @ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model)throws Exception{
 		
+		cri.setMsg(false);
+		System.out.println(cri.isMsg());
 		List<HashMap> StockList = stockService.deleteStockList(user_id, goods_code);
+		
+		model.addAttribute("msg", cri.isMsg());
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
+		rttr.addAttribute("searchType", cri.getSearchType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("startAmount",cri.getStartAmount());
+		rttr.addAttribute("endAmount",cri.getEndAmount());
+		
 		
 		return "redirect:stock_Management";
 	}

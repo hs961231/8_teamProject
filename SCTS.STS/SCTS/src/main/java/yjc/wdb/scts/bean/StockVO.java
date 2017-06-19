@@ -11,7 +11,6 @@ public class StockVO {
 	private Date distb_de;
 	private int invntry_qy;
 	private int lclasctgry_code;
-	private int check;
 	
 	public String getUser_id() {
 		return user_id;
@@ -54,12 +53,6 @@ public class StockVO {
 	}
 	public void setLclasctgry_code(int lclasctgry_code) {
 		this.lclasctgry_code = lclasctgry_code;
-	}
-	public int getCheck() {
-		return check;
-	}
-	public void setCheck(int check) {
-		this.check = check;
 	}
 	
 }

@@ -10,7 +10,6 @@ import yjc.wdb.scts.bean.StockVO;
 public interface StockService {
 	public List<StockVO> selectStockList(PageVO cri) throws Exception;
 	public List<HashMap> deleteStockList(String user_id, int goods_code) throws Exception;
-	/*public List<HashMap> searchStockList(String goods_nm, int lclasctgry_code, int start_amount, int end_amount, int check) throws Exception;*/
 	public List<StockVO> searchStockList(PageVO cri) throws Exception;
 	public int countSearch(PageVO cri) throws Exception;
 }

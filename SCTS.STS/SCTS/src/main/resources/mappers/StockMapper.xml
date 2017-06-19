@@ -5,33 +5,59 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="yjc.wdb.mapper.StockMapper">
-
- 	<resultMap id="stockVO" type="java.util.HashMap">
-		<result property="wrhousng_de" column="wrhousng_de"/>
-		<result property="user_id" column="user_id"/>
-		<result property="detailctgry_code" column="detailctgry_code"/>
-		<result property="goods_code" column="goods_code"/>
-		<result property="goods_nm" column="goods_nm"/>
-		<result property="distb_de" column="distb_de"/>
-		<result property="invntry_qy" column="invntry_qy"/>
-		<result property="lclasctgry_code" column="lclasctgry_code"/>
-		<result property="start_amount" column="start_amount"/>
-		<result property="end_amount" column="end_amount"/>
-	</resultMap>
+	
+ <sql id="search">
+		<choose>
+		<when test="check == 0"> <!-- 상품명만 검색 -->
+			AND g.goods_nm LIKE CONCAT('%', #{keyword},'%')
+		</when>
+ 		<when test="check == 1"> <!-- 모든사항 기입  -->
+				AND g.goods_nm LIKE CONCAT('%',#{keyword},'%')
+				AND d.lclasctgry_code LIKE(#{searchType})
+				AND s.invntry_qy BETWEEN #{startAmount} AND #{endAmount}
+		</when>
+		<when test="check == 2"> <!-- 상품명, 카테고리  -->
+			AND g.goods_nm LIKE CONCAT('%',#{keyword},'%')
+			AND d.lclasctgry_code LIKE(#{searchType})
+		</when>
+		<when test="check == 3"><!-- 상품명, 재고량  -->
+			AND g.goods_nm LIKE CONCAT('%',#{keyword},'%')
+			AND s.invntry_qy BETWEEN #{startAmount} AND #{endAmount}
+		</when>
+		<when test="check == 4"> <!-- 재고량만 검색  -->
+			AND s.invntry_qy BETWEEN #{startAmount} AND #{endAmount}
+		</when>
+		<when test="check == 5"><!-- 카테고리, 재고량  -->
+			AND d.lclasctgry_code LIKE(#{searchType})
+			AND s.invntry_qy BETWEEN #{startAmount} AND #{endAmount}
+		</when>
+		<when test="check == 6"><!-- 카테고리만 검색  -->
+			AND d.lclasctgry_code LIKE(#{searchType})
+		</when> 
+		<when test="check == 7"> <!-- 검색조건 없음 -->
+	
+		</when>
+		</choose>
+</sql>
 
  	<select id="selectStockList" resultType="stockVO">
  		<![CDATA[
 		select s.user_id, s.wrhousng_de, d.lclasctgry_code, g.goods_code, g.goods_nm, s.distb_de, s.invntry_qy
 		from supply_goods s, goods g, detail_category d
-		where s.goods_code = g.goods_code AND g.detailctgry_code = d.detailctgry_code order by d.lclasctgry_code
+		where s.goods_code = g.goods_code AND g.detailctgry_code = d.detailctgry_code 
+		order by d.lclasctgry_code
 		]]>
 		limit #{pageStart}, #{perPageNum}
 	</select>
 	
 	<select id="searchStockList" resultType="stockVO">
+		<![CDATA[	
 		select s.user_id, s.wrhousng_de, d.lclasctgry_code, g.goods_code, g.goods_nm, s.distb_de, s.invntry_qy
 		from supply_goods s, goods g, detail_category d
-		where s.goods_code = g.goods_code AND g.detailctgry_code = d.detailctgry_code order by d.lclasctgry_code AND g.goods_nm LIKE CONCAT('%', #{keyword},'%')
+		where s.goods_code = g.goods_code AND g.detailctgry_code = d.detailctgry_code
+		]]>
+		<include refid="search"></include>
+		order by d.lclasctgry_code 
 		limit #{pageStart}, #{perPageNum};
 	</select>
 	
@@ -39,44 +65,6 @@
 		select count(user_id)
 		from supply_goods;
 	</select>
-	
-	<sql id="search">
-		<choose>
-	 	<when test="check == 0"> 상품명만 검색 
-				AND g.goods_nm LIKE CONCAT('%',#{goods_nm},'%')
-				order by d.lclasctgry_code;
-		</when>
-		<when test="check == 1"> <!-- 모든사항 기입 -->
-				AND g.goods_nm LIKE CONCAT('%',#{goods_nm},'%')
-				AND d.lclasctgry_code LIKE(#{lclasctgry_code})
-				AND s.invntry_qy BETWEEN #{start_amount} AND #{end_amount}
-				order by d.lclasctgry_code;
-		</when>
-		<when test="check == 2"> <!-- 상품명, 카테고리 -->
-			AND g.goods_nm LIKE CONCAT('%',#{goods_nm},'%')
-			AND d.lclasctgry_code LIKE(#{lclasctgry_code})
-			order by d.lclasctgry_code
-		</when>
-		<when test="check == 3"><!--  상품명, 재고량 -->
-			AND g.goods_nm LIKE CONCAT('%',#{goods_nm},'%')
-			AND s.invntry_qy BETWEEN #{start_amount} AND #{end_amount}
-			order by d.lclasctgry_code;
-		</when>
-		<when test="check == 4"><!--  재고량만 검색 -->
-			AND s.invntry_qy BETWEEN #{start_amount} AND #{end_amount}
-			order by d.lclasctgry_code;
-		</when>
-		<when test="check == 5"> <!-- 카테고리, 재고량 -->
-			AND d.lclasctgry_code LIKE(#{lclasctgry_code})
-			AND s.invntry_qy BETWEEN #{start_amount} AND #{end_amount}
-			order by d.lclasctgry_code;
-		</when>
-		<when test="check == 6"> <!-- 카테고리만 검색 -->
-			AND d.lclasctgry_code LIKE(#{lclasctgry_code})
-			order by d.lclasctgry_code;
-		</when>
-		</choose>
-	</sql>
 		
 	<delete id="deleteStock">
 		delete from supply_goods where user_id = #{user_id} AND goods_code = #{goods_code};
