@@ -117,8 +117,8 @@ public class HomeController {
 		// 실제 뷰 페이지로 메인 콘텐츠 페이지 정보를 넘겨준다.
 		model.addAttribute("main_content", ContentPage);
 
-		int todayCount = courseService.selectTodayVisitCnt();
-		model.addAttribute("todayCount", todayCount);
+		/*int todayCount = courseService.selectTodayVisitCnt();
+		model.addAttribute("todayCount", todayCount);*/
 		
 		List<HashMap<String, String>> tileList = tileService.selectTileList();
 		model.addAttribute("tileList", tileList);

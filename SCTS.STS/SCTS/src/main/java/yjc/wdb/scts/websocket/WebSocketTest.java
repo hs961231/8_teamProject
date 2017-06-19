@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -12,19 +16,21 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import yjc.wdb.scts.dao.BillDAO;
+import yjc.wdb.scts.dao.CourseDAO;
 
 public class WebSocketTest extends TextWebSocketHandler{
 
 	private static Logger logger = LoggerFactory.getLogger(WebSocketTest.class);
 	
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
+	private List<HashMap> list;
 	
+	@Inject
 	private BillDAO billDAO;
-
-	public void setBillDAO(BillDAO billDAO) {
-		this.billDAO = billDAO;
-	}
-
+	
+	@Inject
+	private CourseDAO courseDAO;
+	
 	// 클라이언트 연결이후에 실행되는 메소드
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -33,21 +39,42 @@ public class WebSocketTest extends TextWebSocketHandler{
 		
 		
 		sessionList.add(session);
-		System.out.println("연결됨");
+		logger.info("{}에 {} 연결됨", session.getUri(), session.getId());
 	}
 
-	// 클라이언트가 웸 소켓서버로 메세지를 전송했을 때 실행되는 메소드
+	// 클라이언트가 웹 소켓서버로 메세지를 전송했을 때 실행되는 메소드
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
 		super.handleTextMessage(session, message);
 		
-		List<HashMap> list = billDAO.daySales();
+		
 		
 		System.out.println(message.getPayload());
 		
+		logger.info("{} 보냄", message.getPayload());
+		
+		list = billDAO.daySales();
+		JSONArray jArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			JSONObject json = new JSONObject();
+			json.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
+			json.put("totalPrice", list.get(i).get("totalPrice").toString());
+			
+			jArray.add(json);
+		}
+		
+		JSONObject result = new JSONObject();
+		result.put("result", jArray);
+		
+		int totalCount = courseDAO.selectTodayVisitCnt();
+		
+		result.put("totalCount", totalCount);
+		
+		
+		
 		for(WebSocketSession sess : sessionList){
-			sess.sendMessage(new TextMessage(list.toString()));
+			sess.sendMessage(new TextMessage(result.toString()));
 		}
 	}
 	
@@ -56,10 +83,9 @@ public class WebSocketTest extends TextWebSocketHandler{
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		
 		super.afterConnectionClosed(session, status);
-		
+		System.out.println(status);
 		sessionList.remove(session);
-		
-		System.out.println("연결끊김");
+		logger.info("{} 연결 끊김", session.getId());
 	}
 	
 	
