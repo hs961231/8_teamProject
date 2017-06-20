@@ -173,8 +173,8 @@ create table bill (
 /* 상품대분류카테고리 테이블 */
 create table large_classification_category (
 	LCLASCTGRY_CODE int AUTO_INCREMENT,
-	LCLASCTGRY_NM varchar(10) not null,
-	LCLASCTGRY_COLOR varchar(20) not null,
+	LCLASCTGRY_NM varchar(30) not null,
+	LCLASCTGRY_COLOR varchar(10) not null,
 
 	PRIMARY KEY(LCLASCTGRY_CODE)
 );
@@ -185,8 +185,8 @@ create table large_classification_category (
 create table detail_category (
 	DETAILCTGRY_CODE int AUTO_INCREMENT,
 	LCLASCTGRY_CODE int not null,
-	DETAILCTGRY_NM varchar(10) not null,
-	DETAILCTGRY_COLOR varchar(20) not null,
+	DETAILCTGRY_NM varchar(30) not null,
+	DETAILCTGRY_COLOR varchar(10) not null,
 
 	PRIMARY KEY(DETAILCTGRY_CODE),
 	FOREIGN KEY(LCLASCTGRY_CODE) REFERENCES large_classification_category(LCLASCTGRY_CODE) ON UPDATE CASCADE ON DELETE CASCADE

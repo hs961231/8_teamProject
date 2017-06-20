@@ -1,7 +1,6 @@
 package yjc.wdb.scts;
 
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,43 +8,25 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
-
-import yjc.wdb.scts.bean.BBScttVO;
 import yjc.wdb.scts.bean.BeaconVO;
-import yjc.wdb.scts.bean.CouponVO;
-import yjc.wdb.scts.bean.EventVO;
 import yjc.wdb.scts.bean.GoodsVO;
-import yjc.wdb.scts.bean.HelpVO;
-import yjc.wdb.scts.bean.PageMaker;
-import yjc.wdb.scts.bean.PageVO;
-import yjc.wdb.scts.bean.StockVO;
 import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.BBSService;
 import yjc.wdb.scts.service.BeaconService;
-import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.Floor_informationService;
 import yjc.wdb.scts.service.GoodsService;
-import yjc.wdb.scts.service.HelpService;
-import yjc.wdb.scts.service.StockService;
 import yjc.wdb.scts.service.TileService;
 import yjc.wdb.scts.service.UserService;
 
@@ -76,12 +57,12 @@ public class HomeController {
 	
 	@Inject
 	private BeaconService beaconService;
-	
+/*	
 	@Inject 
 	private StockService stockService;
 	
 	@Inject
-	private HelpService helpService;
+	private HelpService helpService;*/
 	
 	@Inject
 	private Floor_informationService floor_informationService;
@@ -257,6 +238,8 @@ public class HomeController {
 	
 	
 	/////////////////////////////////////////// 문의 사항 ///////////////////////////
+	// 242 ~ 456번 주석 컨트롤쉬프트 \ 하면 풀림
+/*	
 	@RequestMapping(value="help_List", method=RequestMethod.GET)
 	public String helpList(Model model, @ModelAttribute("cri") PageVO cri) throws Exception{
 		String ContentPage = "help_List";
@@ -264,8 +247,8 @@ public class HomeController {
 		logger.info(cri.toString());
 		System.out.println("�럹�씠吏� : " + cri.getPage() + "媛쒖닔 : " + cri.getPerPageNum() +
 							"�꽌移섑��엯 : " + cri.getSearchType() + "�궎�썙�뱶 : " +cri.getKeyword()); 
-		/* PageVO cri瑜� �뙆�씪誘명꽣濡� �벐怨� Model媛앹껜濡� 諛쒖깮�븯�뒗 PageMaker瑜� ���옣 */
-		/* 紐⑸줉 �뜲�씠�꽣瑜� Model�뿉 ���옣�븯怨�, PageMaker瑜� 援ъ꽦�빐�꽌 Model�뿉 �떞�뒗 �옉�뾽 */
+		 PageVO cri瑜� �뙆�씪誘명꽣濡� �벐怨� Model媛앹껜濡� 諛쒖깮�븯�뒗 PageMaker瑜� ���옣 
+		 紐⑸줉 �뜲�씠�꽣瑜� Model�뿉 ���옣�븯怨�, PageMaker瑜� 援ъ꽦�빐�꽌 Model�뿉 �떞�뒗 �옉�뾽 
 		
 		model.addAttribute("list", helpService.listSearch(cri));
 		PageMaker pageMaker = new PageMaker();
@@ -300,10 +283,10 @@ public class HomeController {
 	}
 	
 	
-	/* help_Read�뿉�꽌 �떎�떆 �썝�옒 �럹�씠吏�濡� �룎�븘媛��젮硫� �븘�슂�븳 寃� page, perPageNum, bno�씠�떎. */
+	 help_Read�뿉�꽌 �떎�떆 �썝�옒 �럹�씠吏�濡� �룎�븘媛��젮硫� �븘�슂�븳 寃� page, perPageNum, bno�씠�떎. 
 	@RequestMapping(value="readPage", method=RequestMethod.GET)
 	public String readPage(@RequestParam("bno") int bno, @ModelAttribute("cri") PageVO cri, Model model)throws Exception{
-		/* page�� perPageNum �뙆�씪誘명꽣�뒗 PageVO���엯 媛앹껜濡� 泥섎━. bno留� 蹂꾨룄濡� 諛쏆븘�샂. */
+		 page�� perPageNum �뙆�씪誘명꽣�뒗 PageVO���엯 媛앹껜濡� 泥섎━. bno留� 蹂꾨룄濡� 諛쏆븘�샂. 
 		String ContentPage = "help_Read";
 		System.out.println("由щ뱶 �뿬�봽 "+cri.isMsg());
 		
@@ -379,7 +362,7 @@ public class HomeController {
 	
 	@RequestMapping(value="deleteHelp", method=RequestMethod.GET)
 	public String deleteHelpGet(@RequestParam("bno") int bno,@ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model) throws Exception{
-		/* 寃��깋�븯怨� �궘�젣寃쎌슦 */
+		 寃��깋�븯怨� �궘�젣寃쎌슦 
 		model.addAttribute("msg", cri.isMsg());
 		System.out.println("�뵜由ы듃 �뿬�봽  寃� " + cri.isMsg());
 		
@@ -393,7 +376,7 @@ public class HomeController {
 	
 	@RequestMapping(value="deleteHelp", method=RequestMethod.POST)
 	public String deleteHelpPost(@RequestParam("bno") int bno,@ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model) throws Exception{
-		/* 寃��깋 �븘�땲怨� �궘�젣寃쎌슦 */
+		 寃��깋 �븘�땲怨� �궘�젣寃쎌슦 
 		helpService.deleteHelp(bno);
 		
 		model.addAttribute("msg", cri.isMsg());
@@ -469,7 +452,7 @@ public class HomeController {
 		
 		return "redirect:stock_Management";
 	}
-	
+	*/
 	
 	/********************************* 이벤트 관리 부분 ***************************************/
 	/********************************* 이벤트 관리 부분 ***************************************/
