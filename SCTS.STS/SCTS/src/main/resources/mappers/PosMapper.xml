@@ -46,27 +46,6 @@
 		pgc.goods_code;
 	</update>
 
-	<!-- 총가격 업데이트 -->
-	<update id="totalPrice">
-		update bill, (select sum(result.price) as bill_total
-		from (select
-		pg.BILL_CODE as bill_code,g.GOODS_PC *
-		pg.PURCHSGOODS_QY -
-		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT like '%@%' escape '@',
-		(g.GOODS_PC * (trim(trailing '%' from c.COUPON_DSCNT)/100)),
-		c.COUPON_DSCNT)) as price
-		from goods g, purchase_goods pg, bill b,
-		coupon c
-		where g.GOODS_CODE = pg.GOODS_CODE and b.BILL_CODE =
-		pg.BILL_CODE and
-		b.BILL_CODE = #{bill_code} and
-		if(isnull(pg.COUPON_CODE), 1,
-		c.COUPON_CODE = pg.COUPON_CODE)
-		group by pg.BILL_CODE, pg.GOODS_CODE)
-		as result
-		group by result.bill_code) as total
-		set bill_totamt = total.bill_total
-		where bill_code = #{bill_code};
-	</update>
+
 
 </mapper>

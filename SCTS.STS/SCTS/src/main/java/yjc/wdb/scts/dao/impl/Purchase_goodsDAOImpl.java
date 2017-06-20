@@ -1,6 +1,7 @@
 package yjc.wdb.scts.dao.impl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -22,6 +23,12 @@ public class Purchase_goodsDAOImpl implements Purchase_goodsDAO {
 	public void insertPurchase_goods(HashMap<String, String> vo) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.insert(NAMESPACE + ".insertPurchase_goods", vo);
+	}
+
+	@Override
+	public void insertPurchase_goodsList(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(NAMESPACE + ".insertPurchase_goodsList", map);
 	}
 
 }

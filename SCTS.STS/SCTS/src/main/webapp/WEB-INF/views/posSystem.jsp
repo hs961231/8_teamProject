@@ -36,7 +36,7 @@
 </style>
 
 <%-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 상품리스트 부분 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ --%>
-<div class="row">
+<div class="row" style="height: 400px;">
 	<div class="col-lg-12">
 		<section class="panel">
 			<header class="panel-heading"> Hover Table (상품 리스트) </header>
@@ -52,7 +52,7 @@
 						<th>할인</th>
 					</tr>
 				</thead>
-				<tbody id="goodsList">
+				<tbody id="goodsList" style="overflow: scroll;">
 				</tbody>
 			</table>
 		</section>
@@ -145,7 +145,8 @@
 				<br>
 				<a href="#couponPointOpen"><button class="btn btn-default" type="button" id="couponPoint">쿠폰 포인트</button></a>
 				<br>
-				<a href="#cardOpen"><button class="btn btn-default" type="button" id="card">신용카드 결제</button></a>
+				<!-- <a href="#cardOpen"><button class="btn btn-default" type="button" id="card">신용카드 결제</button></a> -->
+				<button class="btn btn-default" type="button" id="card">신용카드 결제</button>
 				<br>
 				<a href="#moneyOpen"><button class="btn btn-default" type="button" id="money">현금 결제</button></a>
 				<br>

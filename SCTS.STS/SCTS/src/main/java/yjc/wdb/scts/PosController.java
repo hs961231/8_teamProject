@@ -1,13 +1,17 @@
 package yjc.wdb.scts;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.GoodsVO;
+import yjc.wdb.scts.service.BillService;
 import yjc.wdb.scts.service.Coupon_holdService;
 import yjc.wdb.scts.service.GoodsService;
 
@@ -38,6 +44,9 @@ public class PosController {
 	@Inject
 	Coupon_holdService coupon_holdService;
 	
+	@Inject
+	BillService billService;
+	
 	
 	/********************************* 포스 시스템 부분 ***************************************/
 	/********************************* 포스 시스템 부분 ***************************************/
@@ -51,7 +60,39 @@ public class PosController {
 
 		return "mainPage";
 	}
+	
+	@RequestMapping(value="payment", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> payment(@RequestBody JSONObject json) throws Exception{
+		System.out.println("페이먼트 결제로 왔음");
+		System.out.println(json);
+		try {
+			
+			//List<HashMap<String, String>> purchase_goodsList = new ArrayList<HashMap<String,String>>();
+			List<HashMap<String, String>> purchase_goodsList = null;
+			
+			
+			Map map = (Map) new JSONParser().parse(json.toJSONString());
+			
+			List<HashMap<String, String>> goodsList = (List) map.get("goodsList");
+			
+			String user_id = null;
+			if(map.get("user_id") != null) {
+				user_id = map.get("user_id").toString();	// 유저 아이디
+			}
+			int stprc = Integer.parseInt(map.get("stprc").toString());		// 결제 금액
+			String setle_mth_nm = map.get("setle_mth_nm").toString();	// 결제 수단 이름
+			
+			billService.payment(user_id, stprc, setle_mth_nm, goodsList);
 
+			System.out.println("결제정보 삽입 완료");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
 	/* posSystem.js
 	 * 포스 페이지에서 바코드 입력 후 물품 등록을 눌렀을 때 디비에 조회해서 상품의 정보를
 	 * 뷰페이지로 보내주는 아작스 처리문

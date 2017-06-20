@@ -12,6 +12,16 @@ insert into purchase_goods
 values (#{bill_code}, #{goods_code}, #{coupon_code}, #{purchsgoods_qy})
 </insert>
 
+<insert id="insertPurchase_goodsList" parameterType="java.util.Map">
+
+insert into purchase_goods
+	(BILL_CODE, GOODS_CODE, COUPON_CODE, PURCHSGOODS_QY)
+values
+<foreach collection="goodsList" item="goods" separator=",">
+        ( LAST_INSERT_ID(), #{goods.goods_code}, #{goods.coupon_code}, #{goods.purchsgoods_qy} )
+</foreach>
+</insert>
+
 <!-- <update id="">
 </update>
 

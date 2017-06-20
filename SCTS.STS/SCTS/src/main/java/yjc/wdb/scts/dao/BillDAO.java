@@ -23,4 +23,7 @@ public interface BillDAO {
 	public List<HashMap> genderSales(String date, String gender) throws Exception;
 	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception;
 	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception;
+	
+	public void insertBill(String user_id) throws Exception;
+	public void updateTotamt() throws Exception;
 }

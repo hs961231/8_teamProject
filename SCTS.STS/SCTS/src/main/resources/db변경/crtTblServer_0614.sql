@@ -164,7 +164,7 @@ create table bill (
 	BILL_CODE int AUTO_INCREMENT,
 	USER_ID varchar(10),
 	BILL_ISSU_DE date not null,	/* 계산서 발급날짜 */
-	BILL_TOTAMT int not null,	/* 총 가격 */
+	BILL_TOTAMT int,	/* 총 가격 */
 
 	PRIMARY KEY(BILL_CODE),
 	FOREIGN KEY(USER_ID) REFERENCES user(USER_ID) ON UPDATE CASCADE ON DELETE CASCADE

@@ -156,4 +156,16 @@ public class BillDAOImpl implements BillDAO {
 		return sql.selectList(NAMESPACE+".ageSalesInfo", map);
 	}
 
+	@Override
+	public void insertBill(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		sql.insert(NAMESPACE + ".insertBill", user_id);
+	}
+
+	@Override
+	public void updateTotamt() throws Exception {
+		// TODO Auto-generated method stub
+		sql.update(NAMESPACE + ".totalPrice");
+	}
+
 }

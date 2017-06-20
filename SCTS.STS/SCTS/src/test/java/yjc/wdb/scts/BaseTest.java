@@ -1,12 +1,14 @@
 package yjc.wdb.scts;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,7 +31,7 @@ import yjc.wdb.scts.service.Purchase_goodsService;
 @WebAppConfiguration
 @ContextConfiguration(
 		//locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"} )
-		locations = {"file:src/main/webapp/WEB-INF/spring/**/*.xml"} )
+		locations = {"file:src/main/webapp/WEB-INF/spring/**/*-context.xml"} )
 public class BaseTest {
 	
 	private static final Logger logger =
@@ -45,8 +47,37 @@ public class BaseTest {
 	
 	@Inject
 	Purchase_goodsService PService;
-	
+
 	@Test
+	public void mapTest() {
+		String str = "{\"user_id\":\"\",\"goodsList\":[{\"goods_code\":\"3\",\"coupon_code\":\"4\",\"purchsgoods_qy\":\"1\"},{\"goods_code\":\"4\",\"purchsgoods_qy\":\"1\"},{\"goods_code\":\"5\",\"purchsgoods_qy\":\"1\"}],\"setle_mth_nm\":\"card\",\"stprc\":265000}";
+		
+		try {
+			JSONObject json = (JSONObject) new JSONParser().parse(str);
+			System.out.println(json.toString());
+
+			
+			List<HashMap<String, String>> purchase_goodsList = null;	
+			
+			JSONParser parser = new JSONParser();
+			
+			Map map = (Map) parser.parse(json.toJSONString());
+			
+			System.out.println(map.get("goodsList").toString());
+			List<HashMap<String, String>> list = (List) map.get("goodsList");
+			
+			String user_id = map.get("user_id").toString();
+			System.out.println(map.get("user_id"));
+			System.out.println(user_id);
+			
+			System.out.println(list.get(0).get("coupon_code"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void dbinput() {
 		//Purchase_goodsVO vo = new Purchase_goodsVO();
 		/*

@@ -3,13 +3,17 @@ package yjc.wdb.scts.service.impl;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import yjc.wdb.scts.bean.BillVO;
 import yjc.wdb.scts.dao.BillDAO;
+import yjc.wdb.scts.dao.Purchase_goodsDAO;
+import yjc.wdb.scts.dao.Settlement_methodDAO;
 import yjc.wdb.scts.service.BillService;
 
 @Service
@@ -17,6 +21,12 @@ public class BillServiceImpl implements BillService {
 	
 	@Inject
 	private BillDAO dao;
+	
+	@Inject
+	private Purchase_goodsDAO p_dao;
+	
+	@Inject
+	private Settlement_methodDAO s_dao;
 
 	
 	@Override
@@ -108,5 +118,37 @@ public class BillServiceImpl implements BillService {
 		// TODO Auto-generated method stub
 		return dao.ageSalesInfo(date, age, standard, gender);
 	}
+
+	@Override
+	@Transactional
+	public void payment(String user_id, int stprc, String setle_mth_nm, List<HashMap<String, String>> goodsList)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+		// 새로운 계산서 생성
+		dao.insertBill(user_id);
+		
+		/*******************************************/
+		// 구매 물품 리스트를 맵에다가 삽입
+		Map<String, Object> goodsMap = new HashMap<String, Object>();
+		goodsMap.put("goodsList", goodsList);
+		
+		// 구매몰품 목록을 삽입
+		p_dao.insertPurchase_goodsList(goodsMap);
+		
+		// 총 가격 업데이트
+		dao.updateTotamt();
+		
+	
+		/*******************************************/
+		// 결제 정보 관련 맵 생성
+		Map<String, String> payment_map = new HashMap<String, String>();
+		payment_map.put("setle_mth_nm", setle_mth_nm);
+		payment_map.put("stprc", "" + stprc);
+		
+		// 결제 정보 삽입
+		s_dao.insertSettlement_infomation(payment_map);
+	}
+
 
 }

@@ -147,21 +147,6 @@ $(document).ready(function() {
 		
 	});
 	
-	/* 결제 버튼 누를 시
-	 * 
-	 */
-	
-	$("").on("click", function() {
-		
-		$("#goodsList").find(".goodsItem").each(function(i, e) {
-			
-		});
-		
-		$.ajax({
-			url: "",
-			type: "post",
-		});
-	});
 
 	/* 쿠폰 리스트(모달창) 에서 쿠폰 클릭햇을때 사용한다는 의미로 강조 표시 해줄 것 */
 	$("#couponList").on("click", ".couponItem", function() {
@@ -242,6 +227,114 @@ $(document).ready(function() {
 	$(window).click(function(e) {
 		if(e.target.classList.contains("modalPanel"))
 			closeModal();
+	});
+	/********************************************************************************************************************************************/
+	/********************************************************************************************************************************************/
+	/***************************************************                                            *********************************************/
+	/***************************************************                결제 관련 함수들                 *********************************************/
+	/***************************************************                                            *********************************************/
+	/********************************************************************************************************************************************/
+	/********************************************************************************************************************************************/
+
+	/* 결제 버튼 누를 시
+	 * 
+	 */
+	
+	
+	/* 서버로 보낼 때 form 형식으로 post방식으로 배열값이랑 모두 전송하지만
+	 * 실제 서버쪽에서 받아야 할 때 어떻게 받아야 할 지 찾을 시간이 없어서 임시로 주석 처리 하고
+	 * 아작스로 처리함
+	 */
+	/*
+	$("#card").on("click", function() {
+		
+		var $form = $('<form></form>');
+		$form.attr('action', 'payment');
+		$form.attr('method', 'post');
+		$form.appendTo('body');
+		
+		
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			
+			//var goods_code = $("input[name=goods_code[]]").attr("type", "hidden");
+			var goods_code = $("<input[name=goods_code[]]></input>").attr("type", "hidden");
+			goods_code.val($(this).find('.goods_code').text());
+			goods_code.appendTo($form);
+			//var coupon_code = $("input[name=coupon_code[]").attr("type", "hidden");
+			var coupon_code = $("<input[name=coupon_code[]]></input>").attr("type", "hidden");
+			coupon_code.val($(this).find('.useCoupon_code').val());
+			coupon_code.appendTo($form);
+			//var purchsgoods_qy = $("input[name=purchsgoods_qy[]").attr("type", "hidden");
+			var purchsgoods_qy = $("<input[name=purchsgoods_qy[]]></input>").attr("type", "hidden");
+			purchsgoods_qy.val($(this).find('.purchsgoods_qy').text());
+			purchsgoods_qy.appendTo($form);
+		});
+		
+		var user_id = $("input[name=user_id]").attr("type", "hidden");
+		user_id.val( $("#user_id_payment").text() );
+		user_id.appendTo($form);
+		var totalAmount = $("input[name=totalAmount]").attr("type", "hidden");
+		totalAmount.val( $("#totalAmount").text() );
+		totalAmount.appendTo($form);
+		
+		$form.submit();
+	});
+	*/
+	
+	$("#card").on("click", function() {
+		var goodsList = new Array();
+		var user_id = $("#user_id_payment").val();
+		
+		// 추후에 변경 필요
+		// 현재 그냥 카드로 총금액 결제를 해버림.
+		var totalAmount = $("#totalAmount").text();		
+		
+		var setle_mth_nm = "card";	// 결제 수단 명 ( 추후에 변경 해야함 )
+		var stprc = parseInt( $("#totalAmount").text() ); // 결제 금액
+		
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			var goods_code = $(this).find('.goods_code').text();
+			var coupon_code = $(this).find('.useCoupon_code').val();
+			var purchsgoods_qy = $(this).find('.purchsgoods_qy').text();
+			
+			var goodsItem = {
+					goods_code : goods_code,
+					coupon_code : coupon_code,
+					purchsgoods_qy : purchsgoods_qy
+			}
+			goodsList.push(goodsItem);
+		});
+		
+		var sendData = JSON.stringify({
+			user_id : user_id,
+			setle_mth_nm : setle_mth_nm,
+			stprc : stprc,
+			goodsList : goodsList
+		});
+		
+		console.log(sendData);
+		
+		$.ajax({
+
+			url: "payment",
+			type: "post",
+			contentType: "application/json",
+			data: JSON.stringify({
+				user_id : user_id,
+				setle_mth_nm : setle_mth_nm,
+				stprc : stprc,
+				goodsList : goodsList
+			}),
+			
+			success: function(data){
+				//self.location.href = "mainPage";
+				location.reload();
+			},
+			error: function(data) {
+				console.log("에러뜸");
+				console.log(data);
+			}
+		});
 	});
 
 	/********************************************************************************************************************************************/

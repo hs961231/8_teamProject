@@ -3,6 +3,7 @@ package yjc.wdb.scts.service;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import yjc.wdb.scts.bean.BillVO;
 
@@ -23,4 +24,7 @@ public interface BillService {
 	public List<HashMap> genderSales(String date, String gender) throws Exception;
 	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception;
 	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception;
+	
+	// 실제 결제 때 결제 데이터 전부 삽입
+	public void payment(String user_id, int stprc, String setle_mth_nm, List<HashMap<String, String>> goodsList) throws Exception;
 }
