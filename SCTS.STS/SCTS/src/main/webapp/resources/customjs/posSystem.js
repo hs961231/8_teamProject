@@ -5,7 +5,6 @@
 
 
 $(document).ready(function() {
-
 	/* 상품번호(바코드) 입력해서 상품 한줄 추가하는 부분, 등록 버튼을 누를시 실행됨 */
 	$("#getGoods").on("click", function() {
 		var goods_code = $("#goods_code").val();
@@ -30,7 +29,7 @@ $(document).ready(function() {
 						var purchsgoods_qy = parseInt($(this).find(".purchsgoods_qy").text());
 						$(this).find(".purchsgoods_qy").text(purchsgoods_qy+1);
 						
-						reloadPrice($(this));
+						reloadOnePrice($(this));
 					}
 				});
 				
@@ -42,10 +41,12 @@ $(document).ready(function() {
 					$('<td></td>').addClass("goodsPrice").text(data.goods_pc).appendTo(goodsItem);	// 상품 한개 가격
 					$('<td></td>').addClass("purchsgoods_qy").text(1).appendTo(goodsItem);		// 수량 (처음엔 1개로 들어감)
 					$('<td></td>').addClass("price").text(data.goods_pc).appendTo(goodsItem);	// 수량 * 가격 , 처음엔 1개 기준으로 들어감
-					$('<td></td>').addClass("discount").text(0).appendTo(goodsItem);
+					$('<td></td>').addClass("dscnt_price").text(0).appendTo(goodsItem);
 					
 					goodsItem.appendTo(goodsList);
 					reloadTotalPrice();
+					reloadTotalDscnt();
+					reloadtotalAmount();
 				}
 				$("#goods_code").val("");
 			},
@@ -71,7 +72,7 @@ $(document).ready(function() {
 		
 		var goods_code_Array = new Array(); 
 		
-		$('#goodsList').find(".active").each(function(i, e) {
+		$('#goodsList').find(".goodsItem").each(function(i, e) {
 			goods_code_Array.push( parseInt($(this).find(".goods_code").text()) );
 		});
 		
@@ -92,8 +93,6 @@ $(document).ready(function() {
 			
 			success: function(data){
 				if(data.length > 0) {
-					$("#inputMode").css("display", "none");
-					$("#couponMode").css("display", "block");
 					
 					console.log(data);
 					
@@ -105,7 +104,7 @@ $(document).ready(function() {
 						$('<input type="hidden"/>').addClass("couponGoods_code").val(data[i].goods_code).appendTo(couponItem);
 						$('<td></td>').text(data[i].goods_nm).appendTo(couponItem);
 						$('<td></td>').text(data[i].coupon_nm).appendTo(couponItem);
-						$('<td></td>').text(data[i].coupon_dscnt).appendTo(couponItem);
+						$('<td></td>').addClass("coupon_dscnt").text(data[i].coupon_dscnt).appendTo(couponItem);
 						$('<td></td>').text(data[i].coupon_end_de).appendTo(couponItem);
 						
 						couponItem.appendTo(couponList);
@@ -121,30 +120,33 @@ $(document).ready(function() {
 		});
 	});
 	
+	/* 사용할 수 있는 쿠폰리스트에서 쿠폰들을 선택 후 등록버튼을 눌렀을때.
+	 * 실행 되는 뷰페이지 작업
+	 */
 	$("#useCoupon").on("click", function() {
-		var useCouponArray = new Array();
-		var useGoodsArray = new Array();
-		
-		/* 쿠폰 리스트 아래에서 선택된 쿠폰들의 쿠폰코드와 적용될 물품코드를 저장한다. */
+
 		$("#couponList").find(".active").each(function(i, e) {
-			useGoodsArray.push($(this).find(".couponGoods_code").val());
-			useCouponArray.push($(this).find(".coupon_code").val());
-		});
-		
-		if(useGoodsArray.length == 0) {
-			window.alert("선택된 쿠폰이 없습니다.");
-			return;
-		}
-		$("#goodsList").find(".goodsItem").each(function(i, e) {
-			for(var i=0; i<useGoodsArray.length; i++) {
-				if($(this).find('.goods_code').text() == useGoodsArray[i]) {
-					
+			var goods_code = $(this).find(".couponGoods_code").val();
+			var coupon_code = $(this).find(".coupon_code").val();
+			var couponItem = $(this);
+			console.log("외부 이치문 쿠폰 물품값 저장할때");
+			
+			$("#goodsList").find(".goodsItem").each(function(i, e) {
+				if($(this).find('.goods_code').text() == goods_code) {
+					console.log("내부 이치문에서 물품찾음");
+					//$(this).find('.coupon_code').text(coupon_code);
+					$('<input type="hidden"/>').addClass("useCoupon_code").val(coupon_code).appendTo($(this));
+					reloadCouponOnePrice($(this), couponItem);
+					return false;
 				}
-			}
+				console.log("내부 이치문 반복");
+			});
 		});
-		
+		$("#couponList").empty();
+		closeModal();
 		
 	});
+	
 
 	/* 쿠폰 리스트(모달창) 에서 쿠폰 클릭햇을때 사용한다는 의미로 강조 표시 해줄 것 */
 	$("#couponList").on("click", ".couponItem", function() {
@@ -152,7 +154,7 @@ $(document).ready(function() {
 	
 	});
 	
-	$("#goodsList").on("click", ".active", function() {
+	$("#couponList").on("click", ".active", function() {
 		$(this).removeClass("active");
 	});
 	
@@ -180,7 +182,7 @@ $(document).ready(function() {
 		
 		console.log("현재 물품 수량 = " + num);
 		$("#goodsList > .active > .purchsgoods_qy").text(num);
-		reloadPrice($("#goodsList > .active"));
+		reloadOnePrice($("#goodsList > .active"));
 	});
 	/* 수량 - 버튼 클릭 시 */
 	$("#subtractGoods").on("click", function() {
@@ -194,27 +196,8 @@ $(document).ready(function() {
 			console.log("현재 물품 수량 = " + num);
 			$("#goodsList > .active > .purchsgoods_qy").text(num);
 		}
-		reloadPrice($("#goodsList > .active"));
+		reloadOnePrice($("#goodsList > .active"));
 	});
-	
-	/* 추후에 수량 증가에 따른 가격 갱신을 위해 필요함 */
-	var reloadPrice = function(goodsItem) {
-		
-		var purchsgoods_qy = parseInt(goodsItem.find(".purchsgoods_qy").text());
-		goodsItem.find(".price").text( parseInt(goodsItem.find(".goodsPrice").text()) * (purchsgoods_qy) );
-		
-		reloadTotalPrice();
-	};
-	/* 전체 가격 변동이 일어날 경우 갱신하는 함수 */
-	var reloadTotalPrice = function() {
-		var totalPrice = 0;
-		
-		$("#goodsList").find(".goodsItem").each(function(i, e) {
-			totalPrice += parseInt( $(this).find(".price").text() );
-		});
-		$("#totalPrice").text(totalPrice);
-		console.log("임시로 일단 추가 안하고 여기서 표시 전체 가격 = " + totalPrice);
-	}
 	
 	$(".numberPad").on("click", function() {
 		var num = $(this).text();
@@ -240,9 +223,207 @@ $(document).ready(function() {
 		}
 	});
 	
+	
 	$(window).click(function(e) {
-		
+		if(e.target.classList.contains("modalPanel"))
+			closeModal();
 	});
+	/********************************************************************************************************************************************/
+	/********************************************************************************************************************************************/
+	/***************************************************                                            *********************************************/
+	/***************************************************                결제 관련 함수들                 *********************************************/
+	/***************************************************                                            *********************************************/
+	/********************************************************************************************************************************************/
+	/********************************************************************************************************************************************/
+
+	/* 결제 버튼 누를 시
+	 * 
+	 */
+	
+	
+	/* 서버로 보낼 때 form 형식으로 post방식으로 배열값이랑 모두 전송하지만
+	 * 실제 서버쪽에서 받아야 할 때 어떻게 받아야 할 지 찾을 시간이 없어서 임시로 주석 처리 하고
+	 * 아작스로 처리함
+	 */
+	/*
+	$("#card").on("click", function() {
+		
+		var $form = $('<form></form>');
+		$form.attr('action', 'payment');
+		$form.attr('method', 'post');
+		$form.appendTo('body');
+		
+		
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			
+			//var goods_code = $("input[name=goods_code[]]").attr("type", "hidden");
+			var goods_code = $("<input[name=goods_code[]]></input>").attr("type", "hidden");
+			goods_code.val($(this).find('.goods_code').text());
+			goods_code.appendTo($form);
+			//var coupon_code = $("input[name=coupon_code[]").attr("type", "hidden");
+			var coupon_code = $("<input[name=coupon_code[]]></input>").attr("type", "hidden");
+			coupon_code.val($(this).find('.useCoupon_code').val());
+			coupon_code.appendTo($form);
+			//var purchsgoods_qy = $("input[name=purchsgoods_qy[]").attr("type", "hidden");
+			var purchsgoods_qy = $("<input[name=purchsgoods_qy[]]></input>").attr("type", "hidden");
+			purchsgoods_qy.val($(this).find('.purchsgoods_qy').text());
+			purchsgoods_qy.appendTo($form);
+		});
+		
+		var user_id = $("input[name=user_id]").attr("type", "hidden");
+		user_id.val( $("#user_id_payment").text() );
+		user_id.appendTo($form);
+		var totalAmount = $("input[name=totalAmount]").attr("type", "hidden");
+		totalAmount.val( $("#totalAmount").text() );
+		totalAmount.appendTo($form);
+		
+		$form.submit();
+	});
+	*/
+	
+	$("#card").on("click", function() {
+		var goodsList = new Array();
+		var user_id = $("#user_id_payment").val();
+		
+		// 추후에 변경 필요
+		// 현재 그냥 카드로 총금액 결제를 해버림.
+		var totalAmount = $("#totalAmount").text();		
+		
+		var setle_mth_nm = "card";	// 결제 수단 명 ( 추후에 변경 해야함 )
+		var stprc = parseInt( $("#totalAmount").text() ); // 결제 금액
+		
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			var goods_code = $(this).find('.goods_code').text();
+			var coupon_code = $(this).find('.useCoupon_code').val();
+			var purchsgoods_qy = $(this).find('.purchsgoods_qy').text();
+			
+			var goodsItem = {
+					goods_code : goods_code,
+					coupon_code : coupon_code,
+					purchsgoods_qy : purchsgoods_qy
+			}
+			goodsList.push(goodsItem);
+		});
+		
+		var sendData = JSON.stringify({
+			user_id : user_id,
+			setle_mth_nm : setle_mth_nm,
+			stprc : stprc,
+			goodsList : goodsList
+		});
+		
+		console.log(sendData);
+		
+		$.ajax({
+
+			url: "payment",
+			type: "post",
+			contentType: "application/json",
+			data: JSON.stringify({
+				user_id : user_id,
+				setle_mth_nm : setle_mth_nm,
+				stprc : stprc,
+				goodsList : goodsList
+			}),
+			
+			success: function(data){
+				//self.location.href = "mainPage";
+				location.reload();
+			},
+			error: function(data) {
+				console.log("에러뜸");
+				console.log(data);
+			}
+		});
+	});
+
+	/********************************************************************************************************************************************/
+	/********************************************************************************************************************************************/
+	/***************************************************                                            *********************************************/
+	/***************************************************            가격 계산 관련 함수들                 *********************************************/
+	/***************************************************                                            *********************************************/
+	/********************************************************************************************************************************************/
+	/********************************************************************************************************************************************/
+	/* 모달창 관련해서 처리하기 위한 것. */
+	var closeModal = function() {
+		var urlindex = $(location).attr('href').indexOf('#');
+		if(urlindex > 0) {
+			$(location).attr('href', $(location).attr('href').substr(0,urlindex+1) );
+		}
+	}
+	
+	/* 물품 한개의 추가, 삭제, 수량변경, 등의 이벤트가 발생햇을 때 가격을 처리하는 함수로서
+	 * 물품 한개의 가격이 변동되어도 전체의 가격이 변동되기 때문에 모든 가격을 갱신함
+	 */
+	var reloadOnePrice = function(goodsItem) {
+		
+		var purchsgoods_qy = parseInt(goodsItem.find(".purchsgoods_qy").text());
+		goodsItem.find(".price").text( parseInt(goodsItem.find(".goodsPrice").text()) * (purchsgoods_qy) );
+		
+		reloadTotalPrice();
+		reloadTotalDscnt();
+		reloadtotalAmount();
+	};
+	
+	/* 전체 가격 변동이 일어날 경우 갱신하는 함수 */
+	var reloadTotalPrice = function() {
+		var totalPrice = 0;
+		
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			totalPrice += parseInt( $(this).find(".price").text() );
+		});
+		$("#totalPrice").text(totalPrice);
+	};
+	
+	/* 쿠폰을 적용했을 때 물품 리스트에서 할인 가격을 갱신 해주는 함수
+	 * 쿠폰 적용시 변동되는 가격은 물품 별 할인금액, 전체 할인 금액, 전체 합계가 변동됨
+	 */
+	var reloadCouponOnePrice = function(goodsItem, couponItem) {
+		var dscnt = couponItem.find(".coupon_dscnt").text();
+		var index = dscnt.indexOf("%");
+		
+		var price = parseInt(goodsItem.find(".goodsPrice").text());
+		
+		var dscnt_price = 0;
+
+		console.log("price = " + price + "  dscnt = " + dscnt + "  index = " + index);
+		console.log("dscntDouble = " + (dscnt.substr(0, index) / 100) );
+		if(index > 0) {
+			dscnt_price = parseInt( price * ( dscnt.substr(0, index) / 100 ) ) ;
+		}
+		else {
+			dscnt_price = dscnt;
+		}
+		console.log(dscnt_price);
+		goodsItem.find(".dscnt_price").text(dscnt_price);
+		
+		reloadTotalDscnt();
+		reloadtotalAmount();
+	};
+	
+	/* 물품들의 할인 금액을 전부 더해서 총 할인 금액에 표시해 주는 함수 */ 
+	var reloadTotalDscnt = function() {
+		console.log("이거 실행되나 TotalDscnt");
+		var totalDscnt = 0;
+		$("#goodsList").find(".goodsItem").each(function(i, e) {
+			totalDscnt += parseInt( $(this).find(".dscnt_price").text() );
+		});
+		$("#totalDscnt").text(totalDscnt)
+		console.log("총 할인 금액  = " + totalDscnt);
+	};
+	
+	/* 전체 물품 가격과 전체 할인 가격을 계산해서 결제해야할 금액을 갱신해주는 함수 */
+	var reloadtotalAmount = function() {
+		var totalPrice = parseInt( $("#totalPrice").text() );
+		var totalDscnt = parseInt( $("#totalDscnt").text() );
+		
+		console.log("할인 적용된 총 가격  = " + totalDscnt);
+		
+		var totalAmount = totalPrice - totalDscnt;
+		$("#totalAmount").text(totalAmount);
+		
+	};
+	
 	/* 추후에 가격 입력시 ',' 를 찍어주는 것을 추가할 예정,
 	 * 2개의 함수로 나누어서
 	 * 1개는 숫자에 ','를 찍어서 반환 해주는 것과

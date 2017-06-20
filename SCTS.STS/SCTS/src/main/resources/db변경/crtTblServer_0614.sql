@@ -164,7 +164,7 @@ create table bill (
 	BILL_CODE int AUTO_INCREMENT,
 	USER_ID varchar(10),
 	BILL_ISSU_DE date not null,	/* 계산서 발급날짜 */
-	BILL_TOTAMT int not null,	/* 총 가격 */
+	BILL_TOTAMT int,	/* 총 가격 */
 
 	PRIMARY KEY(BILL_CODE),
 	FOREIGN KEY(USER_ID) REFERENCES user(USER_ID) ON UPDATE CASCADE ON DELETE CASCADE
@@ -173,8 +173,8 @@ create table bill (
 /* 상품대분류카테고리 테이블 */
 create table large_classification_category (
 	LCLASCTGRY_CODE int AUTO_INCREMENT,
-	LCLASCTGRY_NM varchar(10) not null,
-	LCLASCTGRY_COLOR varchar(20) not null,
+	LCLASCTGRY_NM varchar(30) not null,
+	LCLASCTGRY_COLOR varchar(10) not null,
 
 	PRIMARY KEY(LCLASCTGRY_CODE)
 );
@@ -185,8 +185,8 @@ create table large_classification_category (
 create table detail_category (
 	DETAILCTGRY_CODE int AUTO_INCREMENT,
 	LCLASCTGRY_CODE int not null,
-	DETAILCTGRY_NM varchar(10) not null,
-	DETAILCTGRY_COLOR varchar(20) not null,
+	DETAILCTGRY_NM varchar(30) not null,
+	DETAILCTGRY_COLOR varchar(10) not null,
 
 	PRIMARY KEY(DETAILCTGRY_CODE),
 	FOREIGN KEY(LCLASCTGRY_CODE) REFERENCES large_classification_category(LCLASCTGRY_CODE) ON UPDATE CASCADE ON DELETE CASCADE

@@ -25,5 +25,7 @@
 		<typeAlias alias="TileVO" 							type="yjc.wdb.scts.bean.TileVO"></typeAlias>
 		<typeAlias alias="UserVO" 							type="yjc.wdb.scts.bean.UserVO"></typeAlias>
 		<typeAlias alias="EventVO" 							type="yjc.wdb.scts.bean.EventVO"></typeAlias>
+		<!-- <typeAlias alias="StockVO" 							type="yjc.wdb.scts.bean.StockVO"></typeAlias> -->
+		<!-- <typeAlias alias="HelpVO" 							type="yjc.wdb.scts.bean.HelpVO"></typeAlias> -->
 	</typeAliases>
 </configuration>

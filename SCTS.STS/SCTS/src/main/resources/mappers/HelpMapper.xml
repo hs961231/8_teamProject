@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="yjc.wdb.mapper.HelpMapper">
+<!-- sql이란 매퍼에서 변수처럼 만들어 include를 이용해 편리하게 사용 가능 -->
+<sql id="search"> 
+	<if test="searchType != null" >
+	 	<if test="searchType == 'n'.toString()">
+	 		AND title LIKE CONCAT('%', #{keyword}, '%')
+	 		OR content LIKE CONCAT('%', #{keyword}, '%')
+	 		OR writer LIKE CONCAT('%', #{keyword}, '%')
+	 	</if>
+		<if test="searchType == 't'.toString()">
+			AND title LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+		<if test="searchType == 'c'.toString()">
+			AND content LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+		<if test="searchType == 'w'.toString()">
+			AND writer LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+		<if test="searchType == 'tc'.toString()">
+			AND (title LIKE CONCAT('%', #{keyword}, '%')
+			OR content LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+	</if>
+</sql>
+
+	<insert id="insert">
+		insert into help_board (title ,content, regidate, writer)
+		values(#{title}, #{content}, NOW(), 'asd');
+	</insert>
+	
+	<select id="readHelp" resultType="HelpVO">
+		select bno, title, content, regidate, writer
+		from help_board
+		where bno = #{bno};
+	</select>
+	
+	<update id="update">
+		update help_board set title =#{title}, content =#{content}
+		where bno = #{bno}
+	</update>
+	
+	<delete id="delete">
+		delete from help_board
+		where bno = #{bno}
+	</delete>
+	
+	<select id="listPage" resultType="HelpVO">
+		select bno,title,content,regidate, writer
+		from help_board
+		order by bno
+		limit #{page}, 10
+	</select>
+	
+	<select id="listCriteria" resultType="HelpVO">
+		select bno,title, content, regidate, writer
+		from help_board
+		order by bno
+		limit #{pageStart}, #{perPageNum} 
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		select count(bno)
+		from help_board;
+	</select>
+	
+	<select id="countSearch" resultType="int">
+		select count(bno)
+		from help_board
+		where bno > 0
+	<include refid="search"></include>
+	</select>
+	
+	<select id="listSearch" resultType="HelpVO">
+	<![CDATA[
+	 select *
+	 from help_board
+	 where bno > 0
+	 ]]>
+	<include refid="search"></include>
+	 order by bno
+	 limit #{pageStart}, #{perPageNum}
+	</select>
+	
+</mapper>

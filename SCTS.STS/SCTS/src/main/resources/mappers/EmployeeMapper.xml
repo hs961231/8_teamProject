@@ -12,6 +12,12 @@ insert into employee
 values (#{user_id}, #{emp_ihidnum}, #{emp_anslry}, #{emp_acnuto}, #{emp_encpn})
 </insert>
 
+<insert id="insertEmployee_position">
+insert into employee_position
+	(USER_ID, DEPT_CODE, EMPPSITN_RSPOFC, EMPPSITN_GNFD_DE)
+values (#{user_id}, #{dept_code}, #{emppsitn_rspofc}, now()) 
+</insert>
+
 <!-- <update id="">
 </update>
 

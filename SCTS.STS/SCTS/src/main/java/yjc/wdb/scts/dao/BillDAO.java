@@ -7,7 +7,7 @@ import java.util.List;
 import yjc.wdb.scts.bean.BillVO;
 
 public interface BillDAO {
-	
+
 	public List<HashMap> yearSales(int year) throws Exception;
 	public List<HashMap> searchYear(int year1, int year2) throws Exception;
 	public List<HashMap> settleSalesInfo(int year1, int year2) throws Exception;
@@ -25,5 +25,8 @@ public interface BillDAO {
 	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception;
 	public int todaySales() throws Exception;
 	public int monthTotalSales() throws Exception;
+
+	public void insertBill(String user_id) throws Exception;
+	public void updateTotamt() throws Exception;
 }
-	
+

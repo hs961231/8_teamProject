@@ -14,9 +14,9 @@ import yjc.wdb.scts.dao.BillDAO;
 
 @Repository
 public class BillDAOImpl implements BillDAO {
-	
+
 	private static final String NAMESPACE = "yjc.wdb.mapper.BillMapper";
-	
+
 	@Inject
 	private SqlSession sql;
 
@@ -38,7 +38,7 @@ public class BillDAOImpl implements BillDAO {
 		Map map = new HashMap();
 		map.put("year1", year1);
 		map.put("year2", year2);
-		
+
 		return sql.selectList(NAMESPACE+".searchYear", map);
 	}
 
@@ -47,7 +47,7 @@ public class BillDAOImpl implements BillDAO {
 		Map map = new HashMap();
 		map.put("year1", year1);
 		map.put("year2", year2);
-		
+
 		return sql.selectList(NAMESPACE+".settleSalesInfo", map);
 	}
 
@@ -59,22 +59,22 @@ public class BillDAOImpl implements BillDAO {
 
 	@Override
 	public List<HashMap> searchDaySales(String date1, String date2) throws Exception {
-		
+
 		Map map = new HashMap();
 		map.put("date1", date1);
 		map.put("date2", date2);
-		
+
 		return sql.selectList(NAMESPACE+".searchDaySales", map);
 	}
 
 	@Override
 	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code) {
-		
+
 		Map map = new HashMap();
 		map.put("date1", date1);
 		map.put("date2", date2);
 		map.put("setle_mth_code", setle_mth_code);
-		
+
 		return sql.selectList(NAMESPACE+".daySettle", map);
 	}
 
@@ -83,8 +83,8 @@ public class BillDAOImpl implements BillDAO {
 		Map map = new HashMap();
 		map.put("month1", month1);
 		map.put("month2", month2);
-		
-		
+
+
 		return sql.selectList(NAMESPACE+".monthSales", map);
 	}
 
@@ -94,17 +94,17 @@ public class BillDAOImpl implements BillDAO {
 		map.put("month1", month1);
 		map.put("month2", month2);
 		map.put("setle_mth_code", setle_mth_code);
-		
+
 		return sql.selectList(NAMESPACE+".monthSalesSettleInfo", map);
 	}
 
 	@Override
 	public List<HashMap> productRank(String date, int standard) throws Exception {
-		
+
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("standard", standard);
-		
+
 		return sql.selectList(NAMESPACE+".productRank", map);
 	}
 
@@ -113,7 +113,7 @@ public class BillDAOImpl implements BillDAO {
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("standard", standard);
-		
+
 		return sql.selectList(NAMESPACE+".productRankInfo", map);
 	}
 
@@ -128,7 +128,7 @@ public class BillDAOImpl implements BillDAO {
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("gender", gender);
-		
+
 		return sql.selectList(NAMESPACE+".genderSales", map);
 	}
 
@@ -139,19 +139,19 @@ public class BillDAOImpl implements BillDAO {
 		map.put("age", age);
 		map.put("standard", standard);
 		map.put("gender", gender);
-		
+
 		return sql.selectList(NAMESPACE+".ageSales", map);
 	}
 
 	@Override
 	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
-		
+
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("age", age);
 		map.put("standard", standard);
 		map.put("gender", gender);
-		
+
 		return sql.selectList(NAMESPACE+".ageSalesInfo", map);
 	}
 
@@ -162,8 +162,21 @@ public class BillDAOImpl implements BillDAO {
 
 	@Override
 	public int monthTotalSales() throws Exception {
-		
+
 		return sql.selectOne(NAMESPACE+".monthTotalSales");
+	}
+
+
+	@Override
+	public void insertBill(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		sql.insert(NAMESPACE + ".insertBill", user_id);
+	}
+
+	@Override
+	public void updateTotamt() throws Exception {
+		// TODO Auto-generated method stub
+		sql.update(NAMESPACE + ".totalPrice");
 	}
 
 }

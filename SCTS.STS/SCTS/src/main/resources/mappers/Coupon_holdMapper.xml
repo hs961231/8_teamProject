@@ -51,7 +51,7 @@ and
 	c.COUPON_CODE = ch.coupon_code
 and
 	now()	BETWEEN c.COUPON_BEGIN_DE 
-			AND c.COUPON_END_DE;
+			AND c.COUPON_END_DE
 </select>
 
 <!-- <update id="">

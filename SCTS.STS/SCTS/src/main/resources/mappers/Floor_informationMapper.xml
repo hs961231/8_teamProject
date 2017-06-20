@@ -60,6 +60,10 @@ order by f.FLOORINFO_RGSDE desc, f.FLOORINFO_FLOOR asc
 limit #{floor},1
 </select>
 
+<select id="selectTileCategoryList" resultType="java.util.HashMap">
+
+</select>
+
 <select id="selectCountStory" resultType="integer">
 select count(DISTINCT FLOORINFO_FLOOR)
 from floor_information

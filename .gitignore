@@ -3,3 +3,6 @@ SCTS.STS/SCTS/target/classes/yjc/wdb/scts/service/UserServiceImpl.class
 SCTS.STS/SCTS/target/classes/yjc/wdb/scts/dao/UserDAOImpl.class
 SCTS.STS/SCTS/target/classes/yjc/wdb/scts/HomeController.class
 SCTS.STS/SCTS/target/test-classes/yjc/wdb/scts/BaseTest.class
+SCTS.STS/SCTS/target/test-classes/yjc/wdb/scts/BaseTest.class
+SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/service/BillService.java
+SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/service/impl/BillServiceImpl.java
