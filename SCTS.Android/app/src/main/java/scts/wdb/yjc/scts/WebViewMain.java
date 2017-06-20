@@ -165,6 +165,10 @@ public class WebViewMain extends AppCompatActivity {
             webView.loadUrl("javascript:setId('"+str+"', '"+point+"')");
 
 
+            // 이곳이 바로 쿠폰 보내는 곳!!!!!!!!!!!!!!!!!!!!!!!!!
+            String data = "이것이바로 쿠폰!쿠폰! 왔다! 왔다 ";
+            webView.loadUrl("javascript:coupon('"+ data +"')");
+
         }
     }
 

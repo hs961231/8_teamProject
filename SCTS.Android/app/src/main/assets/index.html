@@ -91,6 +91,12 @@
         document.getElementById("name").innerHTML= id;
         document.getElementById("point").innerHTML= point +"P";    
     }
+    // 이곳이 바로 쿠폰 받는곳이다!!!!!!!!!!!!!!!!
+    function coupon(data){
+        // 여기 modal을 띄우세요.
+        // 예시로 제이쿼리로 받아온 데이터를 붙여 보도록해보죠!
+         document.getElementById("coupon").innerHTML= data;
+    }
     
     function hi(){
          window.sampleAndroid.sampleAction("안드로이드 테스트");
@@ -103,8 +109,9 @@
 <div id="MoveInfo">
     
     <div id="MemberInfo">
-        <span id="name">hs</span> 님,
+        <span id="name">admin</span> 님,
         <p>행복한 시간 보내세요!</p>
+        <p id="coupon"></p>
     </div>
     <div id="pointInfo">
         <span id="shoppingTime"> 쇼핑한 시간 : 00:00 </span>

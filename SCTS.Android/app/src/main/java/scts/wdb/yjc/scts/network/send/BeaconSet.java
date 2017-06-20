@@ -1,7 +1,9 @@
 package scts.wdb.yjc.scts.network.send;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,6 +18,8 @@ import static android.content.ContentValues.TAG;
  */
 
 public class BeaconSet extends AsyncTask<String, String, String> {
+
+    private SharedPreferences.Editor editor;
 
     protected  void onPreExcute(){
 
@@ -88,6 +92,11 @@ public class BeaconSet extends AsyncTask<String, String, String> {
     protected void fullRecive(JsonObject json) {
         // json data 이런형식으로 날아옴. 뿌려주는건 아직 안함.
         // {"coupon_dscnt":"10%","coupon_begin_de":"1월 1, 2017","coupon_code":2,"coupon_end_de":"12월 30, 2017","coupon_cntnts":"coffee sale","coupon_nm":"coffee man","command":"fullcoupon","status":"SUCCESS"}
+/*
+        SharedPreferences sp = getSharedPreferences("test", 0);*/
+
+
+
 
         try {
             // 해당 부분에서 json 데이터 처리할 것
