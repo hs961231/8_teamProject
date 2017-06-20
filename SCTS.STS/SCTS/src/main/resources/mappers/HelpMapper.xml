@@ -6,7 +6,7 @@
   
 <mapper namespace="yjc.wdb.mapper.HelpMapper">
 <!-- sql이란 매퍼에서 변수처럼 만들어 include를 이용해 편리하게 사용 가능 -->
-<sql id="search"> 
+<!-- <sql id="search"> 
 	<if test="searchType != null" >
 	 	<if test="searchType == 'n'.toString()">
 	 		AND title LIKE CONCAT('%', #{keyword}, '%')
@@ -85,6 +85,6 @@
 	<include refid="search"></include>
 	 order by bno
 	 limit #{pageStart}, #{perPageNum}
-	</select>
+	</select> -->
 	
 </mapper>

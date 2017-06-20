@@ -26,4 +26,8 @@ public interface BillService {
 	public int todaySales() throws Exception;
 	public int monthTotalSales() throws Exception;
 	
+	   // 실제 결제 때 결제 데이터 전부 삽입
+	   public void payment(String user_id, int stprc, String setle_mth_nm, List<HashMap<String, String>> goodsList) throws Exception;
+	
+	
 }

@@ -28,5 +28,6 @@ public interface BillDAO {
 
 	public void insertBill(String user_id) throws Exception;
 	public void updateTotamt() throws Exception;
+	
 }
 
