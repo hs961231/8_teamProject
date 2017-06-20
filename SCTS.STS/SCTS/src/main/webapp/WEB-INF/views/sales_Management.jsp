@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<script src="resources/customjs/sockjs.js"></script>
+
 <style>
 #searchSales {
 	display: none;
@@ -39,7 +41,7 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="daySales">
 		<div class="info-box blue-bg daySales">
 			<i class="fa fa-cloud-download"></i>
 			<div class="count">0</div>
@@ -49,7 +51,7 @@
 	</div>
 	<!--/.col-->
 
-	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="MonthlySales">
 		<div class="info-box orange-bg2 MonthlySales">
 			<i class="fa fa-shopping-cart"></i>
 			<div class="count">0</div>
@@ -198,8 +200,8 @@
 				<button  class="btn btn-default next" style="width: 70px">&gt</button>
 			</td>
 			<td width="45%">
-				<span id="date">2017-06</span>
-				<span id="age">10</span>대
+				<p style="font-size : 25px"><span id="date" style="font-size : 25px">2017-06</span>
+				<span id="age" style="font-size : 25px">10</span>대</p>
 			</td>
 
 			<td>

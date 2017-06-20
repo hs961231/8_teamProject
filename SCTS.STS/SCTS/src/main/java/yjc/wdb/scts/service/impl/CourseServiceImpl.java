@@ -47,4 +47,10 @@ public class CourseServiceImpl implements CourseService {
 		dao.updateStayTime(vo);
 	}
 
+	@Override
+	public int monthAvgVisitor() throws Exception {
+		
+		return dao.monthAvgVisitor();
+	}
+
 }

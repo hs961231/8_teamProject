@@ -1,6 +1,5 @@
 package yjc.wdb.scts.dao.impl;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class BillDAOImpl implements BillDAO {
 	}
 
 	@Override
-	public List<HashMap> searchDaySales(Date date1, Date date2) throws Exception {
+	public List<HashMap> searchDaySales(String date1, String date2) throws Exception {
 		
 		Map map = new HashMap();
 		map.put("date1", date1);
@@ -69,7 +68,7 @@ public class BillDAOImpl implements BillDAO {
 	}
 
 	@Override
-	public List<HashMap> daySettle(Date date1, Date date2, int setle_mth_code) {
+	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code) {
 		
 		Map map = new HashMap();
 		map.put("date1", date1);
@@ -154,6 +153,17 @@ public class BillDAOImpl implements BillDAO {
 		map.put("gender", gender);
 		
 		return sql.selectList(NAMESPACE+".ageSalesInfo", map);
+	}
+
+	@Override
+	public int todaySales() throws Exception {
+		return sql.selectOne(NAMESPACE+".todaySales");
+	}
+
+	@Override
+	public int monthTotalSales() throws Exception {
+		
+		return sql.selectOne(NAMESPACE+".monthTotalSales");
 	}
 
 }

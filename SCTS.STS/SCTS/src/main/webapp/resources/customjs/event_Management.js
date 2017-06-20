@@ -135,6 +135,7 @@
 
 
 								});
+								
 								$('#calendar').fullCalendar ('removeEvents');
 								
 								viewCalendar(bhf_code);
@@ -274,6 +275,8 @@
 					
 		
 					var user_id = "${user_id}";
+					
+					alert(user_id);
 
 				
 					var event_info = $("#registerEvent .eventInfo").val();
@@ -344,28 +347,57 @@
 							
 							var temp = (data.result[i].end).split(".")[0];
 							
-							var end1 = temp.split("-")[0] + "-"+ temp.split("-")[1];
+							var end1 = parseInt(temp.split("-")[0]);
 							 
+							var month1 = temp.split("-")[1];
 							
 							var end2 = temp.split(" ")[0].split("-")[2];
+							
+							if(month1.match("^0")){
+								month1 = parseInt(month1.split("0")[1]);
+							}else{
+								month1 = parseInt(month1);
+							}
 					
 							if(end2.match("^0")){
 								end2 = parseInt(end2.split("0")[1]) + 1;
-								
-					
+
 							}else{
 								end2 = parseInt(end2) + 1;
+								
+								if(end2 == 32)
+								{
+									end2 = 1;
+									month1 = month1 + 1;
+									
+									if(month1 == 13){
+										month1 =  1;
+										end1 = end1 + 1;
+									}
+									
+								}
+								
+							
 							}
 							
 							
 							if(end2 < 10){
 								end2 = "0"+end2;
+								
 							}
 							
+							
+							
+							if(month1 < 10){
+								month1 = "0" + month1;
+							}
+
 							var end3 = temp.split(" ")[1];
 							
 						
-							var end = end1 + "-" + end2 + " " + end3;
+							var end = end1 + "-" + month1 +"-" + end2 + " " + end3;
+							
+						
 						
 							var eventData = {
 								title : data.result[i].title,

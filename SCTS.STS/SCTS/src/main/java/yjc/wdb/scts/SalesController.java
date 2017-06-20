@@ -150,7 +150,7 @@ public class SalesController {
 
 	
 	@RequestMapping(value="daySettle", method=RequestMethod.GET)
-	public @ResponseBody String daySettle(Date date1, Date date2, int setle_mth_code) throws Exception{
+	public @ResponseBody String daySettle(String date1, String date2, int setle_mth_code) throws Exception{
 
 
 		List<HashMap> list = billService.daySettle(date1, date2, setle_mth_code);
@@ -175,7 +175,7 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value="searchDaySales", method=RequestMethod.GET)
-	public @ResponseBody String searchDaySales(Date date1, Date date2) throws Exception{
+	public @ResponseBody String searchDaySales(String date1, String date2) throws Exception{
 
 		List<HashMap> list = billService.searchDaySales(date1, date2);
 

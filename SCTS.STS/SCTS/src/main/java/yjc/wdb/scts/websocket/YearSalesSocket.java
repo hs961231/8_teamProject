@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -18,18 +19,18 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import yjc.wdb.scts.dao.BillDAO;
 import yjc.wdb.scts.dao.CourseDAO;
 
-public class WebSocketTest extends TextWebSocketHandler{
+public class YearSalesSocket extends TextWebSocketHandler{
 
-	private static Logger logger = LoggerFactory.getLogger(WebSocketTest.class);
+	private static Logger logger = LoggerFactory.getLogger(MainSocket.class);
 	
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	private List<HashMap> list;
+	private List<HashMap> yearSalesInfo;
+	private JSONParser parser;
 	
 	@Inject
 	private BillDAO billDAO;
-	
-	@Inject
-	private CourseDAO courseDAO;
+
 	
 	// 클라이언트 연결이후에 실행되는 메소드
 	@Override
@@ -48,34 +49,57 @@ public class WebSocketTest extends TextWebSocketHandler{
 		
 		super.handleTextMessage(session, message);
 		
-		
-		
-		System.out.println(message.getPayload());
-		
 		logger.info("{} 보냄", message.getPayload());
 		
-		list = billDAO.daySales();
+		parser = new JSONParser();
+		
+		JSONObject obj =null;
+		obj = (JSONObject) parser.parse(message.getPayload());
+
+		
+		list = billDAO.yearSales(Integer.parseInt(obj.get("year2").toString()));
+		
+		//System.out.println(list.toString());
+		
 		JSONArray jArray = new JSONArray();
+		
 		for(int i = 0; i < list.size(); i++){
 			JSONObject json = new JSONObject();
-			json.put("bill_issu_de", list.get(i).get("bill_issu_de").toString());
-			json.put("totalPrice", list.get(i).get("totalPrice").toString());
+			json.put("year", list.get(i).get("year").toString());
+			json.put("totalPrice", list.get(i).get("totalPrice"));
 			
 			jArray.add(json);
 		}
+
+		yearSalesInfo = billDAO.settleSalesInfo(Integer.parseInt(obj.get("year1").toString()), Integer.parseInt(obj.get("year2").toString()));
+		JSONArray yearSalesInfoArray = new JSONArray();
+		for(int i = 0; i < yearSalesInfo.size(); i++){
+			JSONObject json = new JSONObject();
+			json.put("year", yearSalesInfo.get(i).get("year").toString());
+			json.put("totalPrice", yearSalesInfo.get(i).get("totalPrice"));
+			json.put("setle_mth_nm", yearSalesInfo.get(i).get("setle_mth_nm").toString());
+			yearSalesInfoArray.add(json);
+		}
+		
+		System.out.println(yearSalesInfo.toString());
+		
+		int todaySales = billDAO.todaySales();
+
+		
+		int monthTotalSales = billDAO.monthTotalSales();
 		
 		JSONObject result = new JSONObject();
-		result.put("result", jArray);
+		result.put("yearSales", jArray);
+		result.put("yearSalesInfo", yearSalesInfoArray);
+		result.put("todaySales", todaySales);
+		result.put("monthTotalSales", monthTotalSales);
 		
-		int totalCount = courseDAO.selectTodayVisitCnt();
-		
-		result.put("totalCount", totalCount);
-		
-		
+		System.out.println(result.toString());
 		
 		for(WebSocketSession sess : sessionList){
 			sess.sendMessage(new TextMessage(result.toString()));
 		}
+		
 	}
 	
 	// 클라이언트가 연결을 끊었을 때 실행되는 메소드

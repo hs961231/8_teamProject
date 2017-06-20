@@ -45,8 +45,14 @@ public class CourseDAOImpl implements CourseDAO {
 
 	@Override
 	public void updateStayTime(HashMap<String, String> vo) throws Exception {
-		// TODO Auto-generated method stub
+		
 		sqlSession.update(NAMESPACE + ".updateStayTime", vo);
+	}
+
+	@Override
+	public int monthAvgVisitor() throws Exception {
+		
+		return sqlSession.selectOne(NAMESPACE+".monthAvgVisitor");
 	}
 
 }

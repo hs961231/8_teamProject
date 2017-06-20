@@ -6,168 +6,158 @@
 
 <mapper namespace="yjc.wdb.mapper.CourseMapper">
 
-<!-- 
-<insert id="insertCourse">
-insert into COURSE
-	(USER_ID, TILE_CODE, COURS_STAY_TIME, COURS_PASNG_TIME)
-values (#{user_id}, #{tile_code}, #{cours_stay_time}, #{cours_pasng_time})
-</insert>
- -->
+	<!-- <insert id="insertCourse"> insert into COURSE (USER_ID, TILE_CODE, 
+		COURS_STAY_TIME, COURS_PASNG_TIME) values (#{user_id}, #{tile_code}, #{cours_stay_time}, 
+		#{cours_pasng_time}) </insert> -->
 
-<!-- 안드로이드에서 비콘정보 쏴줄 때 서버 측에서 비콘 정보 인설트용 쿼리 -->
-<insert id="insertCourse">
-insert into course
-	(USER_ID, TILE_CODE, COURS_PASNG_TIME)
-values (#{user_id},
+	<!-- 안드로이드에서 비콘정보 쏴줄 때 서버 측에서 비콘 정보 인설트용 쿼리 -->
+	<insert id="insertCourse">
+		insert into course
+		(USER_ID, TILE_CODE, COURS_PASNG_TIME)
+		values (#{user_id},
 		(select t.TILE_CODE
-			from tile t, beacon b
-			where b.BEACON_MJR = #{beacon_mjr}
-			and b.BEACON_MNR = #{beacon_mnr}
-			and b.BEACON_CODE = t.BEACON_CODE) ,
+		from tile t, beacon b
+		where b.BEACON_MJR = #{beacon_mjr}
+		and b.BEACON_MNR = #{beacon_mnr}
+		and b.BEACON_CODE = t.BEACON_CODE) ,
 		#{cours_pasng_time} );
-</insert>
+	</insert>
 
-<update id="updateStayTime">
-update
-	course
-set
-	COURS_STAY_TIME = #{cours_stay_time}
-where
-	USER_ID = #{user_id}
-and
-	TILE_CODE =	(
-					select
-						TILE_CODE
-					from
-						tile
-					where
-						BEACON_CODE =	(
-											select
-												BEACON_CODE
-											from
-												beacon
-											where
-												BEACON_MJR = #{beacon_mjr}
-											and
-												BEACON_MNR = #{beacon_mnr}
-										)
-				)
-and
-	COURS_PASNG_TIME = #{cours_pasng_time}
-and
-	COURS_STAY_TIME is null
-</update>
-
-			
-
-<!-- 오늘 방문자 수 계산 -->
-<select id="selectTodayVisitCnt" resultType="integer">
-select
-	count(DISTINCT user_id)
-from
-	course
-where
-	date(COURS_PASNG_TIME) >= date(subdate(now(), INTERVAL 0 DAY))
-</select>
-
-<!--
-	해당 선택된 타일에 방문한 방문자 수와
-	매장 전체에 방문자 수를 계산한 뒤
-	해당 타일에 전체 방문자 중 몇퍼센트가 방문햇는지 가져오는 쿼리문
-	
-	** 현재 이 쿼리문은 당일날의 데이터만 가져오게 되어 있음 **
--->
-<select id="tileProbability" resultType="java.util.HashMap">
-select
-	C.tile_visit,
-	T.total_visit,
-	(C.tile_visit / T.total_visit) AS probability
-	
-from
-	(
-		select
-			count(DISTINCT user_id) AS tile_visit
-		from
-			course
+	<update id="updateStayTime">
+		update
+		course
+		set
+		COURS_STAY_TIME = #{cours_stay_time}
 		where
-			TILE_CODE =	(
-							select
-								TILE_CODE
-							from
-								tile
-							where
-								DRW_CODE = #{drw_code}
-							and
-								TILE_CRDNT_X = #{tile_crdnt_x}
-							and
-								TILE_CRDNT_Y = #{tile_crdnt_y}
-						)
+		USER_ID = #{user_id}
 		and
-			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY)) 
-	) C,
-	
-	(
+		TILE_CODE = (
 		select
-			count(DISTINCT user_id) AS total_visit
+		TILE_CODE
 		from
-			course
+		tile
 		where
-			date(COURS_PASNG_TIME) >= date(subdate(curDate(), INTERVAL 0 DAY)) 
-	) T
-</select>
-
-<!--
-	하나의 타일(해당 타일)에 방문한 방문자들의 아이디, 이름, 연령대, 성별, 혼인여부를 가져오는 쿼리문
-	
-	** 현재 이 쿼리문은 당일날의 데이터만 가져오게 되어 있음 **
--->
-<select id="tileUserinfo" resultType="java.util.HashMap">
-select
-	U.user_id, U.user_nm, U.agegroup, U.user_sexdstn, U.user_mrrg_at
-	
-from
-	(
+		BEACON_CODE = (
 		select
-			user_id
+		BEACON_CODE
 		from
-			course
+		beacon
 		where
-			TILE_CODE =	(
-							select
-								TILE_CODE
-							from
-								tile
-							where
-								DRW_CODE = #{drw_code}
-							and
-								TILE_CRDNT_X = #{tile_crdnt_x}
-							and
-								TILE_CRDNT_Y = #{tile_crdnt_y}
-						)
+		BEACON_MJR = #{beacon_mjr}
 		and
-			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY)) 
-	) C,
+		BEACON_MNR = #{beacon_mnr}
+		)
+		)
+		and
+		COURS_PASNG_TIME = #{cours_pasng_time}
+		and
+		COURS_STAY_TIME is null
+	</update>
 
-	(
+	<!-- 오늘 방문자 수 계산 -->
+	<select id="selectTodayVisitCnt" resultType="integer">
 		select
-			USER_ID, USER_NM, floor((year(curDate()) - date_format(USER_BRTHDY, '%Y') + 1)/10) agegroup,
-			USER_SEXDSTN, USER_MRRG_AT
+		count(DISTINCT user_id)
 		from
-			user
-	) U
+		course
+		where
+		date(COURS_PASNG_TIME) >= date(subdate(now(), INTERVAL 0 DAY))
+	</select>
 
-where
-	C.user_id = U.user_id
-</select>
+	<select id="monthAvgVisitor" resultType="int">
+		select sum(result.count)
+		from 
+			(select
+				count(DISTINCT user_id) as count
+				from course
+				group by date_format(COURS_PASNG_TIME, '%Y-%M-%d')) result;
+	</select>
+
+	<!-- 해당 선택된 타일에 방문한 방문자 수와 매장 전체에 방문자 수를 계산한 뒤 해당 타일에 전체 방문자 중 몇퍼센트가 방문햇는지 
+		가져오는 쿼리문 ** 현재 이 쿼리문은 당일날의 데이터만 가져오게 되어 있음 ** -->
+	<select id="tileProbability" resultType="java.util.HashMap">
+		select
+		C.tile_visit,
+		T.total_visit,
+		(C.tile_visit / T.total_visit) AS probability
+
+		from
+		(
+		select
+		count(DISTINCT user_id) AS tile_visit
+		from
+		course
+		where
+		TILE_CODE = (
+		select
+		TILE_CODE
+		from
+		tile
+		where
+		DRW_CODE = #{drw_code}
+		and
+		TILE_CRDNT_X = #{tile_crdnt_x}
+		and
+		TILE_CRDNT_Y = #{tile_crdnt_y}
+		)
+		and
+		date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY))
+		) C,
+
+		(
+		select
+		count(DISTINCT user_id) AS total_visit
+		from
+		course
+		where
+		date(COURS_PASNG_TIME) >= date(subdate(curDate(), INTERVAL 0 DAY))
+		) T
+	</select>
+
+	<!-- 하나의 타일(해당 타일)에 방문한 방문자들의 아이디, 이름, 연령대, 성별, 혼인여부를 가져오는 쿼리문 ** 현재 이 쿼리문은 
+		당일날의 데이터만 가져오게 되어 있음 ** -->
+	<select id="tileUserinfo" resultType="java.util.HashMap">
+		select
+		U.user_id, U.user_nm, U.agegroup, U.user_sexdstn, U.user_mrrg_at
+
+		from
+		(
+		select
+		user_id
+		from
+		course
+		where
+		TILE_CODE = (
+		select
+		TILE_CODE
+		from
+		tile
+		where
+		DRW_CODE = #{drw_code}
+		and
+		TILE_CRDNT_X = #{tile_crdnt_x}
+		and
+		TILE_CRDNT_Y = #{tile_crdnt_y}
+		)
+		and
+		date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 0 DAY))
+		) C,
+
+		(
+		select
+		USER_ID, USER_NM, floor((year(curDate()) - date_format(USER_BRTHDY, '%Y') +
+		1)/10) agegroup,
+		USER_SEXDSTN, USER_MRRG_AT
+		from
+		user
+		) U
+
+		where
+		C.user_id = U.user_id
+	</select>
 
 
-<!-- <update id="">
-</update>
-
-<delete id="" >
-</delete>
-
-<select id="" resultType="">
-</select> -->
+	<!-- <update id=""> </update> <delete id="" > </delete> <select id="" resultType=""> 
+		</select> -->
 
 </mapper>

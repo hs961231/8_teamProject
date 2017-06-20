@@ -9,34 +9,61 @@
 
 
 <script>
-
+var chart;
 var sock = new SockJS("/scts/echo-ws");
-sock.onmessage = onMessage;
-sock.onclose = onClose;
+
 sock.onopen = function() {
     console.log('open');
-    sock.send('test');
+  	sendMessage();
+   
 };
-	
 
-function onMessage(event){
-
+sock.onmessage = function(event){
 	daySales(event.data);
-	alert(event.data);
+};
+
+sock.onclose = function(event){
 	
+};
+
+function sendMessage(){
+	 sock.send('test');
 }
 
-function onClose(evt){
+	 
+	 
+var realTimeSock = new SockJS("/scts/realtime-ws");
+
+realTimeSock.onopen = function(){
 	
-	alert("연결끊김");
-	
+	 realTimeSend();
+	 setInterval(realTimeSend, 1000);
 }
+
+function realTimeSend(){
+	realTimeSock.send('test');
+}
+var todayCount;
+
+realTimeSock.onmessage = function(event){
+	var e_data = event.data;
+	e_data = JSON.parse(e_data);
+	
+	 $("#todayVisitor .count").text(e_data.todayCount);
+	 $("#todaySales .count").text(e_data.todaySales);
+	 $("#monthAvgVisitor .count").text(e_data.monthAvgVisitor);
+	 $("#monthTotalSales .count").text(e_data.monthTotalSales);
+	 
+	 todayCount = e_data.todayCount;
+  
+}
+
+
 
 var daySales = function(data){
 	console.log(data);
 	data = JSON.parse(data);
 	console.log(data.result[0].totalPrice);
-	console.log(data.totalCount);
 	
 	var length = data.result.length;
 	
@@ -69,213 +96,97 @@ var daySales = function(data){
 	 }
 	
 	 
-	 chart = Highcharts.chart('barChart', options);
-	 
-	 $("#test .count").text(data.totalCount);
-	 
-	 
-	 Highcharts.chart('charts', {
-	        chart: {
-	            type: 'spline',
-	            animation: Highcharts.svg, // don't animate in old IE
-	            marginRight: 10,
-	            renderTo: 'charts',
-	            defaultSeriesType: 'column',
-	            width: '650',
-	            events: {
-	                load: function () {
+	chart = Highcharts.chart('barChart', options);
 
-	                    // set up the updating of the chart each second
-	                    var series = this.series[0];
-	                    setInterval(function () {
-	                        var x = (new Date()).getTime(), // current time
-	                            y = Math.random();
-	                        series.addPoint([x, y], true, true);
-	                    }, 1000);
-	                }
-	            }
-	        },
-	        title: {
-	            text: '실시간 방문자 수'
-	        },
-	        xAxis: {
-	            type: 'datetime',
-	            tickPixelInterval: 150
-	        },
-	        yAxis: {
-	            title: {
-	                text: '일 시간'
-	            },
-	            plotLines: [{
-	                value: 0,
-	                width: 1,
-	                color: '#808080'
-	            }]
-	        },
-	        tooltip: {
-	            formatter: function () {
-	                return '<b>' + this.series.name + '</b><br/>' +
-	                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-	                    Highcharts.numberFormat(this.y, 2);
-	            }
-	        },
-	        legend: {
-	            enabled: false
-	        },
-	        exporting: {
-	            enabled: false
-	        },
-	        series: [{
-	            //name: 'Random data',
-	            data: (function () {
-	                var data = [],
-	                    time = (new Date()).getTime(),
-	                    i;
-
-	                for (i = -19; i <= 0; i += 1) {
-	                    data.push({
-	                        x: time + i * 1000,
-	                        y: Math.random()
-	                    });
-	                }
-	                return data;
-	            }())
-	        }]
-	    });
-	 
-	
 }
 
 
 $(document).ready(function () {
 	
+	
+ 	
+	
 	highchartTheme();
+	
 	
     Highcharts.setOptions({
         global: {
             useUTC: false
         }
     });
+    
+    
+    var options =  {
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg, // don't animate in old IE
+                marginRight: 10,
+                events: {
+                    load: function () {
 
-   /*  Highcharts.chart('charts', {
-        chart: {
-            type: 'spline',
-            animation: Highcharts.svg, // don't animate in old IE
-            marginRight: 10,
-            renderTo: 'charts',
-            defaultSeriesType: 'column',
-            width: '650',
-            events: {
-                load: function () {
-
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    setInterval(function () {
-                        var x = (new Date()).getTime(), // current time
-                            y = Math.random();
-                        series.addPoint([x, y], true, true);
-                    }, 1000);
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function () {
+                            var x = (new Date()).getTime(), // current time
+                                y = todayCount;
+                            series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
                 }
-            }
-        },
-        title: {
-            text: '실시간 방문자 수'
-        },
-        xAxis: {
-            type: 'datetime',
-            tickPixelInterval: 150
-        },
-        yAxis: {
-            title: {
-                text: '일 시간'
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.series.name + '</b><br/>' +
-                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                    Highcharts.numberFormat(this.y, 2);
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        exporting: {
-            enabled: false
-        },
-        series: [{
-            //name: 'Random data',
-            data: (function () {
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
-
-                for (i = -19; i <= 0; i += 1) {
-                    data.push({
-                        x: time + i * 1000,
-                        y: Math.random()
-                    });
+            title: {
+                text: 'Live random data'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Value'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
                 }
-                return data;
-            }())
-        }]
-    }); */
-    
- //   var chart;
-    
-    /* $.ajax({
-		type : "GET",
-		url : "daySales",
-		dataType: 'json',
-		success : function(data) {
-			
-			var length = data.result.length;
-			
-			 var options = {
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [{
+                name: 'Random data',
+                data: (function () {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        i;
 
-				        title: {
-				            text: '일매출'
-				        },
-				        subtitle: {
-				            text: 'Plain'
-				        }, 
-				        xAxis:{
-				        	categories:[]
-				        },
-				        series:[{
-				        	type: 'column',
-				        	colorByPoint: true,
-				        	data : [],
-				        	showInLegend: false
-				        }]
-				        
+                    for (i = -19; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: todayCount
+                        });
+                    }
+                    return data;
+                }())
+            }]
+    }
+    
+    
+    Highcharts.chart('charts', options);	
 
-				    }
-			 
-			 for(var i = 0; i < length; i++){
-				 
-				 options.xAxis.categories[i] = data.result[i].bill_issu_de;
-				 options.series[0].data[i] = data.result[i].totalPrice;
-				 
-			 }
-			
-			 
-			 chart = Highcharts.chart('barChart', options);
-			 
-		
-		}
-			 
-
-	
-	}); */
-    
-    
-    
+       
     $('#plain').click(function () {
         chart.update({
             chart: {
@@ -320,7 +231,7 @@ $(document).ready(function () {
 </script>
 <!-- 이 부분은 일매출, 일 방문자 수 등 보임!!!!!!!!!! -->
 <div class="row">
-	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="test">
+	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="todayVisitor">
 		<div class="info-box blue-bg">
 			<i class="fa fa-cloud-download"></i>
 			<div class="count">0</div>
@@ -330,7 +241,7 @@ $(document).ready(function () {
 	</div>
 	<!--/.col-->
 
-	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="todaySales">
 		<div class="info-box orange-bg2">
 			<i class="fa fa-shopping-cart"></i>
 			<div class="count">0</div>
@@ -340,7 +251,7 @@ $(document).ready(function () {
 	</div>
 	<!--/.col-->
 
-	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="monthAvgVisitor">
 		<div class="info-box yellow-bg2">
 			<i class="fa fa-thumbs-o-up"></i>
 			<div class="count">0</div>
@@ -350,11 +261,11 @@ $(document).ready(function () {
 	</div>
 	<!--/.col-->
 
-	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" id="monthTotalSales">
 		<div class="info-box dark-bg">
 			<i class="fa fa-cubes"></i>
 			<div class="count">0</div>
-			<div class="title">Monthly Average Sales</div>
+			<div class="title">Monthly Total Sales</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -363,8 +274,7 @@ $(document).ready(function () {
 </div>
 
 <!-- 하이차트 : 매출 들어갈곳 -->
-<div class="row"
-	style="height: 500px;">
+<div class="row" style="height: 500px;">
 
 	<div class="col-lg-6">
 		<section class="panel">
@@ -382,22 +292,17 @@ $(document).ready(function () {
 		<section class="panel">
 			<header class="panel-heading chartTitle"> 실시간 방문자수 </header>
 			<div class="panel-body text-center">
-			<div id="charts"></div>
+				<div id="charts"></div>
 			</div>
 		</section>
-		
+
 	</div>
 
 
 </div>
 
-
-
-
-
 <!-- 대시보드 -->
-<div class="row"
-	style="height: 500px;">
+<div class="row" style="height: 500px;">
 	<div class="col-lg-9 col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -405,19 +310,19 @@ $(document).ready(function () {
 					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
 				</h2>
 				<div class="panel-actions">
-					<a href="#" class="btn-setting" id="leftDrawingBtns"><i id="leftBtns"
-						class="fa fa-chevron-left" aria-hidden="true"></i></a>
-					<a href="#" class="btn-setting" id="rightDrawingBtns"><i id="rightBtns"
-						class="fa fa-chevron-right" aria-hidden="true"></i></a>
+					<a href="#" class="btn-setting" id="leftDrawingBtns"><i
+						id="leftBtns" class="fa fa-chevron-left" aria-hidden="true"></i></a> <a
+						href="#" class="btn-setting" id="rightDrawingBtns"><i
+						id="rightBtns" class="fa fa-chevron-right" aria-hidden="true"></i></a>
 				</div>
 			</div>
 			<div class="panel-body-map">
-			 	<input type="hidden" id="countStory" value="${ countStory }">
-			 	<input type="hidden" id="floor" value="0">
-			 	<input type="hidden" id="drw_code" value="0">
+				<input type="hidden" id="countStory" value="${ countStory }">
+				<input type="hidden" id="floor" value="0"> <input
+					type="hidden" id="drw_code" value="0">
 				<div id="blueprint"
 					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
-						
+
 					<!-- 
 					<br> <br> <br> <br> <br> <br> <br>
 					<br>
@@ -451,9 +356,6 @@ $(document).ready(function () {
 
 	</div>
 </div>
-
-
-
 
 <!-- 타일리스트 -->
 <div class="row" style="height: 500px;">

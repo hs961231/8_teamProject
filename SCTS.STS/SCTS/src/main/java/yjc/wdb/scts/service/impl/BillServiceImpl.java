@@ -1,6 +1,6 @@
 package yjc.wdb.scts.service.impl;
 
-import java.sql.Date;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,13 +50,13 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public List<HashMap> searchDaySales(Date date1, Date date2) throws Exception {
+	public List<HashMap> searchDaySales(String date1, String date2) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.searchDaySales(date1, date2);
 	}
 
 	@Override
-	public List<HashMap> daySettle(Date date1, Date date2, int setle_mth_code) {
+	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code) {
 		// TODO Auto-generated method stub
 		return dao.daySettle(date1, date2, setle_mth_code);
 	}
@@ -107,6 +107,18 @@ public class BillServiceImpl implements BillService {
 	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.ageSalesInfo(date, age, standard, gender);
+	}
+
+	@Override
+	public int todaySales() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.todaySales();
+	}
+
+	@Override
+	public int monthTotalSales() throws Exception {
+		
+		return dao.monthTotalSales();
 	}
 
 }

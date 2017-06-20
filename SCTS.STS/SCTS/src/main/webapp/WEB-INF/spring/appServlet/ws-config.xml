@@ -7,10 +7,26 @@
    http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 
-	<bean id="echoHandler" class="yjc.wdb.scts.websocket.WebSocketTest" />
+	<bean id="echoHandler" class="yjc.wdb.scts.websocket.MainSocket" />
+	<bean id="salesSocket" class="yjc.wdb.scts.websocket.YearSalesSocket" />
+	<bean id="realTimeSocket" class="yjc.wdb.scts.websocket.RealTimeSocket" />
+	<bean id="daySalesSocket" class="yjc.wdb.scts.websocket.DaySalesSocket" />
+	<bean id="monthSalesSocket" class="yjc.wdb.scts.websocket.MonthSalesSocket" />
+	<bean id="productRankSocket" class="yjc.wdb.scts.websocket.ProductRankSocket" />
+	<bean id="customerRankSocket" class="yjc.wdb.scts.websocket.CustomerRankSocket" />
+	<bean id="searchYearSalesSocket" class="yjc.wdb.scts.websocket.SearchYearSalesSocket" />
+	<bean id="searchDaySalesSocket" class="yjc.wdb.scts.websocket.SearchDaySalesSocket" />
 
 	<websocket:handlers>
 		<websocket:mapping handler="echoHandler" path="/echo-ws" />
+		<websocket:mapping handler="salesSocket" path="/sales-ws" />
+		<websocket:mapping handler="realTimeSocket" path="/realtime-ws" />
+		<websocket:mapping handler="daySalesSocket" path="/daySales-ws" />
+		<websocket:mapping handler="monthSalesSocket" path="/monthSales-ws" />
+		<websocket:mapping handler="productRankSocket" path="/productRank-ws" />
+		<websocket:mapping handler="customerRankSocket" path="/customerRank-ws" />
+		<websocket:mapping handler="searchYearSalesSocket" path="/searchYearSales-ws" />
+		<websocket:mapping handler="searchDaySalesSocket" path="/searchDaySales-ws" />
 		<websocket:sockjs />
 	</websocket:handlers>
 
