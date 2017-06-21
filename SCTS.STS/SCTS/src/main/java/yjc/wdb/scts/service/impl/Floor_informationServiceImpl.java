@@ -82,4 +82,10 @@ public class Floor_informationServiceImpl implements Floor_informationService {
 		return dao.selectDrawingOne(bhf_code, floor);
 	}
 
+	@Override
+	public List<HashMap<String, String>> selectTileCategoryList(int drw_code) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectTileCategoryList(drw_code);
+	}
+
 }

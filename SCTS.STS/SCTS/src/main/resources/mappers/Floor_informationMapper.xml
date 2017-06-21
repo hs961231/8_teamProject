@@ -62,6 +62,100 @@ limit #{floor},1
 
 <select id="selectTileCategoryList" resultType="java.util.HashMap">
 
+
+select
+	tc.TILE_CODE, tc.TILE_NM, tc.TILE_CRDNT_X, tc.TILE_CRDNT_Y, 
+	tc.DETAILCTGRY_CODE, tc.DETAILCTGRY_NM, tc.DETAILCTGRY_COLOR, 
+	tc.LCLASCTGRY_NM, tc.LCLASCTGRY_CODE, tc.LCLASCTGRY_COLOR,
+	ifnull(c.tile_visit, 0),
+	t.total_visit,
+	ifnull((c.tile_visit / t.total_visit), 0) AS probability
+from
+	(
+		select
+			count(DISTINCT user_id) AS total_visit
+		from
+			course
+		where
+			date(COURS_PASNG_TIME) >= date(subdate(curDate(), INTERVAL 30 DAY))
+	) t,
+	
+	(		
+		select
+			t.TILE_CODE, t.TILE_NM, t.TILE_CRDNT_X, t.TILE_CRDNT_Y, 
+			dcl.DETAILCTGRY_CODE, dc.DETAILCTGRY_NM, dc.DETAILCTGRY_COLOR, 
+			lcc.LCLASCTGRY_NM, lcc.LCLASCTGRY_CODE, lcc.LCLASCTGRY_COLOR
+		from
+			detail_category_location dcl,
+			(
+				select
+					TILE_CODE, TILE_NM, TILE_CRDNT_X, TILE_CRDNT_Y
+				from
+					tile 
+				where
+					drw_code = #{drw_code}
+			) t,
+			detail_category dc,
+			large_classification_category lcc
+			
+		where
+			dcl.TILE_CODE = t.TILE_CODE
+		and
+			dc.DETAILCTGRY_CODE = dcl.DETAILCTGRY_CODE
+		and
+			lcc.LCLASCTGRY_CODE = dc.LCLASCTGRY_CODE
+		order by
+			t.TILE_CRDNT_X asc, t.TILE_CRDNT_Y asc
+	) tc
+LEFT OUTER JOIN
+	(
+		select
+			tile_code, count(DISTINCT user_id) AS tile_visit
+		from
+			course
+		where
+			TILE_CODE IN	(
+								select
+									TILE_CODE
+								from
+									tile
+								where
+									DRW_CODE = #{drw_code}
+							)
+		and
+			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 30 DAY))
+		group by
+			TILE_CODE
+	) c
+ON
+	tc.TILE_CODE = c.TILE_CODE
+	
+<!-- select
+	t.TILE_CODE, t.TILE_NM, t.TILE_CRDNT_X, t.TILE_CRDNT_Y, 
+	dcl.DETAILCTGRY_CODE, dc.DETAILCTGRY_NM, dc.DETAILCTGRY_COLOR, 
+	lcc.LCLASCTGRY_NM, lcc.LCLASCTGRY_CODE, lcc.LCLASCTGRY_COLOR
+from
+	detail_category_location dcl,
+	(
+		select
+		TILE_CODE, TILE_NM, TILE_CRDNT_X, TILE_CRDNT_Y
+		from
+			tile 
+		where
+			drw_code = #{drw_code}
+	) t,
+	detail_category dc,
+	large_classification_category lcc
+	
+where
+	dcl.TILE_CODE = t.TILE_CODE
+and
+	dc.DETAILCTGRY_CODE = dcl.DETAILCTGRY_CODE
+and
+	lcc.LCLASCTGRY_CODE = dc.DETAILCTGRY_CODE
+order by
+	t.TILE_CRDNT_X asc, t.TILE_CRDNT_Y asc; -->
+	
 </select>
 
 <select id="selectCountStory" resultType="integer">

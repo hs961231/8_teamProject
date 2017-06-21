@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
+<script src="resources/customjs/drawingTile.js"></script>
 <script src="resources/customjs/dashBoard.js"></script>
 <link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
 <script src="resources/customjs/sockjs.js"></script>
@@ -15,7 +16,6 @@ var sock = new SockJS("/scts/echo-ws");
 sock.onopen = function() {
     console.log('open');
   	sendMessage();
-   
 };
 
 sock.onmessage = function(event){

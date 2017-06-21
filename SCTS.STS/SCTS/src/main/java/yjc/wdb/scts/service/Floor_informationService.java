@@ -10,4 +10,5 @@ public interface Floor_informationService {
 	public List<HashMap<String, String>> selectDrawingList(int bhf_code) throws Exception;
 	public int selectCountStory(int bhf_code) throws Exception;
 	public HashMap<String, String> selectDrawingOne(int bhf_code, int floor) throws Exception;
+	public List<HashMap<String, String>> selectTileCategoryList(int drw_code) throws Exception;
 }

@@ -3,9 +3,11 @@
 
 
 div.mouseover {
-	background-color: rgba(250, 226, 71, 0.2);
+	background-color: rgba(250, 226, 71);
+	opacity: 0.5;
 }
 
 div.active {
-	background-color: rgba(250, 226, 71, 0.5);
+	background-color: rgba(250, 226, 71);
+	opacity: 0.8;
 }
