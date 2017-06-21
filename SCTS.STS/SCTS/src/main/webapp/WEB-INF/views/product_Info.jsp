@@ -26,7 +26,7 @@
 			<div class="panel-body" style="height:500px;" >
 				<div class="form">
 					<form class="form-validate form-horizontal" id="feedback_form"
-						method="post">
+						method="get">
 						<div class="form-group ">
 							<label for="name" class="control-label col-lg-2">물품 사진 <span
 								class="required">*</span>
@@ -41,8 +41,10 @@
 									class="required">*</span>
 								</label>
 								<div class="col-lg-5">
-									<input class="form-control" id="name" name="fullname"
+									<input class="form-control" id="goods_nm" name="goods_nm"
 										type="text" value="${goods.goods_nm}" required />
+									<input class="form-control" id="goods_code" name="product_id"
+										type="hidden" value="${goods.goods_code}" required />
 								</div>
 								<br> <br> <br> <label for="amount"
 									class="control-label col-lg-2">카테고리 정보 <span
@@ -63,7 +65,7 @@
 									class="required">*</span>
 								</label>
 								<div class="col-lg-5">
-									<input class="form-control" id="price" name="fullname"
+									<input class="form-control" id="goods_pc" name="goods_pc"
 										type="text" value="${goods.goods_pc}" required />
 								</div>
 								<br> <br> <br> <label for="price"
@@ -81,7 +83,7 @@
 							<label for="ccomment" class="control-label col-lg-2">물품
 								부가 정보</label>
 							<div class="col-lg-20">
-								<textarea class="form-control " id="ccomment" name="comment"
+								<textarea class="form-control " id="goods_dc" name="goods_dc"
 									required>${goods.goods_dc}</textarea>
 							</div>
 						</div>

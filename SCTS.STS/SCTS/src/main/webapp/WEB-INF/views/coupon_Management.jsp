@@ -23,7 +23,7 @@
 						</h2>
 
 						<div class="panel-actions">
-							<a href="#" class="btn-setting" id="couponBtn"><i
+							<a href="reg_coupon" class="btn-setting" id="couponBtn"><i
 								id="couponBtn" class="fa fa-plus" aria-hidden="true"></i></a>
 						</div>
 					</div>
@@ -70,92 +70,7 @@
 				</div>
 			</div>
 		</div>
-
-		<div id="couponModal" class="modal" style="z-index: 3;">
-			<div class="modal-row">
-				<div class="col-lg-12" style="width:100%;">
-					<section class="panel">
-						<header class="panel-heading"> 쿠폰 등록</header>
-						<div class="panel-body">
-							<div class="form">
-								<form class="form-validate form-horizontal" id="couponForm"
-									action="insertCoupon" method="post">
-									<div class="form-group">
-										<label for="coupon_name" class="control-label col-lg-2">쿠폰
-											이름 <span class="required">*</span>
-										</label>
-										<div class="col-lg-5" style="width:50%">
-											<input class="form-control" id="coupon_name" name="coupon_nm"
-												type="text" required />
-										</div>
-										
-										<div class="form-group">
-											<label for="coupon_insert" class="control-label">적용
-												분류 <span class="required">*</span>
-											</label>
-											<div class="col-lg-5" style="width:50%">
-												<select class="btn btn-default dropdown-toggle">
-													<option value="category">상품카테고리별</option>
-													<option value="product">물품별</option>
-												</select>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group ">
-										<label for="coupon_info" class="control-label col-lg-2">쿠폰
-											내용 <span class="required">*</span>
-										</label>
-										<div class="col-lg-10">
-											<input class="form-control" id="coupon_info"
-												name="coupon_cntnts" type="text" required />
-										</div>
-									</div>
-
-									<div class="form-group ">
-										<label for="coupon_sales" class="control-label col-lg-2">쿠폰
-											할인율<span class="required">*</span>
-										</label>
-										<div class="col-lg-10">
-											<input class="form-control" id="coupon_sales"
-												name="coupon_dscnt" type="text" required />
-										</div>
-									</div>
-
-									<div class="form-group ">
-										<label for="regDate" class="control-label col-lg-2">쿠폰
-											등록 날짜 <span class="required">*</span>
-										</label>
-										<div class="col-lg-10">
-											<input class="form-control" id="regDate"
-												name="coupon_begin_de" type="date" required />
-										</div>
-									</div>
-
-									<div class="form-group ">
-										<label for="finDate" class="control-label col-lg-2">쿠폰
-											종료 날짜 <span class="required">*</span>
-										</label>
-										<div class="col-lg-10">
-											<input class="form-control" id="finDate" name="coupon_end_de"
-												type="date" required />
-										</div>
-									</div>
-
-									<div class="form-group">
-										<div class="col-lg-offset-2 col-lg-10">
-											<button class="btn btn-primary" id="couponSave" type="submit">Save</button>
-											<button class="cancel btn btn-default" id="couponCancel"
-												type="button">Cancel</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</section>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
+
 <script src="resources/customjs/couponManagement.js"></script>
