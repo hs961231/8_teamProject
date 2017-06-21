@@ -22,6 +22,21 @@
 	font-size: 20px;
 }
 
+ #daySalesChart{
+	display : none;
+}
+
+#productSalesChart{
+	display : none;
+}
+
+#ageSalesChart{
+	display : none;
+}
+
+#monthSalesChart{
+	display : none;
+} 
 </style>
 
 <script src="resources/customjs/sales_Management._start.js"></script>
@@ -108,7 +123,7 @@
 
 			</select></td>
 			<td>
-				<button class="plain btn btn-default" >Plain</button>
+				<button class="plain btn btn-default">Plain</button>
 				<button class="inverted btn btn-default">Inverted</button>
 				<button class="polar btn btn-default">Polar</button>
 			</td>
@@ -128,7 +143,7 @@
 			</select> ~ <select class="year" id="year2">
 			</select></td>
 			<td>
-				
+
 				<button class="btn btn-primary" id="searchYear">검색</button>
 			</td>
 		</tr>
@@ -158,7 +173,7 @@
 
 			</select></td>
 			<td>
-				<button class="plain btn btn-default" >Plain</button>
+				<button class="plain btn btn-default">Plain</button>
 				<button class="inverted btn btn-default">Inverted</button>
 				<button class="polar btn btn-default">Polar</button>
 			</td>
@@ -172,15 +187,14 @@
 		<tr>
 			<td width="23%">
 				<!-- 아이콘!! < 이모양이랑 > 이모양 -->
-				<button  class="btn btn-default prev" style="width: 70px">&lt</button>
-				<button  class="btn btn-default next" style="width: 70px">&gt</button>
+				<button class="btn btn-default prev" style="width: 70px">&lt</button>
+				<button class="btn btn-default next" style="width: 70px">&gt</button>
 			</td>
 			<td width="50%">
 				<h3>2017-06</h3>
 			</td>
 
-			<td><button class="btn btn-default income"
-					style="width: 85px">순이익순</button>
+			<td><button class="btn btn-default income" style="width: 85px">순이익순</button>
 				<button class="btn btn-default total" style="width: 85px">총매출순</button>
 			</td>
 
@@ -196,12 +210,14 @@
 		<tr>
 			<td width="23%">
 				<!-- 아이콘!! < 이모양이랑 > 이모양 -->
-				<button  class="btn btn-default prev" style="width: 70px">&lt</button>
-				<button  class="btn btn-default next" style="width: 70px">&gt</button>
+				<button class="btn btn-default prev" style="width: 70px">&lt</button>
+				<button class="btn btn-default next" style="width: 70px">&gt</button>
 			</td>
 			<td width="45%">
-				<p style="font-size : 25px"><span id="date" style="font-size : 25px">2017-06</span>
-				<span id="age" style="font-size : 25px">10</span>대</p>
+				<p style="font-size: 25px">
+					<span id="date" style="font-size: 25px">2017-06</span> <span
+						id="age" style="font-size: 25px">10</span><span id="a">대</span>
+				</p>
 			</td>
 
 			<td>
@@ -210,8 +226,10 @@
 				<button id="age30" class="btn btn-default">30대</button>
 				<button id="age40" class="btn btn-default">40대</button>
 				<button id="age50" class="btn btn-default">50대 이후</button>
-				<button id="income" class="btn btn-default income" style="width: 85px" disabled>순이익순</button>
-				<button id="total" class="btn btn-default total" style="width: 85px" disabled>총매출순</button>
+				<button id="income" class="btn btn-default income"
+					style="width: 85px" disabled>순이익순</button>
+				<button id="total" class="btn btn-default total" style="width: 85px"
+					disabled>총매출순</button>
 			</td>
 
 		</tr>
@@ -230,6 +248,15 @@
 			<div class="panel-body text-center chart">
 				<div id="salesChart"
 					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="daySalesChart"
+					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="ageSalesChart"
+					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="monthSalesChart"
+					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+				<div id="productSalesChart"
+					style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
 			</div>
 		</section>
 	</div>
@@ -249,4 +276,3 @@
 </div>
 
 <script src="resources/customjs/sales_Management_end.js"></script>
-

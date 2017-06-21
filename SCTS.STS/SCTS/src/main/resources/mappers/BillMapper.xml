@@ -8,7 +8,7 @@
 
 	<insert id="insertBill">
 		insert into bill
-		(USER_ID, BILL_ISSU_DE
+		(USER_ID, BILL_ISSU_DE)
 		values
 		(#{user_id}, now())
 	</insert>
@@ -130,19 +130,16 @@
 
 	<!-- 일매출 -->
 	<select id="daySales" resultMap="daySales">
-
-		select b.BILL_ISSU_DE
+		<![CDATA[
+		select date_format(b.BILL_ISSU_DE, '%Y-%M-%d')
 		as
 		bill_issu_de, sum(b.BILL_TOTAMT) as
 		totalPrice
 		from bill b
-		where
-		(b.BILL_ISSU_DE between subDate(curDate(),
-		Interval 7 DAY)
-		and
-		curDate())
-		group by b.BILL_ISSU_DE;
-
+		where (b.BILL_ISSU_DE <= now() and bill_issu_de >= subDate(now(),
+		Interval 7  DAY))
+		group by date_format(b.BILL_ISSU_DE, '%Y-%M-%d');
+		]]>
 	</select>
 
 	<!-- 일매출 div 누를 시 일, 결제수단, 총매출 -->

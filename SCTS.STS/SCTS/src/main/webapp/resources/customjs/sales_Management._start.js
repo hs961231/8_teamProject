@@ -41,17 +41,11 @@ sock.onclose = function(evt){
 
 sock.onopen = function() {
 	console.log('open');
-	sendMessage();
+	sendMessage()
 
 };
 
-function sendMessage(){
-	var year = parseInt(new Date().getFullYear());
-	var json = JSON.stringify({year2 : year, year1 : + (year-4)});
 
-	sock.send(json);
-
-}
 
 
 
@@ -81,7 +75,8 @@ var options = {
 				dataLabels: {
 					enabled: true
 
-				}
+				},
+				animation :{}
 			}
 		},
 
@@ -96,6 +91,15 @@ var options = {
 		drilldown : {
 			series : []
 		}
+}
+
+function sendMessage(){
+	var year = parseInt(new Date().getFullYear());
+	var json = JSON.stringify({year2 : year, year1 : + (year-4)});
+
+
+	sock.send(json);
+
 }
 
 function yearSales(data){

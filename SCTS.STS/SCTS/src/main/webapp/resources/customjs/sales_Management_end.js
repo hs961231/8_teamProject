@@ -77,7 +77,7 @@ monthSalesSocket.onmessage = function(event){
 
 	console.log(data);
 
-	graphInfo(data);
+	monthInfo(data);
 
 
 }
@@ -109,7 +109,15 @@ daySalesSocket.onclose = function(event){
 //---------------------------------------------------------- 매출 -------------------------
 //일매출
 $('#daySales').click(function(){
-
+	
+	$("#salesChart").hide();
+	$("#daySalesChart").show();
+	$("#ageSalesChart").hide();
+	$("#productSalesChart").hide();
+	$("#monthSalesChart").hide();
+	
+	
+	
 	$('.chartTitle').text("일매출");
 
 	$("#searchSales").show();
@@ -117,6 +125,8 @@ $('#daySales').click(function(){
 	$("#month").hide();
 	$("#productSalesInfo").hide();
 	$("#customerProductRankInfo").hide();
+	$(".w").hide();
+	$(".m").hide();
 
 	$("#settleSales").children().remove();
 
@@ -132,12 +142,23 @@ $('#daySales').click(function(){
 
 //월매출
 $(".MonthlySales").click(function(){
-
+	
+	
+	$("#salesChart").hide();
+	$("#daySalesChart").hide();
+	$("#ageSalesChart").hide();
+	$("#productSalesChart").hide();
+	$("#monthSalesChart").show();
+	
+	
+	
 	$("#searchSales").hide();
 	$("#searchYearSales").hide();
 	$("#month").show();
 	$("#productSalesInfo").hide();
 	$("#customerProductRankInfo").hide();
+	$(".w").hide();
+	$(".m").hide();
 
 	$('.chartTitle').text("월매출");
 
@@ -184,11 +205,22 @@ $(".MonthlySales").click(function(){
 //상품 순위
 
 $(".productRank").click(function(){
+	
+	
+	$("#salesChart").hide();
+	$("#daySalesChart").hide();
+	$("#ageSalesChart").hide();
+	$("#productSalesChart").show();
+	$("#monthSalesChart").hide();
+
+	
 	$("#searchSales").hide();
 	$("#searchYearSales").hide();
 	$("#month").hide();
 	$("#productSalesInfo").show();
 	$("#customerProductRankInfo").hide();
+	$(".w").hide();
+	$(".m").hide();
 
 	var year = new Date().getFullYear();
 	var month = new Date().getMonth() + 1;
@@ -210,12 +242,30 @@ $(".productRank").click(function(){
 //고객이 선호하는 상품 랭킹
 //순이익순으로 보여줌
 $(".customerProductRank").click(function(){
+	
+	
+	$("#salesChart").hide();
+	$("#daySalesChart").hide();
+	$("#ageSalesChart").hide();
+	$("#productSalesChart").show();
+	$("#monthSalesChart").hide();
+	
+	
+	
+	
+	$("#date").text("상품 순이익");
+	$("#age").text("순위");
+	$("#a").hide();
+
 
 	$("#searchSales").hide();
 	$("#searchYearSales").hide();
 	$("#month").hide();
 	$("#productSalesInfo").hide();
 	$("#customerProductRankInfo").show();
+	
+	$(".w").hide();
+	$(".m").hide();
 
 	$("#settleSales").children().remove();
 
@@ -301,8 +351,9 @@ function ageForm(){
 
 
 $("#age10").click(function(){
-
+	
 	ageForm();
+	$("#a").show();
 
 	var date = $("#date").text();
 	$("#age").text("10");
@@ -321,8 +372,10 @@ $("#age10").click(function(){
 });
 
 $("#age20").click(function(){
-
+	
 	ageForm();
+	
+	$("#a").show();
 	
 	var date = $("#date").text();
 	$("#age").text("20");
@@ -341,7 +394,9 @@ $("#age20").click(function(){
 
 
 $("#age30").click(function(){
-
+	
+	$("#a").show();
+	
 	ageForm();
 
 	var date = $("#date").text();
@@ -361,7 +416,8 @@ $("#age30").click(function(){
 });
 
 $("#age40").click(function(){
-
+	$("#a").show();
+	
 	ageForm();
 
 	var date = $("#date").text();
@@ -380,6 +436,9 @@ $("#age40").click(function(){
 });
 
 $("#age50").click(function(){
+	
+	$("#a").show();
+	
 	
 	ageForm();
 
@@ -433,6 +492,7 @@ $(document).on("click",".w", function(){
 
 function ageSales(data){
 
+	
 
 	$('.chartTitle').text($("#age").text() + "대 고객별 선호 상품 순위");
 
@@ -510,7 +570,7 @@ function ageSales(data){
 
 
 
-	Highcharts.chart('salesChart', options);
+	Highcharts.chart('ageSalesChart', options);
 
 
 	$("#settleSales").children().remove();
@@ -541,6 +601,9 @@ function ageSales(data){
 
 var chart;
 function graphInfo(data){
+	
+	
+	
 	var length = data.daySales.length;
 
 	var options = {
@@ -571,7 +634,7 @@ function graphInfo(data){
 	}
 
 
-	chart = Highcharts.chart('salesChart', options);
+	chart = Highcharts.chart('daySalesChart', options);
 	
 	$("#settleSales").children().remove();
 
@@ -594,7 +657,65 @@ function graphInfo(data){
 }
 
 
+function monthInfo(data){
+	
+	
+	
+	var length = data.daySales.length;
+
+	var options = {
+
+			title: {
+				text: $('.chartTitle').text()
+			},
+			subtitle: {
+				text: 'Plain'
+			}, 
+			xAxis:{
+				categories:[]
+			},
+			series:[{
+				type: 'column',
+				colorByPoint: true,
+				data : [],
+				showInLegend: false
+			}]
+
+	}
+
+	for(var i = 0; i < length; i++){
+
+		options.xAxis.categories[i] = data.daySales[i].bill_issu_de;
+		options.series[0].data[i] = data.daySales[i].totalPrice;
+
+	}
+
+
+	chart = Highcharts.chart('monthSalesChart', options);
+	
+	$("#settleSales").children().remove();
+
+	$("#settleSales").append($("<tr></tr>").addClass('tr'));
+	$('.tr').append($("<td></td>").text("월"));
+	$('.tr').append($("<td></td>").text("결제수단"));
+	$('.tr').append($("<td></td>").text("총 매출"));
+
+
+	var length = data.daySalesInfo.length;
+
+	for(var i = 0; i < length; i++){
+		$("#settleSales").append($("<tr></tr>").attr("data", i));
+
+		$("tr[data="+i+"]").append($("<td></td>").text(data.daySalesInfo[i].day));
+		$("tr[data="+i+"]").append($("<td></td>").text(data.daySalesInfo[i].setle_mth_nm));
+		$("tr[data="+i+"]").append($("<td></td>").text(data.daySalesInfo[i].totalPrice +"원"));
+
+	}
+}
+
 function productInfo(data){
+	
+	
 	//그래프
 
 	$('.chartTitle').text("상품별 순위");
@@ -673,7 +794,7 @@ function productInfo(data){
 	}
 
 
-	Highcharts.chart('salesChart', options);
+	Highcharts.chart('productSalesChart', options);
 
 
 	$("#settleSales").children().remove();
@@ -890,7 +1011,6 @@ month = parseInt(text.split("-")[1].split("0")[1]);
 
 $('#customerProductRankInfo .prev').click(function(){
 
-
 	month = month - 1;
 	if(month <= 0){
 		year = year -1;
@@ -919,7 +1039,7 @@ $('#customerProductRankInfo .prev').click(function(){
 });
 
 $('#customerProductRankInfo .next').click(function(){
-
+	
 
 	if(month < 10){
 		month = parseInt( $("#date").text().split("-")[1].split("0")[1]);

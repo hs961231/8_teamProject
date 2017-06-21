@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<script src="resources/customjs/sockjs.js"></script>
+
 
 <script src="resources/customjs/posSystem.js"></script>
 
