@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
+<script src="resources/customjs/drawingTile.js"></script>
 <script src="resources/customjs/shop_Register.js"></script>
 <link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
 

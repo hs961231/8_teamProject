@@ -59,4 +59,10 @@ public class Floor_informationDAOImpl implements Floor_informationDAO {
 		return sql.selectOne(NAMESPACE + ".selectLast_insert_id");
 	}
 
+	@Override
+	public List<HashMap<String, String>> selectTileCategoryList(int drw_code) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE + ".selectTileCategoryList", drw_code);
+	}
+
 }

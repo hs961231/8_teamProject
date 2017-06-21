@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,7 +45,7 @@ public class AjaxController {
 	
 	@Inject
 	CourseService courseService;
-
+	
 	/* shop_Register.js
 	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
 	 * 해당 타일의 정보를 디비에서 가져와서 보내준다

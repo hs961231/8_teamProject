@@ -44,6 +44,7 @@ $(document).ready(function() {
 			floor++;
 			$("#floor").val(floor);
 			$('#blueprint').empty();
+			$(".tileMap").empty();
 			
 			var blueprint = $('#blueprint');
 			$("<p>새로운 도면을 등록해주세요 </p>").appendTo(blueprint);
@@ -127,69 +128,6 @@ $(document).ready(function() {
 	
 	
 });
-
-/**
- * 도면 이미지를 페이지에 뿌려줌
- */
-var imgLoad = function(floor) {
-	//var countStory = $("#countStory").val();
-	//var floor = $("#floor").val();
-	
-	$.ajax({
-		url: "getDrawingFileName",
-		type: "post",
-		data: {
-			floor : floor
-		},
-		dataType: "json",
-		success: function(data) {
-			if(data != null) {
-				$('#blueprint').empty();
-				
-				var drawingImg = $('<img src="displayDrawing?fileName=/' + data.drw_flpth + '" style="width: 800px; height: 380px;">');
-				drawingImg.appendTo($('#blueprint'));
-				
-				$("#drw_code").val(data.drw_code);
-				
-				var tileMap = $(".tileMap");
-				
-				tileMap.empty();
-				
-				// 해당 층의 설정된 타일 갯수까지 가져올 수 있어야 함.
-				for(var i=0; i<data.size_y; i++) {
-					var tileRow = $("<div></div>");
-					
-					//tileRow.css("width", "100%");
-					//tileRow.css("height", heightSize + "%");
-					
-					for(var j=0; j<data.size_x; j++) {
-						var tileItem = $("<div></div>").addClass("tile");
-						//tileItem.css("width", widthSize + "%");
-						//tileItem.css("height", "100%");
-						//tileItem.css("float", "left");
-						
-						tileItem.appendTo(tileRow);
-					}
-					tileRow.appendTo(tileMap);
-				}
-				var heightSize = 100 / data.size_y;
-				var widthSize = 100 / data.size_x;
-				$(".tileMap > div").css("width", "100%").css("height", heightSize + "%");
-				$(".tile").css("width", widthSize + "%").css("height", "100%").css("float", "left");
-				
-				
-				//$("#floor").val(floor+1);
-			}
-			
-			else {
-				window.alert("도면이 없습니다. 등록해주세요");
-			}
-		},
-		error: function(data) {
-			console.log("아작스 에러남");
-		}
-	});
-};
 
 
 
