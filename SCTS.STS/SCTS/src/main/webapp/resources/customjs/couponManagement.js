@@ -40,4 +40,10 @@
 
 	});
 
+	$(".cancel").on("click", function(){
+		alert('hi');
+		$("#couponForm").attr("action", "coupon_Management");
+		$("#couponForm").attr("method", "get");
+		$("#couponForm").submit();
+	});
 	

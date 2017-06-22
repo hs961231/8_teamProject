@@ -21,16 +21,14 @@
 					<div class="panel-body">
 						<div class="form">
 							<form class="form-validate form-horizontal" id="couponForm"
-								action="modify" method="get">
+								action="insertCoupon" method="post">
 								<div class="form-group">
 									<label for="coupon_name" class="control-label col-lg-2">쿠폰
 										이름 <span class="required">*</span>
 									</label>
 									<div class="col-lg-3">
-										<input class="form-control" id="coupon_code" name="coupon_code"
-											type="hidden" style="width: 100%;" value="${coupon.coupon_code}" required />
 										<input class="form-control" id="coupon_name" name="coupon_nm"
-											type="text" style="width: 100%;" value="${coupon.coupon_nm}" required />
+											type="text" style="width: 100%;" required />
 									</div>
 
 									<label for="coupon_insert" class="control-label col-lg-2">적용
@@ -51,7 +49,7 @@
 									</label>
 									<div class="col-lg-3">
 										<input class="form-control" id="coupon_info"
-											name="coupon_cntnts" type="text" style="width: 100%;" value="${coupon.coupon_cntnts}"
+											name="coupon_cntnts" type="text" style="width: 100%;"
 											required />
 									</div>
 
@@ -89,7 +87,7 @@
 									</label>
 									<div class="col-lg-3">
 										<input class="form-control" id="coupon_sales"
-											name="coupon_dscnt" type="text" style="width: 100%;" value="${coupon.coupon_dscnt}" required />
+											name="coupon_dscnt" type="text" style="width: 100%;" required />
 									</div>
 								</div>
 
@@ -99,24 +97,25 @@
 									</label>
 									<div class="col-lg-3">
 										<input class="form-control" id="regDate"
-											name="coupon_begin_de" type="date" style="width: 100%;" value="${coupon.coupon_begin_de}"
+											name="coupon_begin_de" type="date" style="width: 100%;"
 											required />
 									</div>
 								</div>
 
 								<div class="form-group ">
-									<label for="finDate" class="control-label col-lg-2">쿠폰	
+									<label for="finDate" class="control-label col-lg-2">쿠폰
 										종료 날짜 <span class="required">*</span>
 									</label>
 									<div class="col-lg-3">
 										<input class="form-control" id="finDate" name="coupon_end_de"
-											type="date" style="width: 100%;" value="${coupon.coupon_end_de}" required />
+											type="date" style="width: 100%;" required />
 									</div>
 								</div>
 
 								<div class="form-group" style="margin-left: 30%;">
+									>
 									<div class="col-lg-offset-2 col-lg-10">
-										<button class="btn btn-primary" id="couponModify" type="submit">Modify</button>
+										<button class="btn btn-primary" id="couponSave" type="submit">Save</button>
 										<button class="cancel btn btn-default" id="couponCancel"
 											type="button">Cancel</button>
 									</div>

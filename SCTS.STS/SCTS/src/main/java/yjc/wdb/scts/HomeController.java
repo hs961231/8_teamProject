@@ -199,14 +199,14 @@ public class HomeController {
 	
 	//상품등록 처리
 	@RequestMapping(value="product_Register", method=RequestMethod.POST)
-	public String product_RegisterPost(HttpServletRequest request, HttpSession session, GoodsVO vo) throws Exception{
+	public String product_RegisterPost(GoodsVO vo) throws Exception{
 		
 		System.out.println("GoodsVO 정보 : " + vo.getDetailctgry_code() + "  상품명 : " + vo.getGoods_nm());
 		
 		goodsService.insertGoods(vo);
 		
 
-		return "redirect:mainPage";
+		return "redirect:product_List";
 	}
 	
 	// 상품 정보

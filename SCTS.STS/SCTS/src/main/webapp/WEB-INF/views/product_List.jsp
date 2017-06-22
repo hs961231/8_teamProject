@@ -152,4 +152,22 @@
 </div>
 </div>
 
-<script src="resources/customjs/product_Register.js"></script>
+<script>
+
+	var pageForm = $("#pageForm");
+
+	$(".code").on("click",function(){
+		event.preventDefault();
+		var goods_code = $(this).attr("href");
+		pageForm.attr("action", "product_Info");
+		pageForm.attr("method", "get");
+		$("<input type='hidden' name='product_id' value='"+goods_code+"'>").appendTo(pageForm);
+		pageForm.submit();
+	});
+	
+	$("#productBtn").on("click",function(){
+		alert('hi');
+		var registerModal = document.getElementById("productModal");
+		registerModal.style.display="block";
+	});
+</script>
