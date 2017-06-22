@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.estimote.sdk.BeaconManager;
+import com.google.gson.JsonObject;
 
 import scts.wdb.yjc.scts.bean.IPSetting;
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
@@ -52,7 +53,6 @@ public class WebViewMain extends AppCompatActivity{
         toolbar.setLogo(R.drawable.logo);
 
 
-
         sp = getSharedPreferences("test", 0);
 
         webView = (WebView) findViewById(R.id.webView);
@@ -60,7 +60,6 @@ public class WebViewMain extends AppCompatActivity{
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.addJavascriptInterface(new JSObject(), "sampleAndroid");
-
 
         webView.setWebViewClient(new WebViewClientTest());
         webView.loadUrl(MAIN_URL);
@@ -101,6 +100,14 @@ public class WebViewMain extends AppCompatActivity{
 
     }
 
+    public void setCoupon(JsonObject json) {
+        webView.loadUrl("javascript:coupon('"+ json +"')");
+    }
+    public void testCoupon() {
+        String data = "{\"coupon_dscnt\":\"30%\",\"status\":\"SUCCESS\",\"command\":\"fullcoupon\",\"coupon_cntnts\":\"안드로이드 쿠폰 수신용 첫번째 테스트 쿠폰입니다.\",\"coupon_code\":1,\"coupon_begin_de\":\"6월 22, 2017\",\"coupon_nm\":\"첫시험쿠폰\"}";
+
+        webView.loadUrl("javascript:coupon('"+ data +"')");
+    }
     // 뒤로 가기 버튼
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -165,8 +172,9 @@ public class WebViewMain extends AppCompatActivity{
 
 
             // 이곳이 바로 쿠폰 보내는 곳!!!!!!!!!!!!!!!!!!!!!!!!!
+            /*
             String data = "이것이바로 쿠폰!쿠폰! 왔다! 왔다 ";
-            webView.loadUrl("javascript:coupon('"+ data +"')");
+            webView.loadUrl("javascript:coupon('"+ data +"')");*/
 
         }
     }
