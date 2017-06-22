@@ -43,14 +43,6 @@
 		delete from coupon where coupon_code = #{coupon_code};
 	</delete>
 	
-	<!-- 고객에게 쿠폰 전송 -->
-	<select id="selectSendAndroidCoupon" resultType="CouponVO">
-		select
-			*
-		from
-			coupon
-		limit 0,1
-	</select>
 
 	
 

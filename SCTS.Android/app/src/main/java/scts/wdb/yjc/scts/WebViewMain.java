@@ -1,7 +1,6 @@
 package scts.wdb.yjc.scts;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +23,7 @@ import scts.wdb.yjc.scts.bean.IPSetting;
 import scts.wdb.yjc.scts.hardwaremanager.BeaconM;
 import scts.wdb.yjc.scts.hardwaremanager.SensorM;
 
-public class WebViewMain extends AppCompatActivity {
+public class WebViewMain extends AppCompatActivity{
 
     private WebView webView;
 

@@ -4,9 +4,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import scts.wdb.yjc.scts.HttpClient;
 import scts.wdb.yjc.scts.bean.IPSetting;
@@ -59,7 +57,7 @@ public class BeaconSet extends AsyncTask<String, String, String> {
     /**************************** 이부분이 쿠폰 받은 부분이다!!!!!!!!!!!!!!! **************************/
 
     protected void onPostExecute(String s){
-        Log.d(TAG, "onPostExecute: " + s);
+        Log.d(TAG, "onPostExecute: " + s);/*
         JsonObject json = (JsonObject) new JsonParser().parse(s);
 
         // 성공시 처리
@@ -84,10 +82,9 @@ public class BeaconSet extends AsyncTask<String, String, String> {
         // 에러 처리
         else {
 
-        }
+        }*/
 
     }
-
     // 쿠폰 받은게 있을 경우에 처리하는 메서드
     protected void fullRecive(JsonObject json) {
         // json data 이런형식으로 날아옴. 뿌려주는건 아직 안함.
