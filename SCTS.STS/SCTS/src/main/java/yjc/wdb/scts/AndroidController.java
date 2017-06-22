@@ -48,7 +48,7 @@ public class AndroidController {
 	private static final Logger logger = LoggerFactory.getLogger(AndroidController.class);
 
 	// 안드로이드에서 전송되는 로그인 정보를 저장
-	@RequestMapping(value="/androidLogin")
+	@RequestMapping(value="/androidLogin", produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String androidLogin(HttpServletRequest request) throws Exception{
 		// 에러 방지하기 위해 추가함
@@ -83,7 +83,7 @@ public class AndroidController {
 	 * 처음 비콘을 감지햇을때 해당하는 감지된 비콘을 바로 서버측으로 전송해서 
 	 * 감지된 비콘을 저장하여 실시간에 사용할 수 있도록 하는 역할
 	 */
-	@RequestMapping(value="/firstCourse")
+	@RequestMapping(value="/firstCourse", produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String firstCourse(HttpServletRequest request) throws Exception{
 		// 에러 방지하기 위해 추가함
@@ -153,7 +153,7 @@ public class AndroidController {
 	 * 두번째 비콘 전송, 이 명령이 실행 될때는
 	 * 안드로이드 측에서의 현재 가장 가까운 비콘의 변경이 일어나서 기존에 감지하고 있던 비콘의 머문 시간을 저장 시킬 때 이 명령이 실행 됨
 	 */
-	@RequestMapping(value="/secondCourse")
+	@RequestMapping(value="/secondCourse", produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String secondCourse(HttpServletRequest request) throws Exception{
 		// 에러 방지하기 위해 추가함
@@ -209,7 +209,7 @@ public class AndroidController {
 	}
 
 	// 회원가입
-	@RequestMapping(value="checkUser", method=RequestMethod.POST)
+	@RequestMapping(value="checkUser", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String checkUser(String user_id, HttpServletRequest request) throws Exception{
 		System.out.print(request.getParameter("user_id"));
 		int checkUser = userService.checkUser(user_id);
@@ -291,7 +291,7 @@ public class AndroidController {
 
 
 	// 쿠폰 바구니에 담긴 쿠폰 보기
-	@RequestMapping(value="couponList", method=RequestMethod.GET)
+	@RequestMapping(value="couponList", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String couponList(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -317,7 +317,7 @@ public class AndroidController {
 	}
 
 	// 쿠폰 바구니에서 쿠폰 삭제
-	@RequestMapping(value="delCouponBasket", method=RequestMethod.GET)
+	@RequestMapping(value="delCouponBasket", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String delCouponBasket(Coupon_holdVO coupon_holdVO, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -335,7 +335,7 @@ public class AndroidController {
 	}
 
 	// 계산서 정보
-	@RequestMapping(value="billList", method=RequestMethod.GET)
+	@RequestMapping(value="billList", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String billList(String user_id, int day, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -365,7 +365,7 @@ public class AndroidController {
 	}
 
 	// 계산서 상세정보
-	@RequestMapping(value="billOne", method=RequestMethod.GET)
+	@RequestMapping(value="billOne", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String billOne(int bill_code, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -396,7 +396,7 @@ public class AndroidController {
 	}
 
 	// 계산서를 결제하다 정보
-	@RequestMapping(value="settleInfo", method=RequestMethod.GET)
+	@RequestMapping(value="settleInfo", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String settleInfo(String user_id, int bill_code,
 			HttpServletRequest request) 
 					throws Exception{
@@ -430,7 +430,7 @@ public class AndroidController {
 	}
 
 	// 추천상품
-	@RequestMapping(value="recommandProduct", method=RequestMethod.GET)
+	@RequestMapping(value="recommandProduct", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String recommandProduct(String user_id, HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
@@ -462,7 +462,7 @@ public class AndroidController {
 
 
 	// 포인트
-	@RequestMapping(value="point", method=RequestMethod.POST)
+	@RequestMapping(value="point", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String point(HttpServletRequest request) throws Exception{
 
 		System.out.println(request.getParameter("user_id"));
@@ -472,7 +472,7 @@ public class AndroidController {
 	}
 
 	// 물품검색
-	@RequestMapping(value="productSearch", method=RequestMethod.POST)
+	@RequestMapping(value="productSearch", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	public @ResponseBody String productSearch(String productName, HttpServletRequest request) throws Exception{
 
 		

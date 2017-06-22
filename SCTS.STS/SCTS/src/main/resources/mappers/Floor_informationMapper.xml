@@ -56,7 +56,7 @@ where
 					)
 and
 	f.DRW_CODE = d.DRW_CODE
-order by f.FLOORINFO_RGSDE desc, f.FLOORINFO_FLOOR asc
+order by f.FLOORINFO_RGSDE asc, f.FLOORINFO_FLOOR asc
 limit #{floor},1
 </select>
 

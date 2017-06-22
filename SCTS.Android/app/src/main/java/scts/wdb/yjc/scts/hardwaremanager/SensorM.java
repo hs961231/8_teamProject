@@ -36,7 +36,7 @@ public class SensorM implements SensorEventListener {
     private boolean moveChk;
 
     // 움직인다고 판정할 값
-    final private float MOVEVALUE = 0.5f;
+    final private float MOVEVALUE = 0.2f;
 
     public SensorM(Context context) {
         // 포맷 객체를 생성한다.
