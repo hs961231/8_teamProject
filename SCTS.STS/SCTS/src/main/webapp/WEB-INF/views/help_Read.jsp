@@ -10,11 +10,16 @@
 	width: 1200px;
 	height: 100%;
 }
-
+.modal-content{
+	margin-top: 50%;
+}
 #editor-title {
 	width: 70%;
 }
-
+.btn-xs{
+    margin-bottom:5px;
+	float:right;
+}
 #editor-content {
 	width: 70%;
 	background-color:#D8D8D8;
@@ -93,7 +98,7 @@
 	<div class="col-md-12">
 		<div class="box box-success">
 			<div class="box-header">
-				<h3 class="box-title" style="margin-left:2%; margin-bottom:2%;">댓글 등록</h3>
+				<h3 class="box-title" style="margin-left:2%; margin-bottom:2%;">댓글</h3>
 			</div>
 		</div>
 		<div class="box-footer">
@@ -103,7 +108,7 @@
 
 <ul class="timeline">
 	<li class="time-label" id="repliesDiv"><span class="bg-green">
-	댓글 목록</span></li>
+	</span></li>
 </ul>
 <!-- <input class="form-control" type="text" placeholder="내용 입력..."
 	id="newReplyText"> -->
@@ -112,7 +117,7 @@
  	 id="newReplyWriter"> --%>
 <div class="box-body" style="margin-left:1%;">
 			<label for="newReplyText">내용</label>
-				<textarea class="title-area textarea" name="title"></textarea>
+				<textarea class="title-area textarea" name="title" id="newReplyText"></textarea>
 			<button type="submit" class="btn btn-primary" id="replyAddBtn" style="margin-right:-50%;">댓글 작성</button>
 			
 </div>
@@ -134,29 +139,26 @@
 		</div>
 		<div class="modal-footer">  <!-- data-dismiss="modal" 가 있으면... 해결이 됨. -->
 			<button type="button" class="btn btn-info" id="replyModBtn" data-dismiss="modal">수정</button>
-			<button type="button" class="btn btn-danger" id="replyDelBtn">삭제</button>
+			<button type="button" class="btn btn-primary" id="replyDelBtn" data-dismiss=modal>삭제</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 		</div>
 		</div>
 	</div>
 </div>
 </div>
-<!-- <a class="btn btn-danger btn-xs" id="replyDelBtn">삭제</a> -->
-<!-- <button type="button" class="btn btn-danger" id="replyDelBtn">삭제</button> -->
+<!-- <a class="btn-xs" data-target="#replyDelBtn">삭제</a>
+<a class="btn-xs" data-toggle="modal" data-target="#modifyModal">수정</a> -->
 <!-- 밑에 {{prettifyDate에서 regidate는 변수명 또는 DB칼럼과 같아야함. -->
 <script id="template" type="text/x-handlebars-template">
 {{#each .}}
 <li class="replyLi" data-rno={{rno}}>
  <div class="timeline-item" style="border-top-style:dotted;">
  	<span class="time">
- 	<i class="fa fa-clock-o"></i>{{prettifyDate regidate}}
- 	</span>
-	
-	<h3 class="timeline-header"><strong style="display:none;">{{rno}}</strong> -{{replyer}}</h3>
-	<div class="timeline-body">{{replytext}}</div>
+	<a class="btn-xs" data-toggle="modal" data-target="#modifyModal">수정</a>
+ 	<i class="fa fa-clock-o"></i>{{prettifyDate regidate}}</span>
+	<h4><div class="timeline-body">{{replytext}}</div></h4>
+	<h5 class="timeline-header">작성자 : {{replyer}}</h5>
 	 <div class="timeline-footer">
-	  <a class="btn btn-danger btn-xs"
-		data-toggle="modal" style="margin-bottom:5px;" data-target="#modifyModal">수정</a>
 	</div>
    </div>
   </li>
@@ -168,6 +170,7 @@
 
 	/* 댓글 목록을 띄우는 버튼. */
  	$(document).ready(function(){
+ 	
 		if($(".timeline li").size() > 1){  /* 얘는 뭐야? */
 			return;
 		}
@@ -195,8 +198,8 @@
 		$(".replyLi").remove();
 		target.after(html);
 	/* 	console.log(html);   *//* 현재 html 변수에  리스트들이 저장 되있다. */
+
 	}
-	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////// 위 tample을 이용하여 페이지 처리 //////////////////////////////
@@ -232,11 +235,11 @@
 	};
 
 	/* 댓글 목록을 띄우는 버튼. */
-	/* 	$('#repliesDiv').on("click",function(){
+	 /* 	$('#repliesDiv').on("click",function(){
 		if($(".timeline li").size() > 1){ 
 			return;			
 		}
-		getPage("cri/" +bno+ "/1");    넘겨준 bno의 댓글 목록 리스트 중 1을 띄움. 
+		getPage("cri/" +bno+ "/1");    넘겨준 bno의 댓글 목록 리스트 중 1을 띄움.  
 	}); */
 	
 	/* 페이징 처리 (현재 몇 페이지인지) */
@@ -269,10 +272,10 @@
 			success:function(result){
 				console.log("result : " + result);
 				if(result == "SUCCESS"){
-					window.alert("등록 완료");
+					window.alert("등록 되었습니다.");
 					replyPage = 1;
 					getPage("cri/"+bno+"/" +replyPage);
-					replyerObj.val("");
+					/* replyerObj.val(""); */
 					replytextObj.val("");
 				}
 		}});
@@ -306,12 +309,12 @@
 			dataType : 'text',
 			success : function(result){
 				console.log("result : " + result);
-			if(result == 'SUCCESS'){
-				window.alert("수정 되었습니다.");
-				getPage("cri/"+bno+"/" + replyPage);
-				} 
-			}});
+				if(result == 'SUCESS'){
+					getPage("cri/"+bno+"/" + replyPage);
+				}
+			}
 		});
+	});
 	
 	/* 삭제 처리 */
 	$("#replyDelBtn").on("click", function(){
@@ -329,17 +332,10 @@
 			success : function(result){
 				console.log("result : " + result);
 				if(result == 'SUCCESS'){
-					
-					if(window.confirm("삭제하시겠습니까?")){
-						alert("삭제되었습니다.");
-						$('#replyDelBtn').css("data-dismiss","modal");
-						getPage("cri/"+bno+"/" + replyPage);
-					}else{
-						return false;
-					}
-						
+					getPage("cri/"+bno+"/" + replyPage);
 				}
-			}});
+			}
+		});
 	});
 	
 	
@@ -359,7 +355,6 @@
 		});
 
 		$('#delList').on("click", function() {
-
 			if (confirm("삭제하시겠습니까?")) {
 				if (msg == true) {
 					formObj.attr('action', 'deleteHelp');

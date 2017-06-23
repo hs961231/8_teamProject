@@ -3,8 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="row">
-<form class="navbar-form"><!-- 여기의 name과 vo의 이름과 일치하는 곳에 입력. -->
+
 	<div class="col-lg-12">
+	<form class="navbar-form"><!-- 여기의 name과 vo의 이름과 일치하는 곳에 입력. -->
 		<h3 class="page-header">
 			<i class="fa fa fa-bars"></i>재고 관리
 		</h3>
@@ -46,6 +47,7 @@
 					 <input type="text" name="keyword" class="form-control searchForm"
 					placeholder="Search" value='${cri.keyword }'> <button id="mySearch">Search</button>
 		</div>
+	
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>
@@ -96,8 +98,9 @@
 					</c:forEach>
 				</table>
 		</div>
+	</form>	
 	</div>
-</form>	
+
 </div>
 <div class="text-center">
 	<ul class="pagination">
