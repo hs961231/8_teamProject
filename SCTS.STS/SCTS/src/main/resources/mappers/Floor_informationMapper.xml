@@ -92,7 +92,7 @@ from
 				from
 					tile 
 				where
-					drw_code = 24
+					drw_code = #{drw_code}
 			) t,
 			detail_category dc,
 			large_classification_category lcc
@@ -119,7 +119,7 @@ LEFT OUTER JOIN
 								from
 									tile
 								where
-									DRW_CODE = 24
+									DRW_CODE = #{drw_code}
 							)
 		and
 			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 30 DAY))

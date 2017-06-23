@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -89,12 +90,14 @@ public class FileUploadController {
 		int drw_code = Integer.parseInt(map.get("drw_code").toString());
 		List<HashMap<String, String>> tileInfoList = floor_informationService.selectTileCategoryList(drw_code);
 		
+		//Map<String, Object> mainMap = new HashMap<String, Object>();
 		map.put("tileInfoList", tileInfoList);
+		//mainMap.put("tileInfoList", tileInfoList);
+		//mainMap.put("drw_code", drw_code);
 		
 		String str = new Gson().toJson(map);
 		
 		System.out.println(str);
-		
 		return str;
 	}
 
