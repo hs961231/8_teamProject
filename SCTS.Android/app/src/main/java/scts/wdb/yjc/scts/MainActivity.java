@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // 블루투스 권한 및 활성화 코드
-       // SystemRequirementsChecker.checkWithDefaultDialogs(this);
+       //SystemRequirementsChecker.checkWithDefaultDialogs(this);
     }
 
   protected void test() {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         .create()
                         .toJson(beaconTimeData);
 
-                BeaconSet test = new BeaconSet();
+                BeaconSet test = new BeaconSet(getApplicationContext());
 
                 Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onClick: " + json);

@@ -165,9 +165,12 @@ create table bill (
 	USER_ID varchar(10),
 	BILL_ISSU_DE date not null,	/* 계산서 발급날짜 */
 	BILL_TOTAMT int,	/* 총 가격 */
+	BHF_CODE int,
+
 
 	PRIMARY KEY(BILL_CODE),
 	FOREIGN KEY(USER_ID) REFERENCES user(USER_ID) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(BHF_CODE) REFERENCES branch_office(BHF_CODE) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 /* 상품대분류카테고리 테이블 */
@@ -281,8 +284,8 @@ create table bbsctt (
 /* 이벤트 */
 create table event (
 	bbsctt_code integer not null references bbsctt_code(bbsctt),
-	event_begin_de date not null,
-	event_end_de date not null
+	event_begin_de timestamp not null,
+	event_end_de timestamp not null
 );
 
 /* 게시글을 작성할 수 있다*/

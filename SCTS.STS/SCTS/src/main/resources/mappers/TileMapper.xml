@@ -30,10 +30,8 @@ values
 <select id="selectTileList" resultType="java.util.HashMap">
 select
 	t.TILE_NM tile_nm, b.BEACON_MJR beacon_mjr, b.BEACON_MNR beacon_mnr
-from
-	tile t LEFT OUTER JOIN beacon b
-ON
-	t.BEACON_CODE = b.BEACON_CODE
+from tile t, beacon b, beacon_position bp
+where t.tile_code = bp.tile_code and b.beacon_code = bp.beacon_code;
 </select>
 
 <select id="selectTileListUp" resultType="java.util.HashMap">
@@ -66,12 +64,12 @@ where
 <select id="selectTile_LocationOne" resultType="java.util.HashMap">
 select
 	t.tile_code, t.tile_nm, b.beacon_code, b.beacon_mjr, b.beacon_mnr
-	
-from	
+
+from
 	tile t
 LEFT OUTER JOIN
 	beacon b
-ON 
+ON
 	t.BEACON_CODE = b.BEACON_CODE
 
 where

@@ -121,7 +121,7 @@ public class BeaconM{
         // 제이슨 형태 확인
         Toast.makeText(mContext, "logic: 서버전송 stayTimeMil = " + json, Toast.LENGTH_LONG).show();
         // 서버로 전송시킴
-        BeaconSet networkTask = new BeaconSet();
+        BeaconSet networkTask = new BeaconSet(mContext);
 
         // 첫번째 감지되자마자 전송하는 것과 두번째 더이상 감지되지 않을때 전송하는 것을 나누기 위해서
         // 해주는 조건들

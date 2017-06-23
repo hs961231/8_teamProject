@@ -48,11 +48,15 @@ public class MainSocket extends TextWebSocketHandler{
 		
 		super.handleTextMessage(session, message);
 
-		//System.out.println(message.getPayload());
+		
 		
 		logger.info("{} º¸³¿", message.getPayload());
 		
+
+		
 		list = billDAO.daySales();
+		
+		System.out.println(list.toString());
 		JSONArray jArray = new JSONArray();
 		for(int i = 0; i < list.size(); i++){
 			JSONObject json = new JSONObject();

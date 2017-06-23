@@ -2,16 +2,22 @@
 <html>
 <head>
     <meta charset="UTF-8">
-       <meta name="viewport" content="width=350 height=495 initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>index</title>
-    <script src="js/jquery-3.2.1.min.js"></script>
+       <!--<meta name="viewport" content="width=350 height=495 initial-scale=1">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         body{
             background:#FFFFF6;
-           
+            padding-left: 10px;
         }
+       
+    
+
         #MoveInfo{
+            margin-top: 20px;
             width: 97%;
             padding-top: 10px;
             background-color: #202B37;
@@ -95,7 +101,11 @@
     function coupon(data){
         // 여기 modal을 띄우세요.
         // 예시로 제이쿼리로 받아온 데이터를 붙여 보도록해보죠!
-         document.getElementById("coupon").innerHTML= data;
+          $("#couponModal").modal(); 
+        $(".modal-body").text(data);
+        
+       //  document.getElementById("coupon").innerHTML= data;
+
     }
     
     function hi(){
@@ -137,6 +147,26 @@
     </div>
 </div>
 
+ <div class="modal fade" id="couponModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">쿠폰</h4>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
 <script>
      $(function(){
 
@@ -163,8 +193,6 @@
                     
     });
 </script>
-
-
 
 </body>
 </html>

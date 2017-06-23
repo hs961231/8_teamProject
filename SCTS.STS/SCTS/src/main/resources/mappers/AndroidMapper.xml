@@ -115,5 +115,13 @@
 	select * from goods where goods_nm like concat('%', #{productName}, '%');
 	</select>
 
+	<!-- 고객에게 쿠폰 전송 -->
+	<select id="selectSendAndroidCoupon" resultType="CouponVO">
+		select
+			*
+		from
+			coupon
+		limit 0,1
+	</select>
 
 </mapper>
