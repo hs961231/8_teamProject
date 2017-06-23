@@ -77,14 +77,27 @@ public class BeaconM{
         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
             @Override
             public void onBeaconsDiscovered(Region region, List<Beacon> list) {
-                beaconCnt = list.size();
+                /*beaconCnt = list.size();
                 if(!list.isEmpty())
                     currentNearBeacon = list.get(0);
                 else
                     currentNearBeacon = null;
-                logic();
+                logic();*/
+
+                // 테스트용
+
+                if(!list.isEmpty()) {
+                    Toast.makeText(mContext, "감지비콘 : " + list.get(0).toString(), Toast.LENGTH_LONG).show();/*
+                    for (int i = 0; i < list.size(); i++) {
+                        Log.d("비콘들 : :", "A = " + list.get(i).toString());
+                    }*/
+                }
             }
         });
+    }
+
+    public void onDestroy() {
+        beaconManager.disconnect();
     }
 
     public void BeaconConnect() {
@@ -109,6 +122,8 @@ public class BeaconM{
         // 비콘 타임데이터에 머문 시간 저장
         if(mode.equals("secondSend")) {
             beaconTimeData.setCours_stay_time(stayTimeMil / 1000);
+
+
             stayTimeMil = 0;
         }
 
@@ -119,15 +134,20 @@ public class BeaconM{
                 .toJson(beaconTimeData);
         Log.d(TAG, "sendBeaconData: " + json);
         // 제이슨 형태 확인
-        Toast.makeText(mContext, "logic: 서버전송 stayTimeMil = " + json, Toast.LENGTH_LONG).show();
+        //Toast.makeText(mContext, "logic: 서버전송 stayTimeMil = " + json, Toast.LENGTH_LONG).show();
         // 서버로 전송시킴
         BeaconSet networkTask = new BeaconSet(mContext);
 
         // 첫번째 감지되자마자 전송하는 것과 두번째 더이상 감지되지 않을때 전송하는 것을 나누기 위해서
         // 해주는 조건들
         String select = "firstSend";
-        if(mode.equals("secondSend"))
+        if(mode.equals("secondSend")) {
             select = "secondSend";
+        }
+        else {
+            Toast.makeText(mContext,"감지비콘 : " + json, Toast.LENGTH_LONG).show();
+        }
+
 
         networkTask.execute(select, json);
     }
@@ -182,7 +202,7 @@ public class BeaconM{
 ;                   if(currentTime != 0) {
                         stayTimeMil += (int) (getCurrent_Time() - currentTime);
                         currentTime = 0;
-                        Toast.makeText(mContext, "logic: 멈춘 시간 계산 stayTimeMil = " + stayTimeMil, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(mContext, "logic: 멈춘 시간 계산 stayTimeMil = " + stayTimeMil, Toast.LENGTH_LONG).show();
                         Log.d(TAG, "logic: 움직였는데 그전과 같은 비콘 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
                     }
                 }
@@ -214,7 +234,7 @@ public class BeaconM{
             if(beaconCnt > 0) {
                 if(oldnearBeacon != null && currentTime == 0) {
                     currentTime = getCurrent_Time();
-                    Toast.makeText(mContext, "logic: 멈춘 시간 저장", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(mContext, "logic: 멈춘 시간 저장", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "logic: 지금 멈춰서 시간계산 시작한다" ); // 디버깅용 시스템 로그
                     Log.d(TAG, "oldBeacon = " + oldnearBeacon.toString() ); // 디버깅용 시스템 로그
                 }

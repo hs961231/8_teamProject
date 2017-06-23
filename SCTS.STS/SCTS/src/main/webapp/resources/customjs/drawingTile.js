@@ -79,6 +79,7 @@ var imgLoad = function(floor) {
 						alpha = 0.2
 					}
 					
+					col.text( (info.probability*100) + "%" );
 					col.css("background-color", "#" + info.LCLASCTGRY_COLOR);
 					//col.css("opacity", 0.1 + (info.probability * 0.5));
 					col.css("opacity", alpha);

@@ -268,6 +268,7 @@ to {
 								<label for="cname" class="control-label col-lg-2">층정보 <span
 									class="required">*</span>
 								</label>
+								
 								<div class="col-lg-10">
 									<!-- <input class="form-control" id="level_info"
 										name="floorinfo_floor" type="text" required /> -->
@@ -282,9 +283,9 @@ to {
 									class="required">*</span>
 								</label>
 								<div class="col-lg-10">
-									<input type="number" name="size_x" required value="8" min="5" max="20">
+									<input type="number" name="size_x" required value="5" min="3" max="10">
 									X
-									<input type="number" name="size_y" required value="8" min="5" max="20">
+									<input type="number" name="size_y" required value="5" min="3" max="10">
 								</div>
 							</div>
 							
