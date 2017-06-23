@@ -88,6 +88,10 @@ $(document).ready(function() {
 	/* 
 	 * 매장 등록 버튼 클릭 시 뜨는 모달창 관련
 	 * *********************************************************************************************************/
+	// 처음 로딩시 성별 그래프
+	$.ajax({
+		
+	});
 	
 	
 	/**
@@ -119,9 +123,8 @@ $(document).ready(function() {
 				var tile_info = $("#tile_info");
 				tile_info.empty();
 				
-				if(data != null) {
+				if(data != null) {		
 					
-					$("<p></p>").attr("id", "tile_code").val(data.tile_code).text("tile_code = " + data.tile_code).appendTo(tile_info);
 					$("<p></p>").text("tile_nm = " + data.tile_nm).appendTo(tile_info);
 					if(data.beacon_code != null) {
 						//$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);

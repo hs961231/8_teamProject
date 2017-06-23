@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -198,4 +199,22 @@ public class AjaxController {
 		
 		return json.toString();
 	}
+	
+	@RequestMapping(value="tileGender", method=RequestMethod.GET)
+	@ResponseBody
+	public String tileGender(int day) throws Exception{
+		List<HashMap> list = courseService.tileGender(day);
+		
+		JSONArray tileGenderArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			
+			JSONObject tileGenderObj = new JSONObject();
+			
+			tileGenderObj.put("probability", list.get(i).get("probability"));
+			tileGenderObj.put("user_sexdstn", list.get(i).get("user_sexdstn"));
+			
+			tileGenderArray.add(tileGenderObj);			
+		}
+		
+		return tileGenderArray.toJSONString();
 }
