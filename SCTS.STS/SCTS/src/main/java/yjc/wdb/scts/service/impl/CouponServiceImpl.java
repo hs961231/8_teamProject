@@ -1,5 +1,6 @@
 package yjc.wdb.scts.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -65,6 +66,18 @@ public class CouponServiceImpl implements CouponService {
 	public CouponVO selectCouponOne(int coupon_code) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.selectCouponOne(coupon_code);
+	}
+
+	@Override
+	public void applyCoupon(int coupon_code, int goods_code, int coupon_co) throws Exception {
+		// TODO Auto-generated method stub
+		dao.applyCoupon(coupon_code,goods_code,coupon_co);
+	}
+
+	@Override
+	public CouponVO selectCode() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectCode();
 	}
 
 }

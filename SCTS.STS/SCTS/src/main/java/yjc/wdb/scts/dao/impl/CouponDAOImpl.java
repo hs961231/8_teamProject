@@ -1,6 +1,8 @@
 package yjc.wdb.scts.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -70,4 +72,20 @@ public class CouponDAOImpl implements CouponDAO{
 		// TODO Auto-generated method stub
 		return sql.selectOne(NAMESPACE+".selectCouponOne", coupon_code);
 	}
+
+	@Override
+	public void applyCoupon(int coupon_code, int goods_code, int coupon_co) throws Exception {
+		Map<String,Integer> map = new HashMap();
+		map.put("coupon_code", coupon_code);
+		map.put("goods_code", goods_code);
+		map.put("coupon_code", coupon_co);
+		sql.insert(NAMESPACE+".applyCoupon", map);
+	}
+
+	@Override
+	public CouponVO selectCode() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE+".selectCode");
+	}
+
 }

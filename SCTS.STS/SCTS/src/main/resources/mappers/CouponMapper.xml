@@ -16,6 +16,13 @@
 		#{coupon_end_de})
 	</insert>
 	
+	<!-- 쿠폰에 할인할 물품 적용 -->
+	<insert id="applyCoupon">
+		insert into coupon_goods_creation
+		(COUPON_CODE, GOODS_CODE, COUPON_CO)
+		values (#{coupon_code}, #{goods_code}, #{coupon_co})
+	</insert>
+	
 	<!-- 전체 쿠폰 리스트 출력 -->
 	<select id="selectCouponList" resultType="CouponVO">
 		select
@@ -29,6 +36,12 @@
 		select *
 		from coupon
 		where coupon_code=#{coupon_code};
+	</select>
+	
+	<!-- 물품 적용에 들어갈 쿠폰 코드 가져오기 -->
+	<select id="selectCode" resultType="CouponVO">
+		select MAX(coupon_code)
+		from coupon
 	</select>
 	
 	<!-- 쿠폰 수정 -->

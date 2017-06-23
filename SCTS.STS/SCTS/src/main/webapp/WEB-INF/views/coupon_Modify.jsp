@@ -127,13 +127,13 @@
 				</section>
 
 				<section class="panel"
-					style="width: 38%; height: 30%; margin-left: 62%; margin-top: -28.9%;">
+					style="width: 38%; height: 32%; margin-left: 62%; margin-top: -27.7%;">
 					<header class="panel-heading"> 물품 리스트</header>
 					<div class="panel-body">
 						<div class="form">
 							<input type="text" id="search" class="form-control">
 							<button type="submit" id="searching" class="btn btn-default">검색</button>
-							<div class="form-group" style="overflow: scroll; height: 334px;">
+							<div class="form-group" style="overflow: scroll; height: 300px;">
 								<table class="table table-striped table-advance table-hover">
 									<thead>
 										<tr>
