@@ -21,17 +21,17 @@ public class HelpDAOImpl implements HelpDAO {
 	
 	@Override
 	public void createHelp(HelpVO vo) throws Exception {
-		sql.insert(namespace +".insert", vo);
+		sql.insert(namespace +".insertHelp", vo);
 	}
 
 	@Override
 	public void updateHelp(HelpVO vo) throws Exception {
-		sql.update(namespace +".update", vo);
+		sql.update(namespace +".updateHelp", vo);
 	}
 
 	@Override
 	public void deleteHelp(Integer bno) throws Exception {
-		sql.delete(namespace +".delete", bno);
+		sql.delete(namespace +".deleteHelp", bno);
 	}
 
 	@Override

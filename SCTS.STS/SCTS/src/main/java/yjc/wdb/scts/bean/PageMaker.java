@@ -2,6 +2,7 @@ package yjc.wdb.scts.bean;
 
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+/* 페이징 처리용 클래스 */
 
 public class PageMaker {
 	private int totalCount; /* 전체 데이터 개수  */
@@ -35,28 +36,7 @@ public class PageMaker {
 	}
 	
 	/* 20개 이상의 페이지가 올 경우 제대로 처리하지 못해서 해결. */
-	public String makeQuery(int page){
-		UriComponents uriComponents =  
-				UriComponentsBuilder.newInstance()
-				.queryParam("page", page) 
-				.queryParam("perPageNum", cri.getPerPageNum())
-				.build();
-		return uriComponents.toUriString();
-	}
-	
 	public String makeSearch(int page){
-		UriComponents uriComponents =	/* URI를 작성할 때 도움 되는 클래스 중 하나 */
-				UriComponentsBuilder.newInstance()
-				.queryParam("page", page) /* URI에 GET방식의 ?가 붙는 데이터가 된다. */
-				.queryParam("perPageNum", cri.getPerPageNum())
-				.queryParam("searchType", ((PageVO)cri).getSearchType())
-				.queryParam("keyword", ((PageVO)cri).getKeyword())
-				.queryParam("msg", ((PageVO)cri).isMsg())
-				.build();
-		return uriComponents.toUriString();
-	}
-	
-	public String stockSearch(int page){
 		UriComponents uriComponents =	
 				UriComponentsBuilder.newInstance()
 				.queryParam("page", page) 
@@ -65,6 +45,7 @@ public class PageMaker {
 				.queryParam("keyword", ((PageVO)cri).getKeyword())
 				.queryParam("startAmount", ((PageVO)cri).getStartAmount())
 				.queryParam("endAmount", ((PageVO)cri).getEndAmount())
+				.queryParam("check", ((PageVO)cri).getCheck())
 				.queryParam("msg", ((PageVO)cri).isMsg())
 				.build();
 		return uriComponents.toUriString();

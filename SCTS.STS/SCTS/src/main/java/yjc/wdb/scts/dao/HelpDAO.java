@@ -2,7 +2,6 @@ package yjc.wdb.scts.dao;
 
 import java.util.List;
 
-/*import yjc.wdb.scts.bean.Criteria;*/
 import yjc.wdb.scts.bean.HelpVO;
 import yjc.wdb.scts.bean.PageVO;
 

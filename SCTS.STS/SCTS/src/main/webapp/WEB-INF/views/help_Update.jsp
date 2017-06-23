@@ -98,11 +98,11 @@ $(document).ready(function(){
 	
 	$(".btn-warning").on("click", function(){
 		if(msg != false){
-			window.alert("true다");
+			/* window.alert("true다"); */
 			formObj.attr("method", "get");
 			formObj.attr("action", "help_List");
 		}else if(msg == false){
-			window.alert("false다");
+			/* window.alert("false다"); */
 			formObj.attr("method", "get");
 			formObj.attr("action", "searchHelp");
 		}

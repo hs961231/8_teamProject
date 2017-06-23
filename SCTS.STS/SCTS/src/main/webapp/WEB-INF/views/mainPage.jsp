@@ -68,6 +68,7 @@
 <script
 	src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
 <script src="resources/js/owl.carousel.js"></script>
+<script src="resources/js/handlebars-v4.0.10.js"></script>
 
 
 <!-- jQuery full calendar -->

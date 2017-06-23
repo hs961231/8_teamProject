@@ -20,7 +20,6 @@ public class StockServiceImpl implements StockService {
 	
 	@Override
 	public List<StockVO> selectStockList(PageVO cri) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.selectStockList(cri);
 	}
 

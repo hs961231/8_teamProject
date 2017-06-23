@@ -62,7 +62,6 @@ limit #{floor},1
 
 <select id="selectTileCategoryList" resultType="java.util.HashMap">
 
-
 select
 	tc.TILE_CODE, tc.TILE_NM, tc.TILE_CRDNT_X, tc.TILE_CRDNT_Y, 
 	tc.DETAILCTGRY_CODE, tc.DETAILCTGRY_NM, tc.DETAILCTGRY_COLOR, 
@@ -93,7 +92,7 @@ from
 				from
 					tile 
 				where
-					drw_code = #{drw_code}
+					drw_code = 24
 			) t,
 			detail_category dc,
 			large_classification_category lcc
@@ -120,7 +119,7 @@ LEFT OUTER JOIN
 								from
 									tile
 								where
-									DRW_CODE = #{drw_code}
+									DRW_CODE = 24
 							)
 		and
 			date(COURS_PASNG_TIME) >= date(subdate(CURDATE(), INTERVAL 30 DAY))
@@ -129,7 +128,7 @@ LEFT OUTER JOIN
 	) c
 ON
 	tc.TILE_CODE = c.TILE_CODE
-	
+order by probability desc
 <!-- select
 	t.TILE_CODE, t.TILE_NM, t.TILE_CRDNT_X, t.TILE_CRDNT_Y, 
 	dcl.DETAILCTGRY_CODE, dc.DETAILCTGRY_NM, dc.DETAILCTGRY_COLOR, 

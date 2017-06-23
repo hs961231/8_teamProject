@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="row">
+<form class="navbar-form"><!-- 여기의 name과 vo의 이름과 일치하는 곳에 입력. -->
 	<div class="col-lg-12">
 		<h3 class="page-header">
 			<i class="fa fa fa-bars"></i>재고 관리
@@ -11,9 +12,9 @@
 			<li><i class="fa fa-home"></i><a href="index">Home</a></li>
 			<li><i class="fa fa-bars"></i>Management</li>
 		</ol>
-
 		<div class="navbar-inner">
-			<form class="navbar-form">
+		<input type="hidden" id='page' value="${cri.page }">
+				<input type="hidden" id='perPageNum' value="${cri.perPageNum }">
 				재고수량 <input type="text" id="start" name="startAmount" value='${cri.startAmount }'> 이상 <input
 					type="text" name="endAmount" id="end" value='${cri.endAmount }'> 이하
 					<select name="searchType" id="searchType">
@@ -44,7 +45,6 @@
 					</select>
 					 <input type="text" name="keyword" class="form-control searchForm"
 					placeholder="Search" value='${cri.keyword }'> <button id="mySearch">Search</button>
-			</form>
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -52,7 +52,6 @@
 					<i class="fa fa-map-marker red"></i><strong>StockList</strong>
 				</h2>
 			</div>
-			<form class="form">
 				<table class="table table-striped table-advance table-hover">
 					<!-- table-bordered -->
 					<thead>
@@ -96,40 +95,40 @@
 						</tbody>
 					</c:forEach>
 				</table>
-			</form>
 		</div>
 	</div>
+</form>	
 </div>
 <div class="text-center">
 	<ul class="pagination">
 	<c:if test="${msg == true}">
 		<c:if test="${pageMaker.prev }">
-			<li><a href="stock_Management?page=${pageMaker.stockSearch(pageMaker.startPage -1)}">&laquo;</a></li>
+			<li><a href="stock_Management?page=${pageMaker.makeSearch(pageMaker.startPage -1)}">&laquo;</a></li>
 		</c:if>
 
 		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 			var="idx">
 			<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-				<a href="stock_Management${pageMaker.stockSearch(idx)}">${idx}</a>
+				<a href="stock_Management${pageMaker.makeSearch(idx)}">${idx}</a>
 			</li>
 		</c:forEach>
 		<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-			<li><a href="stock_Management${pageMaker.stockSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+			<li><a href="stock_Management${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
 		</c:if>
 	</c:if>
-	<c:if test="${msg != true}">
-		<c:if test="${pageMaker.prev }">
-			<li><a href="stock_Management?page=${pageMaker.stockSearch(pageMaker.startPage -1)}">&laquo;</a></li>
+	<c:if test="${msg == false}">
+		<c:if test="${pageMaker.prev }"> <!-- stockSearch부분에 주소창에 넘겨받을 값들 다 적혀있음 -->
+			<li><a href="searchStock?page=${pageMaker.makeSearch(pageMaker.startPage -1)}">&laquo;</a></li>
 		</c:if>
 
 		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
 			var="idx">
 			<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-				<a href="stock_Management${pageMaker.stockSearch(idx)}">${idx}</a>
+				<a href="searchStock${pageMaker.makeSearch(idx)}">${idx}</a>
 			</li>
 		</c:forEach>
 		<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-			<li><a href="stock_Management${pageMaker.stockSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+			<li><a href="searchStock${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
 		</c:if>
 	</c:if>
 	</ul>
