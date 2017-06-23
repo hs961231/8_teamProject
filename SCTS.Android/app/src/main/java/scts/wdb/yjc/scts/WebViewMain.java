@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -42,6 +43,8 @@ public class WebViewMain extends AppCompatActivity{
     private String productName;
     private Button button;
 
+
+
     private final static String MAIN_URL = "file:///android_asset/index.html";
 
     @Override
@@ -56,9 +59,14 @@ public class WebViewMain extends AppCompatActivity{
         sp = getSharedPreferences("test", 0);
 
         webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+
         webView.addJavascriptInterface(new JSObject(), "sampleAndroid");
 
         webView.setWebViewClient(new WebViewClientTest());
@@ -75,6 +83,7 @@ public class WebViewMain extends AppCompatActivity{
                 productName = productInput.getText().toString();
                 NetworkTask networkTask = new NetworkTask();
                 networkTask.execute(productName);
+                testCoupon();
 
             }
         });
@@ -103,11 +112,13 @@ public class WebViewMain extends AppCompatActivity{
     public void setCoupon(JsonObject json) {
         webView.loadUrl("javascript:coupon('"+ json +"')");
     }
+
     public void testCoupon() {
         String data = "{\"coupon_dscnt\":\"30%\",\"status\":\"SUCCESS\",\"command\":\"fullcoupon\",\"coupon_cntnts\":\"안드로이드 쿠폰 수신용 첫번째 테스트 쿠폰입니다.\",\"coupon_code\":1,\"coupon_begin_de\":\"6월 22, 2017\",\"coupon_nm\":\"첫시험쿠폰\"}";
 
         webView.loadUrl("javascript:coupon('"+ data +"')");
     }
+
     // 뒤로 가기 버튼
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
