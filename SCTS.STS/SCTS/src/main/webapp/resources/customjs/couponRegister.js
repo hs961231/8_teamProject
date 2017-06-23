@@ -20,6 +20,8 @@ $("#selection").on("change",function(){
 $("#searching").on("click", function(){
 	
 	var goodsName = $("#search").val();
+
+	
 //	alert(goodsName);
 	$.ajax({
 		type:"get",
@@ -37,6 +39,9 @@ $("#searching").on("click", function(){
 				for(var i=0; i<length; i++) {
 //					alert('hello3');
 					var gname = data.result[i].goods_nm+"";
+					var goods_code = data.result[i].goods_code+"";
+					alert(gname);
+					alert(goods_code);
 					
 					var products = $("<tr class='product'></tr>");
 					$("<td><input type='checkbox' class='checked'></td>").appendTo(products);
@@ -48,7 +53,30 @@ $("#searching").on("click", function(){
 					
 					$(".checked").on("click",function(){
 //						alert('체크됐지롱!')
-						$("#selectGoods").val(gname);
+//						$("#selectGoods").val(gname);
+						$("#selectGoods").val(goods_code);
+						
+						var goods_code=$("#selectGoods").val();
+						var coupon_code = $("#searching").val();
+						var coupon_co = $("#coupon_co").val();
+						
+						alert(coupon_code); 
+						alert(coupon_co);
+						
+						$("#couponSave").on("click",function(){
+							
+							$.ajax({
+								type:post,
+								url:insertCoupon,
+								data:{
+									coupon_code:coupon_code,
+									goods_code:goods_code,
+									coupon_co:coupon_co
+								}
+							});
+							
+						});
+
 					});
 						
 					

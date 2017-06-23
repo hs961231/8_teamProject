@@ -75,8 +75,8 @@
 											물품 <span class="required">*</span>
 										</label>
 										<div class="col-lg-3">
-											<input type="text" id="selectGoods" class="form-control" style="width: 100%;"
-												>
+											<input type="text" id="selectGoods" class="form-control"
+												style="width: 100%;">
 										</div>
 									</div>
 								</div>
@@ -88,6 +88,14 @@
 									<div class="col-lg-3">
 										<input class="form-control" id="coupon_sales"
 											name="coupon_dscnt" type="text" style="width: 100%;" required />
+									</div>
+
+									<label for="coupon_co" class="control-label col-lg-2">쿠폰
+										갯수<span class="required">*</span>
+									</label>
+									<div class="col-lg-3">
+										<input type="text" id="coupon_co" class="form-control"
+											style="width: 100%;">
 									</div>
 								</div>
 
@@ -113,7 +121,6 @@
 								</div>
 
 								<div class="form-group" style="margin-left: 30%;">
-									>
 									<div class="col-lg-offset-2 col-lg-10">
 										<button class="btn btn-primary" id="couponSave" type="submit">Save</button>
 										<button class="cancel btn btn-default" id="couponCancel"
@@ -126,17 +133,18 @@
 				</section>
 
 				<section class="panel"
-					style="width: 38%; height: 30%; margin-left: 62%; margin-top: -28.9%;">
+					style="width: 38%; height: 30%; margin-left: 62%; margin-top: -27.7%;">
 					<header class="panel-heading"> 물품 리스트</header>
 					<div class="panel-body">
 						<div class="form">
 							<input type="text" id="search" class="form-control">
+							<input type="hidden" id="coupon_code" value="${coupon_code.coupon_code}">
 							<button type="submit" id="searching" class="btn btn-default">검색</button>
-							<div class="form-group" style="overflow: scroll; height: 334px;">
+							<div class="form-group" style="overflow: scroll; height: 300px;">
 								<table class="table table-striped table-advance table-hover">
 									<thead>
 										<tr>
-											<th style="text-align: center;"></th>	
+											<th style="text-align: center;"></th>
 											<th style="text-align: center;"><i class="icon_profile"></i>
 												Product_no</th>
 											<th style="text-align: center;"><i class="icon_pin_alt"></i>
@@ -145,16 +153,16 @@
 												Price(won)</th>
 										</tr>
 									</thead>
-									
+
 									<tbody id="productList">
-											<c:forEach items="${ GoodsList }" var="vo">
-												<tr>
-													<td style="text-align: center;"></td>
-													<td style="text-align: center;">${ vo.goods_code }</td>
-													<td style="text-align: center;">${ vo.goods_nm }</td>
-													<td style="text-align: center;">${ vo.goods_pc }</td>
-												</tr>
-											</c:forEach>
+										<c:forEach items="${ GoodsList }" var="vo">
+											<tr>
+												<td style="text-align: center;"></td>
+												<td style="text-align: center;">${ vo.goods_code }</td>
+												<td style="text-align: center;">${ vo.goods_nm }</td>
+												<td style="text-align: center;">${ vo.goods_pc }</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

@@ -363,3 +363,24 @@ create table supply_goods (
    CONSTRAINT `supply_goods_ibfk_3` FOREIGN KEY (`BHF_CODE`) REFERENCES `branch_office` (`BHF_CODE`) ON UPDATE CASCADE ON DELETE CASCADE
 )
 
+CREATE TABLE `help_board` (
+	`bno` INT(11) NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(30) NOT NULL,
+	`content` VARCHAR(300) NOT NULL,
+	`writer` VARCHAR(30) NOT NULL,
+	`regidate` DATE NULL DEFAULT NULL,
+	PRIMARY KEY (`bno`)
+);
+
+create table help_reply(
+rno int NOT NULL AUTO_INCREMENT,
+	bno int not null,
+	replytext varchar(1000) not null,
+	replyer varchar(50) not null,
+	regidate TIMESTAMP NOT NULL DEFAULT now(),
+	updatedate TIMESTAMP NOT NULL DEFAULT now(),
+
+	primary key(rno),
+	FOREIGN KEY(bno) REFERENCES help_board(bno) ON UPDATE CASCADE ON DELETE CASCADE
+);
+

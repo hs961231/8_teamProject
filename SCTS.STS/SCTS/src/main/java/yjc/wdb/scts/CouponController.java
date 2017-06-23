@@ -1,8 +1,6 @@
 package yjc.wdb.scts;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import yjc.wdb.scts.bean.CouponVO;
@@ -36,14 +33,18 @@ public class CouponController {
 	/********************************** 捻迄 包府 何盒***************************************/
 	/********************************** 捻迄 包府 何盒***************************************/
 
-	@RequestMapping(value = "insertCoupon", method = RequestMethod.POST)
-	public String insertCoupon(CouponVO couponVO, Model model) throws Exception {
+	@RequestMapping(value = "insertCoupon", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8")
+	public String insertCoupon(CouponVO couponVO, Model model, int coupon_code, int goods_code, int coupon_co) throws Exception {
 		
 		String ContentPage = "coupon_Management";
 		model.addAttribute("main_content", ContentPage);
 		
 		System.out.println(couponVO.getCoupon_cntnts());
+		
 		couponService.insertCoupon(couponVO);
+		couponService.applyCoupon(coupon_code, goods_code, coupon_co);
+		
+		logger.info("applyCoupon:"+coupon_code+goods_code+coupon_co);
 		
 		return "redirect:coupon_Management";
 	}
@@ -61,7 +62,7 @@ public class CouponController {
 	public String coupon(HttpServletRequest request, HttpSession session, Model model) throws Exception {
 		String ContentPage = "coupon_Management";
 		model.addAttribute("main_content", ContentPage);
-
+		
 		List<CouponVO> Couponlist = couponService.selectCouponList();
 		model.addAttribute("list", Couponlist);
 		
@@ -96,13 +97,19 @@ public class CouponController {
 		
 	}
 	
-	@RequestMapping(value = "reg_coupon", method = RequestMethod.GET )
+	@RequestMapping(value = "reg_coupon", method = RequestMethod.GET)
 	public String search(Model model) throws Exception {
 		String ContentPage = "coupon_Register";
 		model.addAttribute("main_content", ContentPage);
 		
 		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
 		model.addAttribute("GoodsList", GoodsList);
+		
+		CouponVO coupon_code = couponService.selectCode();
+		model.addAttribute("coupon_code",coupon_code);
+		
+		CouponVO coupon_max_code = couponService.selectCode();
+		model.addAttribute("coupon_code",coupon_max_code);
 		
 		return "mainPage";
 	}
