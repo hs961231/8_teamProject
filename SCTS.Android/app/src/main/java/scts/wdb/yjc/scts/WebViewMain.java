@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -83,7 +84,7 @@ public class WebViewMain extends AppCompatActivity{
                 productName = productInput.getText().toString();
                 NetworkTask networkTask = new NetworkTask();
                 networkTask.execute(productName);
-                testCoupon();
+                //testCoupon();
 
             }
         });
@@ -139,10 +140,11 @@ public class WebViewMain extends AppCompatActivity{
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
+                            beaconM.onDestroy();
                             editor = sp.edit();
                             editor.remove("user_id");
                             moveTaskToBack(true);
-                            android.os.Process.killProcess(android.os.Process.myPid());
+                            Process.killProcess(Process.myPid());
 
                         }
                     })
