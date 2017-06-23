@@ -16,6 +16,6 @@ div.mouseover {
 div.active {
 	/* background-color: rgba(250, 226, 71);
 	opacity: 0.8; */
-	border-width: 6px; 
+	border-width: 5px; 
 	border-style: inset;
 }

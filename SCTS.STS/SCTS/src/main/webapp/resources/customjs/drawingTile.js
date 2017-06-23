@@ -53,6 +53,9 @@ var imgLoad = function(floor) {
 				
 				/* 타일별로 색깔 저장 해주는 것 */
 				var tileInfoList = data.tileInfoList;
+				var grade = tileInfoList.length / 3;
+				
+				
 				for(var i=0; i<tileInfoList.length; i++) {
 					var info = tileInfoList[i];
 					
@@ -63,9 +66,19 @@ var imgLoad = function(floor) {
 					var col = row.find("div.tile").eq(y);
 					
 					var alpha = 0.05;
-					if(info.probability > 0.4) {
+					/*if(info.probability > 0.4) {
+						alpha = 0.5;
+					}*/
+					if(i < grade) {
+						alpha = 0.8;
+					}
+					else if(i < grade*2) {
 						alpha = 0.5;
 					}
+					else {
+						alpha = 0.2
+					}
+					
 					col.css("background-color", "#" + info.LCLASCTGRY_COLOR);
 					//col.css("opacity", 0.1 + (info.probability * 0.5));
 					col.css("opacity", alpha);
