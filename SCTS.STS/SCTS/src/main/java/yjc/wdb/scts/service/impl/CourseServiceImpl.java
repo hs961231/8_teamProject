@@ -59,4 +59,10 @@ public class CourseServiceImpl implements CourseService {
 		return dao.tileGender(day);
 	}
 
+	@Override
+	public List<HashMap> tileAge(int day) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.tileAge(day);
+	}
+
 }

@@ -216,5 +216,31 @@ public class AjaxController {
 			tileGenderArray.add(tileGenderObj);			
 		}
 		
-		return tileGenderArray.toJSONString();
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("tileGender", tileGenderArray);
+		
+		return jsonObj.toJSONString();
+	}
+	
+	@RequestMapping(value="tileAge", method=RequestMethod.GET,  produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String tileAge(int day) throws Exception{
+		List<HashMap> list = courseService.tileAge(day);
+		
+		JSONArray tileAgeArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			
+			JSONObject tileAgeObj = new JSONObject();
+			
+			tileAgeObj.put("probability", list.get(i).get("probability"));
+			tileAgeObj.put("agegroup", list.get(i).get("agegroup").toString());
+			
+			tileAgeArray.add(tileAgeObj);			
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("tileAge", tileAgeArray);
+		
+		return jsonObj.toJSONString();
+	}
 }

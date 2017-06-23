@@ -164,6 +164,8 @@
 		DATE(SUBDATE(CURDATE(), INTERVAL 30 DAY))
 		) T
 	</select>
+	
+	
 
 	<select id="tileGender" resultType="java.util.HashMap">
 		SELECT
@@ -183,21 +185,20 @@
 
 	</select>
 
-	<select id="tileAge">
+	<select id="tileAge"  resultType="java.util.HashMap">
 		SELECT
-		C.tile_visit,
 		(C.tile_visit / T.total_visit) AS probability, (c.agegroup) * 10 as agegroup
 		FROM
 		(SELECT COUNT(course.user_id) AS tile_visit, floor((year(curDate()) -
 		date_format(USER_BRTHDY, '%Y') +
 		1)/10) as agegroup FROM course, user
 		WHERE course.user_id = user.user_id AND DATE(COURS_PASNG_TIME) >=
-		DATE(SUBDATE(CURDATE(), INTERVAL 30 DAY))
+		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY))
 		group by agegroup
 		) C,
 		(SELECT COUNT(user_id) AS total_visit
 		FROM course
-		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL 30 DAY)))
+		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)))
 		T;
 
 	</select>
