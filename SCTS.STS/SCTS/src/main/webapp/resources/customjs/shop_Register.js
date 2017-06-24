@@ -266,6 +266,25 @@ function tileGenderAll(day){
 				        plotBorderWidth: 0,
 				        plotShadow: false
 				    },
+				    /*events:{
+				    	load : setInterval(function(){
+				    		var length = result.tileGender.length;
+							
+							console.log(result);
+							
+							var series = options.series;
+							
+							console.log(series);
+
+							for(var i = 0; i < length; i++){
+								series[0].data[i] = [];
+								series[0].data[i][0] = result.tileGender[i].user_sexdstn;
+								series[0].data[i][1] = result.tileGender[i].probability;
+							}
+							
+							Highcharts.chart('tile_graph', options);
+				    	}, 5000)
+				    },*/
 				    title: {
 				        text: '전체 성별 방문율',
 				        align: 'center',

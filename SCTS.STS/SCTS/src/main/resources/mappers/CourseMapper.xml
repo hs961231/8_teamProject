@@ -202,6 +202,100 @@
 		T;
 
 	</select>
+	
+	<select id="oneTileGender" resultType="java.util.HashMap">
+		SELECT
+		(C.tile_visit / T.total_visit) * 100 AS probability, c.user_sexdstn AS user_sexdstn
+		FROM
+		(SELECT COUNT(course.user_id) AS tile_visit, user.USER_SEXDSTN as
+		user_sexdstn FROM course, user
+		WHERE course.user_id = user.user_id AND DATE(course.COURS_PASNG_TIME) >=
+		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)) 
+		and TILE_CODE =
+		(
+		SELECT
+		TILE_CODE
+		FROM
+		tile
+		WHERE
+		DRW_CODE = #{drw_code} AND
+		TILE_CRDNT_X = #{tile_crdnt_x} AND
+		TILE_CRDNT_Y = #{tile_crdnt_y}
+		)
+		group by user.USER_SEXDSTN
+		) C,
+		(SELECT COUNT(user_id) AS total_visit
+		FROM course
+		WHERE DATE(course.COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL
+		#{day} DAY))) T;
+	
+	
+	</select>
+	
+	<select id="oneTileAge"  resultType="java.util.HashMap">
+		SELECT
+		(C.tile_visit / T.total_visit) * 100 AS probability, (c.agegroup) * 10 as agegroup
+		FROM
+		(SELECT COUNT(distinct course.user_id) AS tile_visit, floor((year(curDate()) -
+		date_format(USER_BRTHDY, '%Y') +
+		1)/10) as agegroup FROM course, user
+		WHERE course.user_id = user.user_id AND DATE(COURS_PASNG_TIME) >=
+		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)) and
+		TILE_CODE =
+		(
+		SELECT
+		TILE_CODE
+		FROM
+		tile
+		WHERE
+		DRW_CODE = #{drw_code} AND
+		TILE_CRDNT_X = #{tile_crdnt_x} AND
+		TILE_CRDNT_Y = #{tile_crdnt_y}
+		)
+		group by agegroup
+		) C,
+		(SELECT COUNT(distinct user_id) AS total_visit
+		FROM course
+		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)))
+		T;
+
+	</select>
+	
+	<select id="tileTotal"  resultType="java.util.HashMap">
+			
+		SELECT c.tile_visit,
+		(C.tile_visit / T.total_visit) * 100 AS probability
+		FROM
+		(SELECT COUNT(distinct course.user_id) AS tile_visit,  date_format(COURS_PASNG_TIME, '%Y-%M-%D') as cours_pasng_time FROM course
+		WHERE DATE(COURS_PASNG_TIME) >=
+		DATE(SUBDATE(CURDATE(), INTERVAL 7 DAY)) and
+		TILE_CODE =
+		(
+		SELECT
+		TILE_CODE
+		FROM
+		tile
+		WHERE
+		DRW_CODE = 24 AND
+		TILE_CRDNT_X = 0 AND
+		TILE_CRDNT_Y = 1
+		)
+		group by date_format(COURS_PASNG_TIME, '%Y-%M-%D')
+		) C,
+		(SELECT COUNT(distinct user_id) AS total_visit,  date_format(COURS_PASNG_TIME, '%Y-%M-%D') as cours_pasng_time
+		FROM course
+		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL 7 DAY))
+		group by date_format(COURS_PASNG_TIME, '%Y-%M-%D'))
+		T
+		where c.cours_pasng_time = t.cours_pasng_time;
+		
+	
+	</select>
+	
+	
+	
+	
+	
 
 	<!-- 하나의 타일(해당 타일)에 방문한 방문자들의 아이디, 이름, 연령대, 성별, 혼인여부를 가져오는 쿼리문 ** 현재 이 쿼리문은 
 		당일날의 데이터만 가져오게 되어 있음 ** -->
