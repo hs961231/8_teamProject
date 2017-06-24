@@ -147,8 +147,8 @@
 				<br>
 				<a href="#couponPointOpen"><button class="btn btn-default" type="button" id="couponPoint">쿠폰 포인트</button></a>
 				<br>
-				<!-- <a href="#cardOpen"><button class="btn btn-default" type="button" id="card">신용카드 결제</button></a> -->
-				<button class="btn btn-default" type="button" id="card">신용카드 결제</button>
+				<a href="#cardOpen"><button class="btn btn-default" type="button" id="card">신용카드 결제</button></a>
+				<!-- <button class="btn btn-default" type="button" id="card">신용카드 결제</button> -->
 				<br>
 				<a href="#moneyOpen"><button class="btn btn-default" type="button" id="money">현금 결제</button></a>
 				<br>

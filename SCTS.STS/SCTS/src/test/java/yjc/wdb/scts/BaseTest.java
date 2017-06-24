@@ -1,5 +1,7 @@
 package yjc.wdb.scts;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.CouponVO;
 import yjc.wdb.scts.bean.Purchase_goodsVO;
+import yjc.wdb.scts.service.AndroidService;
 import yjc.wdb.scts.service.CouponService;
 import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.Purchase_goodsService;
@@ -47,8 +50,23 @@ public class BaseTest {
 	
 	@Inject
 	Purchase_goodsService PService;
+	
+	@Inject
+	AndroidService Aservice;
 
 	@Test
+	public void ServerDBTest() {
+		System.out.println("서버 디비 테스트용");
+		try {
+			CouponVO cvo = Aservice.selectSendAndroidCoupon();
+			System.out.println(cvo.toString());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void mapTest() {
 		String str = "{\"user_id\":\"\",\"goodsList\":[{\"goods_code\":\"3\",\"coupon_code\":\"4\",\"purchsgoods_qy\":\"1\"},{\"goods_code\":\"4\",\"purchsgoods_qy\":\"1\"},{\"goods_code\":\"5\",\"purchsgoods_qy\":\"1\"}],\"setle_mth_nm\":\"card\",\"stprc\":265000}";
 		

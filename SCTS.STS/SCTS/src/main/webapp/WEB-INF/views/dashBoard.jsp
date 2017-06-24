@@ -55,7 +55,7 @@ realTimeSock.onmessage = function(event){
 	 $("#monthTotalSales .count").text(e_data.monthTotalSales);
 	 
 	 todayCount = e_data.todayCount;
-  
+
 }
 
 
@@ -135,7 +135,7 @@ $(document).ready(function () {
                 }
             },
             title: {
-                text: 'Live random data'
+                text: '현재 매장 방문자'
             },
             xAxis: {
                 type: 'datetime',

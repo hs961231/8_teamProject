@@ -77,21 +77,27 @@ public class BeaconM{
         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
             @Override
             public void onBeaconsDiscovered(Region region, List<Beacon> list) {
-                /*beaconCnt = list.size();
-                if(!list.isEmpty())
-                    currentNearBeacon = list.get(0);
-                else
+                beaconCnt = list.size();
+                if(!list.isEmpty()) {
+                    int rssi = list.get(0).getRssi();
+
+                    if (rssi > -90 && rssi < -75) {
+                        currentNearBeacon = list.get(0);
+                    }
+                }
+                else {
                     currentNearBeacon = null;
-                logic();*/
+                }
+                logic();
 
                 // 테스트용
 
-                if(!list.isEmpty()) {
-                    Toast.makeText(mContext, "감지비콘 : " + list.get(0).toString(), Toast.LENGTH_LONG).show();/*
+                /*if(!list.isEmpty()) {
+                    Toast.makeText(mContext, "감지비콘 : " + list.get(0).toString(), Toast.LENGTH_LONG).show();*//*
                     for (int i = 0; i < list.size(); i++) {
                         Log.d("비콘들 : :", "A = " + list.get(i).toString());
-                    }*/
-                }
+                    }*//*
+                }*/
             }
         });
     }
