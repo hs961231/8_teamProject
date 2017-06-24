@@ -88,6 +88,9 @@ $(document).ready(function() {
 	/* 
 	 * 매장 등록 버튼 클릭 시 뜨는 모달창 관련
 	 * *********************************************************************************************************/
+	// 처음 로딩시 성별 그래프
+	 var day = $("#duration option:selected").val();
+	 tileGenderAll(day);
 	
 	
 	/**
@@ -119,9 +122,8 @@ $(document).ready(function() {
 				var tile_info = $("#tile_info");
 				tile_info.empty();
 				
-				if(data != null) {
+				if(data != null) {		
 					
-					$("<p></p>").attr("id", "tile_code").val(data.tile_code).text("tile_code = " + data.tile_code).appendTo(tile_info);
 					$("<p></p>").text("tile_nm = " + data.tile_nm).appendTo(tile_info);
 					if(data.beacon_code != null) {
 						//$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
@@ -221,5 +223,182 @@ $(document).ready(function() {
 		});
 		
 	});
+	// 성별 누를 시 그래프
+	$("#gender").click(function(){
+		 var day = $("#duration option:selected").val();
+		 $("#title").attr("data-id", "1");
+		 $("#title").text("성별");
+		 tileGenderAll(day);
+	});
+	$("#age").click(function(){
+		var day = $("#duration option:selected").val();
+		 $("#title").attr("data-id", "2");
+		 $("#title").text("나이");
+		tileAgeAll(day);
+	});
+	
+	$("#duration").on("change", function(){
+		var id = $("#title").attr("data-id");
+		var day = $("#duration option:selected").val();
+		
+		if(id == "1"){
+			 tileGenderAll(day);
+		}else if(id == "2"){
+			tileAgeAll(day);
+		}
+	});
 	
 });
+
+function tileGenderAll(day){
+	
+	$.ajax({
+		url : "tileGender",
+		type : "GET",
+		data : {
+			day: day
+		},
+		dataType : "json",
+		success : function(result){
+			var options = {
+				    chart: {
+				        plotBackgroundColor: null,
+				        plotBorderWidth: 0,
+				        plotShadow: false
+				    },
+				    /*events:{
+				    	load : setInterval(function(){
+				    		var length = result.tileGender.length;
+							
+							console.log(result);
+							
+							var series = options.series;
+							
+							console.log(series);
+
+							for(var i = 0; i < length; i++){
+								series[0].data[i] = [];
+								series[0].data[i][0] = result.tileGender[i].user_sexdstn;
+								series[0].data[i][1] = result.tileGender[i].probability;
+							}
+							
+							Highcharts.chart('tile_graph', options);
+				    	}, 5000)
+				    },*/
+				    title: {
+				        text: '전체 성별 방문율',
+				        align: 'center',
+				        verticalAlign: 'middle',
+				        y: 40
+				    },
+				    tooltip: {
+				        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				    },
+				    plotOptions: {
+				        pie: {
+				            dataLabels: {
+				                enabled: true,
+				                distance: -50,
+				                style: {
+				                    fontWeight: 'bold',
+				                    color: 'white'
+				                }
+				            },
+				            startAngle: -90,
+				            endAngle: 90,
+				            center: ['50%', '75%']
+				        }
+				    },
+				    series: [{
+				        type: 'pie',
+				        name: 'Browser share',
+				        innerSize: '50%',
+				        data: [
+//				            ['Firefox',   10.38],
+//				            ['IE',       56.33],
+//				            ['Chrome', 24.03],
+//				            ['Safari',    4.77],
+//				            ['Opera',     0.91]
+				            
+				        ]
+				    }]
+				}
+			
+			
+			var length = result.tileGender.length;
+			
+			console.log(result);
+
+			for(var i = 0; i < length; i++){
+				options.series[0].data[i] = [];
+				options.series[0].data[i][0] = result.tileGender[i].user_sexdstn;
+				options.series[0].data[i][1] = result.tileGender[i].probability;
+			}
+			
+			console.log(result.tileGender);
+			Highcharts.chart('tile_graph', options);
+
+			
+		}
+	});
+}
+
+
+
+function tileAgeAll(day){
+	$.ajax({
+		url : "tileAge",
+		type : "GET",
+		data : {
+			day: day
+		},
+		dataType : "json",
+		success : function(result){
+			var options = {
+				    chart: {
+				        type: 'pie',
+				        options3d: {
+				            enabled: true,
+				            alpha: 45
+				        }
+				    },
+				    title: {
+				        text: '연령별 방문율'
+				    },
+				    plotOptions: {
+				        pie: {
+				            innerSize: 100,
+				            depth: 45
+				        }
+				    },
+				    series: [{
+				        name: 'Delivered amount',
+				        data: [
+				            /*['Bananas', 8],
+				            ['Kiwi', 3],
+				            ['Mixed nuts', 1],
+				            ['Oranges', 6],
+				            ['Apples', 8],
+				            ['Pears', 4],
+				            ['Clementines', 4],
+				            ['Reddish (bag)', 1],
+				            ['Grapes (bunch)', 1]*/
+				        ]
+				    }]
+			}
+			var length = result.tileAge.length;
+			
+			console.log(result);
+
+			for(var i = 0; i < length; i++){
+				options.series[0].data[i] = [];
+				options.series[0].data[i][0] = result.tileAge[i].agegroup + "대";
+				options.series[0].data[i][1] = result.tileAge[i].probability;
+			}
+			
+			Highcharts.chart('tile_graph', options);
+		}
+			
+	});
+}
+

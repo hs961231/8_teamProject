@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -197,5 +198,49 @@ public class AjaxController {
 		json.put("status", "success");
 		
 		return json.toString();
+	}
+	
+	@RequestMapping(value="tileGender", method=RequestMethod.GET)
+	@ResponseBody
+	public String tileGender(int day) throws Exception{
+		List<HashMap> list = courseService.tileGender(day);
+		
+		JSONArray tileGenderArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			
+			JSONObject tileGenderObj = new JSONObject();
+			
+			tileGenderObj.put("probability", list.get(i).get("probability"));
+			tileGenderObj.put("user_sexdstn", list.get(i).get("user_sexdstn"));
+			
+			tileGenderArray.add(tileGenderObj);			
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("tileGender", tileGenderArray);
+		
+		return jsonObj.toJSONString();
+	}
+	
+	@RequestMapping(value="tileAge", method=RequestMethod.GET,  produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String tileAge(int day) throws Exception{
+		List<HashMap> list = courseService.tileAge(day);
+		
+		JSONArray tileAgeArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+			
+			JSONObject tileAgeObj = new JSONObject();
+			
+			tileAgeObj.put("probability", list.get(i).get("probability"));
+			tileAgeObj.put("agegroup", list.get(i).get("agegroup").toString());
+			
+			tileAgeArray.add(tileAgeObj);			
+		}
+		
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("tileAge", tileAgeArray);
+		
+		return jsonObj.toJSONString();
 	}
 }

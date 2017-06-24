@@ -12,5 +12,7 @@ public interface CourseDAO {
 	public List<HashMap<String, String>> tileUserinfo(TileVO vo) throws Exception;
 	public void updateStayTime(HashMap<String, String> vo) throws Exception;
 	public int monthAvgVisitor() throws Exception;
+	public List<HashMap> tileGender(int day) throws Exception;
+	public List<HashMap> tileAge(int day) throws Exception;
 	
 }

@@ -84,7 +84,6 @@ to {
 .panel-heading {
 	border: 1px solid #D5D5D5;
 }
-
 </style>
 
 <div class="row">
@@ -108,18 +107,18 @@ to {
 					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
 				</h2>
 				<div class="panel-actions">
-					<a href="#" class="btn-setting" id="leftDrawingBtns"><i id="leftBtns"
-						class="fa fa-chevron-left" aria-hidden="true"></i></a>
-					<a href="#" class="btn-setting" id="rightDrawingBtns"><i id="rightBtns"
-						class="fa fa-chevron-right" aria-hidden="true"></i></a>
+					<a href="#" class="btn-setting" id="leftDrawingBtns"><i
+						id="leftBtns" class="fa fa-chevron-left" aria-hidden="true"></i></a> <a
+						href="#" class="btn-setting" id="rightDrawingBtns"><i
+						id="rightBtns" class="fa fa-chevron-right" aria-hidden="true"></i></a>
 					<a href="#" class="btn-setting" id="MyBtn"><i id="MyBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
 				</div>
 			</div>
 			<div class="panel-body-map">
-			 	<input type="hidden" id="countStory" value="${ countStory }">
-			 	<input type="hidden" id="floor" value="0">
-			 	<input type="hidden" id="drw_code" value="0">
+				<input type="hidden" id="countStory" value="${ countStory }">
+				<input type="hidden" id="floor" value="0"> <input
+					type="hidden" id="drw_code" value="0">
 				<div id="blueprint"
 					style="height: 380px; text-align: center; position: absolute; z-index: 1;">
 					<!-- 
@@ -127,7 +126,7 @@ to {
 					<br>
 					<p>설계도면 파일을 등록해주세요.</p>
 				 -->
-				 	<%-- 
+					<%-- 
 					<img
 					
 						src="displayDrawing?fileName=/${ drawingList.get(0).drw_flpth }"
@@ -148,13 +147,23 @@ to {
 		</div>
 	</div>
 
-	<div class="col-md-3" id="tile_info"
+	<div class="col-md-3"
 		style="background-color: white; width: 340px; height: 417px; position: absolute; top: 230px; left: 78%; border: 1px solid #D5D5D5; text-align: center;">
-
-		<br> <br> <br> <br> <br> <br> <br>
-		<br> <br> <br>
-		<p>선택된 타일 정보가 없습니다.</p>
-
+		<div style="margin-bottom : 30px; margin-top : 10px">
+			<button class="btn btn-default" id="gender">성별</button>
+			<button class="btn btn-default" id="age">연령별</button>
+			<button class="btn btn-default" id="visitor" disabled>방문자수</button>
+			<select id="duration"><option value="0">1일</option>
+				<option value="7">1주일</option>
+				<option value="30">한달</option>
+			</select>
+		</div>
+		<div id="tile_info"></div>
+		<div style="margin-bottom : 20px">
+			전체 <span id="title" data-id="1">성별</span> 방문율
+		</div>
+		<div id="tile_graph"
+			style="min-width: 300px; height: 200px; max-width: 300px; margin: 0 auto; border: 1px solid black"></div>
 	</div>
 </div>
 
@@ -165,13 +174,14 @@ to {
 				<h2>
 					<i class="fa fa-map-marker red"></i><strong>타일 리스트</strong>
 				</h2>
-				
+
 				<div class="panel-actions">
 					<a href="#" class="btn-setting" id="tileBtn"><i id="tileBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
-				</div>	
+				</div>
 			</div>
-			<section class="panel col-lg-12" style="overflow: scroll; height: 430px;">
+			<section class="panel col-lg-12"
+				style="overflow: scroll; height: 430px;">
 
 				<table class="table table-striped table-advance table-hover">
 					<tbody>
@@ -200,28 +210,29 @@ to {
 			</section>
 		</div>
 	</div>
-	
-		<div class="col-lg-6">
+
+	<div class="col-lg-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>
 					<i class="fa fa-map-marker red"></i><strong>비콘 리스트</strong>
 				</h2>
-				
+
 				<div class="panel-actions">
 					<a href="#" class="btn-setting" id="tileBtn"><i id="tileBtn"
 						class="fa fa-plus" aria-hidden="true"></i></a>
-				</div>	
+				</div>
 			</div>
-			<section class="panel col-lg-12" style="overflow: scroll; height: 430px;">
+			<section class="panel col-lg-12"
+				style="overflow: scroll; height: 430px;">
 
 				<table class="table table-striped table-advance table-hover">
 					<tbody>
 						<tr>
-							<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
-								메이저</th>
-							<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
-								마이너</th>
+							<th style="text-align: center;"><i
+								class="fa fa-check-square-o"></i> 메이저</th>
+							<th style="text-align: center;"><i
+								class="fa fa-check-square-o"></i> 마이너</th>
 							<th style="text-align: center;"><i class="fa fa-flag"></i>
 								상태</th>
 						</tr>
@@ -248,7 +259,8 @@ to {
 				<div class="panel-body">
 					<div class="form">
 						<form class="form-validate form-horizontal" id="feedback_form"
-							method="post" action="shop_RegisterForm" enctype="multipart/form-data">
+							method="post" action="shop_RegisterForm"
+							enctype="multipart/form-data">
 
 							<div class="form-group ">
 								<label for="cname" class="control-label col-lg-2">지점코드 <span
@@ -268,7 +280,6 @@ to {
 								<label for="cname" class="control-label col-lg-2">층정보 <span
 									class="required">*</span>
 								</label>
-								
 								<div class="col-lg-10">
 									<!-- <input class="form-control" id="level_info"
 										name="floorinfo_floor" type="text" required /> -->
@@ -277,18 +288,18 @@ to {
 									</select>
 								</div>
 							</div>
-							
+
 							<div class="form-group ">
 								<label for="cname" class="control-label col-lg-2">타일 XY<span
 									class="required">*</span>
 								</label>
 								<div class="col-lg-10">
-									<input type="number" name="size_x" required value="5" min="3" max="10">
-									X
-									<input type="number" name="size_y" required value="5" min="3" max="10">
+									<input type="number" name="size_x" required value="8" min="5"
+										max="20"> X <input type="number" name="size_y"
+										required value="8" min="5" max="20">
 								</div>
 							</div>
-							
+
 							<div class="form-group ">
 								<label for="cname" class="control-label col-lg-2">첨부파일 <span
 									class="required">*</span>
@@ -378,26 +389,25 @@ to {
 </div>
 
 <div id="listModal" class="modal" style="z-index: 3;">
-	<div class="modal-row" style="overflow:scroll">
-			<table class="table table-striped table-advance table-hover">
-				<thead>
-					<tr>
-						<th style="text-align: center;"><i class="fa fa-bullseye"></i>
-								비콘 코드</th>
-						<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
-								메이저</th>
-						<th style="text-align: center;"><i class="fa fa-check-square-o"></i>
-								마이너</th>
-						<th style="text-align: center;"><i class="fa fa-flag"></i>
-								상태</th>
-					</tr>
-				</thead>
-				
-				<tbody id="beaconList">
-								
-				</tbody>
-				
-			</table>
+	<div class="modal-row" style="overflow: scroll">
+		<table class="table table-striped table-advance table-hover">
+			<thead>
+				<tr>
+					<th style="text-align: center;"><i class="fa fa-bullseye"></i>
+						비콘 코드</th>
+					<th style="text-align: center;"><i
+						class="fa fa-check-square-o"></i> 메이저</th>
+					<th style="text-align: center;"><i
+						class="fa fa-check-square-o"></i> 마이너</th>
+					<th style="text-align: center;"><i class="fa fa-flag"></i> 상태</th>
+				</tr>
+			</thead>
+
+			<tbody id="beaconList">
+
+			</tbody>
+
+		</table>
 	</div>
 </div>
 

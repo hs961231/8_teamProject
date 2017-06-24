@@ -55,4 +55,16 @@ public class CourseDAOImpl implements CourseDAO {
 		return sqlSession.selectOne(NAMESPACE+".monthAvgVisitor");
 	}
 
+	@Override
+	public List<HashMap> tileGender(int day) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".tileGender", day);
+	}
+
+	@Override
+	public List<HashMap> tileAge(int day) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".tileAge", day);
+	}
+
 }

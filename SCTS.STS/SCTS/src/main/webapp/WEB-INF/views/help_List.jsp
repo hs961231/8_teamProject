@@ -110,7 +110,7 @@
 		</ul>
 	</div>
 </div>
-<!-- 
+
 <script>
 $(document).ready(function(){
 	$('.searchBtn').on("click", function(){
@@ -119,4 +119,4 @@ $(document).ready(function(){
 		$('#formObj').submit();
 	});
 });
-</script> -->
+</script>
