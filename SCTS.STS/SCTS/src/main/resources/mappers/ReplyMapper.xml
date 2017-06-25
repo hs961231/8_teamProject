@@ -5,7 +5,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="yjc.wdb.mapper.ReplyMapper">
-
+<!-- 
 	<select id="listReply" resultType="ReplyVO">
 		select * from help_reply
 		where bno = #{bno}
@@ -39,5 +39,5 @@
 	<delete id="deleteReply">
 		delete from help_reply
 		where rno = #{rno}	
-	</delete>
+	</delete> -->
 </mapper>

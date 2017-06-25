@@ -1,6 +1,21 @@
 /**
  * 
  */
+var tileSocket = new SockJS("/scts/tile-ws");
+
+var tileTodayCountVar;
+
+var drw_code = $("#drw_code1").text();
+var X_index = $("#X_index").text();
+var Y_index = $("#Y_index").text();
+
+tileSocket.onmessage = function(event){
+	var data = event.data;
+	data = JSON.parse(data);
+	tileTodayCountVar = data.tileTodayCount;
+		
+}
+
 
 
 $(document).ready(function() {
@@ -9,9 +24,16 @@ $(document).ready(function() {
 	var day = $("#duration option:selected").val();
 
 	tileGenderAll(day);
+	var floor = $("#floor").val();
 
 	if($("#countStory").val() > 0)
 		imgLoad(0);
+		loadTile(floor);
+		
+		setInterval(function(){
+			loadTile(floor);
+		}, 1000);
+
 
 	/* ********************************************************************************************************* /
 	 * 타일관련 선택시
@@ -27,7 +49,7 @@ $(document).ready(function() {
 	// 버튼 클릭시 업로드 되어있는 사진들 전환
 	$("#leftDrawingBtns").on("click", function() {
 		var countStory = parseInt($("#countStory").val());
-		var floor = parseInt($("#floor").val());
+		floor = parseInt($("#floor").val());
 
 		if(floor > 0) {
 			floor--;
@@ -38,12 +60,13 @@ $(document).ready(function() {
 
 	$("#rightDrawingBtns").on("click", function() {
 		var countStory = parseInt($("#countStory").val());
-		var floor = parseInt($("#floor").val());
+		floor = parseInt($("#floor").val());
 
 		if(floor < countStory-1) {
 			floor++;
 			$("#floor").val(floor);
 			imgLoad(floor);
+		
 		}
 		else if(floor == countStory-1) {
 			floor++;
@@ -78,6 +101,10 @@ $(document).ready(function() {
 		var drw_code = $("#drw_code").val();
 		var X_index = parseInt(totalNum / RowNum);
 		var Y_index = totalNum % RowNum;
+		
+		$("#title").attr("data-id", "1");
+		$("#title").text("성별");
+
 
 		$("#drw_code1").text(drw_code);
 		$("#X_index").text(X_index);
@@ -140,6 +167,8 @@ $(document).ready(function() {
 		oneTileGender(day, drw_code, X_index, Y_index);
 
 	});
+	
+	
 
 	// 나이
 	$("#tileAge").click(function(){
@@ -153,15 +182,105 @@ $(document).ready(function() {
 		oneTileAge(day, drw_code, X_index, Y_index);
 
 	});
+
+	var options = {
+			chart : {
+				type : 'spline',
+				animation : Highcharts.svg, // don't animate in old IE
+				marginRight : 10,
+				events : {
+					load : function() {
+
+						// set up the updating of the chart each second
+						var series = this.series[0];
+						setInterval(function() {
+							var x = (new Date()).getTime(), // current time
+							y = tileTodayCountVar;
+							series.addPoint([ x, y ], true, true);
+						}, 3000);
+					}
+				}
+			},
+			title : {
+				text : '현재 존 매장 방문자'
+			},
+			xAxis : {
+				type : 'datetime',
+				tickPixelInterval : 150
+			},
+			yAxis : {
+				title : {
+					text : 'Value'
+				},
+				plotLines : [ {
+					value : 0,
+					width : 1,
+					color : '#808080'
+				} ]
+			},
+			tooltip : {
+				formatter : function() {
+					return '<b>'
+							+ this.series.name
+							+ '</b><br/>'
+							+ Highcharts.dateFormat(
+									'%Y-%m-%d %H:%M:%S', this.x)
+							+ '<br/>'
+							+ Highcharts.numberFormat(this.y, 2);
+				}
+			},
+			legend : {
+				enabled : false
+			},
+			exporting : {
+				enabled : false
+			},
+			series : [ {
+				name : '현재 존 매장 방문자',
+				data : (function() {
+					// generate an array of random data
+					var data = [], time = (new Date()).getTime(), i;
+
+					for (i = -19; i <= 0; i += 1) {
+						data.push({
+							x : time + i * 1000,
+							y : tileTodayCountVar
+						});
+					}
+					return data;
+				}())
+			} ]
+		}
 	
 	$("#tileVisitor").click(function(){
-		
+
 		var day = $("#tileDuration option:selected").val();
 		var drw_code = $("#drw_code1").text();
 		var X_index = $("#X_index").text();
 		var Y_index = $("#Y_index").text();
+		
+		var sendData = JSON.stringify({
+			drw_code : drw_code,
+			tile_crdnt_x : X_index,
+			tile_crdnt_y : Y_index
+		});
+		
+		
+		if(day == "0"){
+			setInterval(function(){
+				tileSocket.send(sendData);
+			}, 3000);
+			
+			
+
+				Highcharts.chart('tile_graph', options);
+			
+			
+		}
+		
 		$("#title").attr("data-id", "0");
 		$("#title").text("방문자수");
+		
 		if(day == "7" || day == "90"){
 			tileTotal(day, drw_code, X_index, Y_index);
 		}
@@ -175,6 +294,13 @@ $(document).ready(function() {
 		var drw_code = $("#drw_code1").text();
 		var X_index = $("#X_index").text();
 		var Y_index = $("#Y_index").text();
+		
+
+		var sendData = JSON.stringify({
+			drw_code : drw_code,
+			tile_crdnt_x : X_index,
+			tile_crdnt_y : Y_index
+		});
 
 		if(id == "1"){
 			oneAvgTime(day, drw_code, X_index, Y_index);
@@ -182,6 +308,19 @@ $(document).ready(function() {
 		}else if(id == "2"){
 			oneAvgTime(day, drw_code, X_index, Y_index);
 			oneTileAge(day, drw_code, X_index, Y_index)
+		}else if(id == "0"){
+			
+			if(day == "0"){
+				setInterval(function(){
+					tileSocket.send(sendData);
+				}, 3000);
+				
+				Highcharts.chart('tile_graph', options);
+			}
+			
+			if(day == "7" || day == "90"){
+				tileTotal(day, drw_code, X_index, Y_index);
+			}
 		}
 
 
@@ -484,7 +623,7 @@ function tileTotal(day, drw_code, X_index, Y_index){
 		dataType : "json",
 		success : function(result){
 			var options = {
-		
+
 					chart : {
 						width : 300,
 						height : 200
@@ -498,25 +637,23 @@ function tileTotal(day, drw_code, X_index, Y_index){
 						verticalAlign: 'middle'
 					},
 
-					plotOptions: {
-						series: {
-							pointStart: result.tileTotal[0].cours_pasng_time
-						}
+					xAxis : {
+						categories : []
 					},
 
 					series: [
 						{
-					        name: '방문자수',
-					        data: []
-					    }, {
-					        name: '방문자율',
-					        data: []
-					    }
-					]
+							name: '방문자수',
+							data: []
+						}, {
+							name: '방문자율',
+							data: []
+						}
+						]
 			}
-			
+
 			console.log(result);
-			
+
 			var length = result.tileTotal.length;
 
 			if(length == 0){
@@ -525,13 +662,16 @@ function tileTotal(day, drw_code, X_index, Y_index){
 			}else{
 
 				for(var i = 0; i < length; i++){
-					
+					options.xAxis.categories[i] = result.tileTotal[i].cours_pasng_time;
 					options.series[0].data[i] = result.tileTotal[i].tile_visit;
 					options.series[1].data[i] = result.tileTotal[i].probability;
+
 				}
 
 				Highcharts.chart('tile_graph', options);
 			}
+
+
 		}
 	});
 

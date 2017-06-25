@@ -2,11 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
+<script src="resources/customjs/sockjs.js"></script>
 <script src="resources/customjs/drawingTile.js"></script>
 <script src="resources/customjs/dashBoard.js"></script>
 <link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
-<script src="resources/customjs/sockjs.js"></script>
+
 
 <style>
 #tile_info_avgTime {
@@ -67,6 +67,10 @@ display: none
 
 		todayCount = e_data.todayCount;
 
+	}
+	
+	realTimeSock.onclose = function(event){
+		alert("ddd");
 	}
 
 	var daySales = function(data) {
@@ -171,7 +175,7 @@ display: none
 						enabled : false
 					},
 					series : [ {
-						name : 'Random data',
+						name : '현재 매장 방문자',
 						data : (function() {
 							// generate an array of random data
 							var data = [], time = (new Date()).getTime(), i;

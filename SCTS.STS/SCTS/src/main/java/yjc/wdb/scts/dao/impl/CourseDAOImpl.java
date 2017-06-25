@@ -116,4 +116,14 @@ public class CourseDAOImpl implements CourseDAO {
 		return sqlSession.selectList(NAMESPACE+".tileTotal", map);
 	}
 
+	@Override
+	public int tileTodayVisitCnt(int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception {
+		Map map = new HashMap();
+	
+		map.put("drw_code", drw_code);
+		map.put("tile_crdnt_x", tile_crdnt_x);
+		map.put("tile_crdnt_y", tile_crdnt_y);
+		return sqlSession.selectOne(NAMESPACE+".tileTodayVisitCnt", map);
+	}
+
 }

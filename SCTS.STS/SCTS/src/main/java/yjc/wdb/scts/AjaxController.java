@@ -320,7 +320,7 @@ public class AjaxController {
 
 			tileTotalObj.put("probability", list.get(i).get("probability"));
 			tileTotalObj.put("cours_pasng_time", list.get(i).get("cours_pasng_time").toString());
-			tileTotalObj.put("tile_visit", list.get(i).get("tile_visit").toString());
+			tileTotalObj.put("tile_visit", list.get(i).get("tile_visit"));
 
 			tileTotalArray.add(tileTotalObj);			
 		}

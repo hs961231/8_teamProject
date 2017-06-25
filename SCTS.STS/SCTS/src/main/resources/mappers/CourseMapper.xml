@@ -89,9 +89,9 @@
 		where tile_code =(
 			select tile_code
 			from tile
-			where drw_code = 24 and
-			tile_crdnt_x = 0 and
-			tile_crdnt_y = 1 
+			where drw_code = #{drw_code} and
+			tile_crdnt_x = #{tile_crdnt_x} and
+			tile_crdnt_y = #{tile_crdnt_y} 
 		) and
 		date(COURS_PASNG_TIME) >=
 		date(subdate(now(), INTERVAL 0 DAY))
@@ -273,10 +273,10 @@
 		FROM
 		(SELECT COUNT(distinct course.user_id) AS tile_visit,  
 		<if test="day == 7">
-		date_format(COURS_PASNG_TIME, '%Y-%M-%D')
+		date_format(COURS_PASNG_TIME, '%Y-%m-%d')
 		</if>
 		<if test="day == 90">
-		date_format(COURS_PASNG_TIME, '%Y-%M')
+		date_format(COURS_PASNG_TIME, '%Y-%m')
 		</if>
 		 as cours_pasng_time FROM course
 		WHERE DATE(COURS_PASNG_TIME) >=
@@ -294,27 +294,31 @@
 		)
 		group by
 		<if test="day == 7">
-		date_format(COURS_PASNG_TIME, '%Y-%M-%D')
+			date_format(COURS_PASNG_TIME, '%Y-%m-%d')
+	
 		</if>
 		<if test="day == 90">
-		date_format(COURS_PASNG_TIME, '%Y-%M')
+		date_format(COURS_PASNG_TIME, '%Y-%m')
 		</if>
 		) C,
 		(SELECT COUNT(distinct user_id) AS total_visit,  
 		<if test="day == 7">
-		date_format(COURS_PASNG_TIME, '%Y-%M-%D')
+			date_format(COURS_PASNG_TIME, '%Y-%m-%d')
+	
 		</if>
 		<if test="day == 90">
-		date_format(COURS_PASNG_TIME, '%Y-%M')
+			date_format(COURS_PASNG_TIME, '%Y-%m')
+	
 		</if> as cours_pasng_time
 		FROM course
 		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY))
 		group by 
 		<if test="day == 7">
-		date_format(COURS_PASNG_TIME, '%Y-%M-%D')
+			date_format(COURS_PASNG_TIME, '%Y-%m-%d')
+	
 		</if>
 		<if test="day == 90">
-		date_format(COURS_PASNG_TIME, '%Y-%M')
+		date_format(COURS_PASNG_TIME, '%Y-%m')
 		</if>
 		)
 		T

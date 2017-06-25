@@ -428,7 +428,6 @@ function viewCalendar(bhf_code) {
 
 <div id="calendar"></div>
 
-<div class="modal">
 	<div id="registerEvent" class="modal-layout">
 		<label for="eventName">이벤트 이름</label>
 		<input class="eventName"
@@ -447,10 +446,8 @@ function viewCalendar(bhf_code) {
 		<button class="btn btn-danger close">닫기</button>
 	
 	</div>
-</div>
 
 
-<div class="modal">
 	<div id="modifyEvent" class="modal-layout">
 	
 		<input type="hidden" value="" class="code" /> <label for="eventName">이벤트
@@ -467,5 +464,18 @@ function viewCalendar(bhf_code) {
 		<button id="delete" class="btn btn-warning">삭제</button>
 		<button class="btn btn-danger close">닫기</button>
 	</div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

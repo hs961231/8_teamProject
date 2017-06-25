@@ -16,6 +16,7 @@
 	<bean id="customerRankSocket" class="yjc.wdb.scts.websocket.CustomerRankSocket" />
 	<bean id="searchYearSalesSocket" class="yjc.wdb.scts.websocket.SearchYearSalesSocket" />
 	<bean id="searchDaySalesSocket" class="yjc.wdb.scts.websocket.SearchDaySalesSocket" />
+	<bean id="tileSocket" class="yjc.wdb.scts.websocket.TileSocket" />
 
 	<websocket:handlers>
 		<websocket:mapping handler="echoHandler" path="/echo-ws" />
@@ -27,6 +28,7 @@
 		<websocket:mapping handler="customerRankSocket" path="/customerRank-ws" />
 		<websocket:mapping handler="searchYearSalesSocket" path="/searchYearSales-ws" />
 		<websocket:mapping handler="searchDaySalesSocket" path="/searchDaySales-ws" />
+		<websocket:mapping handler="tileSocket" path="/tile-ws" />
 		<websocket:sockjs />
 	</websocket:handlers>
 
