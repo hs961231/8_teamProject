@@ -27,6 +27,6 @@
 		<typeAlias alias="EventVO" 							type="yjc.wdb.scts.bean.EventVO"></typeAlias>
 		<typeAlias alias="StockVO" 							type="yjc.wdb.scts.bean.StockVO"></typeAlias>
 		<typeAlias alias="HelpVO" 							type="yjc.wdb.scts.bean.HelpVO"></typeAlias> 
-		<typeAlias alias="ReplyVO" 							type="yjc.wdb.scts.bean.ReplyVO"></typeAlias>
+		<!-- <typeAlias alias="ReplyVO" 							type="yjc.wdb.scts.bean.ReplyVO"></typeAlias> -->
 	</typeAliases>
 </configuration>
