@@ -124,6 +124,8 @@ public class BeaconM{
     }
 
     public void onDestroy() {
+        // 종료 전에 서버로 현재 감지되어 있는 비콘 정보 전송
+        endMethod();
         beaconManager.disconnect();
     }
 
@@ -141,6 +143,20 @@ public class BeaconM{
         String str = sp.getString("user_id", "");
 
         return str;
+    }
+
+    // 앱이 종료될 때 현재 감지된 비콘의 머문 시간을 마지막으로 저장하고 앱을 종료.
+    public void endMethod() {
+        // oldnearBeacon이 null 일 경우에는 머문 시간이 저장안된 경로정보가 없다는 것임. 그럴 경우 해당 secondSend를 실행할 필요가 없음.
+        if(oldnearBeacon != null) {
+            if(currentTime != 0) {
+                stayTimeMil += (int) (getCurrent_Time() - currentTime);
+                currentTime = 0;
+            }
+            // 그전에 감지되어있던 비콘은 서버로 머문시간을 함께 저장한 것을 보냄. ( mode second )
+            // 서버로 전송시킴 , 두번째 전송은 머문 시간까지 저장
+            sendBeaconData("secondSend");
+        }
     }
 
     // 비콘 서버로 전송
@@ -230,6 +246,7 @@ public class BeaconM{
                         stayTimeMil += (int) (getCurrent_Time() - currentTime);
                         currentTime = 0;
                         //Toast.makeText(mContext, "logic: 멈춘 시간 계산 stayTimeMil = " + stayTimeMil, Toast.LENGTH_LONG).show();
+                        showToast(mContext, "멈춘시간 계산 stayTimeMil = " + stayTimeMil);
                         Log.d(TAG, "logic: 움직였는데 그전과 같은 비콘 stayTimeMil = " + stayTimeMil); // 디버깅용 시스템 로그
                     }
                 }
@@ -262,6 +279,7 @@ public class BeaconM{
                 if(oldnearBeacon != null && currentTime == 0) {
                     currentTime = getCurrent_Time();
                     //Toast.makeText(mContext, "logic: 멈춘 시간 저장", Toast.LENGTH_LONG).show();
+                    showToast(mContext, "멈춘시간 계산22 stayTimeMil = " + stayTimeMil);
                     Log.d(TAG, "logic: 지금 멈춰서 시간계산 시작한다" ); // 디버깅용 시스템 로그
                     Log.d(TAG, "oldBeacon = " + oldnearBeacon.toString() ); // 디버깅용 시스템 로그
                 }
