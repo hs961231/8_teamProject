@@ -34,19 +34,19 @@ import yjc.wdb.scts.service.TileService;
 public class AjaxController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AjaxController.class);
-	
+
 	@Inject
 	TileService tileService;
-	
+
 	@Inject
 	BeaconService beaconService;
-	
+
 	@Inject
 	Branch_officeService branchService;
-	
+
 	@Inject
 	CourseService courseService;
-	
+
 	/* shop_Register.js
 	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
 	 * 해당 타일의 정보를 디비에서 가져와서 보내준다
@@ -55,23 +55,23 @@ public class AjaxController {
 	@ResponseBody
 	public String shopTileClick(@RequestParam("drw_code") int drw_code,
 			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
-		
+
 		logger.info("X = " + X_index + "  Y = " + Y_index);
-		
+
 		TileVO clickTile = new TileVO();
 		clickTile.setDrw_code(drw_code);
 		clickTile.setTile_crdnt_x(X_index);
 		clickTile.setTile_crdnt_y(Y_index);
-		
+
 		HashMap<String, String> tile = tileService.selectTile_LocationOne(clickTile);
-		
+
 		String str = new Gson().toJson(tile);
-		
+
 		System.out.println(str);
-		
+
 		return str;
 	}
-	
+
 	/* shop_Register.js
 	 * 매장등록 페이지에서 타일클릭 후 타일에 비콘이 등록되어 있지 않을 때
 	 * 비콘등록 버튼을 누를 시 디비에서 사용가능한 비콘의 정보들을 불러와서 아작스로 전송 
@@ -79,17 +79,17 @@ public class AjaxController {
 	@RequestMapping(value="getBeaconList", method=RequestMethod.POST)
 	@ResponseBody
 	public String getBeacon() throws Exception {
-		
+
 		int bhf_code = 1;
 		List<BeaconVO> beaconList = beaconService.selectSetBeaconList(bhf_code);
-		
+
 		String str = new Gson().toJson(beaconList);
-		
+
 		System.out.println(str);
-		
+
 		return str;
 	}
-	
+
 
 	/* dashBoard.js
 	 * 대쉬보드에서 도면의 타일을 선택할 경우 발생하는 아작스 통신
@@ -99,41 +99,41 @@ public class AjaxController {
 	@ResponseBody
 	public String dashBoardTile(@RequestParam("drw_code") int drw_code,
 			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
-		
+
 		logger.info("X = " + X_index + "  Y = " + Y_index);
 
 		TileVO clickTile = new TileVO();
 		clickTile.setDrw_code(drw_code);
 		clickTile.setTile_crdnt_x(X_index);
 		clickTile.setTile_crdnt_y(Y_index);
-		
+
 		HashMap<String, String> tile = tileService.selectTile_LocationOne(clickTile);
-		
+
 		String str = new Gson().toJson(tile);
-		
+
 		System.out.println(str);
-		
+
 		return str;
 	}
-	
+
 	/* shop_Register.js
 	 * 타일에 비콘정보를 셋팅하는 아작스
 	 */
 	@RequestMapping(value="setTileBeacon", method=RequestMethod.POST)
 	@ResponseBody
 	public String setTileBeacon(@RequestBody JSONObject json) throws Exception {
-		
+
 		System.out.println( json.get("tile_code") + "  타일  " + json.get("beacon_mjr") + "  비콘 데이터  " + json.get("beacon_mnr") );
-		
+
 		HashMap<String, String> vo = new HashMap<String, String>();
-		
+
 
 		vo.put("tile_code", json.get("tile_code").toString());
 		vo.put("beacon_mjr", json.get("beacon_mjr").toString());
 		vo.put("beacon_mnr", json.get("beacon_mnr").toString());
-		
+
 		tileService.updateTileBeaconSet(vo);
-		
+
 		// 현재 이부분에 실제 비콘정보가 타일로 들어가야함.
 		/*
 		 *  현재 shop_Register.js 에 이부분과 연동되는 아작스가 있지만
@@ -149,18 +149,18 @@ public class AjaxController {
 	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String shop_RegisterForm() throws Exception{
-		
-		
+
+
 		// 지점 정보들 불러오기
 		List<HashMap<String, String>> branchList = branchService.selectBranchNameList();
-		
+
 		String str = new Gson().toJson(branchList);
-		
+
 		System.out.println(str);
-		
+
 		return str;
 	}
-	
+
 
 	/* dashBoard.js
 	 * 매장등록 페이지에서 도면위의 타일을 클릭햇을때 발생하는 아작스 통신
@@ -169,16 +169,15 @@ public class AjaxController {
 	 */
 	@RequestMapping(value="getTileData", method=RequestMethod.POST)
 	@ResponseBody
-	public String getTileData(@RequestParam("drw_code") int drw_code,
-			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
-		
+	public String getTileData(int drw_code, int X_index, int Y_index) throws Exception {
+
 		logger.info("X = " + X_index + "  Y = " + Y_index);
-		
+
 		TileVO vo = new TileVO();
 		vo.setDrw_code(drw_code);
 		vo.setTile_crdnt_x(X_index);
 		vo.setTile_crdnt_y(Y_index);
-		
+
 		// HashMap<String, String> tile = tileService.selectTile_LocationOne(Map_XY);
 
 		// 필요한 데이터들 디비에서 끌어와서 저장
@@ -191,56 +190,144 @@ public class AjaxController {
 		// db에서 가져온 데이터들 json으로 변환
 		JsonArray jsonUser = (JsonArray) new JSONParser().parse(new Gson().toJson(user));
 		JSONObject jsonPro = (JSONObject) new JSONParser().parse(new Gson().toJson(pro));
-		
+
 		// jsonObject에 모든 데이터들을 저장
 		json.put("jsonUser", jsonUser);
 		json.put("jsonPro", jsonPro);
 		json.put("status", "success");
-		
+
 		return json.toString();
 	}
-	
+
+	// 타일 하나의 고객 평균 머문 시간
+	@RequestMapping(value="oneTileAvgTime", method=RequestMethod.GET)
+	@ResponseBody
+	public JSONObject oneTileAvgTime(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception{
+		List<HashMap> list = courseService.oneTileAvgTime(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("avgTime", list.get(0).get("avgTime"));
+		jsonObj.put("tile_nm", list.get(0).get("tile_nm"));
+		
+		return jsonObj;
+	}
+
 	@RequestMapping(value="tileGender", method=RequestMethod.GET)
 	@ResponseBody
 	public String tileGender(int day) throws Exception{
 		List<HashMap> list = courseService.tileGender(day);
-		
+
 		JSONArray tileGenderArray = new JSONArray();
 		for(int i = 0; i < list.size(); i++){
-			
+
 			JSONObject tileGenderObj = new JSONObject();
-			
+
 			tileGenderObj.put("probability", list.get(i).get("probability"));
 			tileGenderObj.put("user_sexdstn", list.get(i).get("user_sexdstn"));
-			
+
 			tileGenderArray.add(tileGenderObj);			
 		}
-		
+
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("tileGender", tileGenderArray);
-		
+
 		return jsonObj.toJSONString();
 	}
 	
-	@RequestMapping(value="tileAge", method=RequestMethod.GET,  produces = "text/plain; charset=UTF-8")
+	
+	
+	
+
+	@RequestMapping(value="tileAge", method=RequestMethod.GET)
 	@ResponseBody
 	public String tileAge(int day) throws Exception{
 		List<HashMap> list = courseService.tileAge(day);
-		
+
 		JSONArray tileAgeArray = new JSONArray();
 		for(int i = 0; i < list.size(); i++){
-			
+
 			JSONObject tileAgeObj = new JSONObject();
-			
+
 			tileAgeObj.put("probability", list.get(i).get("probability"));
 			tileAgeObj.put("agegroup", list.get(i).get("agegroup").toString());
-			
+
 			tileAgeArray.add(tileAgeObj);			
 		}
-		
+
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("tileAge", tileAgeArray);
+
+		return jsonObj.toJSONString();
+	}
+	
+	@RequestMapping(value="oneTileGender", method=RequestMethod.GET)
+	@ResponseBody
+	public JSONObject oneTileGender(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception{
 		
+		List<HashMap> list = courseService.oneTileGender(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+
+		System.out.println("list : " + list.toString());
+		JSONArray tileGenderArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+
+			JSONObject tileGenderObj = new JSONObject();
+
+			tileGenderObj.put("probability", list.get(i).get("probability"));
+			tileGenderObj.put("user_sexdstn", list.get(i).get("user_sexdstn"));
+
+			tileGenderArray.add(tileGenderObj);			
+		}
+
+		JSONObject jsonTileObj = new JSONObject();
+		jsonTileObj.put("oneTileGender", tileGenderArray);
+
+		return jsonTileObj;
+	}
+	
+	
+	@RequestMapping(value="oneTileAge", method=RequestMethod.GET)
+	@ResponseBody
+	public String oneTileAge(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception{
+		List<HashMap> list = courseService.oneTileAge(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+
+		JSONArray tileAgeArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+
+			JSONObject tileAgeObj = new JSONObject();
+
+			tileAgeObj.put("probability", list.get(i).get("probability"));
+			tileAgeObj.put("agegroup", list.get(i).get("agegroup").toString());
+
+			tileAgeArray.add(tileAgeObj);			
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("tileAge", tileAgeArray);
+
+		return jsonObj.toJSONString();
+	}
+	
+	
+	@RequestMapping(value="tileTotal", method=RequestMethod.GET)
+	@ResponseBody
+	public String tileTotal(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception{
+		List<HashMap> list = courseService.tileTotal(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+
+		JSONArray tileTotalArray = new JSONArray();
+		for(int i = 0; i < list.size(); i++){
+
+			JSONObject tileTotalObj = new JSONObject();
+
+			tileTotalObj.put("probability", list.get(i).get("probability"));
+			tileTotalObj.put("cours_pasng_time", list.get(i).get("cours_pasng_time").toString());
+			tileTotalObj.put("tile_visit", list.get(i).get("tile_visit").toString());
+
+			tileTotalArray.add(tileTotalObj);			
+		}
+
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("tileTotal", tileTotalArray);
+
 		return jsonObj.toJSONString();
 	}
 }

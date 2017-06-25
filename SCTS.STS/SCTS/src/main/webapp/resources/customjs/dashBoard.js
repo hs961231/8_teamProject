@@ -5,6 +5,11 @@
 
 $(document).ready(function() {
 
+	// 처음 로딩시 성별 그래프
+	var day = $("#duration option:selected").val();
+
+	tileGenderAll(day);
+
 	if($("#countStory").val() > 0)
 		imgLoad(0);
 
@@ -14,11 +19,11 @@ $(document).ready(function() {
 	$("div.tileMap").on("mouseover", ".tile", function() {
 		$(this).addClass("mouseover");
 	});
-	
+
 	$("div.tileMap").on("mouseout", ".tile", function() {
 		$(this).removeClass("mouseover");
 	});
-	
+
 	// 버튼 클릭시 업로드 되어있는 사진들 전환
 	$("#leftDrawingBtns").on("click", function() {
 		var countStory = parseInt($("#countStory").val());
@@ -30,7 +35,7 @@ $(document).ready(function() {
 			imgLoad(floor);
 		}
 	});
-	
+
 	$("#rightDrawingBtns").on("click", function() {
 		var countStory = parseInt($("#countStory").val());
 		var floor = parseInt($("#floor").val());
@@ -45,7 +50,7 @@ $(document).ready(function() {
 			$("#floor").val(floor);
 			$('#blueprint').empty();
 			$(".tileMap").empty();
-			
+
 			var blueprint = $('#blueprint');
 			$("<p>새로운 도면을 등록해주세요 </p>").appendTo(blueprint);
 		}
@@ -53,8 +58,8 @@ $(document).ready(function() {
 	/* 
 	 * 타일관련 선택시
 	 * *********************************************************************************************************/
-	
-	
+
+
 	/**
 	 * 타일 클릭시 해당 타일 정보를 아작스로 서버에서 가져와서 도면 우측편에 표시하는 것
 	 * 실제 매장등록부분과 가장 다른 타일 클릭시 데이터를 뿌려주는 아작스
@@ -62,159 +67,476 @@ $(document).ready(function() {
 	 */
 	$("div.tileMap").on("click", ".tile", function() {
 		$(".tileMap .active").removeClass("active");
-		
+
 		$(this).addClass("active");
-		
-		
+
+		$("#tile_info_avgTime").show();
+
 		var totalNum = $("div.tile").index($(this))
 		var RowNum = $("div.tileMap > div").length;
 
-		var drw_code = parseInt($("#drw_code").val());
+		var drw_code = $("#drw_code").val();
 		var X_index = parseInt(totalNum / RowNum);
 		var Y_index = totalNum % RowNum;
-		
-		$.ajax({
-			url: "getTileData",
-			type: "post",
-			data: {
-				drw_code : drw_code,
-				X_index : X_index,
-				Y_index : Y_index
-			},
-			dataType: "json",
-			success: function(data) {
-				var tile_info = $("#tile_info");
-				tile_info.empty();
-				
-				if(data.status == "success") {
-					$("<p></p>").text("일단 콘솔에 데이터 찍혀있음.").appendTo(tile_info);
-					$("<p></p>").text("null 찍혀있으면 데이터 없는거.").appendTo(tile_info);
-					
-					// 일단 콘솔에 오는 데이터만 출력햇음
-					console.log(data);
-					console.log(data.jsonPro);
-					console.log(data.jsonUser);
-					
-					// 데이터 넘어오는 형식
-					/*
-					data.jsonPro.tile_visit; // 해당 타일 방문자 수
-					data.jsonPro.total_visit; // 매장 방문자 수
-					for(var i=0; i< data.jsonUser.length; i++) {
-						data.jsonUser[i].user_id; // 유저 아이디
-						data.jsonUser[i].user_nm; // 유저 이름
-						data.jsonUser[i].agegroup; // 유저 연령대
-						data.jsonUser[i].user_sexdstn; // 유저 성별
-						data.jsonUser[i].user_mrrg_at; // 유저 혼인여부
-					};
-					
-					$.each(data.jsonUser, function(index) {
-						this.user_id; // 유저 아이디
-						this.user_nm; // 유저 이름
-						this.agegroup; // 유저 연령대
-						this.user_sexdstn; // 유저 성별
-						this.user_mrrg_at; // 유저 혼인여부
-					});*/
-					
-				}
-				else {
-					$("<p></p>").text("해당 타일은 등록되어 있지 않거나 데이터가 없습니다.").appendTo(tile_info);
-				}
-			},
-			error: function(data) {
-				console.log("데이터 전송 에러");
-			}
-		});
+
+		$("#drw_code1").text(drw_code);
+		$("#X_index").text(X_index);
+		$("#Y_index").text(Y_index);
+
+		var day = parseInt($("#duration option:selected").val());
+
+		oneAvgTime(day, drw_code, X_index, Y_index);
+		oneTileGender(day, drw_code, X_index, Y_index);
+
+
+		$("#selectTile").show();
+		$("#loadTile").hide();
+
+
+
+	});
+
+
+
+	// 버튼 누를 시 그래프
+	// 성별
+	$("#gender").click(function(){
+		var day = $("#duration option:selected").val();
+		$("#title").attr("data-id", "1");
+		$("#title").text("성별");
+		tileGenderAll(day);
+	});
+
+	// 나이
+	$("#age").click(function(){
+		var day = $("#duration option:selected").val();
+		$("#title").attr("data-id", "2");
+		$("#title").text("나이");
+		tileAgeAll(day);
+	});
+
+
+	// 기간
+	$("#duration").on("change", function(){
+		var id = $("#title").attr("data-id");
+		var day = $("#duration option:selected").val();
+
+		if(id == "1"){
+			tileGenderAll(day);
+		}else if(id == "2"){
+			tileAgeAll(day);
+		}
+	});
+
+	// 클릭시 성별
+	$("#tileGender").click(function(){
+		var day = $("#tileDuration option:selected").val();
+		var drw_code = $("#drw_code1").text();
+		var X_index = $("#X_index").text();
+		var Y_index = $("#Y_index").text();
+		$("#title").attr("data-id", "1");
+		$("#title").text("성별");
+		oneAvgTime(day, drw_code, X_index, Y_index);
+		oneTileGender(day, drw_code, X_index, Y_index);
+
+	});
+
+	// 나이
+	$("#tileAge").click(function(){
+		var day = $("#tileDuration option:selected").val();
+		var drw_code = $("#drw_code1").text();
+		var X_index = $("#X_index").text();
+		var Y_index = $("#Y_index").text();
+		$("#title").attr("data-id", "2");
+		$("#title").text("나이");
+		oneAvgTime(day, drw_code, X_index, Y_index);
+		oneTileAge(day, drw_code, X_index, Y_index);
+
 	});
 	
-	
+	$("#tileVisitor").click(function(){
+		
+		var day = $("#tileDuration option:selected").val();
+		var drw_code = $("#drw_code1").text();
+		var X_index = $("#X_index").text();
+		var Y_index = $("#Y_index").text();
+		$("#title").attr("data-id", "0");
+		$("#title").text("방문자수");
+		if(day == "7" || day == "90"){
+			tileTotal(day, drw_code, X_index, Y_index);
+		}
+	});
+
+
+	// 기간
+	$("#tileDuration").on("change", function(){
+		var id = $("#title").attr("data-id");
+		var day = $("#tileDuration option:selected").val();
+		var drw_code = $("#drw_code1").text();
+		var X_index = $("#X_index").text();
+		var Y_index = $("#Y_index").text();
+
+		if(id == "1"){
+			oneAvgTime(day, drw_code, X_index, Y_index);
+			oneTileGender(day, drw_code, X_index, Y_index);
+		}else if(id == "2"){
+			oneAvgTime(day, drw_code, X_index, Y_index);
+			oneTileAge(day, drw_code, X_index, Y_index)
+		}
+
+
+
+	});
+
+
+
+
 });
 
 
 
-function highchartTheme(){
-	Highcharts.theme = {
-			   colors: ['#f45b5b', '#8085e9', '#8d4654', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-			      '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
-			   chart: {
-			      backgroundColor: null,
-			      style: {
-			         fontFamily: 'Signika, serif'
-			      }
-			   },
-			   title: {
-			      style: {
-			         color: 'black',
-			         fontSize: '16px',
-			         fontWeight: 'bold'
-			      }
-			   },
-			   subtitle: {
-			      style: {
-			         color: 'black'
-			      }
-			   },
-			   tooltip: {
-			      borderWidth: 0
-			   },
-			   legend: {
-			      itemStyle: {
-			         fontWeight: 'bold',
-			         fontSize: '13px'
-			      }
-			   },
-			   xAxis: {
-			      labels: {
-			         style: {
-			            color: '#6e6e70'
-			         }
-			      }
-			   },
-			   yAxis: {
-			      labels: {
-			         style: {
-			            color: '#6e6e70'
-			         }
-			      }
-			   },
-			   plotOptions: {
-			      series: {
-			         shadow: true
-			      },
-			      candlestick: {
-			         lineColor: '#404048'
-			      },
-			      map: {
-			         shadow: false
-			      }
-			   },
+function tileGenderAll(day){
 
-			   // Highstock specific
-			   navigator: {
-			      xAxis: {
-			         gridLineColor: '#D0D0D8'
-			      }
-			   },
-			   rangeSelector: {
-			      buttonTheme: {
-			         fill: 'white',
-			         stroke: '#C0C0C8',
-			         'stroke-width': 1,
-			         states: {
-			            select: {
-			               fill: '#D0D0D8'
-			            }
-			         }
-			      }
-			   },
-			   scrollbar: {
-			      trackBorderColor: '#C0C0C8'
-			   },
+	$.ajax({
+		url : "tileGender",
+		type : "GET",
+		data : {
+			day: day
+		},
+		dataType : "json",
+		success : function(result){
+			var options = {
+					chart: {
+						plotBackgroundColor: null,
+						plotBorderWidth: 0,
+						plotShadow: false
+					},
+					title: {
+						text: '전체 성별 방문율',
+						align: 'center',
+						verticalAlign: 'middle',
+						y: 40
+					},
+					tooltip: {
+						pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					},
+					plotOptions: {
+						pie: {
+							dataLabels: {
+								enabled: true,
+								distance: -50,
+								style: {
+									fontWeight: 'bold',
+									color: 'white'
+								}
+							},
+							startAngle: -90,
+							endAngle: 90,
+							center: ['50%', '75%']
+						}
+					},
+					series: [{
+						type: 'pie',
+						name: '성별 방문율',
+						innerSize: '50%',
+						data: []
+					}]
+			}
 
-			   // General
-			   background2: '#E0E0E8'
 
-			};
+			var length = result.tileGender.length;
 
-			// Apply the theme
-			Highcharts.setOptions(Highcharts.theme);
+			console.log(result);
+
+			for(var i = 0; i < length; i++){
+				options.series[0].data[i] = [];
+				options.series[0].data[i][0] = result.tileGender[i].user_sexdstn;
+				options.series[0].data[i][1] = result.tileGender[i].probability;
+			}
+
+			console.log(result.tileGender);
+			Highcharts.chart('tile_graph', options);
+
+
+		}
+	});
 }
+
+
+
+function tileAgeAll(day){
+	$.ajax({
+		url : "tileAge",
+		type : "GET",
+		data : {
+			day: day
+		},
+		dataType : "json",
+		success : function(result){
+			var options = {
+					chart: {
+						type: 'pie',
+						options3d: {
+							enabled: true,
+							alpha: 45
+						}
+					},
+					title: {
+						text: '연령별 방문율'
+					},
+					plotOptions: {
+						pie: {
+							innerSize: 50,
+							depth: 45
+						}
+					},
+					series: [{
+						name: '연령별 방문율',
+						data: []
+					}]
+			}
+			var length = result.tileAge.length;
+
+			console.log(result);
+
+			for(var i = 0; i < length; i++){
+				options.series[0].data[i] = [];
+				options.series[0].data[i][0] = result.tileAge[i].agegroup + "대";
+				options.series[0].data[i][1] = result.tileAge[i].probability;
+			}
+
+			Highcharts.chart('tile_graph', options);
+		}
+
+	});
+}
+
+
+function oneAvgTime(day, drw_code, X_index, Y_index){
+	$.ajax({
+		url : "oneTileAvgTime",
+		type : "GET",
+		data : {
+
+			day : day,
+			drw_code : drw_code,
+			tile_crdnt_x : X_index,
+			tile_crdnt_y : Y_index
+		},
+		dataType : "json",
+		success : function(data){
+
+			console.log(data);
+			$("#avgTime").text(data.avgTime);
+			$("#tileName").text(data.tile_nm);
+		}
+	});
+
+
+
+
+}
+
+function oneTileGender(day, drw_code, X_index, Y_index){
+
+	$.ajax({
+		url : "oneTileGender",
+		type: "GET",
+		dataType : "json",
+		data : {
+			day : day,
+			drw_code : drw_code,
+			tile_crdnt_x : X_index,
+			tile_crdnt_y : Y_index
+		},
+		success : function(result){
+
+
+			var options = {
+					chart: {
+						plotBackgroundColor: null,
+						plotBorderWidth: 0,
+						plotShadow: false
+					},
+					title: {
+						text: '전체 성별 방문율',
+						align: 'center',
+						verticalAlign: 'middle',
+						y: 40
+					},
+					tooltip: {
+						pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					},
+					plotOptions: {
+						pie: {
+							dataLabels: {
+								enabled: true,
+								distance: -50,
+								style: {
+									fontWeight: 'bold',
+									color: 'white'
+								}
+							},
+							startAngle: -90,
+							endAngle: 90,
+							center: ['50%', '75%']
+						}
+					},
+					series: [{
+						type: 'pie',
+						name: '성별 방문율',
+						innerSize: '50%',
+						data: []
+					}]
+			}
+
+
+			var length = result.oneTileGender.length;
+
+			if(length == 0){
+				$("#tile_graph").text("존에 고객 다닌 정보가 없습니다");
+				$("#tile_graph").css("line-height", "150px");
+			}else{
+
+				for(var i = 0; i < length; i++){
+					options.series[0].data[i] = [];
+					options.series[0].data[i][0] = result.oneTileGender[i].user_sexdstn;
+					options.series[0].data[i][1] = result.oneTileGender[i].probability;
+				}
+
+
+				Highcharts.chart('tile_graph', options);
+			}
+
+			console.log(result);
+
+		}
+	});
+
+}
+
+function oneTileAge(day, drw_code, X_index, Y_index){
+	$.ajax({
+		url : "oneTileAge",
+		type : "GET",
+		data : {
+			day : day,
+			drw_code : drw_code,
+			tile_crdnt_x : X_index,
+			tile_crdnt_y : Y_index
+		},
+		dataType : "json",
+		success : function(result){
+			var options = {
+					chart: {
+						type: 'pie',
+						options3d: {
+							enabled: true,
+							alpha: 45
+						}
+					},
+					title: {
+						text: '연령별 방문율'
+					},
+					plotOptions: {
+						pie: {
+							innerSize: 50,
+							depth: 45
+						}
+					},
+					series: [{
+						name: '연령별 방문율',
+						data: []
+					}]
+			}
+			var length = result.tileAge.length;
+
+			if(length == 0){
+				$("#tile_graph").text("존에 고객 다닌 정보가 없습니다");
+				$("#tile_graph").css("line-height", "150px");
+			}else{
+
+				for(var i = 0; i < length; i++){
+					options.series[0].data[i] = [];
+					options.series[0].data[i][0] = result.tileAge[i].agegroup + "대";
+					options.series[0].data[i][1] = result.tileAge[i].probability;
+				}
+
+				Highcharts.chart('tile_graph', options);
+			}
+		}
+
+	});
+}
+
+
+function tileTotal(day, drw_code, X_index, Y_index){
+
+	$.ajax({
+		url : "tileTotal",
+		type : "GET",
+		data : {
+			day : day,
+			drw_code : drw_code,
+			tile_crdnt_x : X_index,
+			tile_crdnt_y : Y_index
+		},
+		dataType : "json",
+		success : function(result){
+			var options = {
+		
+					chart : {
+						width : 300,
+						height : 200
+					},
+					title: {
+						text: '방문자 수'
+					},
+					legend: {
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'middle'
+					},
+
+					plotOptions: {
+						series: {
+							pointStart: result.tileTotal[0].cours_pasng_time
+						}
+					},
+
+					series: [
+						{
+					        name: '방문자수',
+					        data: []
+					    }, {
+					        name: '방문자율',
+					        data: []
+					    }
+					]
+			}
+			
+			console.log(result);
+			
+			var length = result.tileTotal.length;
+
+			if(length == 0){
+				$("#tile_graph").text("존에 고객 다닌 정보가 없습니다");
+				$("#tile_graph").css("line-height", "150px");
+			}else{
+
+				for(var i = 0; i < length; i++){
+					
+					options.series[0].data[i] = result.tileTotal[i].tile_visit;
+					options.series[1].data[i] = result.tileTotal[i].probability;
+				}
+
+				Highcharts.chart('tile_graph', options);
+			}
+		}
+	});
+
+
+
+}
+
+

@@ -6,6 +6,7 @@ var monthSalesSocket = new SockJS("/scts/monthSales-ws");
 var productRankSocket = new SockJS("/scts/productRank-ws");
 var customerRankSocket = new SockJS("/scts/customerRank-ws");
 var sock = new SockJS("/scts/sales-ws");
+var DashDaysock = new SockJS("/scts/echo-ws");
 
 
 $(document).ready(function() {
@@ -375,7 +376,9 @@ $(document).ready(function() {
 			standard : 1
 		});
 		
+		
 		//customerRankSocket.send();
+		DashDaysock.send('text');
 		monthSalesSocket.send(sendData);
 		daySalesSocket.send('text');
 		sock.send(sockSendData);

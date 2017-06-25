@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import yjc.wdb.scts.bean.TileVO;
@@ -63,6 +64,30 @@ public class CourseServiceImpl implements CourseService {
 	public List<HashMap> tileAge(int day) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.tileAge(day);
+	}
+
+	@Override
+	public List<HashMap> oneTileAvgTime(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.oneTileAvgTime(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+	}
+
+	@Override
+	public List<HashMap> oneTileGender(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception {
+	
+		return dao.oneTileGender(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+	}
+
+	@Override
+	public List<HashMap> oneTileAge(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.oneTileAge(day, drw_code, tile_crdnt_x, tile_crdnt_y);
+	}
+
+	@Override
+	public List<HashMap> tileTotal(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.tileTotal(day, drw_code, tile_crdnt_x, tile_crdnt_y);
 	}
 
 }

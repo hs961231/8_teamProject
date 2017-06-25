@@ -8,226 +8,225 @@
 <link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
 <script src="resources/customjs/sockjs.js"></script>
 
+<style>
+#tile_info_avgTime {
+	display: none;
+}
+
+#selectTile {
+	display: none;
+}
+
+#tile_info > span{
+display: none
+}
+</style>
 
 <script>
-var chart;
-var sock = new SockJS("/scts/echo-ws");
+	var chart;
+	var DashDaysock = new SockJS("/scts/echo-ws");
 
-sock.onopen = function() {
-    console.log('open');
-  	sendMessage();
-};
+	DashDaysock.onopen = function() {
+		console.log('open');
+		sendMessage();
+	};
 
-sock.onmessage = function(event){
-	daySales(event.data);
-};
+	DashDaysock.onmessage = function(event) {
+		daySales(event.data);
+	};
 
-sock.onclose = function(event){
-	
-};
+	DashDaysock.onclose = function(event) {
 
-function sendMessage(){
-	 sock.send('test');
-}
+	};
 
-	 
-	 
-var realTimeSock = new SockJS("/scts/realtime-ws");
+	function sendMessage() {
+		DashDaysock.send('test');
+	}
 
-realTimeSock.onopen = function(){
-	
-	 realTimeSend();
-	 setInterval(realTimeSend, 1000);
-}
+	var realTimeSock = new SockJS("/scts/realtime-ws");
 
-function realTimeSend(){
-	realTimeSock.send('test');
-}
-var todayCount;
+	realTimeSock.onopen = function() {
 
-realTimeSock.onmessage = function(event){
-	var e_data = event.data;
-	e_data = JSON.parse(e_data);
-	
-	 $("#todayVisitor .count").text(e_data.todayCount);
-	 $("#todaySales .count").text(e_data.todaySales);
-	 $("#monthAvgVisitor .count").text(e_data.monthAvgVisitor);
-	 $("#monthTotalSales .count").text(e_data.monthTotalSales);
-	 
-	 todayCount = e_data.todayCount;
+		realTimeSend();
+		setInterval(realTimeSend, 1000);
+	}
 
-}
+	function realTimeSend() {
+		realTimeSock.send('test');
+	}
+	var todayCount;
 
+	realTimeSock.onmessage = function(event) {
+		var e_data = event.data;
+		e_data = JSON.parse(e_data);
 
+		$("#todayVisitor .count").text(e_data.todayCount);
+		$("#todaySales .count").text(e_data.todaySales);
+		$("#monthAvgVisitor .count").text(e_data.monthAvgVisitor);
+		$("#monthTotalSales .count").text(e_data.monthTotalSales);
 
-var daySales = function(data){
-	console.log(data);
-	data = JSON.parse(data);
-	console.log(data.result[0].totalPrice);
-	
-	var length = data.result.length;
-	
-	 var options = {
+		todayCount = e_data.todayCount;
 
-		        title: {
-		            text: '일매출'
-		        },
-		        subtitle: {
-		            text: 'Plain'
-		        }, 
-		        xAxis:{
-		        	categories:[]
-		        },
-		        series:[{
-		        	type: 'column',
-		        	colorByPoint: true,
-		        	data : [],
-		        	showInLegend: false
-		        }]
-		        
+	}
 
-		    }
-	 
-	 for(var i = 0; i < length; i++){
-		 
-		 options.xAxis.categories[i] = data.result[i].bill_issu_de;
-		 options.series[0].data[i] = parseInt(data.result[i].totalPrice);
-		 
-	 }
-	
-	 
-	chart = Highcharts.chart('barChart', options);
+	var daySales = function(data) {
+		console.log(data);
+		data = JSON.parse(data);
+		console.log(data.result[0].totalPrice);
 
-}
+		var length = data.result.length;
 
+		var options = {
 
-$(document).ready(function () {
-	
-	
- 	
-	
-	highchartTheme();
-	
-	
-    Highcharts.setOptions({
-        global: {
-            useUTC: false
-        }
-    });
-    
-    
-    var options =  {
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                marginRight: 10,
-                events: {
-                    load: function () {
+			title : {
+				text : '일매출'
+			},
+			subtitle : {
+				text : 'Plain'
+			},
+			xAxis : {
+				categories : []
+			},
+			series : [ {
+				type : 'column',
+				colorByPoint : true,
+				data : [],
+				showInLegend : false
+			} ]
 
-                        // set up the updating of the chart each second
-                        var series = this.series[0];
-                        setInterval(function () {
-                            var x = (new Date()).getTime(), // current time
-                                y = todayCount;
-                            series.addPoint([x, y], true, true);
-                        }, 1000);
-                    }
-                }
-            },
-            title: {
-                text: '현재 매장 방문자'
-            },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: 'Random data',
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime(),
-                        i;
+		}
 
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 1000,
-                            y: todayCount
-                        });
-                    }
-                    return data;
-                }())
-            }]
-    }
-    
-    
-    Highcharts.chart('charts', options);	
+		for (var i = 0; i < length; i++) {
 
-       
-    $('#plain').click(function () {
-        chart.update({
-            chart: {
-                inverted: false,
-                polar: false
-            },
-            subtitle: {
-                text: 'Plain'
-            }
-        });
-    });
-    
-    
-    $('#polar').click(function () {
-    	
-        chart.update({
-            chart: {
-                inverted: false,
-                polar: true
-            },
-            subtitle: {
-                text: 'Polar'
-            }
-        });
-    });
+			options.xAxis.categories[i] = data.result[i].bill_issu_de;
+			options.series[0].data[i] = parseInt(data.result[i].totalPrice);
 
-    $('#inverted').click(function () {
-        chart.update({
-            chart: {
-                inverted: true,
-                polar: false
-            },
-            subtitle: {
-                text: 'Inverted'
-            }
-        });
-    });
+		}
 
-});
+		chart = Highcharts.chart('barChart', options);
 
+	}
 
+	$(document).ready(
+			function() {
+
+				highchartTheme();
+
+				Highcharts.setOptions({
+					global : {
+						useUTC : false
+					}
+				});
+
+				var options = {
+					chart : {
+						type : 'spline',
+						animation : Highcharts.svg, // don't animate in old IE
+						marginRight : 10,
+						events : {
+							load : function() {
+
+								// set up the updating of the chart each second
+								var series = this.series[0];
+								setInterval(function() {
+									var x = (new Date()).getTime(), // current time
+									y = todayCount;
+									series.addPoint([ x, y ], true, true);
+								}, 1000);
+							}
+						}
+					},
+					title : {
+						text : '현재 매장 방문자'
+					},
+					xAxis : {
+						type : 'datetime',
+						tickPixelInterval : 150
+					},
+					yAxis : {
+						title : {
+							text : 'Value'
+						},
+						plotLines : [ {
+							value : 0,
+							width : 1,
+							color : '#808080'
+						} ]
+					},
+					tooltip : {
+						formatter : function() {
+							return '<b>'
+									+ this.series.name
+									+ '</b><br/>'
+									+ Highcharts.dateFormat(
+											'%Y-%m-%d %H:%M:%S', this.x)
+									+ '<br/>'
+									+ Highcharts.numberFormat(this.y, 2);
+						}
+					},
+					legend : {
+						enabled : false
+					},
+					exporting : {
+						enabled : false
+					},
+					series : [ {
+						name : 'Random data',
+						data : (function() {
+							// generate an array of random data
+							var data = [], time = (new Date()).getTime(), i;
+
+							for (i = -19; i <= 0; i += 1) {
+								data.push({
+									x : time + i * 1000,
+									y : todayCount
+								});
+							}
+							return data;
+						}())
+					} ]
+				}
+
+				Highcharts.chart('charts', options);
+
+				$('#plain').click(function() {
+					chart.update({
+						chart : {
+							inverted : false,
+							polar : false
+						},
+						subtitle : {
+							text : 'Plain'
+						}
+					});
+				});
+
+				$('#polar').click(function() {
+
+					chart.update({
+						chart : {
+							inverted : false,
+							polar : true
+						},
+						subtitle : {
+							text : 'Polar'
+						}
+					});
+				});
+
+				$('#inverted').click(function() {
+					chart.update({
+						chart : {
+							inverted : true,
+							polar : false
+						},
+						subtitle : {
+							text : 'Inverted'
+						}
+					});
+				});
+
+			});
 </script>
 <!-- 이 부분은 일매출, 일 방문자 수 등 보임!!!!!!!!!! -->
 <div class="row">
@@ -347,12 +346,51 @@ $(document).ready(function () {
 		</div>
 	</div>
 
-	<div class="col-md-3" id="tile_info"
-		style="background-color: white; width: 280px; height: 417px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
+	<div class="col-md-3"
+		style="background-color: white; width: 350px; height: 417px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
+		<div id="loadTile">
+			<div style="margin-bottom: 30px; margin-top: 10px">
+				<button class="btn btn-default" id="gender">성별</button>
+				<button class="btn btn-default" id="age">연령별</button>
+				<button class="btn btn-default" id="visitor" disabled>방문자수</button>
+				<select id="duration">
+					<option value="0">1일</option>
+					<option value="7">1주일</option>
+					<option value="30">한달</option>
+				</select>
+			</div>
+		</div>
 
-		<br> <br> <br> <br> <br> <br> <br>
-		<br> <br> <br>
-		<p>선택된 타일 정보가 없습니다.</p>
+		<div id="selectTile">
+			<div style="margin-bottom: 30px; margin-top: 10px">
+				<button class="btn btn-default" id="tileGender">성별</button>
+				<button class="btn btn-default" id="tileAge">연령별</button>
+				<button class="btn btn-default" id="tileVisitor">방문자수</button>
+				<select id="tileDuration">
+					<option value="0">1일</option>
+					<option value="7">1주일</option>
+					<option value="90">3개월</option>
+				</select>
+			</div>
+
+		</div>
+
+		<div id="tile_info">
+			<div id="tile_info_avgTime">
+				평균 타일 머문 시간 : <span id="avgTime"></span>
+			</div>
+			<span id="drw_code1"></span> 
+			<span id="X_index"></span> 
+			<span id="Y_index"></span>
+		</div>
+
+		<div style="margin-bottom: 20px">
+			<span id="tileName">전체</span> <span id="title" data-id="1">성별</span>
+			방문율
+		</div>
+
+		<div id="tile_graph"
+			style="min-width: 300px; height: 200px; max-width: 300px; margin: 0 auto; border: 1px solid black"></div>
 
 	</div>
 </div>

@@ -149,21 +149,9 @@ to {
 
 	<div class="col-md-3"
 		style="background-color: white; width: 340px; height: 417px; position: absolute; top: 230px; left: 78%; border: 1px solid #D5D5D5; text-align: center;">
-		<div style="margin-bottom : 30px; margin-top : 10px">
-			<button class="btn btn-default" id="gender">성별</button>
-			<button class="btn btn-default" id="age">연령별</button>
-			<button class="btn btn-default" id="visitor" disabled>방문자수</button>
-			<select id="duration"><option value="0">1일</option>
-				<option value="7">1주일</option>
-				<option value="30">한달</option>
-			</select>
-		</div>
+		
 		<div id="tile_info"></div>
-		<div style="margin-bottom : 20px">
-			전체 <span id="title" data-id="1">성별</span> 방문율
-		</div>
-		<div id="tile_graph"
-			style="min-width: 300px; height: 200px; max-width: 300px; margin: 0 auto; border: 1px solid black"></div>
+		
 	</div>
 </div>
 
