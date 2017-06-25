@@ -156,7 +156,7 @@
  
 	<select id="tileGender" resultType="java.util.HashMap">
 		SELECT
-		(C.tile_visit / T.total_visit) * 100 AS probability, c.user_sexdstn AS user_sexdstn
+		(C.tile_visit / T.total_visit) * 100 AS probability, C.user_sexdstn AS user_sexdstn
 		FROM
 		(SELECT COUNT(course.user_id) AS tile_visit, user.USER_SEXDSTN as
 		user_sexdstn FROM course, user
@@ -174,7 +174,7 @@
 
 	<select id="tileAge"  resultType="java.util.HashMap">
 		SELECT
-		(C.tile_visit / T.total_visit) * 100 AS probability, (c.agegroup) * 10 as agegroup
+		(C.tile_visit / T.total_visit) * 100 AS probability, (C.agegroup) * 10 as agegroup
 		FROM
 		(SELECT COUNT(course.user_id) AS tile_visit, floor((year(curDate()) -
 		date_format(USER_BRTHDY, '%Y') +
@@ -210,7 +210,7 @@
 
 	<select id="oneTileGender" resultType="java.util.HashMap">
 		SELECT
-		(C.tile_visit / T.total_visit) * 100 AS probability, c.user_sexdstn AS user_sexdstn
+		(C.tile_visit / T.total_visit) * 100 AS probability, C.user_sexdstn AS user_sexdstn
 		FROM
 		(SELECT COUNT(course.user_id) AS tile_visit, user.USER_SEXDSTN as
 		user_sexdstn FROM course, user
@@ -239,7 +239,7 @@
 	
 	<select id="oneTileAge"  resultType="java.util.HashMap">
 		SELECT
-		(C.tile_visit / T.total_visit) * 100 AS probability, (c.agegroup) * 10 as agegroup
+		(C.tile_visit / T.total_visit) * 100 AS probability, (C.agegroup) * 10 as agegroup
 		FROM
 		(SELECT COUNT(distinct course.user_id) AS tile_visit, floor((year(curDate()) -
 		date_format(USER_BRTHDY, '%Y') +
@@ -268,8 +268,8 @@
 	
 	<select id="tileTotal"  resultType="java.util.HashMap">
 			
-		SELECT c.tile_visit as tile_visit, 
-		(C.tile_visit / T.total_visit) * 100 AS probability, c.cours_pasng_time as cours_pasng_time
+		SELECT C.tile_visit as tile_visit, 
+		(C.tile_visit / T.total_visit) * 100 AS probability, C.cours_pasng_time as cours_pasng_time
 		FROM
 		(SELECT COUNT(distinct course.user_id) AS tile_visit,  
 		<if test="day == 7">
@@ -318,7 +318,7 @@
 		</if>
 		)
 		T
-		where c.cours_pasng_time = t.cours_pasng_time;
+		where C.cours_pasng_time = T.cours_pasng_time;
 		
 	
 	</select>

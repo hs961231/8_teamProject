@@ -291,8 +291,9 @@ $(document).ready(function() {
 		var user_id = $("#user_id_payment").val();
 
 		// 추후에 변경 필요
+		
 		// 현재 그냥 카드로 총금액 결제를 해버림.
-		var totalAmount = $("#totalAmount").text();		
+		var totalAmount = $("#totalAmount").text();
 
 		var setle_mth_nm = "card";	// 결제 수단 명 ( 추후에 변경 해야함 )
 		var stprc = parseInt( $("#totalAmount").text() ); // 결제 금액
@@ -334,7 +335,13 @@ $(document).ready(function() {
 
 			success: function(data){
 				//self.location.href = "mainPage";
-				location.reload();
+				//location.reload();
+				
+				var urlindex = $(location).attr('href').indexOf('#');
+				if(urlindex > 0) {
+					$(location).attr('href', $(location).attr('href').substr(0,urlindex+1) );
+				}
+				window.alert("결제완료");
 			},
 			error: function(data) {
 				console.log("에러뜸");

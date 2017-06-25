@@ -119,9 +119,11 @@ $(document).ready(function() {
 				var tile_info = $("#tile_info");
 				tile_info.empty();
 				
-				if(data != null) {		
+				if(data != null) {
 					
+					$("<input type='hidden' id='tile_code'></input>").val(data.tile_code).appendTo(tile_info);
 					$("<p></p>").text("tile_nm = " + data.tile_nm).appendTo(tile_info);
+					
 					if(data.beacon_code != null) {
 						//$("<p></p>").text("beacon_code = " + data.beacon_code).appendTo(tile_info);
 						$("<p></p>").text("beacon_mjr = " + data.beacon_mjr).appendTo(tile_info);

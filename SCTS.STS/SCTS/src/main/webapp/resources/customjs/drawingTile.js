@@ -65,11 +65,14 @@ var imgLoad = function(floor) {
 					var row = $("div.tileMap > div").eq(x);
 					var col = row.find("div.tile").eq(y);
 					
-					var alpha = 0.05;
+					var alpha = 0.2;
 					/*if(info.probability > 0.4) {
 						alpha = 0.5;
 					}*/
-					if(i < grade) {
+					if(info.probability == 0) {
+						alpha = 0.2;
+					}
+					else if(i < grade) {
 						alpha = 0.8;
 					}
 					else if(i < grade*2) {
@@ -79,7 +82,7 @@ var imgLoad = function(floor) {
 						alpha = 0.2
 					}
 					
-					col.text( (info.probability*100) + "%" );
+					col.text( (info.probability*100).toFixed(2) + "%" );
 					col.css("background-color", "#" + info.LCLASCTGRY_COLOR);
 					//col.css("opacity", 0.1 + (info.probability * 0.5));
 					col.css("opacity", alpha);

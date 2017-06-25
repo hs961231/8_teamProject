@@ -70,6 +70,8 @@ public class BeaconSet extends AsyncTask<String, String, String> {
         // 안붙이고 사용할 거면 getAsString() 메소드를 사용해서 ""를 제거해줘야됨
         JsonObject json = new Gson().fromJson(s, JsonObject.class);;
         Log.d(TAG, "onPostExecute: " + json.toString());
+
+
         // 성공시 처리
         if( json.get("status").getAsString().equals("SUCCESS") ) {
             // 가져온 데이터에서 명령문을 해독함
@@ -93,7 +95,7 @@ public class BeaconSet extends AsyncTask<String, String, String> {
         }
         // 에러 처리
         else {
-
+            Log.d(TAG, "post:" + json.get("errorCode").getAsString().toString());
         }
 
     }
