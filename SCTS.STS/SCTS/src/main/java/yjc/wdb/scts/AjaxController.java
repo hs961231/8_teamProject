@@ -173,7 +173,7 @@ public class AjaxController {
 			@RequestParam("X_index") int X_index, @RequestParam("Y_index") int Y_index) throws Exception {
 		
 		logger.info("X = " + X_index + "  Y = " + Y_index);
-		
+
 		TileVO vo = new TileVO();
 		vo.setDrw_code(drw_code);
 		vo.setTile_crdnt_x(X_index);

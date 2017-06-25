@@ -147,13 +147,13 @@
 				<br>
 				<a href="#couponPointOpen"><button class="btn btn-default" type="button" id="couponPoint">쿠폰 포인트</button></a>
 				<br>
-				<a href="#cardOpen"><button class="btn btn-default" type="button" id="card">신용카드 결제</button></a>
+				<a href="#cardOpen"><button class="btn btn-default" type="button">결제</button></a>
 				<!-- <button class="btn btn-default" type="button" id="card">신용카드 결제</button> -->
-				<br>
+				<!-- <br>
 				<a href="#moneyOpen"><button class="btn btn-default" type="button" id="money">현금 결제</button></a>
 				<br>
 				<a href="#mixOpen"><button class="btn btn-default" type="button" id="mix">복합 결제</button></a>
-				<br>
+				<br> -->
 			</div>
 		</section>
 	</div>
@@ -200,6 +200,8 @@
 <div class="white_content modalPanel" id="cardOpen">
 	<div>
 		<p>신용카드 결제 </p>
+		고객아이디 <input type="text" name="user_id" id="user_id" />
+		<button class="btn btn-default" type="button" id="card">결제</button>
 		<a href="#">닫기</a>
 	</div>
 </div>
