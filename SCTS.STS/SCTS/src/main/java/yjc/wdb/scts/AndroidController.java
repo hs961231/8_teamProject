@@ -94,6 +94,7 @@ public class AndroidController {
 
 		if(str == null) {
 			resultData.put("status", "ERROR");
+			resultData.put("errorCode", "CourseEmpty");
 			return resultData.toString();
 		}
 
@@ -126,8 +127,15 @@ public class AndroidController {
 
 		// 디비에 저장
 		//positionService.insertPosition(position);
+		try {
 		courseService.insertCourse(vo);
-
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			resultData.put("status", "ERROR");
+			resultData.put("errorCode", "BeaconNotTileSetting");
+			return resultData.toString();
+		}
 
 		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
 		CouponVO coupon = androidService.selectSendAndroidCoupon();

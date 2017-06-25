@@ -49,6 +49,20 @@ public class BeaconM{
 
     private Context mContext;
 
+    // 안드로이드에서 Toast 창이 겹치지 않게 해주는 것.
+    // 해당 메서드 말고 직접 Toast실행시 , 비콘에서 띄우는 창이 매우 많아져서
+    // 겹쳐버리는 것으로 인해 제대로 된 디버깅이 안됨.
+    private static Toast sToast;
+    public static void showToast(Context context, String message) {
+        if(sToast == null) {
+            sToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        }
+        else {
+            sToast.setText(message);
+        }
+        sToast.show();
+    }
+
     /**
      * 생성자
      * @param beaconManager
@@ -79,10 +93,17 @@ public class BeaconM{
             public void onBeaconsDiscovered(Region region, List<Beacon> list) {
                 beaconCnt = list.size();
                 if(!list.isEmpty()) {
+
                     int rssi = list.get(0).getRssi();
 
                     if (rssi > -90 && rssi < -75) {
                         currentNearBeacon = list.get(0);
+                        //showToast(mContext, "beacon" + list.get(0).toString());
+                        //Toast.makeText(mContext, "beacon" + list.get(0).toString(), Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        currentNearBeacon = null;
+                        beaconCnt = 0;
                     }
                 }
                 else {
@@ -141,6 +162,8 @@ public class BeaconM{
         Log.d(TAG, "sendBeaconData: " + json);
         // 제이슨 형태 확인
         //Toast.makeText(mContext, "logic: 서버전송 stayTimeMil = " + json, Toast.LENGTH_LONG).show();
+        // 디버깅 json
+        showToast(mContext, json.toString());
         // 서버로 전송시킴
         BeaconSet networkTask = new BeaconSet(mContext);
 
@@ -150,11 +173,9 @@ public class BeaconM{
         if(mode.equals("secondSend")) {
             select = "secondSend";
         }
-        else {
-            Toast.makeText(mContext,"감지비콘 : " + json, Toast.LENGTH_LONG).show();
-        }
 
 
+        // 임시로 서버전송 막음
         networkTask.execute(select, json);
     }
 
@@ -246,7 +267,6 @@ public class BeaconM{
                 }
             }
         }
-
     }
 
 }

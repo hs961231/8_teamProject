@@ -282,9 +282,9 @@ to {
 									class="required">*</span>
 								</label>
 								<div class="col-lg-10">
-									<input type="number" name="size_x" required value="8" min="5"
-										max="20"> X <input type="number" name="size_y"
-										required value="8" min="5" max="20">
+									<input type="number" name="size_x" required value="3" min="2"
+										max="10"> X <input type="number" name="size_y"
+										required value="3" min="2" max="10">
 								</div>
 							</div>
 
