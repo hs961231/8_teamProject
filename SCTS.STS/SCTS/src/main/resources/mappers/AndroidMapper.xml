@@ -116,12 +116,112 @@
 	</select>
 
 	<!-- 고객에게 쿠폰 전송 -->
-	<select id="selectSendAndroidCoupon" resultType="CouponVO">
-		select
-			*
-		from
-			coupon
-		limit 0,1
-	</select>
+<select id="selectSendAndroidCoupon" resultType="CouponVO" parameterType="java.util.HashMap">
+select
+	*
+from
+	coupon
+where
+	COUPON_CODE IN
+				<foreach collection="coupon_code_Array" item="item" 
+					index="index" separator="," open="(" close=")">
+					
+					#{item.coupon_code}
+				</foreach>  
+order by rand()
+limit 0,1
+</select>
+	
+<select id="scanCoupon_hold" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+
+select
+	count(*)
+from 
+	coupon_hold
+where
+	USER_ID = #{user_id}
+and
+	COUPONHOLD_USE_AT = 'NO'
+and
+	COUPON_CODE IN
+				<foreach collection="coupon_code_Array" item="item" 
+					index="index" separator="," open="(" close=")">
+					
+					#{item.coupon_code}
+				</foreach>  
+</select>
+
+<select id="TileCoupon_code" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+select
+	coupon_code
+from 
+	coupon_detailcategory_creation
+where
+	DETAILCTGRY_CODE =	(
+							select
+								DETAILCTGRY_CODE
+							from
+								detail_category_location
+							where
+								TILE_CODE =	(
+												select 
+													TILE_CODE
+												from 
+													tile
+												where 
+													BEACON_CODE =	(
+																		select 
+																			BEACON_CODE 
+																		from 
+																			beacon
+																		where
+																			BEACON_MJR = #{beacon_mjr}
+																		and
+																			BEACON_MNR = #{beacon_mnr}
+																	)
+											)
+						)
+
+
+UNION ALL
+
+
+select
+	COUPON_CODE
+from 
+	coupon_goods_creation
+where
+	GOODS_CODE IN	(
+						select
+							GOODS_CODE
+						from
+							goods
+						where
+							DETAILCTGRY_CODE = (
+													select
+														DETAILCTGRY_CODE
+													from
+														detail_category_location
+													where
+														TILE_CODE =	(
+																		select 
+																			TILE_CODE
+																		from 
+																			tile
+																		where 
+																			BEACON_CODE =	(
+																								select 
+																									BEACON_CODE 
+																								from 
+																									beacon
+																								where
+																									BEACON_MJR = #{beacon_mjr}
+																								and
+																									BEACON_MNR = #{beacon_mnr}
+																							)
+																	)
+												)
+					)
+</select>
 
 </mapper>

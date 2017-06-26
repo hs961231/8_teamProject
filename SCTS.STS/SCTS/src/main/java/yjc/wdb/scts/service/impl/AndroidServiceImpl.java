@@ -2,10 +2,12 @@ package yjc.wdb.scts.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import yjc.wdb.scts.bean.BillVO;
 import yjc.wdb.scts.bean.CouponVO;
@@ -59,8 +61,26 @@ public class AndroidServiceImpl implements AndroidService{
 	}
 	
 	@Override
-	public CouponVO selectSendAndroidCoupon() throws Exception {
-		return dao.selectSendAndroidCoupon();
+	@Transactional
+	public CouponVO selectSendAndroidCoupon(Map<String, String> vo) throws Exception {
+		// 고객이 감지한 타일에서 받을 수 있는 쿠폰들을 검색
+		List<HashMap<String, Integer>> coupon_code_Array = dao.TileCoupon_code(vo);
+		
+		// 해당 쿠폰들을 저장
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		map.put("user_id", vo.get("user_id"));
+		map.put("coupon_code_Array", coupon_code_Array);
+		
+		// 저장된 쿠폰들 중 받은 것이 있는지 검색
+		int coupon = dao.scanCoupon_hold(map);
+		
+		// 받은게 있을 경우 쿠폰을 주지 않음
+		if(coupon > 0)
+			return null;
+		
+		// 받은 게 없으면 쿠폰을 검색해서 랜덤으로 한개 줌
+		return dao.selectSendAndroidCoupon(map);
 	}
 
 	@Override

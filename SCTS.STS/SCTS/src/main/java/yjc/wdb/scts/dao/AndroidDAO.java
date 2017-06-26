@@ -2,6 +2,7 @@ package yjc.wdb.scts.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import yjc.wdb.scts.bean.BillVO;
 import yjc.wdb.scts.bean.CouponVO;
@@ -16,8 +17,9 @@ public interface AndroidDAO {
 	public List<HashMap> recommandProduct(String user_id) throws Exception;
 	public List<CouponVO> couponBasket(String user_id) throws Exception;
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
-	public CouponVO selectSendAndroidCoupon() throws Exception;
+	public CouponVO selectSendAndroidCoupon(Map map) throws Exception;
 	public List<GoodsVO> productSearch(String productName) throws Exception;
-	
 
+	public int scanCoupon_hold(Map map) throws Exception;
+	public List<HashMap<String, Integer>> TileCoupon_code(Map map) throws Exception;
 }

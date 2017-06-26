@@ -114,21 +114,23 @@
          var couponData = JSON.parse(data);
          $("#couponModal").modal(); 
 
+            $(".modal-body").empty();
 
-         var length = couponData.coupon.length;
+             $(".modal-body").append($("<div></div>").attr("data-id", couponData.coupon_code));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_nm));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_cntnts));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_dscnt));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
 
-         for(var i=0; i < length; i++){
-             $(".modal-body").append($("<div></div>").attr("data-id", couponData.coupon[i].coupon_code));
-             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<p></p>").text(couponData.coupon[i].coupon_nm));
-             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<p></p>").text(couponData.coupon[i].coupon_cntnts));
-             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<p></p>").text(couponData.coupon[i].coupon_dscnt));
-             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
-             
-         }
         
        //  document.getElementById("coupon").innerHTML= data;
 
     }
+
+    $("#close").click(function(){
+         $("#couponModal").modal("hide");
+
+    });
     
     function hi(){
          window.sampleAndroid.sampleAction("안드로이드 테스트");
@@ -182,7 +184,7 @@
           
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
         </div>
       </div>
       

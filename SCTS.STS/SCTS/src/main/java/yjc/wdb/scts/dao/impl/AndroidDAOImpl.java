@@ -71,9 +71,9 @@ public class AndroidDAOImpl implements AndroidDAO{
 	}
 	
 	@Override
-	public CouponVO selectSendAndroidCoupon() throws Exception {
+	public CouponVO selectSendAndroidCoupon(Map map) throws Exception {
 	
-		return sql.selectOne(NAMESPACE+".selectSendAndroidCoupon");
+		return sql.selectOne(NAMESPACE+".selectSendAndroidCoupon", map);
 	}
 
 	@Override
@@ -81,5 +81,18 @@ public class AndroidDAOImpl implements AndroidDAO{
 		// TODO Auto-generated method stub
 		return sql.selectList(NAMESPACE+".productSearch", productName);
 	}
+
+	@Override
+	public int scanCoupon_hold(Map map) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE + ".scanCoupon_hold", map);
+	}
+
+	@Override
+	public List<HashMap<String, Integer>> TileCoupon_code(Map map) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE + ".TileCoupon_code", map);
+	}
+	
 
 }
