@@ -60,7 +60,7 @@
 		<div class="info-box blue-bg daySales">
 			<i class="fa fa-cloud-download"></i>
 			<div class="count">0</div>
-			<div class="title">Day Sales</div>
+			<div class="title">일 판매량</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -70,7 +70,7 @@
 		<div class="info-box orange-bg2 MonthlySales">
 			<i class="fa fa-shopping-cart"></i>
 			<div class="count">0</div>
-			<div class="title">Monthly Sales</div>
+			<div class="title">월별 판매량</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -80,7 +80,7 @@
 		<div class="info-box yellow-bg2 productRank">
 			<i class="fa fa-thumbs-o-up"></i>
 			<div class="count">0</div>
-			<div class="title">Monthly Product Rank</div>
+			<div class="title">월간 상품 판매 순위</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -90,7 +90,7 @@
 		<div class="info-box dark-bg customerProductRank">
 			<i class="fa fa-cubes"></i>
 			<div class="count">0</div>
-			<div class="title">Customer Product Rank</div>
+			<div class="title">고객 별 상품 판매 순위</div>
 		</div>
 		<!--/.info-box-->
 	</div>

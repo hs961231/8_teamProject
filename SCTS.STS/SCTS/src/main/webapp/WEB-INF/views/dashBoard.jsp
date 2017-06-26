@@ -238,7 +238,7 @@ display: none
 		<div class="info-box blue-bg">
 			<i class="fa fa-cloud-download"></i>
 			<div class="count">0</div>
-			<div class="title">Today Visitor</div>
+			<div class="title">오늘 방문자</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -248,7 +248,7 @@ display: none
 		<div class="info-box orange-bg2">
 			<i class="fa fa-shopping-cart"></i>
 			<div class="count">0</div>
-			<div class="title">Today Sales</div>
+			<div class="title">오늘 판매량</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -258,7 +258,7 @@ display: none
 		<div class="info-box yellow-bg2">
 			<i class="fa fa-thumbs-o-up"></i>
 			<div class="count">0</div>
-			<div class="title">Monthly Average Visitor</div>
+			<div class="title">이번달 방문자</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -268,7 +268,7 @@ display: none
 		<div class="info-box dark-bg">
 			<i class="fa fa-cubes"></i>
 			<div class="count">0</div>
-			<div class="title">Monthly Total Sales</div>
+			<div class="title">이번달 총 판매량</div>
 		</div>
 		<!--/.info-box-->
 	</div>
@@ -310,7 +310,7 @@ display: none
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>
-					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
+					<i class="fa fa-map-marker red"></i><strong>설계도면</strong>
 				</h2>
 				<div class="panel-actions">
 					<a href="#" class="btn-setting" id="leftDrawingBtns"><i
