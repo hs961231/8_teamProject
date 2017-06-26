@@ -122,13 +122,9 @@ public class AndroidController {
 			return resultData.toString();
 		}
 
-		logger.debug(str);
-		logger.debug(vo.toString());
-
 		// 디비에 저장
-		//positionService.insertPosition(position);
 		try {
-		courseService.insertCourse(vo);
+			courseService.insertCourse(vo);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -138,7 +134,7 @@ public class AndroidController {
 		}
 
 		// 안드로이드로 쿠폰 정보를 보내기 위해서 사용
-		CouponVO coupon = androidService.selectSendAndroidCoupon();
+		CouponVO coupon = androidService.selectSendAndroidCoupon(vo);
 
 		if(coupon == null) {
 			resultData.put("status", "SUCCESS");

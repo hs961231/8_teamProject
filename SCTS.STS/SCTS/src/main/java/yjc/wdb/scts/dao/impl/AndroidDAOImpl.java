@@ -71,9 +71,9 @@ public class AndroidDAOImpl implements AndroidDAO{
 	}
 	
 	@Override
-	public CouponVO selectSendAndroidCoupon() throws Exception {
+	public CouponVO selectSendAndroidCoupon(Map map) throws Exception {
 	
-		return sql.selectOne(NAMESPACE+".selectSendAndroidCoupon");
+		return sql.selectOne(NAMESPACE+".selectSendAndroidCoupon", map);
 	}
 
 	@Override
@@ -83,6 +83,17 @@ public class AndroidDAOImpl implements AndroidDAO{
 	}
 
 	@Override
+	public int scanCoupon_hold(Map map) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(NAMESPACE + ".scanCoupon_hold", map);
+	}
+
+	@Override
+	public List<HashMap<String, Integer>> TileCoupon_code(Map map) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE + ".TileCoupon_code", map);
+	}
+	
 	public List<HashMap> eventList() throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectList(NAMESPACE+".eventList");
@@ -95,10 +106,13 @@ public class AndroidDAOImpl implements AndroidDAO{
 		
 		
 	}
+<<<<<<< HEAD
 
 	@Override
 	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception {
 		sql.insert(NAMESPACE+".inserCoupon_hold", coupon_holdVO);
 	}
 
+=======
+>>>>>>> origin/master
 }

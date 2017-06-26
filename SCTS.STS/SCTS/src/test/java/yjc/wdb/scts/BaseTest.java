@@ -56,9 +56,18 @@ public class BaseTest {
 
 	@Test
 	public void ServerDBTest() {
-		System.out.println("서버 디비 테스트용");
+		
 		try {
-			CouponVO cvo = Aservice.selectSendAndroidCoupon();
+
+			HashMap<String, String> vo = new HashMap<String, String>();
+			
+			vo.put("beacon_mjr", "87" );
+			vo.put("beacon_mnr", "59683" );
+			vo.put("user_id", "asd" );
+			
+			
+			CouponVO cvo = Aservice.selectSendAndroidCoupon(vo);
+			
 			System.out.println(cvo.toString());
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -2,6 +2,7 @@ package yjc.wdb.scts.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import yjc.wdb.scts.bean.BillVO;
 import yjc.wdb.scts.bean.CouponVO;
@@ -16,12 +17,17 @@ public interface AndroidService {
 	public List<HashMap> recommandProduct(String user_id) throws Exception;
 	public List<CouponVO> couponBasket(String user_id) throws Exception;
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
-	public CouponVO selectSendAndroidCoupon() throws Exception;
+	public CouponVO selectSendAndroidCoupon(Map<String, String> vo) throws Exception;
 	public List<GoodsVO> productSearch(String productName) throws Exception;
+
 
 	public List<HashMap> eventList() throws Exception;
 	public List<HashMap> eventOne(int bbsctt) throws Exception;
 
+<<<<<<< HEAD
 	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception;
 	
+=======
+
+>>>>>>> origin/master
 }

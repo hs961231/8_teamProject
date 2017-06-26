@@ -6,3 +6,7 @@ SCTS.STS/SCTS/target/test-classes/yjc/wdb/scts/BaseTest.class
 SCTS.STS/SCTS/target/test-classes/yjc/wdb/scts/BaseTest.class
 SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/service/BillService.java
 SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/service/impl/BillServiceImpl.java
+SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/service/AndroidService.java
+SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/dao/AndroidDAO.java
+SCTS.STS/SCTS/src/main/java/yjc/wdb/scts/dao/impl/AndroidDAOImpl.java
+SCTS.STS/SCTS/src/main/resources/mappers/AndroidMapper.xml

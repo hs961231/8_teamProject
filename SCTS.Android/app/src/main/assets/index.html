@@ -138,12 +138,13 @@
        
          var couponData = JSON.parse(data);
          $("#couponModal").modal(); 
+            $(".modal-body").empty();
+
              $(".modal-body").append($("<div></div>").attr("data-id", couponData.coupon_code));
-             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_nm));
-             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_cntnts));
-             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_dscnt));
-             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_begin_de +"~" + couponData.coupon_end_de));
-             $("div[data-id="+ couponData.coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_nm));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_cntnts));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_dscnt));
+             $("div[data-id="+  couponData.coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
     }
 
     $("#close").click(function(){
