@@ -25,4 +25,7 @@ public interface AndroidService {
 	public List<HashMap> eventOne(int bbsctt) throws Exception;
 
 
+	public void insertCoupon_hold(String user_id, int coupon_code) throws Exception;
+	
+
 }

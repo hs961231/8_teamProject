@@ -104,6 +104,12 @@ public class AndroidServiceImpl implements AndroidService{
 		// TODO Auto-generated method stub
 		return dao.eventOne(bbsctt);
 	}
+
+	@Override
+	public void insertCoupon_hold(String user_id, int coupon_code) throws Exception {
+		dao.insertCoupon_hold(user_id, coupon_code);
+		
+	}
 	
 	
 
