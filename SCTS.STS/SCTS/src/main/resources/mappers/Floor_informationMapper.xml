@@ -128,7 +128,7 @@ LEFT OUTER JOIN
 	) c
 ON
 	tc.TILE_CODE = c.TILE_CODE
-order by probability desc
+order by probability desc, TILE_CODE asc
 <!-- select
 	t.TILE_CODE, t.TILE_NM, t.TILE_CRDNT_X, t.TILE_CRDNT_Y, 
 	dcl.DETAILCTGRY_CODE, dc.DETAILCTGRY_NM, dc.DETAILCTGRY_COLOR, 
