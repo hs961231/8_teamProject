@@ -393,3 +393,9 @@ rno int NOT NULL AUTO_INCREMENT,
 	FOREIGN KEY(bno) REFERENCES help_board(bno) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+create table point(
+	USER_ID varchar(10) not null,
+	POINT_AMOUNT integer default 0 not null,
+	constraint POINT_pk primary key(USER_ID),
+	constraint POINT_USER_ID_fk foreign key(USER_ID) references user(USER_ID)
+);

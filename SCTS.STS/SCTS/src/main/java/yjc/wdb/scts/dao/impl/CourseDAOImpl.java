@@ -126,4 +126,10 @@ public class CourseDAOImpl implements CourseDAO {
 		return sqlSession.selectOne(NAMESPACE+".tileTodayVisitCnt", map);
 	}
 
+	@Override
+	public List<HashMap<String, String>> testTileColor() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE + ".testTileColor");
+	}
+
 }

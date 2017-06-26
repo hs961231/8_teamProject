@@ -20,4 +20,5 @@ public interface CourseService {
 	public List<HashMap> oneTileGender(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception;
 	public List<HashMap> oneTileAge(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y) throws Exception;
 	public List<HashMap> tileTotal(int day, int drw_code, int tile_crdnt_x, int tile_crdnt_y)  throws Exception;
+	public List<HashMap<String, String>> testTileColor() throws Exception;
 }

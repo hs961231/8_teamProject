@@ -90,4 +90,10 @@ public class CourseServiceImpl implements CourseService {
 		return dao.tileTotal(day, drw_code, tile_crdnt_x, tile_crdnt_y);
 	}
 
+	@Override
+	public List<HashMap<String, String>> testTileColor() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.testTileColor();
+	}
+
 }

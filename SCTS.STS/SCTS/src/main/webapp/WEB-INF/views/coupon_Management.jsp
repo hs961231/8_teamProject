@@ -19,7 +19,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h2>
-							<i class="fa fa-map-marker red"></i><strong>CouponList</strong>
+							<i class="fa fa-map-marker red"></i><strong>쿠폰목록</strong>
 						</h2>
 
 						<div class="panel-actions">
@@ -35,17 +35,17 @@
 								<thead>
 									<tr>
 										<th style="text-align: center;"><i class="icon_profile"></i>
-											Coupon_code</th>
+											쿠폰번호</th>
 										<th style="text-align: center;"><i class="icon_calendar"></i>
-											Coupon_name</th>
+											쿠폰이름</th>
 										<th style="text-align: center;"><i class="icon_mail_alt"></i>
-											Coupon_Info</th>
+											쿠폰정보</th>
 										<th style="text-align: center;"><i class="icon_pin_alt"></i>
-											Discount_percent</th>
+											할인정보</th>
 										<th style="text-align: center;"><i class="icon_pin_alt"></i>
-											Coupon_startDate</th>
+											쿠폰시작날짜</th>
 										<th style="text-align: center;"><i class="icon_pin_alt"></i>
-											Coupon_endDate</th>
+											쿠폰종료날짜</th>
 									</tr>
 								</thead>
 

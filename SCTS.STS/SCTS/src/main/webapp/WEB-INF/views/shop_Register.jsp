@@ -104,7 +104,7 @@ to {
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>
-					<i class="fa fa-map-marker red"></i><strong>BluePrint</strong>
+					<i class="fa fa-map-marker red"></i><strong>설계도면</strong>
 				</h2>
 				<div class="panel-actions">
 					<a href="#" class="btn-setting" id="leftDrawingBtns"><i
@@ -160,7 +160,7 @@ to {
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h2>
-					<i class="fa fa-map-marker red"></i><strong>타일 리스트</strong>
+					<i class="fa fa-map-marker red"></i><strong>존 리스트</strong>
 				</h2>
 
 				<div class="panel-actions">
@@ -315,7 +315,7 @@ to {
 	<div class="tileModal-row">
 		<div class="col-lg-12">
 			<section class="panel">
-				<header class="panel-heading"> 타일 정보 등록 </header>
+				<header class="panel-heading"> 존 정보 등록 </header>
 				<div class="panel-body">
 					<div class="form">
 						<form class="form-validate form-horizontal" id="feedback_form"

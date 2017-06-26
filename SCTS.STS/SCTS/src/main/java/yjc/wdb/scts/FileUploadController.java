@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.Floor_informationVO;
+import yjc.wdb.scts.service.CourseService;
 import yjc.wdb.scts.service.Floor_informationService;
 import yjc.wdb.scts.util.MediaUtils;
 import yjc.wdb.scts.util.UploadFileUtils;
@@ -50,6 +51,9 @@ public class FileUploadController {
 	
 	@Inject
 	Floor_informationService floor_informationService;
+	
+	@Inject
+	CourseService courseService;
 
 	
 	@RequestMapping(value="shop_RegisterForm", method=RequestMethod.POST)
@@ -89,12 +93,15 @@ public class FileUploadController {
 		HashMap map = floor_informationService.selectDrawingOne(bhf_code, floor);
 		int drw_code = Integer.parseInt(map.get("drw_code").toString());
 		List<HashMap<String, String>> tileInfoList = floor_informationService.selectTileCategoryList(drw_code);
+		List<HashMap<String, String>> testTileColor = courseService.testTileColor();
 		
 		//Map<String, Object> mainMap = new HashMap<String, Object>();
 		// 타일 색깔 정보들
 		map.put("tileInfoList", tileInfoList);
+		map.put("testTileColor", testTileColor);
 		//mainMap.put("tileInfoList", tileInfoList);
 		//mainMap.put("drw_code", drw_code);
+		
 		
 		String str = new Gson().toJson(map);
 		

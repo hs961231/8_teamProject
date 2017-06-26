@@ -327,7 +327,17 @@
 	
 	</select>
 	
-	
+	<select id="testTileColor" resultType="java.util.HashMap">
+	select
+		t.TILE_CRDNT_X, t.TILE_CRDNT_Y
+	from
+		course c,
+		tile t
+	where
+		c.COURS_STAY_TIME is null
+	and
+		c.TILE_CODE = t.TILE_CODE
+	</select>
 	
 	
 	

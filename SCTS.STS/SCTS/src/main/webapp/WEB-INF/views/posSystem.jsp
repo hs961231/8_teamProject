@@ -41,7 +41,7 @@
 <div class="row" style="height: 400px;">
 	<div class="col-lg-12">
 		<section class="panel">
-			<header class="panel-heading"> Hover Table (상품 리스트) </header>
+			<header class="panel-heading"> 상품 리스트 </header>
 			<table class="table table-hover">
 				<thead>
 					<tr>
