@@ -83,7 +83,6 @@ public class AndroidDAOImpl implements AndroidDAO{
 	}
 
 	@Override
-<<<<<<< HEAD
 	public int scanCoupon_hold(Map map) throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectOne(NAMESPACE + ".scanCoupon_hold", map);
@@ -95,7 +94,6 @@ public class AndroidDAOImpl implements AndroidDAO{
 		return sql.selectList(NAMESPACE + ".TileCoupon_code", map);
 	}
 	
-=======
 	public List<HashMap> eventList() throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectList(NAMESPACE+".eventList");
@@ -108,6 +106,4 @@ public class AndroidDAOImpl implements AndroidDAO{
 		
 		
 	}
->>>>>>> origin/master
-
 }
