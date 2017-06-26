@@ -62,7 +62,7 @@ public class BaseTest {
 			HashMap<String, String> vo = new HashMap<String, String>();
 			
 			vo.put("beacon_mjr", "87" );
-			vo.put("beacon_mnr", "61220" );
+			vo.put("beacon_mnr", "59683" );
 			vo.put("user_id", "asd" );
 			
 			

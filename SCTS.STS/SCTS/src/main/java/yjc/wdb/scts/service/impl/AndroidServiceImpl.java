@@ -69,12 +69,16 @@ public class AndroidServiceImpl implements AndroidService{
 		// 해당 쿠폰들을 저장
 		Map<String, Object> map = new HashMap<String, Object>();
 
+		if(coupon_code_Array.isEmpty())
+			return null;
+		
 		map.put("user_id", vo.get("user_id"));
 		map.put("coupon_code_Array", coupon_code_Array);
 		
 		// 저장된 쿠폰들 중 받은 것이 있는지 검색
 		int coupon = dao.scanCoupon_hold(map);
 		
+		System.out.println("여기서 어떻게 되나 coupon 값 = " + coupon);
 		// 받은게 있을 경우 쿠폰을 주지 않음
 		if(coupon > 0)
 			return null;
