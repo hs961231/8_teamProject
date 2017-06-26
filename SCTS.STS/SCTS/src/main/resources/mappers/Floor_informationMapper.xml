@@ -68,7 +68,7 @@ select
 	tc.LCLASCTGRY_NM, tc.LCLASCTGRY_CODE, tc.LCLASCTGRY_COLOR,
 	ifnull(c.tile_visit, 0),
 	t.total_visit,
-	round(ifnull((c.tile_visit / t.total_visit), 0), 0) AS probability
+	ifnull((c.tile_visit / t.total_visit), 0) AS probability
 from
 	(
 		select

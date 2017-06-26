@@ -351,7 +351,7 @@ display: none
 	</div>
 
 	<div class="col-md-3"
-		style="background-color: white; width: 200px; height: 417px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
+		style="background-color: white; width: 350px; height: 417px; right: 20px; border: 1px solid #D5D5D5; text-align: center;">
 		<div id="loadTile">
 			<div style="margin-bottom: 30px; margin-top: 10px">
 				<button class="btn btn-default" id="gender">성별</button>
@@ -381,7 +381,7 @@ display: none
 
 		<div id="tile_info">
 			<div id="tile_info_avgTime">
-				평균 타일 머문 시간 : <span id="avgTime"></span>
+				존 평균 머문 시간 : <span id="avgTime"></span>
 			</div>
 			<span id="drw_code1"></span> 
 			<span id="X_index"></span> 
