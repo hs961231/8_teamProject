@@ -19,4 +19,11 @@ public interface AndroidService {
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
 	public CouponVO selectSendAndroidCoupon(Map<String, String> vo) throws Exception;
 	public List<GoodsVO> productSearch(String productName) throws Exception;
+<<<<<<< HEAD
+=======
+
+	public List<HashMap> eventList() throws Exception;
+	public List<HashMap> eventOne(int bbsctt) throws Exception;
+	
+>>>>>>> origin/master
 }

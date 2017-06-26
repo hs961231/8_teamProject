@@ -19,6 +19,12 @@ public interface AndroidDAO {
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
 	public CouponVO selectSendAndroidCoupon(Map map) throws Exception;
 	public List<GoodsVO> productSearch(String productName) throws Exception;
+<<<<<<< HEAD
+=======
+	public List<HashMap> eventList() throws Exception;
+	public List<HashMap> eventOne(int bbsctt) throws Exception;
+	
+>>>>>>> origin/master
 
 	public int scanCoupon_hold(Map map) throws Exception;
 	public List<HashMap<String, Integer>> TileCoupon_code(Map map) throws Exception;

@@ -243,21 +243,21 @@ public class AndroidController {
 	}
 
 	// 이벤트 보기
-	/*@RequestMapping(value="eventList", method=RequestMethod.GET)
+	@RequestMapping(value="eventList", method=RequestMethod.GET)
 	public @ResponseBody String eventList(HttpServletRequest request) throws Exception{
 
 		String callback = request.getParameter("callback");
-		List<EventVO> list = eventService.eventList();
+		List<HashMap> list = androidService.eventList();
 		JSONObject eventJson;
 		JSONObject event;
 		JSONArray eventArray = new JSONArray();
 		for(int i = 0; i < list.size(); i++){
 			eventJson = new JSONObject();
-			eventJson.put("e_id", list.get(i).getE_id());
-			eventJson.put("e_name", list.get(i).getE_name());
-			eventJson.put("e_start", list.get(i).getE_start().toString());
-			eventJson.put("e_end", list.get(i).getE_end().toString());
-
+			eventJson.put("bbsctt_code", list.get(i).get("bbsctt_code"));
+			eventJson.put("event_begin_de", list.get(i).get("event_begin_de").toString());
+			eventJson.put("event_end_de", list.get(i).get("event_end_de").toString());
+			eventJson.put("bbsctt_sj", list.get(i).get("bbsctt_sj"));
+		
 			eventArray.add(eventJson);
 
 		}
@@ -272,25 +272,22 @@ public class AndroidController {
 
 	// 이벤트 상세보기
 	@RequestMapping(value="eventOne", method=RequestMethod.GET)
-	public @ResponseBody String eventOne(String e_id, HttpServletRequest request) throws Exception{
+	public @ResponseBody String eventOne(int bbsctt_code, HttpServletRequest request) throws Exception{
 
 
 		String callback = request.getParameter("callback");
-		EventVO eventVO = eventService.eventOne(e_id);
+		List<HashMap> list = androidService.eventOne(bbsctt_code);
 
 		JSONObject eventJson = new JSONObject();
-		eventJson.put("e_id", eventVO.getE_id());
-		eventJson.put("e_name", eventVO.getE_name());
-		eventJson.put("e_start", eventVO.getE_start().toString());
-		eventJson.put("e_end", eventVO.getE_end().toString());
-		eventJson.put("e_content", eventVO.getE_content());
-
-
-
+		eventJson.put("bbsctt_code", list.get(0).get("bbsctt_code"));
+		eventJson.put("event_begin_de", list.get(0).get("event_begin_de").toString());
+		eventJson.put("event_end_de", list.get(0).get("event_end_de").toString());
+		eventJson.put("bbsctt_sj", list.get(0).get("bbsctt_sj"));
+		eventJson.put("bbsctt_cn", list.get(0).get("bbsctt_cn"));
 
 		return callback + "(" + eventJson + ")";
 
-	}*/
+	}
 
 
 

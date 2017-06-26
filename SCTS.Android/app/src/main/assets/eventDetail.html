@@ -79,13 +79,13 @@
      <script>
         $(function(){
             
-            var e_id =  sessionStorage.getItem("e_id");
+            var bbsctt_code =  sessionStorage.getItem("bbsctt_code");
 
             $.ajax({
                 type: "GET",
                 url: IPSetting()+"eventOne",
                 data :{
-                    e_id : e_id
+                    bbsctt_code : bbsctt_code
                 },
                 dataType:"jsonp",
                 success: function(data){
@@ -95,12 +95,12 @@
             
                         var list = $("#list");
 
-                        list.append($('<div></div>').addClass("eventInfo").attr('data-id', data.e_id));
-                        $(".eventInfo[data-id="+data.e_id+"]").append($("<img />").attr("src", "img/list.png").addClass('eventImg'));
-                        $(".eventInfo[data-id="+data.e_id+"]").append($("<h2></h2>").text(data.e_name));
-                        $(".eventInfo[data-id="+data.e_id+"]").append($("<p></p>").addClass("eventDate").text(data.e_start + "~" + data.e_end));
+                        list.append($('<div></div>').addClass("eventInfo").attr('data-id', data.bbsctt_code));
+                        $(".eventInfo[data-id="+data.bbsctt_code+"]").append($("<img />").attr("src", "img/list.png").addClass('eventImg'));
+                        $(".eventInfo[data-id="+data.bbsctt_code+"]").append($("<h2></h2>").text(data.bbsctt_sj));
+                        $(".eventInfo[data-id="+data.bbsctt_code+"]").append($("<p></p>").addClass("eventDate").text(data.event_begin_de + "~" + data.event_end_de));
                         list.append($('<hr />'));
-                        list.append($('<div></div>').addClass('eventContent').text(data.e_content));
+                        list.append($('<div></div>').addClass('eventContent').text(data.bbsctt_cn));
 
                 
 
