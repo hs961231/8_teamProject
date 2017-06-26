@@ -89,6 +89,15 @@
             width: 60px;
             height: 60px;
         }
+         .couponEdit{
+            background: #FFA7A7;
+            margin-right: 15px;
+            margin-top: -10px;
+            border: none;
+            width: 70px;
+            height: 30px;
+            float: right;
+        }
     </style>
 
     <script>
@@ -100,9 +109,22 @@
     // 이곳이 바로 쿠폰 받는곳이다!!!!!!!!!!!!!!!!
     function coupon(data){
         // 여기 modal을 띄우세요.
-        // 예시로 제이쿼리로 받아온 데이터를 붙여 보도록해보죠!
-          $("#couponModal").modal(); 
-        $(".modal-body").text(data);
+       
+
+         var couponData = JSON.parse(data);
+         $("#couponModal").modal(); 
+
+
+         var length = couponData.coupon.length;
+
+         for(var i=0; i < length; i++){
+             $(".modal-body").append($("<div></div>").attr("data-id", couponData.coupon[i].coupon_code));
+             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<p></p>").text(couponData.coupon[i].coupon_nm));
+             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<p></p>").text(couponData.coupon[i].coupon_cntnts));
+             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<p></p>").text(couponData.coupon[i].coupon_dscnt));
+             $("div[data-id="+  couponData.coupon[i].coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
+             
+         }
         
        //  document.getElementById("coupon").innerHTML= data;
 

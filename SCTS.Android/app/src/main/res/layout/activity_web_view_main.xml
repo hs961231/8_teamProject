@@ -24,6 +24,7 @@
             <EditText
                 android:id="@+id/productInput"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="100px"
                 android:layout_height="37dp"
                 android:background="@color/common_google_signin_btn_text_dark_pressed"
                 android:ems="10"
