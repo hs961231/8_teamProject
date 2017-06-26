@@ -91,7 +91,7 @@ public class WebViewMain extends AppCompatActivity{
                     networkTask.execute(productName);
                 }
 
-                testCoupon();
+               // testCoupon();
 
 
             }
@@ -123,7 +123,7 @@ public class WebViewMain extends AppCompatActivity{
     }
 
     public void testCoupon() {
-        String data = "{\"coupon_dscnt\":\"30%\",\"status\":\"SUCCESS\",\"command\":\"fullcoupon\",\"coupon_cntnts\":\"안드로이드 쿠폰 수신용 첫번째 테스트 쿠폰입니다.\",\"coupon_code\":1,\"coupon_begin_de\":\"6월 22, 2017\",\"coupon_nm\":\"첫시험쿠폰\"}";
+        String data = "{\"coupon_dscnt\":\"30%\",\"status\":\"SUCCESS\",\"command\":\"fullcoupon\",\"coupon_cntnts\":\"안드로이드 쿠폰 수신용 첫번째 테스트 쿠폰입니다.\",\"coupon_code\":2,\"coupon_begin_de\":\"6월 22, 2017\",\"coupon_nm\":\"첫시험쿠폰\"}";
 
 
         webView.loadUrl("javascript:coupon('"+ data +"')");

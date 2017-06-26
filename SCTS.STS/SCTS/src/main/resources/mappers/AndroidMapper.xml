@@ -9,7 +9,7 @@
 	<insert id="insertCoupon_hold">
 		insert into coupon_hold
 		(USER_ID, COUPON_CODE, COUPONHOLD_USE_AT, COUPONHOLD_DE)
-		values (#{user_id}, #{coupon_code}, 'no', now());
+		values (#{user_id}, #{coupon_code}, 'no', date_format(now(), '%Y-%m-%d'));
 	</insert>
 
 	<!-- 구매목록 -->
@@ -118,22 +118,16 @@
 	<delete id="delCouponBasket">
 		delete from coupon_hold
 		where user_id = #{user_id}
-<<<<<<< HEAD
 		and
 		coupon_code = #{coupon_code};
-=======
-		and coupon_code = #{coupon_code}
->>>>>>> origin/master
+
 	</delete>
 
 
 	<select id="productSearch" resultType="goodsVO">
-<<<<<<< HEAD
+
 		select * from goods where
 		goods_nm like concat('%', #{productName}, '%');
-=======
-		select * from goods where goods_nm like concat('%', #{productName}, '%')
->>>>>>> origin/master
 	</select>
 
 	<!-- 고객에게 쿠폰 전송 -->
@@ -262,14 +256,10 @@ where
 		event_begin_de, date_format(e.event_end_de, '%Y-%m-%d') as
 		event_end_de,
 		b.bbsctt_sj as bbsctt_sj,
-<<<<<<< HEAD
 		b.bbsctt_cn as bbsctt_cn from event e, bbsctt b where
 		e.bbsctt_code =
 		b.bbsctt_code and e.bbsctt_code = #{bbsctt_code};
-=======
-		b.bbsctt_cn as bbsctt_cn from event e, bbsctt b where e.bbsctt_code =
-		b.bbsctt_code and e.bbsctt_code = #{bbsctt_code}
->>>>>>> origin/master
+
 	</select>
 
 

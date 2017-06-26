@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
        <!--<meta name="viewport" content="width=350 height=495 initial-scale=1">-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <script src="js/IPSetting.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -141,35 +141,21 @@
             $(".modal-body").empty();
 
              $(".modal-body").append($("<div></div>").attr("data-id", couponData.coupon_code));
-             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_nm));
-             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_cntnts));
-             $("div[data-id="+  couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_dscnt));
-             $("div[data-id="+  couponData.coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
+             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_nm));
+             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_cntnts));
+             $("div[data-id="+ couponData.coupon_code+"]").append($("<p></p>").text(couponData.coupon_dscnt));
+             $("div[data-id="+ couponData.coupon_code+"]").append($("<button></button>").addClass("couponEdit").text("받기"));
     }
 
-    $("#close").click(function(){
-         $("#couponModal").modal("hide"); 
-    });
-
-    $(document).on('click', '.couponEdit', function(){
-         var id = sessionStorage.getItem("user_id");
-         var coupon_code = $(this).parent().attr("data-id");
-         $.ajax({
-                type: "GET",
-                url: IPSetting()+"insertCoupon_hold",
-                data: {
-                    user_id : id,
-                    coupon_code : coupon_code
-                }
-            });
-
-    });
+  
 
     function searchProduct(s){
        $(".section").hide(); 
        $(".searchProduct").show(); 
+    $(".searchProduct").empty();
 
         if(s == "no"){
+           
             $(".searchProduct").append($("<p></p>").text("물품이 존재하지 않습니다."));
         }
         else{
@@ -200,41 +186,42 @@
         }
     }
 
+   
+
     </script>
 </head>
 <body>
 <div class="section">
-<div id="MoveInfo">
-    
-    <div id="MemberInfo">
-        <span id="name">asd</span> 님,
-        <p>행복한 시간 보내세요!</p>
-        <p id="coupon"></p>
+    <div id="MoveInfo">
+        <div id="MemberInfo">
+            <span id="name">asd</span> 님,
+            <p>행복한 시간 보내세요!</p>
+            <p id="coupon"></p>
+        </div>
+        <div id="pointInfo">
+            <span id="shoppingTime"> 쇼핑한 시간 : 00:00 </span>
+            <span id="point">0P</span>
+        </div>
     </div>
-    <div id="pointInfo">
-        <span id="shoppingTime"> 쇼핑한 시간 : 00:00 </span>
-        <span id="point">0P</span>
+    <div>
+        <div id="couponBasket">
+             <img src="img/coupon.png">
+             <h4>쿠폰바구니</h4>
+        </div>
+        <div id="purchaseList">
+            <img src="img/list.png">
+            <h4>구매내역</h4>
+        </div>
+        <div id="eventList">
+            <img src="img/balloons.png">
+            <h4>이벤트</h4>
+        </div>
+        <div id="recommandList">
+            <img src="img/product.png">
+            <h4>추천상품</h4>
+        </div>
     </div>
 </div>
-<div>
-    <div id="couponBasket">
-        <img src="img/coupon.png">
-        <h4>쿠폰바구니</h4>
-    </div>
-    <div id="purchaseList">
-        <img src="img/list.png">
-        <h4>구매내역</h4>
-    </div>
-    <div id="eventList">
-        <img src="img/balloons.png">
-        <h4>이벤트</h4>
-    </div>
-    <div id="recommandList">
-        <img src="img/product.png">
-        <h4>추천상품</h4>
-    </div>
-</div>
-
  <div class="modal fade" id="couponModal" role="dialog">
     <div class="modal-dialog">
     
@@ -248,13 +235,14 @@
           
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
       
     </div>
   </div>
-</div>
+
+
 
 
 <div class="searchProduct">
@@ -285,6 +273,31 @@
             window.location.href = "recommendList.html";
         });
 
+
+          $("#close").click(function(){
+            $("#couponModal").modal("hide"); 
+         });
+
+        $(document.body).on("click", ".couponEdit", function(){
+            var id = $("#name").text();
+            var coupon_code = $(this).parent().attr("data-id");
+
+            $.ajax({
+                    type: "GET",
+                    url: IPSetting()+"insertCoupon_hold",
+                    data: {
+                        user_id : id,
+                        coupon_code : coupon_code
+                    },
+                    dataType:"jsonp",
+                    success: function(data){
+                        if(data.result == "success"){
+                             $("#couponModal").modal("hide"); 
+                         }
+                    }
+            });
+
+        });
 
                     
     });

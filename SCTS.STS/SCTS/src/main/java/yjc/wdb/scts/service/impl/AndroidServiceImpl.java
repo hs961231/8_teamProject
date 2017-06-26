@@ -106,8 +106,8 @@ public class AndroidServiceImpl implements AndroidService{
 	}
 
 	@Override
-	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception {
-		dao.insertCoupon_hold(coupon_holdVO);
+	public void insertCoupon_hold(String user_id, int coupon_code) throws Exception {
+		dao.insertCoupon_hold(user_id, coupon_code);
 		
 	}
 	

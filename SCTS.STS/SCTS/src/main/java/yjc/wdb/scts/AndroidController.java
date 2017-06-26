@@ -516,12 +516,24 @@ public class AndroidController {
 
 	
 	
-	@RequestMapping(value="insertCoupon_hold", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
-	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="insertCoupon_hold", method=RequestMethod.GET)
+	public @ResponseBody String insertCoupon_hold(String user_id, int coupon_code, HttpServletRequest request) throws Exception{
+
+		System.out.println(user_id + " "+coupon_code);
+	
 
 		String callback = request.getParameter("callback");
+
 		
-		androidService.insertCoupon_hold(coupon_holdVO);
+		androidService.insertCoupon_hold(user_id, coupon_code);
+		
+		JSONObject coupon;
+
+		coupon = new JSONObject();
+		coupon.put("result", "success");
+		
+
+		return callback+"("+coupon+")";
 		
 		
 	}

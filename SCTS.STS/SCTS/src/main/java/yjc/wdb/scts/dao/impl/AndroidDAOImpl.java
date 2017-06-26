@@ -106,13 +106,15 @@ public class AndroidDAOImpl implements AndroidDAO{
 		
 		
 	}
-<<<<<<< HEAD
+
 
 	@Override
-	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception {
-		sql.insert(NAMESPACE+".inserCoupon_hold", coupon_holdVO);
+	public void insertCoupon_hold(String user_id, int coupon_code) throws Exception {
+		Map map = new HashMap();
+		map.put("user_id", user_id);
+		map.put("coupon_code", coupon_code);
+		sql.insert(NAMESPACE+".insertCoupon_hold", map);
 	}
 
-=======
->>>>>>> origin/master
+
 }
