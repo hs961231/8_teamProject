@@ -98,3 +98,11 @@
 		</section>
 	</div>
 </div>
+
+<script>
+	$('.btn-default').on("click",function(){
+		alert('hi');
+		var row = document.getElementById('row');
+		row.style.display("none");
+	});
+</script>

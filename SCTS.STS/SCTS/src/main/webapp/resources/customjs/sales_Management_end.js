@@ -25,7 +25,7 @@ searchDaySalesSocket.onmessage = function(event){
 }
 
 searchDaySalesSocket.onclose = function(event){
-	alert("searchDay 연결 ㄴㄴ");
+	
 }
 
 
@@ -44,7 +44,7 @@ customerRankSocket.onmessage = function(event){
 }
 
 customerRankSocket.onclose = function(event){
-	alert("customerRank ㄴㄴㄴ");
+	
 }
 
 
@@ -64,7 +64,7 @@ productRankSocket.onmessage = function(event){
 }
 
 productRankSocket.onclose = function(event){
-	alert("productRank ㄴㄴㄴ");
+	
 }
 
 monthSalesSocket.onmessage = function(event){
@@ -83,7 +83,7 @@ monthSalesSocket.onmessage = function(event){
 }
 
 monthSalesSocket.onclose = function(event){
-	alert("month 연결 ㄴㄴ");
+	
 }
 
 daySalesSocket.onmessage = function(event){
@@ -103,7 +103,7 @@ daySalesSocket.onmessage = function(event){
 
 daySalesSocket.onclose = function(event){
 
-	alert("연결 ㄴㄴ");
+	
 
 }
 //---------------------------------------------------------- 매출 -------------------------

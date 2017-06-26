@@ -165,9 +165,20 @@
 		pageForm.submit();
 	});
 	
+	var registerModal = document.getElementById("productModal");
+	
 	$("#productBtn").on("click",function(){
-		alert('hi');
-		var registerModal = document.getElementById("productModal");
 		registerModal.style.display="block";
 	});
+	
+	$("#cancel").on("click", function(){
+		registerModal.style.display="none";
+	});
+	
+	window.onclick = function(event) {
+		if (event.target == registerModal) {
+			
+			registerModal.style.display = "none";
+		}
+	}
 </script>

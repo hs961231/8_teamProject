@@ -103,7 +103,7 @@
 				},
 				success: function(data){
 					if(data == "success"){
-						alert("로그인 성공!");
+						
 						self.location = "mainPage";
 					}else{
 						alert("아이디나 비밀번호가 틀렸습니다.");

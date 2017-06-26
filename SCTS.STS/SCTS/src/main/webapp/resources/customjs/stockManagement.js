@@ -26,7 +26,7 @@ $('#mySearch').click(function(){
 				check = 6;
 			}
 			
-			window.alert(check);
+		
 			
 			$('.navbar-form').append("<input type='hidden' name='check' value='"+ check + "'/> ");
 			$('.navbar-form').attr("action", "searchStock");
@@ -71,8 +71,6 @@ $('#mySearch').click(function(){
 		
 			var SiNum = $(this).parent().siblings().eq(1).html();
 			var SiNum2 = $(this).parent().siblings().eq(4).html();
-			window.alert(SiNum+ "는 user_id " + "제품 코드는 : " + SiNum2);
-			window.alert(check);
 			
 			$('.navbar-form').removeAttr("method", "get");
 			$('.navbar-form').removeAttr("action", "stock_Management");

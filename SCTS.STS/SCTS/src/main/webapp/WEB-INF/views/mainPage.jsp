@@ -403,14 +403,16 @@
 
 					</a></li>
 					
-					<li><a class="" href="help_List"> <i
-							class="fa fa-question"></i> <span>문의 사항</span>
-					</a></li>
-
 					<li><a class="" href="posSystem"> <i class="icon_piechart"></i>
 							<span>포스</span>
 
 					</a></li>
+					
+					<li><a class="" href="help_List"> <i
+							class="fa fa-question"></i> <span>문의 사항</span>
+					</a></li>
+
+					
 
 
 				</ul>

@@ -70,7 +70,7 @@ display: none
 	}
 	
 	realTimeSock.onclose = function(event){
-		alert("ddd");
+		
 	}
 
 	var daySales = function(data) {

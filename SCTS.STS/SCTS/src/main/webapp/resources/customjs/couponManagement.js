@@ -33,7 +33,7 @@
 	
 	$(".modifyBtn").on("click",function(){
 		var CouNum = $(this).parent().siblings().eq(0).html();
-		alert(CouNum);
+
 		$(".formObj").append("<input type='hidden' name='coupon_code' value='"+ CouNum +"'/>");
 		$(".formObj").attr("action", "coupon_modify");
 		$(".formObj").attr("method", "post");
@@ -41,7 +41,6 @@
 	});
 
 	$(".cancel").on("click", function(){
-		alert('hi');
 		$("#couponForm").attr("action", "coupon_Management");
 		$("#couponForm").attr("method", "get");
 		$("#couponForm").submit();

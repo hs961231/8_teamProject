@@ -40,8 +40,7 @@ $("#searching").on("click", function(){
 //					alert('hello3');
 					var gname = data.result[i].goods_nm+"";
 					var goods_code = data.result[i].goods_code+"";
-					alert(gname);
-					alert(goods_code);
+
 					
 					var products = $("<tr class='product'></tr>");
 					$("<td><input type='checkbox' class='checked'></td>").appendTo(products);
@@ -60,8 +59,7 @@ $("#searching").on("click", function(){
 						var coupon_code = $("#searching").val();
 						var coupon_co = $("#coupon_co").val();
 						
-						alert(coupon_code); 
-						alert(coupon_co);
+					
 						
 						$("#couponSave").on("click",function(){
 							

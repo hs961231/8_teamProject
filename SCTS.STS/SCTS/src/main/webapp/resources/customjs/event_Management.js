@@ -276,8 +276,7 @@
 		
 					var user_id = "${user_id}";
 					
-					alert(user_id);
-
+			
 				
 					var event_info = $("#registerEvent .eventInfo").val();
 		
