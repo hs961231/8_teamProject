@@ -518,6 +518,17 @@ public class AndroidController {
 		return productSearchList.toString();
 	}
 
+	
+	
+	@RequestMapping(value="insertCoupon_hold", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
+	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO, HttpServletRequest request) throws Exception{
+
+		String callback = request.getParameter("callback");
+		
+		androidService.insertCoupon_hold(coupon_holdVO);
+		
+		
+	}
 
 
 

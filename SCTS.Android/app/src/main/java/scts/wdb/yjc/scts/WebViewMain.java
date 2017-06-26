@@ -38,7 +38,7 @@ public class WebViewMain extends AppCompatActivity{
     private String str;
     private String point;
     private SharedPreferences.Editor editor;
-
+    private String finish;
 
     private EditText productInput;
     private String productName;
@@ -82,9 +82,17 @@ public class WebViewMain extends AppCompatActivity{
             public void onClick(View v) {
 
                 productName = productInput.getText().toString();
-                NetworkTask networkTask = new NetworkTask();
-                networkTask.execute(productName);
-                //testCoupon();
+
+                if(productName.equals("")){
+                    webView.loadUrl("javascript:searchProduct('no')");
+
+                }else{
+                    NetworkTask networkTask = new NetworkTask();
+                    networkTask.execute(productName);
+                }
+
+                testCoupon();
+
 
             }
         });
@@ -115,7 +123,7 @@ public class WebViewMain extends AppCompatActivity{
     }
 
     public void testCoupon() {
-        String data = "{\"coupon\":[{\"coupon_dscnt\":\"30%\",\"status\":\"SUCCESS\",\"command\":\"fullcoupon\",\"coupon_cntnts\":\"안드로이드 쿠폰 수신용 첫번째 테스트 쿠폰입니다.\",\"coupon_code\":1,\"coupon_begin_de\":\"6월 22, 2017\",\"coupon_nm\":\"첫시험쿠폰\"}]}";
+        String data = "{\"coupon_dscnt\":\"30%\",\"status\":\"SUCCESS\",\"command\":\"fullcoupon\",\"coupon_cntnts\":\"안드로이드 쿠폰 수신용 첫번째 테스트 쿠폰입니다.\",\"coupon_code\":1,\"coupon_begin_de\":\"6월 22, 2017\",\"coupon_nm\":\"첫시험쿠폰\"}";
 
 
         webView.loadUrl("javascript:coupon('"+ data +"')");
@@ -124,10 +132,15 @@ public class WebViewMain extends AppCompatActivity{
     // 뒤로 가기 버튼
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+        if((keyCode == KeyEvent.KEYCODE_BACK)){
+            webView.loadUrl("javascript:event('true')");
+        }
+
 
         if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
 
             webView.goBack();
+
             return true;
         }
 
@@ -163,7 +176,7 @@ public class WebViewMain extends AppCompatActivity{
         @JavascriptInterface
         public void sampleAction(String str) {
 
-            Toast.makeText(getApplicationContext(), str, Toast.LENGTH_LONG).show();
+                finish = str;
 
         }
 
@@ -183,12 +196,6 @@ public class WebViewMain extends AppCompatActivity{
 
 
             webView.loadUrl("javascript:setId('"+str+"', '"+point+"')");
-
-
-            // 이곳이 바로 쿠폰 보내는 곳!!!!!!!!!!!!!!!!!!!!!!!!!
-            /*
-            String data = "이것이바로 쿠폰!쿠폰! 왔다! 왔다 ";
-            webView.loadUrl("javascript:coupon('"+ data +"')");*/
 
         }
     }
@@ -228,6 +235,7 @@ public class WebViewMain extends AppCompatActivity{
         protected void onPostExecute(String s){
 
         Log.i("json", s);
+            webView.loadUrl("javascript:searchProduct('" + s + "')");
 
         }
 

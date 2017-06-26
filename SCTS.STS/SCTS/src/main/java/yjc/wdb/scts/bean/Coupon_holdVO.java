@@ -1,10 +1,18 @@
 package yjc.wdb.scts.bean;
 
+import java.sql.Date;
+
 public class Coupon_holdVO {
 	private String	user_id;
 	private int		coupon_code;
 	private String	couponhold_use_at;
-	
+	private Date couponhold_de;
+	public Date getCouponhold_de() {
+		return couponhold_de;
+	}
+	public void setCouponhold_de(Date couponhold_de) {
+		this.couponhold_de = couponhold_de;
+	}
 	public String getUser_id() {
 		return user_id;
 	}

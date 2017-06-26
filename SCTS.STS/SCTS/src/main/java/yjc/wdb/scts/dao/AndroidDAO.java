@@ -21,5 +21,7 @@ public interface AndroidDAO {
 	public List<HashMap> eventList() throws Exception;
 	public List<HashMap> eventOne(int bbsctt) throws Exception;
 	
+	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception;
+	
 
 }

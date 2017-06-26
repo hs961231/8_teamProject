@@ -96,4 +96,9 @@ public class AndroidDAOImpl implements AndroidDAO{
 		
 	}
 
+	@Override
+	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception {
+		sql.insert(NAMESPACE+".inserCoupon_hold", coupon_holdVO);
+	}
+
 }

@@ -80,6 +80,12 @@ public class AndroidServiceImpl implements AndroidService{
 		// TODO Auto-generated method stub
 		return dao.eventOne(bbsctt);
 	}
+
+	@Override
+	public void insertCoupon_hold(Coupon_holdVO coupon_holdVO) throws Exception {
+		dao.insertCoupon_hold(coupon_holdVO);
+		
+	}
 	
 	
 
