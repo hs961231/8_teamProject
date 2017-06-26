@@ -6,9 +6,9 @@
 
 <mapper namespace="yjc.wdb.mapper.AndroidMapper">
 
-<!-- 구매목록 -->
+	<!-- 구매목록 -->
 
-<resultMap id="billOne" type="java.util.HashMap">
+	<resultMap id="billOne" type="java.util.HashMap">
 		<result property="goods_nm" column="goods_nm" />
 		<result property="purchgoods_qy" column="purchgoods_qy" />
 		<result property="COUPON_DSCNT" column="COUPON_DSCNT" />
@@ -97,31 +97,51 @@
 		order by sum(pg.PURCHSGOODS_QY) desc
 		limit 0, 10
 	</select>
-	
-	
+
+
 	<!-- 쿠폰 바구니 들고있는 목록 -->
-	<select resultType="CouponVO" id="couponList"> 
+	<select resultType="CouponVO" id="couponList">
 		select * from coupon_hold ch, coupon c where
-		ch.user_id = #{user_id} and ch.COUPONHOLD_USE_AT = 'no' and ch.coupon_code = c.coupon_code and c.COUPON_END_DE >= now() 
+		ch.user_id = #{user_id} and
+		ch.COUPONHOLD_USE_AT = 'no' and ch.coupon_code = c.coupon_code and
+		c.COUPON_END_DE >= now()
 	</select>
 
-	<delete id="delCouponBasket"> 
-		delete from coupon_hold 
+	<delete id="delCouponBasket">
+		delete from coupon_hold
 		where user_id = #{user_id}
-		and coupon_code = #{coupon_code}; </delete>
+		and coupon_code = #{coupon_code};
+	</delete>
 
 
 	<select id="productSearch" resultType="goodsVO">
-	select * from goods where goods_nm like concat('%', #{productName}, '%');
+		select * from goods where goods_nm like concat('%', #{productName}, '%');
 	</select>
 
 	<!-- 고객에게 쿠폰 전송 -->
 	<select id="selectSendAndroidCoupon" resultType="CouponVO">
 		select
-			*
+		*
 		from
-			coupon
+		coupon
 		limit 0,1
 	</select>
+
+	<select id="eventList" resultType="java.util.HashMap">
+		select e.bbsctt_code as bbsctt_code, date_format(e.event_begin_de, '%Y-%m-%d') as event_begin_de, date_format(e.event_end_de, '%Y-%m-%d') as event_end_de, 
+		b.bbsctt_sj as bbsctt_sj from event e, bbsctt b where e.bbsctt_code =
+		b.bbsctt_code and e.event_end_de >= now();
+	</select>
+	
+	
+	<select id="eventOne" resultType="java.util.HashMap">
+		select e.bbsctt_code as bbsctt_code,  date_format(e.event_begin_de, '%Y-%m-%d') as event_begin_de, date_format(e.event_end_de, '%Y-%m-%d') as event_end_de, 
+		b.bbsctt_sj as bbsctt_sj,
+		b.bbsctt_cn as bbsctt_cn from event e, bbsctt b where e.bbsctt_code =
+		b.bbsctt_code and e.bbsctt_code = #{bbsctt_code};
+	</select>
+	
+	
+	
 
 </mapper>

@@ -18,6 +18,8 @@ public interface AndroidDAO {
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
 	public CouponVO selectSendAndroidCoupon() throws Exception;
 	public List<GoodsVO> productSearch(String productName) throws Exception;
+	public List<HashMap> eventList() throws Exception;
+	public List<HashMap> eventOne(int bbsctt) throws Exception;
 	
 
 }

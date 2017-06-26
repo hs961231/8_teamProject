@@ -68,6 +68,18 @@ public class AndroidServiceImpl implements AndroidService{
 		
 		return dao.productSearch(productName);
 	}
+
+	@Override
+	public List<HashMap> eventList() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.eventList();
+	}
+
+	@Override
+	public List<HashMap> eventOne(int bbsctt) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.eventOne(bbsctt);
+	}
 	
 	
 

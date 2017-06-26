@@ -69,10 +69,10 @@
 
                         var list = $("#list");
 
-                        list.append($('<div></div>').addClass("event").attr('data-id', data.data[i].e_id));
-                        $(".event[data-id="+data.data[i].e_id+"]").append($("<img />").attr("src", "img/calendar.png"));
-                        $(".event[data-id="+data.data[i].e_id+"]").append($("<p></p>").text(data.data[i].e_name));
-                        $(".event[data-id="+data.data[i].e_id+"]").append($("<p></p>").addClass("eventDate").text(data.data[i].e_start + "~" + data.data[i].e_end));
+                        list.append($('<div></div>').addClass("event").attr('data-id', data.data[i].bbsctt_code));
+                        $(".event[data-id="+data.data[i].bbsctt_code+"]").append($("<img />").attr("src", "img/calendar.png"));
+                        $(".event[data-id="+data.data[i].bbsctt_code+"]").append($("<p></p>").text(data.data[i].bbsctt_sj));
+                        $(".event[data-id="+data.data[i].bbsctt_code+"]").append($("<p></p>").addClass("eventDate").text(data.data[i].event_begin_de + "~" + data.data[i].event_end_de));
 
                     }
 
@@ -98,9 +98,9 @@
     <script>
         $(document.body).on("click", ".event", function(){
             
-            var e_id = $(this).attr("data-id");
+            var bbsctt_code = $(this).attr("data-id");
     
-            sessionStorage.setItem("e_id", e_id);
+            sessionStorage.setItem("bbsctt_code", bbsctt_code);
 
             window.location.href = "eventDetail.html";
 

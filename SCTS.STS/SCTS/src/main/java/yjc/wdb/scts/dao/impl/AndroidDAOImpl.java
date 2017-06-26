@@ -82,4 +82,18 @@ public class AndroidDAOImpl implements AndroidDAO{
 		return sql.selectList(NAMESPACE+".productSearch", productName);
 	}
 
+	@Override
+	public List<HashMap> eventList() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".eventList");
+	}
+
+	@Override
+	public List<HashMap> eventOne(int bbsctt) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".eventOne", bbsctt);
+		
+		
+	}
+
 }
