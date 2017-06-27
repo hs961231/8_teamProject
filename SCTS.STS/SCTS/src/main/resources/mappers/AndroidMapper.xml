@@ -156,7 +156,7 @@ from
 where
 	USER_ID = #{user_id}
 and
-	COUPONHOLD_USE_AT = 'NO'
+	COUPONHOLD_USE_AT = 'no'
 and
 	COUPON_CODE IN
 				<foreach collection="coupon_code_Array" item="item" 

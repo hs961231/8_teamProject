@@ -42,7 +42,7 @@ from
 								where
 									user_id = #{user_id}
 								and
-									couponhold_use_at = 'Possible'
+									couponhold_use_at = 'no'
 							)
 	) ch
 where
