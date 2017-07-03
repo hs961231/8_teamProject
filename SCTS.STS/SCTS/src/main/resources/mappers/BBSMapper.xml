@@ -77,6 +77,13 @@
 		where bc.bbsctt_code = e.bbsctt_code and date_format(e.event_begin_de, '%Y-%m-%d') between #{date1} and #{date2} 
 	
 	</select>
+	
+	
+	<select id="eventNotification" resultMap="java.util.HashMap">
+		select bc.bbsctt_code as bbsctt_code, bc.bbsctt_sj as bbsctt_sj
+		from bbsctt bc, event e
+		where bc.bbsctt_code = e.bbsctt_code and date_format(e.event_end_de, '%Y-%m-%d') >= date_format(now(), '%Y-%m-%d'); 
+	</select>
 
 
 </mapper>

@@ -90,4 +90,12 @@ public class BBSDAOImpl implements BBSDAO {
 		sql.delete(NAMESPACE+".deleteBbscttWriting", bbsctt_code);
 	}
 
+	@Override
+	public List<HashMap> eventNotification() throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectList(NAMESPACE+".eventNotification");
+	}
+	
+	
+
 }

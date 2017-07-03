@@ -72,6 +72,12 @@ public class BBSServiceImpl implements BBSService {
 		dao.updateEvent(eventVO);
 	}
 
+	@Override
+	public List<HashMap> eventNotification() throws Exception {
+		
+		return dao.eventNotification();
+	}
+
 
 
 

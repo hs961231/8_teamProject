@@ -19,4 +19,5 @@ public interface BBSService {
 	public void updateDropEvent(EventVO eventVO) throws Exception;
 	public void deleteEvent(int bbsctt_code) throws Exception;
 	public List<HashMap> listEvent(String date1, String date2) throws Exception;
+	public List<HashMap> eventNotification() throws Exception;  
 }
