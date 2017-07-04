@@ -26,7 +26,8 @@
 <link href="resources/css/font-awesome.min.css" rel="stylesheet" />
 <!-- full calendar css-->
 
-<link href='resources/eventCalendar/fullcalendar.min.css' rel='stylesheet' />
+<link href='resources/eventCalendar/fullcalendar.min.css'
+	rel='stylesheet' />
 
 <!-- easy pie chart-->
 <link
@@ -109,6 +110,8 @@
 
 <script src="resources/customjs/highChartTheme.js"></script>
 
+
+
 </head>
 
 <body>
@@ -132,9 +135,7 @@
 				<!--  search form start -->
 				<ul class="nav top-menu">
 					<li>
-						<form class="navbar-form">
-							
-						</form>
+						<form class="navbar-form"></form>
 					</li>
 				</ul>
 				<!--  search form end -->
@@ -270,17 +271,17 @@
 							class="icon_piechart"></i> <span>쿠폰 관리</span>
 
 					</a></li>
-					
+
 					<li><a class="" href="posSystem"> <i class="icon_piechart"></i>
 							<span>포스</span>
 
 					</a></li>
-					
+
 					<li><a class="" href="help_List"> <i
 							class="fa fa-question"></i> <span>문의 사항</span>
 					</a></li>
 
-					
+
 
 
 				</ul>
@@ -306,7 +307,22 @@
 
 	</section>
 	<!-- container section start -->
-
+	<script>
+		var eventSocket = new SockJS("/scts/event-ws");
+		
+		var branch = "${branch}";
+		
+		
+		eventSocket.onopen = function(){
+			var json = JSON.stringify({
+				branch : branch,
+				sender : 0,
+				reciever : 0
+			});
+			
+			eventSocket.send(json);
+		}
+	</script>
 
 </body>
 </html>

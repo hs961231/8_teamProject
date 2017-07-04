@@ -85,11 +85,13 @@ public class HomeController {
 	public String loginPost(UserVO user, 
 							HttpServletRequest request, HttpSession session) throws Exception{
 		int chk = userService.loginUser(user);
+		String branch = userService.knowUserBranch(user.getUser_id());
 
 		if(chk == 0)
 			return "error";
 		else if(chk == 1) {
 			session.setAttribute("user_id", user.getUser_id());
+			session.setAttribute("branch", branch);
 			return "success";
 		}
 		else

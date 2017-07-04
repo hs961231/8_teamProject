@@ -30,24 +30,24 @@
 	<select resultType="int" id="checkUser">
 		select count(user_id)
 		from user
-		where user_id = #{user_id}
+		where
+		user_id = #{user_id}
 	</select>
 
-	<select resultType="int" id="point"> 
+	<select resultType="int" id="point">
 		select point_amount from point
 		where user_id = #{user_id}
 	</select>
 
+	<select id="knowUserBranch" resultType="String">
+		select dp.BHF_CODE from department_position dp, employee_position ep where
+		dp.DEPT_CODE = ep.DEPT_CODE and ep.USER_ID = #{user_id};
+	</select>
 
 
-<!-- 	<update id="">
-	</update>
 
-	<delete id="">
-	</delete>
-
-	<select id="" resultType="">
-	</select> -->
+	<!-- <update id=""> </update> <delete id=""> </delete> <select id="" resultType=""> 
+		</select> -->
 
 
 

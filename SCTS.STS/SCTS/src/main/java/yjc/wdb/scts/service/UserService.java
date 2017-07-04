@@ -8,4 +8,5 @@ public interface UserService {
 	public void insertUser(UserVO user) throws Exception;
 	public int checkUser(String id) throws Exception;
 	public int point(String user_id) throws Exception;
+	public String knowUserBranch(String user_id) throws Exception;
 }

@@ -3,6 +3,7 @@ package yjc.wdb.scts.websocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -16,7 +17,8 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import yjc.wdb.scts.dao.BillDAO;
+import yjc.wdb.scts.dao.BBSDAO;
+
 
 public class EventNotificationSocket extends TextWebSocketHandler{
 
@@ -24,9 +26,10 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 	
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	private List<HashMap> eventNotification;
+	private List<HashMap> currentSession;
 
 	@Inject
-	private BillDAO billDAO;
+	private BBSDAO bbsDAO;
 	
 	// 클라이언트 연결이후에 실행되는 메소드
 	@Override
@@ -46,8 +49,20 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 		super.handleTextMessage(session, message);
 		
 		logger.info("{} 보냄", message.getPayload());
+		
+		JSONParser jsonp = new JSONParser();
+		JSONObject obj = null;
+		obj = (JSONObject) jsonp.parse(message.getPayload());
+		String branch = obj.get("branch").toString();
+		String sender = obj.get("sender").toString();
+		String reciever = obj.get("reciever").toString();
 	
-	
+		
+		currentSession.add((HashMap) new HashMap().put(branch, session.getId()));
+		
+		System.out.println("여기욥!"+currentSession.toString());
+		
+		eventNotification = bbsDAO.eventNotification();
 		
 		JSONArray jArray = new JSONArray();
 		
@@ -63,10 +78,10 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 		JSONObject result = new JSONObject();
 		result.put("eventNotification", jArray);
 		
-		for(WebSocketSession sess : sessionList){
+/*		for(WebSocketSession sess : sessionList){
 			sess.sendMessage(new TextMessage(result.toString()));
 		}
-		
+		*/
 	}
 	
 	// 클라이언트가 연결을 끊었을 때 실행되는 메소드

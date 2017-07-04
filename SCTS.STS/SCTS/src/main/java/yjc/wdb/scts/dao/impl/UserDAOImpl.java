@@ -43,4 +43,10 @@ private static String namespace ="yjc.wdb.mapper.UserMapper";
 		return sqlSession.selectOne(namespace+".point", user_id);
 	}
 
+	@Override
+	public String knowUserBranch(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".knowUserBranch", user_id);
+	}
+
 }
