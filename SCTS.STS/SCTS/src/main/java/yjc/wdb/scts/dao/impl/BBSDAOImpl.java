@@ -91,9 +91,21 @@ public class BBSDAOImpl implements BBSDAO {
 	}
 
 	@Override
-	public List<HashMap> eventNotification() throws Exception {
+	public List<HashMap> eventNotification(int sender) throws Exception {
 		// TODO Auto-generated method stub
-		return sql.selectList(NAMESPACE+".eventNotification");
+		return sql.selectList(NAMESPACE+".eventNotification", sender);
+	}
+
+	@Override
+	public void insertNoti(JSONObject json) throws Exception {
+		
+		sql.insert(NAMESPACE+".insertNoti", json);
+	}
+
+	@Override
+	public List<HashMap> notification(int reciever) throws Exception {
+		
+		return sql.selectList(NAMESPACE+".notification", reciever);
 	}
 	
 	

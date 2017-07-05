@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <link href="resources/customcss/event_Management.css" rel="stylesheet" />
+
 <style>
 body {
 	background: white;
@@ -12,7 +13,8 @@ body {
 }
 </style>
 <script>
-	var bhf_code = 1;
+
+	var bhf_code = "${bhf_code}";
 	$(document).ready(
 			function() {
 
@@ -192,6 +194,7 @@ body {
 							event_end_de : eventEnd
 
 						},
+						async : false,
 						dataType : "text",
 						success : function(result) {
 							if (result == "success") {
@@ -206,6 +209,9 @@ body {
 						}
 
 					});
+					
+					
+					sendNoti();
 
 				});
 
@@ -277,6 +283,7 @@ body {
 					user_id : user_id
 
 				}),
+				async : false,
 				dataType : "text",
 				success : function(result) {
 					if (result == "success") {
@@ -290,9 +297,20 @@ body {
 			});
 
 			$("#registerEvent").modal("hide");
+			
+			sendNoti();
 
 		});
 
+	}
+	
+	function sendNoti(){
+		var json = JSON.stringify({
+			sender : bhf_code,
+			reciever : bhf_code
+		});
+		
+		eventSocket.send(json);
 	}
 
 	// 페이지 로딩시 디비에 있는 이벤트 불러옴

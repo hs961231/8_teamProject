@@ -91,7 +91,7 @@ public class HomeController {
 			return "error";
 		else if(chk == 1) {
 			session.setAttribute("user_id", user.getUser_id());
-			session.setAttribute("branch", branch);
+			session.setAttribute("bhf_code", branch);
 			return "success";
 		}
 		else

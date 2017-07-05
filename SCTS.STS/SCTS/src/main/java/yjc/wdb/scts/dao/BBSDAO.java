@@ -23,6 +23,8 @@ public interface BBSDAO {
 	public void deleteBbscttWriting(int bbsctt_code) throws Exception;
 	public List<HashMap> listEvent(String date1, String date2) throws Exception;
 	public void insertBbsctt_writing(JSONObject json) throws Exception;
-	public List<HashMap> eventNotification() throws Exception;  
+	public List<HashMap> eventNotification(int sender) throws Exception;  
+	public List<HashMap> notification(int reciever) throws Exception;
+	public void insertNoti(JSONObject json) throws Exception;
 	
 }

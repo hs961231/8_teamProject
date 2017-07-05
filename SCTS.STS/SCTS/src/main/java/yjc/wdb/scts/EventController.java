@@ -213,5 +213,35 @@ public class EventController {
 		}
 		
 		
+		@RequestMapping(value="notification", method=RequestMethod.GET
+				,produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String notification(int reciever) throws Exception{
+			
+			List<HashMap> list = bbsService.notification(reciever);
+			
+			JSONObject notiJson;
+			JSONArray notiArray = new JSONArray();
+			
+			for(int i=0; i < list.size(); i++){
+				
+				notiJson = new JSONObject();
+				
+				notiJson.put("sender", list.get(i).get("sender"));
+				notiJson.put("reciever", list.get(i).get("reciever"));
+				notiJson.put("bbsctt_code", list.get(i).get("bbsctt_code"));
+				notiJson.put("dateCha", list.get(i).get("dateCha"));
+				notiJson.put("ntcn_code", list.get(i).get("ntcn_code"));
+				notiJson.put("bbsctt_sj", list.get(i).get("bbsctt_sj"));
+				
+				notiArray.add(notiJson);
+				
+			}
+			 
+			JSONObject json = new JSONObject();
+			json.put("result", notiArray);
+			
+			return json.toString();
+		}
+		
 
 }

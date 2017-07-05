@@ -110,7 +110,80 @@
 
 <script src="resources/customjs/highChartTheme.js"></script>
 
+<!-- webSocket -->
+<script src="resources/customjs/sockjs.js"></script>
 
+<script>
+	$(document)
+			.ready(
+					function() {
+
+						var bhf_code = "${bhf_code}"
+						$
+								.ajax({
+									url : "notification",
+									type : "GET",
+									data : {
+										reciever : bhf_code
+									},
+									dataType : "json",
+									success : function(data) {
+
+										console.log(data);
+
+										var noti = $(".notification");
+
+										noti.children().remove();
+
+										var length = data.result.length;
+
+										noti
+												.append($("<div class='notify-arrow notify-arrow-blue'></div>"));
+
+										if (length <= 0) {
+											noti.append($("<li></li>").append(
+													$("<p></p>").addClass(
+															"blue").text(
+															"알림이 없습니다.")));
+										} else {
+											noti.append($("<li></li>").append(
+													$("<p></p>").addClass(
+															"blue").text(
+															"알림이 있습니다.")));
+										}
+
+										for (var i = 0; i < length; i++) {
+
+											noti
+													.append($("<li></li>")
+															.attr(
+																	"data-id",
+																	data.result[i].bbsctt_code)
+															.append(
+																	$("<a></a>")
+																			.attr(
+																					"href",
+																					"#")
+																			.text(
+																					data.result[i].bbsctt_sj)));
+											$(
+													"li[data-id="
+															+ data.result[i].bbsctt_code
+															+ "] a")
+													.append(
+															$("<span></span>")
+																	.addClass(
+																			"small italic pull-right")
+																	.text(
+																			data.result[i].dateCha
+																					+ " days"));
+
+										}
+
+									}
+								});
+					});
+</script>
 
 </head>
 
@@ -193,25 +266,31 @@
 							<li>
 								<p class="blue">알림이 없습니다.</p>
 							</li>
-							<li><a href="#"> <span class="label label-primary"><i
-										class="icon_profile"></i></span> Friend Request <span
+							<li><a href="#"> Friend Request <span
 									class="small italic pull-right">5 mins</span>
 							</a></li>
-							<li><a href="#"> <span class="label label-warning"><i
-										class="icon_pin"></i></span> John location. <span
+							<li><a href="#"> John location. <span
 									class="small italic pull-right">50 mins</span>
 							</a></li>
-							<li><a href="#"> <span class="label label-danger"><i
-										class="icon_book_alt"></i></span> Project 3 Completed. <span
+							<li><a href="#"> Project 3 Completed. <span
 									class="small italic pull-right">1 hr</span>
 							</a></li>
-							<li><a href="#"> <span class="label label-success"><i
-										class="icon_like"></i></span> Mick appreciated your work. <span
+							<li><a href="#"> Mick appreciated your work. <span
 									class="small italic pull-right"> Today</span>
 							</a></li>
 							<li><a href="#">See all notifications</a></li>
 						</ul></li>
 					<!-- alert notification end-->
+
+
+
+
+
+
+
+
+
+
 					<!-- user login dropdown start-->
 					<li class="dropdown"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#"> <span class="profile-ava">
@@ -309,18 +388,47 @@
 	<!-- container section start -->
 	<script>
 		var eventSocket = new SockJS("/scts/event-ws");
-		
-		var branch = "${branch}";
-		
-		
-		eventSocket.onopen = function(){
-			var json = JSON.stringify({
-				branch : branch,
-				sender : 0,
-				reciever : 0
-			});
-			
-			eventSocket.send(json);
+
+		eventSocket.onmessage = function(event) {
+			var data = event.data;
+			data = JSON.parse(data);
+
+			var reciever = "${bhf_code}";
+
+			if (data.eventNotification[0].reciever == reciever) {
+
+				var noti = $(".notification");
+
+				noti.children().remove();
+
+				var length = data.eventNotification.length;
+
+				noti
+						.append($("<div class='notify-arrow notify-arrow-blue'></div>"));
+
+				if (length <= 0) {
+					noti.append($("<li></li>").append(
+							$("<p></p>").addClass("blue").text("알림이 없습니다.")));
+				} else {
+					noti.append($("<li></li>").append(
+							$("<p></p>").addClass("blue").text("알림이 있습니다.")));
+				}
+
+				for (var i = 0; i < length; i++) {
+
+					noti.append($("<li></li>").attr("data-id",
+							data.eventNotification[i].bbsctt_code).append(
+							$("<a></a>").attr("href", "#").text(
+									data.eventNotification[i].bbsctt_sj)));
+					$("li[data-id=" + data.eventNotification[i].bbsctt_code + "] a")
+							.append(
+									$("<span></span>").addClass(
+											"small italic pull-right").text(
+											data.eventNotification[i].dateCha + " days"));
+
+				}
+			}
+
 		}
 	</script>
 
