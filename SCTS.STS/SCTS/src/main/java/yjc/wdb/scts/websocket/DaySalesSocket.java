@@ -7,7 +7,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject; 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -47,8 +48,14 @@ public class DaySalesSocket extends TextWebSocketHandler{
 		
 		logger.info("{} º¸³¿", message.getPayload());
 		
+		
+		JSONParser parser = new JSONParser();
+		
+		JSONObject obj =null;
+		obj = (JSONObject) parser.parse(message.getPayload());
 
-		daySales = billDAO.daySales();
+		int bhf_code = Integer.parseInt(obj.get("bhf_code").toString());
+		daySales = billDAO.daySales(bhf_code);
 		
 		//System.out.println(daySales.toString());
 		
@@ -64,7 +71,7 @@ public class DaySalesSocket extends TextWebSocketHandler{
 
 		
 		
-		daySalesInfo = billDAO.daySalesSettleInfo();
+		daySalesInfo = billDAO.daySalesSettleInfo(bhf_code);
 		
 		System.out.println(daySalesInfo.toString());
 		JSONArray yearSalesInfoArray = new JSONArray();
@@ -77,8 +84,8 @@ public class DaySalesSocket extends TextWebSocketHandler{
 		}
 		
 
-		int todaySales = billDAO.todaySales();
-		int monthTotalSales = billDAO.monthTotalSales();
+		int todaySales = billDAO.todaySales(bhf_code);
+		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 		
 		JSONObject result = new JSONObject();
 		result.put("daySales", jArray);

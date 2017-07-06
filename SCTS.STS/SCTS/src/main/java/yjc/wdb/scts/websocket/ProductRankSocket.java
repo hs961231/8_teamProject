@@ -57,9 +57,10 @@ public class ProductRankSocket  extends TextWebSocketHandler{
 		
 		String date = obj.get("date").toString();
 		int standard = Integer.parseInt(obj.get("standard").toString());
+		int bhf_code = Integer.parseInt(obj.get("bhf_code").toString());
 		
 
-		productRankSales = billDAO.productRank(date, standard);
+		productRankSales = billDAO.productRank(date, standard, bhf_code);
 		
 		//System.out.println(daySales.toString());
 		
@@ -76,7 +77,7 @@ public class ProductRankSocket  extends TextWebSocketHandler{
 
 		
 		
-		productRankSalesInfo = billDAO.productRankInfo(date, standard);
+		productRankSalesInfo = billDAO.productRankInfo(date, standard, bhf_code);
 		
 		System.out.println(productRankSalesInfo.toString());
 		JSONArray yearSalesInfoArray = new JSONArray();
@@ -91,8 +92,8 @@ public class ProductRankSocket  extends TextWebSocketHandler{
 		}
 		
 
-		int todaySales = billDAO.todaySales();
-		int monthTotalSales = billDAO.monthTotalSales();
+		int todaySales = billDAO.todaySales(bhf_code);
+		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 		
 		JSONObject result = new JSONObject();
 		result.put("productSales", jArray);

@@ -56,8 +56,10 @@ public class YearSalesSocket extends TextWebSocketHandler{
 		JSONObject obj =null;
 		obj = (JSONObject) parser.parse(message.getPayload());
 
+
+		int bhf_code = Integer.parseInt(obj.get("bhf_code").toString());
 		
-		list = billDAO.yearSales(Integer.parseInt(obj.get("year2").toString()));
+		list = billDAO.yearSales(Integer.parseInt(obj.get("year2").toString()), bhf_code);
 		
 		//System.out.println(list.toString());
 		
@@ -71,7 +73,8 @@ public class YearSalesSocket extends TextWebSocketHandler{
 			jArray.add(json);
 		}
 
-		yearSalesInfo = billDAO.settleSalesInfo(Integer.parseInt(obj.get("year1").toString()), Integer.parseInt(obj.get("year2").toString()));
+		yearSalesInfo = billDAO.settleSalesInfo(Integer.parseInt(obj.get("year1").toString()), 
+				Integer.parseInt(obj.get("year2").toString()), bhf_code);
 		JSONArray yearSalesInfoArray = new JSONArray();
 		for(int i = 0; i < yearSalesInfo.size(); i++){
 			JSONObject json = new JSONObject();
@@ -83,10 +86,10 @@ public class YearSalesSocket extends TextWebSocketHandler{
 		
 		System.out.println(yearSalesInfo.toString());
 		
-		int todaySales = billDAO.todaySales();
+		int todaySales = billDAO.todaySales(bhf_code);
 
 		
-		int monthTotalSales = billDAO.monthTotalSales();
+		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 		
 		JSONObject result = new JSONObject();
 		result.put("yearSales", jArray);

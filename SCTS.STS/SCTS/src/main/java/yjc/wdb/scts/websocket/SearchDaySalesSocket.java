@@ -58,9 +58,9 @@ public class SearchDaySalesSocket extends TextWebSocketHandler{
 		String date1 = obj.get("date1").toString();
 		String date2 = obj.get("date2").toString();
 		int setle_mth_code = Integer.parseInt(obj.get("setle_mth_code").toString());
+		int bhf_code = Integer.parseInt(obj.get("bhf_code").toString());
 
-
-		searchDaySales = billDAO.searchDaySales(date1, date2);
+		searchDaySales = billDAO.searchDaySales(date1, date2, bhf_code);
 		//System.out.println(daySales.toString());
 
 		JSONArray jArray = new JSONArray();
@@ -75,7 +75,7 @@ public class SearchDaySalesSocket extends TextWebSocketHandler{
 
 
 
-		daySalesInfo = billDAO.daySettle(date1, date2, setle_mth_code);
+		daySalesInfo = billDAO.daySettle(date1, date2, setle_mth_code, bhf_code);
 
 		System.out.println(daySalesInfo.toString());
 		JSONArray yearSalesInfoArray = new JSONArray();
@@ -88,8 +88,8 @@ public class SearchDaySalesSocket extends TextWebSocketHandler{
 		}
 
 
-		int todaySales = billDAO.todaySales();
-		int monthTotalSales = billDAO.monthTotalSales();
+		int todaySales = billDAO.todaySales(bhf_code);
+		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 
 		JSONObject result = new JSONObject();
 		result.put("daySales", jArray);

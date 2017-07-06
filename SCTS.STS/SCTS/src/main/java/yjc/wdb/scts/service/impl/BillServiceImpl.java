@@ -32,105 +32,105 @@ public class BillServiceImpl implements BillService {
 
 
 	@Override
-	public List<HashMap> yearSales(int year) throws Exception {
+	public List<HashMap> yearSales(int year, int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.yearSales(year);
+		return dao.yearSales(year, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> daySales() throws Exception {
+	public List<HashMap> daySales(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.daySales();
+		return dao.daySales(bhf_code);
 	}
 
 	@Override
-	public List<HashMap> searchYear(int year1, int year2) throws Exception {
+	public List<HashMap> searchYear(int year1, int year2, int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.searchYear(year1, year2);
+		return dao.searchYear(year1, year2, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> settleSalesInfo(int year1, int year2) throws Exception {
+	public List<HashMap> settleSalesInfo(int year1, int year2, int bhf_code) throws Exception {
 
-		return dao.settleSalesInfo(year1, year2);
+		return dao.settleSalesInfo(year1, year2, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> daySalesSettleInfo() throws Exception {
+	public List<HashMap> daySalesSettleInfo(int bhf_code) throws Exception {
 
-		return dao.daySalesSettleInfo();
+		return dao.daySalesSettleInfo(bhf_code);
 	}
 
 	@Override
-	public List<HashMap> searchDaySales(String date1, String date2) throws Exception {
+	public List<HashMap> searchDaySales(String date1, String date2, int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.searchDaySales(date1, date2);
+		return dao.searchDaySales(date1, date2, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code) {
+	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code, int bhf_code) {
 		// TODO Auto-generated method stub
-		return dao.daySettle(date1, date2, setle_mth_code);
+		return dao.daySettle(date1, date2, setle_mth_code, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> monthSales(String month1, String month2) throws Exception {
+	public List<HashMap> monthSales(String month1, String month2, int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.monthSales(month1, month2);
+		return dao.monthSales(month1, month2, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception {
+	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code, int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.monthSalesSettleInfo(month1, month2, setle_mth_code);
+		return dao.monthSalesSettleInfo(month1, month2, setle_mth_code, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> productRank(String date, int standard) throws Exception {
+	public List<HashMap> productRank(String date, int standard, int bhf_code) throws Exception {
 
-		return dao.productRank(date, standard);
+		return dao.productRank(date, standard, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> productRankInfo(String date, int standard) throws Exception {
+	public List<HashMap> productRankInfo(String date, int standard, int bhf_code) throws Exception {
 
-		return dao.productRankInfo(date, standard);
+		return dao.productRankInfo(date, standard, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> yearToMonth(int year) throws Exception {
+	public List<HashMap> yearToMonth(int year, int bhf_code) throws Exception {
 
-		return dao.yearToMonth(year);
+		return dao.yearToMonth(year, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> genderSales(String date, String gender) throws Exception {
+	public List<HashMap> genderSales(String date, String gender, int bhf_code) throws Exception {
 
-		return dao.genderSales(date, gender);
+		return dao.genderSales(date, gender, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception {
+	public List<HashMap> ageSales(String date, int age, int standard, String gender, int bhf_code) throws Exception {
 
-		return dao.ageSales(date, age, standard, gender);
+		return dao.ageSales(date, age, standard, gender, bhf_code);
 	}
 
 	@Override
-	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
+	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender, int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.ageSalesInfo(date, age, standard, gender);
+		return dao.ageSalesInfo(date, age, standard, gender, bhf_code);
 	}
 
 	@Override
-	public int todaySales() throws Exception {
+	public int todaySales(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.todaySales();
+		return dao.todaySales(bhf_code);
 	}
 
 	@Override
-	public int monthTotalSales() throws Exception {
+	public int monthTotalSales(int bhf_code) throws Exception {
 
-		return dao.monthTotalSales();
+		return dao.monthTotalSales(bhf_code);
 	}
 
 	@Override

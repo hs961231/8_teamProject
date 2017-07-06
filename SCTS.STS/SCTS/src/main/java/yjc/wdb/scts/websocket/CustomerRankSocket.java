@@ -59,18 +59,15 @@ public class CustomerRankSocket extends TextWebSocketHandler{
 		int standard = Integer.parseInt(obj.get("standard").toString());
 		int age = Integer.parseInt(obj.get("age").toString());
 		String gender = obj.get("gender").toString();
+		int bhf_code = Integer.parseInt(obj.get("bhf_code").toString());
 		
 		if(gender.equals("null")){
 			gender = null;
 		}
 		
-		
-		System.out.println("여기까지옴 "+date + " "+ standard + " "+ age + " "+gender);
-		
 
-		ageSales = billDAO.ageSales(date, age, standard, gender);
-		
-		System.out.println("와아아~"+ageSales.toString());
+		ageSales = billDAO.ageSales(date, age, standard, gender, bhf_code);
+
 		
 		JSONArray jArray = new JSONArray();
 		
@@ -85,7 +82,7 @@ public class CustomerRankSocket extends TextWebSocketHandler{
 
 		
 		
-		ageSalesInfo = billDAO.ageSalesInfo(date, age, standard, gender);
+		ageSalesInfo = billDAO.ageSalesInfo(date, age, standard, gender, bhf_code);
 		
 		System.out.println(ageSalesInfo.toString());
 		JSONArray yearSalesInfoArray = new JSONArray();
@@ -100,8 +97,8 @@ public class CustomerRankSocket extends TextWebSocketHandler{
 		}
 		
 
-		int todaySales = billDAO.todaySales();
-		int monthTotalSales = billDAO.monthTotalSales();
+		int todaySales = billDAO.todaySales(bhf_code);
+		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 		
 		JSONObject result = new JSONObject();
 		result.put("ageSales", jArray);

@@ -22,148 +22,165 @@ public class BillDAOImpl implements BillDAO {
 
 
 	@Override
-	public List<HashMap> yearSales(int year) throws Exception {
-		// TODO Auto-generated method stub
-		return sql.selectList(NAMESPACE+".yearSales", year);
+	public List<HashMap> yearSales(int year, int bhf_code) throws Exception {
+		
+		Map map = new HashMap();
+		map.put("year", year);
+		map.put("bhf_code", bhf_code);
+		
+		return sql.selectList(NAMESPACE+".yearSales", map);
 	}
 
 	@Override
-	public List<HashMap> daySales() throws Exception {
-		// TODO Auto-generated method stub
-		return sql.selectList(NAMESPACE+".daySales");
+	public List<HashMap> daySales(int bhf_code) throws Exception {
+		
+		return sql.selectList(NAMESPACE+".daySales", bhf_code);
 	}
 
 	@Override
-	public List<HashMap> searchYear(int year1, int year2) throws Exception {
+	public List<HashMap> searchYear(int year1, int year2,  int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("year1", year1);
 		map.put("year2", year2);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".searchYear", map);
 	}
 
 	@Override
-	public List<HashMap> settleSalesInfo(int year1, int year2) throws Exception {
+	public List<HashMap> settleSalesInfo(int year1, int year2, int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("year1", year1);
 		map.put("year2", year2);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".settleSalesInfo", map);
 	}
 
 	@Override
-	public List<HashMap> daySalesSettleInfo() throws Exception {
+	public List<HashMap> daySalesSettleInfo(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return sql.selectList(NAMESPACE+".daySalesSettleInfo");
+		return sql.selectList(NAMESPACE+".daySalesSettleInfo", bhf_code);
 	}
 
 	@Override
-	public List<HashMap> searchDaySales(String date1, String date2) throws Exception {
+	public List<HashMap> searchDaySales(String date1, String date2, int bhf_code) throws Exception {
 
 		Map map = new HashMap();
 		map.put("date1", date1);
 		map.put("date2", date2);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".searchDaySales", map);
 	}
 
 	@Override
-	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code) {
+	public List<HashMap> daySettle(String date1, String date2, int setle_mth_code, int bhf_code) {
 
 		Map map = new HashMap();
 		map.put("date1", date1);
 		map.put("date2", date2);
 		map.put("setle_mth_code", setle_mth_code);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".daySettle", map);
 	}
 
 	@Override
-	public List<HashMap> monthSales(String month1, String month2) throws Exception {
+	public List<HashMap> monthSales(String month1, String month2, int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("month1", month1);
 		map.put("month2", month2);
+		map.put("bhf_code", bhf_code);
 
 
 		return sql.selectList(NAMESPACE+".monthSales", map);
 	}
 
 	@Override
-	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception {
+	public List<HashMap> monthSalesSettleInfo(String month1, String month2, int setle_mth_code, int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("month1", month1);
 		map.put("month2", month2);
 		map.put("setle_mth_code", setle_mth_code);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".monthSalesSettleInfo", map);
 	}
 
 	@Override
-	public List<HashMap> productRank(String date, int standard) throws Exception {
+	public List<HashMap> productRank(String date, int standard, int bhf_code) throws Exception {
 
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("standard", standard);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".productRank", map);
 	}
 
 	@Override
-	public List<HashMap> productRankInfo(String date ,int standard) throws Exception {
+	public List<HashMap> productRankInfo(String date ,int standard, int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("standard", standard);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".productRankInfo", map);
 	}
 
 	@Override
-	public List<HashMap> yearToMonth(int year) throws Exception {
-		// TODO Auto-generated method stub
-		return sql.selectList(NAMESPACE+".yearToMonth", year);
+	public List<HashMap> yearToMonth(int year, int bhf_code) throws Exception {
+		Map map = new HashMap();
+		map.put("year", year);
+		map.put("bhf_code", bhf_code);
+		return sql.selectList(NAMESPACE+".yearToMonth", map);
 	}
 
 	@Override
-	public List<HashMap> genderSales(String date, String gender) throws Exception {
+	public List<HashMap> genderSales(String date, String gender, int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("gender", gender);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".genderSales", map);
 	}
 
 	@Override
-	public List<HashMap> ageSales(String date, int age, int standard, String gender) throws Exception {
+	public List<HashMap> ageSales(String date, int age, int standard, String gender, int bhf_code) throws Exception {
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("age", age);
 		map.put("standard", standard);
 		map.put("gender", gender);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".ageSales", map);
 	}
 
 	@Override
-	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender) throws Exception {
+	public List<HashMap> ageSalesInfo(String date, int age, int standard, String gender, int bhf_code) throws Exception {
 
 		Map map = new HashMap();
 		map.put("date", date);
 		map.put("age", age);
 		map.put("standard", standard);
 		map.put("gender", gender);
+		map.put("bhf_code", bhf_code);
 
 		return sql.selectList(NAMESPACE+".ageSalesInfo", map);
 	}
 
 	@Override
-	public int todaySales() throws Exception {
-		return sql.selectOne(NAMESPACE+".todaySales");
+	public int todaySales(int bhf_code) throws Exception {
+		return sql.selectOne(NAMESPACE+".todaySales", bhf_code);
 	}
 
 	@Override
-	public int monthTotalSales() throws Exception {
+	public int monthTotalSales(int bhf_code) throws Exception {
 
-		return sql.selectOne(NAMESPACE+".monthTotalSales");
+		return sql.selectOne(NAMESPACE+".monthTotalSales", bhf_code);
 	}
 
 

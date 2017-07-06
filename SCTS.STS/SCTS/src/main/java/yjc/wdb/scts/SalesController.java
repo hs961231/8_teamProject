@@ -24,9 +24,9 @@ public class SalesController {
 	private BillService billService;
 	
 	@RequestMapping(value="yearSales", method=RequestMethod.GET)
-	public @ResponseBody String yearSales(int year) throws Exception{
+	public @ResponseBody String yearSales(int year, int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.yearSales(year);
+		List<HashMap> list = billService.yearSales(year, bhf_code);
 		
 
 		JSONObject salesJson;
@@ -51,10 +51,10 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value="yearToMonth", method=RequestMethod.GET)
-	public @ResponseBody String yearToMonth(int year) throws Exception{
+	public @ResponseBody String yearToMonth(int year, int bhf_code) throws Exception{
 
 
-		List<HashMap> yearToMonth = billService.yearToMonth(year);
+		List<HashMap> yearToMonth = billService.yearToMonth(year, bhf_code);
 
 		JSONObject salesJson;
 	
@@ -78,10 +78,10 @@ public class SalesController {
 	
 	
 	@RequestMapping(value="searchYear", method=RequestMethod.GET)
-	public @ResponseBody String searchYear(int year1, int year2) throws Exception{
+	public @ResponseBody String searchYear(int year1, int year2, int bhf_code) throws Exception{
 
 
-		List<HashMap> list = billService.searchYear(year1, year2);
+		List<HashMap> list = billService.searchYear(year1, year2, bhf_code);
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -103,9 +103,9 @@ public class SalesController {
 	
 	
 	@RequestMapping(value="settleSalesInfo", method=RequestMethod.GET)
-	public @ResponseBody String settleSalesInfo(int year1, int year2) throws Exception{
+	public @ResponseBody String settleSalesInfo(int year1, int year2, int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.settleSalesInfo(year1, year2);
+		List<HashMap> list = billService.settleSalesInfo(year1, year2, bhf_code);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -128,8 +128,8 @@ public class SalesController {
 	
 
 	@RequestMapping(value="daySales", method=RequestMethod.GET)
-	public @ResponseBody String daySales() throws Exception{
-		List<HashMap> list = billService.daySales();
+	public @ResponseBody String daySales(int bhf_code) throws Exception{
+		List<HashMap> list = billService.daySales(bhf_code);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -150,10 +150,10 @@ public class SalesController {
 
 	
 	@RequestMapping(value="daySettle", method=RequestMethod.GET)
-	public @ResponseBody String daySettle(String date1, String date2, int setle_mth_code) throws Exception{
+	public @ResponseBody String daySettle(String date1, String date2, int setle_mth_code, int bhf_code) throws Exception{
 
 
-		List<HashMap> list = billService.daySettle(date1, date2, setle_mth_code);
+		List<HashMap> list = billService.daySettle(date1, date2, setle_mth_code, bhf_code);
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -175,9 +175,9 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value="searchDaySales", method=RequestMethod.GET)
-	public @ResponseBody String searchDaySales(String date1, String date2) throws Exception{
+	public @ResponseBody String searchDaySales(String date1, String date2, int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.searchDaySales(date1, date2);
+		List<HashMap> list = billService.searchDaySales(date1, date2, bhf_code);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -198,9 +198,9 @@ public class SalesController {
 
 	
 	@RequestMapping(value="daySalesSettleInfo", method=RequestMethod.GET)
-	public @ResponseBody String daySalesSettleInfo() throws Exception{
+	public @ResponseBody String daySalesSettleInfo(int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.daySalesSettleInfo();
+		List<HashMap> list = billService.daySalesSettleInfo(bhf_code);
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -222,10 +222,10 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value="monthSales", method=RequestMethod.GET)
-	public @ResponseBody String monthSales(String month1, String month2) throws Exception{
+	public @ResponseBody String monthSales(String month1, String month2, int bhf_code) throws Exception{
 
 
-		List<HashMap> list = billService.monthSales(month1, month2);
+		List<HashMap> list = billService.monthSales(month1, month2, bhf_code);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -246,10 +246,10 @@ public class SalesController {
 
 	
 	@RequestMapping(value="monthSalesSettleInfo", method=RequestMethod.GET)
-	public @ResponseBody String monthSalesSettleInfo(String month1, String month2, int setle_mth_code) throws Exception{
+	public @ResponseBody String monthSalesSettleInfo(String month1, String month2, int setle_mth_code, int bhf_code) throws Exception{
 
 
-		List<HashMap> list = billService.monthSalesSettleInfo(month1, month2, setle_mth_code);
+		List<HashMap> list = billService.monthSalesSettleInfo(month1, month2, setle_mth_code, bhf_code);
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -272,10 +272,10 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value="productRank", method=RequestMethod.GET)
-	public @ResponseBody String productRank(String date, int standard) throws Exception{
+	public @ResponseBody String productRank(String date, int standard, int bhf_code) throws Exception{
 
 
-		List<HashMap> list = billService.productRank(date, standard);
+		List<HashMap> list = billService.productRank(date, standard, bhf_code);
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -301,9 +301,9 @@ public class SalesController {
 	
 	
 	@RequestMapping(value="productRankInfo", method=RequestMethod.GET)
-	public @ResponseBody String productRankInfo(String date, int standard) throws Exception{
+	public @ResponseBody String productRankInfo(String date, int standard, int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.productRankInfo(date, standard);
+		List<HashMap> list = billService.productRankInfo(date, standard, bhf_code);
 		
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -329,10 +329,10 @@ public class SalesController {
 	}
 	
 	@RequestMapping(value="genderSales", method=RequestMethod.GET)
-	public @ResponseBody String genderSales(String date) throws Exception{
+	public @ResponseBody String genderSales(String date, int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.genderSales(date, "m");
-		List<HashMap> list2 = billService.genderSales(date, "w");
+		List<HashMap> list = billService.genderSales(date, "m", bhf_code);
+		List<HashMap> list2 = billService.genderSales(date, "w", bhf_code);
 
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -387,9 +387,9 @@ public class SalesController {
 	
 	@RequestMapping(value="ageSales", method=RequestMethod.GET)
 	public @ResponseBody String ageSales(HttpServletRequest request, String date, int age, 
-			int standard, String gender) throws Exception{
+			int standard, String gender, int bhf_code) throws Exception{
 
-		List<HashMap> list = billService.ageSales(date, age, standard, gender);
+		List<HashMap> list = billService.ageSales(date, age, standard, gender, bhf_code);
 	
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();
@@ -413,11 +413,11 @@ public class SalesController {
 	
 	@RequestMapping(value="ageSalesInfo", method=RequestMethod.GET)
 	public @ResponseBody String ageSalesInfo(String date, int age, 
-			int standard, String gender) throws Exception{
+			int standard, String gender, int bhf_code) throws Exception{
 
 
 		
-		List<HashMap> list = billService.ageSalesInfo(date, age, standard, gender);
+		List<HashMap> list = billService.ageSalesInfo(date, age, standard, gender, bhf_code);
 	
 		JSONObject salesJson;
 		JSONArray salesArray = new JSONArray();

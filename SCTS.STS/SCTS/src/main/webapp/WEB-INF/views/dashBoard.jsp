@@ -25,6 +25,7 @@ display: none
 <script>
 	var chart;
 	var DashDaysock = new SockJS("/scts/echo-ws");
+	var bhf_code = "${bhf_code}";
 
 	DashDaysock.onopen = function() {
 		console.log('open');
@@ -40,7 +41,15 @@ display: none
 	};
 
 	function sendMessage() {
-		DashDaysock.send('test');
+		
+		
+		var json = JSON.stringify({
+			bhf_code : bhf_code
+		});
+		
+		
+		
+		DashDaysock.send(json);
 	}
 
 	var realTimeSock = new SockJS("/scts/realtime-ws");
