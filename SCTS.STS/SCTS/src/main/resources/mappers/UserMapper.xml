@@ -22,9 +22,10 @@
 
 	<select id="loginUser" resultType="int">
 		select count(*)
-		from user
+		from user, employee
 		where
-		USER_ID = #{user_id} and USER_PASSWORD = #{user_password}
+		user.USER_ID = #{user_id} and user.USER_PASSWORD = #{user_password}
+		and employee.user_id = user.user_id
 	</select>
 
 	<select resultType="int" id="checkUser">

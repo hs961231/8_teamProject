@@ -91,7 +91,8 @@
 		where
 		date_format(b.BILL_ISSU_DE, '%Y-%m') between concat(#{year}, '-01')
 		and concat(#{year}, '-12') and b.bhf_code = #{bhf_code}
-		group by date_format(b.BILL_ISSU_DE,
+		group by
+		date_format(b.BILL_ISSU_DE,
 		'%Y-%m')
 
 	</select>
@@ -105,7 +106,8 @@
 		from bill b
 		where date_format((b.BILL_ISSU_DE), '%Y') between
 		#{year1} and #{year2} and b.bhf_code = #{bhf_code}
-		group by date_format((b.BILL_ISSU_DE), '%Y');
+		group by
+		date_format((b.BILL_ISSU_DE), '%Y');
 
 
 	</select>
@@ -124,7 +126,8 @@
 		and
 		b.BILL_CODE = si.bill_code and sm.setle_mth_code = si.setle_mth_code
 		and b.bhf_code = #{bhf_code}
-		group by date_format((b.BILL_ISSU_DE), '%Y'), sm.setle_mth_code;
+		group by date_format((b.BILL_ISSU_DE),
+		'%Y'), sm.setle_mth_code;
 
 
 	</select>
@@ -162,7 +165,8 @@
 		b.BILL_CODE = si.bill_code and sm.setle_mth_code =
 		si.setle_mth_code and b.bhf_code = #{bhf_code}
 		group by
-		b.BILL_ISSU_DE, sm.setle_mth_code;
+		b.BILL_ISSU_DE,
+		sm.setle_mth_code;
 
 	</select>
 
@@ -175,7 +179,8 @@
 		totalPrice from
 		bill b
 		where
-		b.BILL_ISSU_DE between #{date2} and #{date1} and b.bhf_code = #{bhf_code}
+		b.BILL_ISSU_DE between #{date2} and #{date1} and b.bhf_code =
+		#{bhf_code}
 		group by
 		b.BILL_ISSU_DE;
 
@@ -213,7 +218,8 @@
 		where
 		date_format(b.BILL_ISSU_DE, '%Y-%m') between #{month2} and #{month1}
 		and b.bhf_code = #{bhf_code}
-		group by date_format(b.BILL_ISSU_DE, '%Y-%m')
+		group by date_format(b.BILL_ISSU_DE,
+		'%Y-%m')
 
 	</select>
 
@@ -276,15 +282,18 @@
 		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
 		from goods g,
 		supply_goods sg
-		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code = #{bhf_code}
+		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code =
+		#{bhf_code}
 		group by
 		g.GOODS_CODE) as result
-		where g.goods_code = pg.goods_code and
+		where g.goods_code =
+		pg.goods_code and
 		b.BILL_CODE = pg.BILL_CODE and
 		date_format(b.BILL_ISSU_DE, '%Y-%m') =
-		#{date} 
+		#{date}
 		and result.goods_code = pg.goods_code and b.bhf_code = #{bhf_code}
-		group by
+		group
+		by
 		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code
 		order by
 		<if test="standard == 1">
@@ -328,16 +337,21 @@
 		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
 		from goods g,
 		supply_goods sg
-		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code = #{bhf_code}
+		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code =
+		#{bhf_code}
 		group by
 		g.GOODS_CODE) as result
-		where g.goods_code = pg.goods_code and
+		where g.goods_code =
+		pg.goods_code and
 		result.goods_code = pg.goods_code
-		and b.BILL_CODE = pg.bill_code and
+		and b.BILL_CODE =
+		pg.bill_code and
 		date_format(b.BILL_ISSU_DE,
-		'%Y-%m') = #{date} and b.bhf_code = #{bhf_code}
+		'%Y-%m') = #{date} and
+		b.bhf_code = #{bhf_code}
 		group by
-		date_format(b.BILL_ISSU_DE, '%Y-%m'), pg.goods_code
+		date_format(b.BILL_ISSU_DE, '%Y-%m'),
+		pg.goods_code
 		order
 		by
 		<if test="standard == 1">
@@ -412,15 +426,18 @@
 		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
 		from
 		goods g, supply_goods sg
-		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code = #{bhf_code}
+		where g.GOODS_CODE = sg.GOODS_CODE and
+		sg.bhf_code = #{bhf_code}
 		group by
 		g.GOODS_CODE) as result
-		where g.goods_code = pg.goods_code and
+		where
+		g.goods_code = pg.goods_code and
 		b.BILL_CODE = pg.BILL_CODE and
 		date_format(b.BILL_ISSU_DE, '%Y-%m') =
 		#{date} and b.USER_ID =
 		u.USER_ID and result.goods_code =
-		g.GOODS_CODE and b.bhf_code = #{bhf_code}
+		g.GOODS_CODE and b.bhf_code =
+		#{bhf_code}
 		and
 		<if test="age lte 40">
 			floor((year(curDate()) - date_format(u.USER_BRTHDY,
@@ -496,15 +513,18 @@
 		ceil(sum(sg.PUCHAS_PC)/sum(sg.WRHOUSNG_QY)) as price
 		from goods g,
 		supply_goods sg
-		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code = #{bhf_code}
+		where g.GOODS_CODE = sg.GOODS_CODE and sg.bhf_code =
+		#{bhf_code}
 		group by
 		g.GOODS_CODE) as result
-		where g.goods_code = pg.goods_code and
+		where g.goods_code =
+		pg.goods_code and
 		b.BILL_CODE = pg.BILL_CODE and
 		date_format(b.BILL_ISSU_DE, '%Y-%m') =
 		#{date} and b.USER_ID =
 		u.USER_ID and result.goods_code =
-		g.GOODS_CODE and b.bhf_code = #{bhf_code}
+		g.GOODS_CODE and b.bhf_code =
+		#{bhf_code}
 		and
 		<if test="age lte 40">
 			floor((year(curDate()) - date_format(u.USER_BRTHDY,
@@ -548,21 +568,21 @@
 	</select>
 
 	<select id="todaySales" resultType="int">
-		select sum(bill_totamt)
-		from
+		select
+		ifnull(sum(bill_totamt), 0) from
 		bill
-		where date_format(bill_issu_de, '%Y-%M-%D') =
+		where date_format(bill_issu_de, '%Y-%m-%d') =
 		date_format(now(),
-		'%Y-%M-%D') and bhf_code = #{bhf_code}
-		group by date_format(bill_issu_de,
-		'%Y-%M-%D')
+		'%Y-%m-%d') and bhf_code = #{bhf_code}
+
+
 	</select>
 
 	<select id="monthTotalSales" resultType="int">
-		select sum(bill_totamt)
+		select ifnull(sum(bill_totamt),0)
 		from bill
-		where date_format(bill_issu_de, '%Y-%M') = date_format(now(),
-		'%Y-%M') and bhf_code = #{bhf_code}
+		where date_format(bill_issu_de, '%Y-%m') = date_format(now(),
+		'%Y-%m') and bhf_code = #{bhf_code}
 
 	</select>
 
@@ -579,11 +599,15 @@
 		(
 		select
 		pg.BILL_CODE as bill_code,
-		g.GOODS_PC * pg.PURCHSGOODS_QY - if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
-		like '%@%' escape '@', (g.GOODS_PC * (trim(trailing '%' from
-		c.COUPON_DSCNT)/100)), c.COUPON_DSCNT)) as price
+		g.GOODS_PC * pg.PURCHSGOODS_QY -
+		if(isnull(pg.COUPON_CODE), 0, if(c.COUPON_DSCNT
+		like '%@%' escape '@',
+		(g.GOODS_PC * (trim(trailing '%' from
+		c.COUPON_DSCNT)/100)),
+		c.COUPON_DSCNT)) as price
 		from
-		goods g, purchase_goods pg, bill b, coupon c
+		goods g, purchase_goods pg, bill b,
+		coupon c
 		where
 		g.GOODS_CODE = pg.GOODS_CODE
 		and
@@ -591,13 +615,16 @@
 		and
 		b.BILL_CODE = LAST_INSERT_ID()
 		and
-		if(isnull(pg.COUPON_CODE), 1, c.COUPON_CODE = pg.COUPON_CODE)
+		if(isnull(pg.COUPON_CODE), 1,
+		c.COUPON_CODE = pg.COUPON_CODE)
 		group by pg.BILL_CODE, pg.GOODS_CODE
-		) as result
+		)
+		as result
 		group by result.bill_code
 		) as total
 		set
-		bill_totamt = total.bill_total
+		bill_totamt =
+		total.bill_total
 		where
 		bill_code = LAST_INSERT_ID()
 	</update>

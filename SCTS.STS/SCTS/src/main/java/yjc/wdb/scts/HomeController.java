@@ -114,7 +114,7 @@ public class HomeController {
 		model.addAttribute("tileList", tileList);
 
 		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김
-		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
+		int bhf_code = Integer.parseInt((String) session.getAttribute("bhf_code"));
 		int countStory = floor_informationService.selectCountStory(bhf_code);
 		model.addAttribute("countStory", countStory);
 		
@@ -136,7 +136,7 @@ public class HomeController {
 		List<HashMap<String, String>> tileList = tileService.selectTileListUp();
 		model.addAttribute("tileList", tileList);
 
-		int bhf_code = 1;	// 임시로 테스트 위해서 여기서 만들어줌
+		int bhf_code = Integer.parseInt((String) session.getAttribute("bhf_code"));	// 임시로 테스트 위해서 여기서 만들어줌
 		List<BeaconVO> beaconList = beaconService.selectAllBeaconList(bhf_code);
 		model.addAttribute("beaconList", beaconList);
 		

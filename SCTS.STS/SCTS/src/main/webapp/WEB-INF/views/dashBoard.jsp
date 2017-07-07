@@ -4,7 +4,7 @@
 
 <script src="resources/customjs/sockjs.js"></script>
 <!-- <script src="resources/customjs/drawingTile.js"></script> -->
-<script src="resources/customjs/dashBoard.js"></script>
+<!-- <script src="resources/customjs/dashBoard.js"></script> -->
 <link href="resources/customcss/tileMapClick.css" rel="stylesheet" />
 
 
@@ -47,8 +47,7 @@ display: none
 			bhf_code : bhf_code
 		});
 		
-		
-		
+
 		DashDaysock.send(json);
 	}
 
@@ -61,8 +60,14 @@ display: none
 	}
 
 	function realTimeSend() {
-		realTimeSock.send('test');
+		
+		var json = JSON.stringify({
+			bhf_code : bhf_code
+		});
+		
+		realTimeSock.send(json);
 	}
+	
 	var todayCount;
 
 	realTimeSock.onmessage = function(event) {
@@ -83,11 +88,18 @@ display: none
 	}
 
 	var daySales = function(data) {
-		console.log(data);
+	
 		data = JSON.parse(data);
-		console.log(data.result[0].totalPrice);
-
+		
+		
+	
 		var length = data.result.length;
+		
+		if(length <= 0){
+			$("#dayday").text("일주일 간의 매출이 존재하지 않습니다.").css("line-height", "400px");
+			
+			
+		}else{
 
 		var options = {
 
@@ -117,6 +129,8 @@ display: none
 		}
 
 		chart = Highcharts.chart('barChart', options);
+		
+		}
 
 	}
 
@@ -201,6 +215,9 @@ display: none
 				}
 
 				Highcharts.chart('charts', options);
+				
+				
+				
 
 				$('#plain').click(function() {
 					chart.update({
@@ -291,8 +308,8 @@ display: none
 	<div class="col-lg-6">
 		<section class="panel">
 			<header class="panel-heading chartTitle"> 일매출 </header>
-			<div class="panel-body text-center">
-				<div id="barChart"></div>
+			<div class="panel-body text-center" id="dayday">
+				<div id="barChart" style="width : 500px; height: 400px"></div>
 				<button id="plain" class="btn btn-default">Plain</button>
 				<button id="inverted" class="btn btn-default">Inverted</button>
 				<button id="polar" class="btn btn-default">Polar</button>
@@ -304,7 +321,7 @@ display: none
 		<section class="panel">
 			<header class="panel-heading chartTitle"> 실시간 방문자수 </header>
 			<div class="panel-body text-center">
-				<div id="charts"></div>
+				<div id="charts" ></div>
 			</div>
 		</section>
 

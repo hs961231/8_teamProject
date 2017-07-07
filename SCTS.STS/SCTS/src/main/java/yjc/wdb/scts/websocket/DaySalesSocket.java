@@ -87,6 +87,7 @@ public class DaySalesSocket extends TextWebSocketHandler{
 		int todaySales = billDAO.todaySales(bhf_code);
 		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 		
+		
 		JSONObject result = new JSONObject();
 		result.put("daySales", jArray);
 		result.put("daySalesInfo", yearSalesInfoArray);

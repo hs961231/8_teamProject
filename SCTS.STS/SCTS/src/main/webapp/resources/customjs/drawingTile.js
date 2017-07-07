@@ -5,17 +5,18 @@
  */
 
 
-
+var bhf_code = "${bhf_code}";
 
 var imgLoad = function(floor) {
 	//var countStory = $("#countStory").val();
 	//var floor = $("#floor").val();
-
+	
 	$.ajax({
 		url: "getDrawingFileName",
 		type: "post",
 		data: {
-			floor : floor
+			floor : floor,
+			bhf_code : bhf_code
 		},
 		dataType: "json",
 		success: function(data) {

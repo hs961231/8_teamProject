@@ -60,7 +60,8 @@ public class MainSocket extends TextWebSocketHandler{
 
 		int bhf_code = Integer.parseInt(obj.get("bhf_code").toString());
 		list = billDAO.daySales(bhf_code);
-
+		
+	
 		System.out.println(list.toString());
 		JSONArray jArray = new JSONArray();
 		for(int i = 0; i < list.size(); i++){

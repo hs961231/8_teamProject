@@ -163,14 +163,4 @@ from floor_information
 where BHF_CODE = #{bhf_code}
 </select>
 
-
-<!-- <update id="">
-</update>
-
-<delete id="" >
-</delete>
-
-<select id="" resultType="">
-</select> -->
-
 </mapper>

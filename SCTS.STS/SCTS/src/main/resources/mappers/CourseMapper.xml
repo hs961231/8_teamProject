@@ -99,14 +99,14 @@
 	
 	</select>
 
-	<select id="monthAvgVisitor" resultType="int">
+	<select id="monthAvgVisitor" resultType="integer">
 		select sum(result.count)
 		from
 		(select
 		count(DISTINCT user_id) as count
 		from course
 		group by
-		date_format(COURS_PASNG_TIME, '%Y-%M-%d')) result;
+		date_format(COURS_PASNG_TIME, '%Y-%m-%d')) result;
 	</select>
 
 	<select id="probability" resultType="java.util.HashMap">

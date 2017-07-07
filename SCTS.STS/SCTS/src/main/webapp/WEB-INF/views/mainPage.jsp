@@ -118,7 +118,7 @@
 			.ready(
 					function() {
 
-						var bhf_code = "${bhf_code}"
+						var bhf_code = "${bhf_code}";
 						$
 								.ajax({
 									url : "notification",

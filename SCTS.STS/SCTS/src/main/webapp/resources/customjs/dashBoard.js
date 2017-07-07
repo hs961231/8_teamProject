@@ -24,7 +24,7 @@ $(document).ready(function() {
 	var day = $("#duration option:selected").val();
 
 	tileGenderAll(day);
-	var floor = $("#floor").val();
+	var floor = parseInt($("#floor").val());
 
 	if($("#countStory").val() > 0)
 		imgLoad(0);

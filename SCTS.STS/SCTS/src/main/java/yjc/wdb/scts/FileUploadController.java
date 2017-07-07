@@ -87,9 +87,8 @@ public class FileUploadController {
 	//@RequestMapping(value="uploadAjax", method=RequestMethod.POST, produces = "text/plain; charset=UTF-8")
 	@RequestMapping(value="getDrawingFileName", produces = "text/plain; charset=UTF-8")
 	@ResponseBody
-	public String getDrawingFileName(@RequestParam("floor") int floor) throws Exception {
+	public String getDrawingFileName(int floor, int bhf_code) throws Exception {
 		
-		int bhf_code = 1;
 		HashMap map = floor_informationService.selectDrawingOne(bhf_code, floor);
 		int drw_code = Integer.parseInt(map.get("drw_code").toString());
 		List<HashMap<String, String>> tileInfoList = floor_informationService.selectTileCategoryList(drw_code);
@@ -101,11 +100,9 @@ public class FileUploadController {
 		map.put("testTileColor", testTileColor);
 		//mainMap.put("tileInfoList", tileInfoList);
 		//mainMap.put("drw_code", drw_code);
-		
-		
+
 		String str = new Gson().toJson(map);
-		
-		System.out.println(str);
+
 		return str;
 	}
 
