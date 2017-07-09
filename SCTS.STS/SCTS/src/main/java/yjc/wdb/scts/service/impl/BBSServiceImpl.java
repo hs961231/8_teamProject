@@ -132,6 +132,12 @@ public class BBSServiceImpl implements BBSService {
 		return dao.notification(reciever);
 	}
 
+	@Override
+	public int notiCnt(int reciever) throws Exception {
+		
+		return dao.notiCnt(reciever);
+	}
+
 
 
 

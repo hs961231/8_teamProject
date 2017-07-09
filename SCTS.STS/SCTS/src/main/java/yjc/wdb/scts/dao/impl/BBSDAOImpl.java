@@ -107,6 +107,12 @@ public class BBSDAOImpl implements BBSDAO {
 		
 		return sql.selectList(NAMESPACE+".notification", reciever);
 	}
+
+	@Override
+	public int notiCnt(int reciever) throws Exception {
+		
+		return sql.selectOne(NAMESPACE+ ".notiCnt", reciever);
+	}
 	
 	
 

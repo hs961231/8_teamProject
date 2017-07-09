@@ -26,5 +26,6 @@ public interface BBSDAO {
 	public List<HashMap> eventNotification(int sender) throws Exception;  
 	public List<HashMap> notification(int reciever) throws Exception;
 	public void insertNoti(JSONObject json) throws Exception;
+	public int notiCnt(int reciever) throws Exception;
 	
 }

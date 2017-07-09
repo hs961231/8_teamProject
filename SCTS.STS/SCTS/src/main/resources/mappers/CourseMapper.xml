@@ -70,7 +70,7 @@
 	</update>
 
 	<!-- 오늘 방문자 수 계산 -->
-	<select id="selectTodayVisitCnt" resultType="integer">
+	<select id="selectTodayVisitCnt" resultType="int">
 		select
 		count(DISTINCT user_id)
 		from
@@ -80,7 +80,7 @@
 		date(subdate(now(), INTERVAL 0 DAY))
 	</select>
 	
-	<select id="tileTodayVisitCnt" resultType="integer">
+	<select id="tileTodayVisitCnt" resultType="int">
 	
 	select
 		count(DISTINCT user_id)
@@ -99,7 +99,7 @@
 	
 	</select>
 
-	<select id="monthAvgVisitor" resultType="integer">
+	<select id="monthAvgVisitor" resultType="int">
 		select sum(result.count)
 		from
 		(select

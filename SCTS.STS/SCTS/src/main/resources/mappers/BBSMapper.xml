@@ -132,4 +132,8 @@
 	</insert>
 
 
+	<select id="notiCnt" resultType="int">
+	select count(*) from notification where n_status = 'no' and reciever = #{reciever};
+	</select>
+
 </mapper>

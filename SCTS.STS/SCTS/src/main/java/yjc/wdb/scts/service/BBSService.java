@@ -21,6 +21,7 @@ public interface BBSService {
 	public List<HashMap> listEvent(String date1, String date2) throws Exception;
 	public List<HashMap> eventNotification(JSONObject json) throws Exception;
 	public List<HashMap> notification(int reciever) throws Exception;
+	public int notiCnt(int reciever) throws Exception;
 	
 
 }
