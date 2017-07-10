@@ -54,6 +54,8 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 		JSONObject obj = null;
 		obj = (JSONObject) jsonp.parse(message.getPayload());
 		
+		int reciever = Integer.parseInt(obj.get("reciever").toString());
+		
 		eventNotification = bbsService.eventNotification(obj);
 		
 		System.out.println(eventNotification.toString());
@@ -71,8 +73,11 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 			jArray.add(json);
 		}
 
+		int notiCnt = bbsService.notiCnt(reciever);
+		
 		JSONObject result = new JSONObject();
 		result.put("eventNotification", jArray);
+		result.put("notiCnt", notiCnt);
 		
 		for(WebSocketSession sess : sessionList){
 			sess.sendMessage(new TextMessage(result.toString()));

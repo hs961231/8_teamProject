@@ -27,5 +27,7 @@ public interface BBSDAO {
 	public List<HashMap> notification(int reciever) throws Exception;
 	public void insertNoti(JSONObject json) throws Exception;
 	public int notiCnt(int reciever) throws Exception;
+	public void deleteNoti(int bbsctt_code) throws Exception;
+	public void updateNoti(int nctn_code) throws Exception;
 	
 }

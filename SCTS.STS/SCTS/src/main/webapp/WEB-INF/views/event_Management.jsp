@@ -230,6 +230,7 @@ body {
 
 							bbsctt_code : code
 						},
+						async : false,
 						dataType : "text",
 						success : function(result) {
 							if (result == "success") {
@@ -239,11 +240,16 @@ body {
 								$('#calendar').fullCalendar('removeEvents');
 
 								viewCalendar(bhf_code);
-
+								
+								
+								
 							}
 						}
 
 					});
+					
+					sendNoti();
+
 				});
 
 			});

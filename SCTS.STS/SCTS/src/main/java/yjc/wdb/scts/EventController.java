@@ -218,6 +218,7 @@ public class EventController {
 		public @ResponseBody String notification(int reciever) throws Exception{
 			
 			List<HashMap> list = bbsService.notification(reciever);
+			int notiCnt = bbsService.notiCnt(reciever);
 			
 			JSONObject notiJson;
 			JSONArray notiArray = new JSONArray();
@@ -239,6 +240,7 @@ public class EventController {
 			 
 			JSONObject json = new JSONObject();
 			json.put("result", notiArray);
+			json.put("notiCnt", notiCnt);
 			
 			return json.toString();
 		}

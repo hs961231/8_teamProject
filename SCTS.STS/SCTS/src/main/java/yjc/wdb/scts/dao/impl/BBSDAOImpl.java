@@ -42,7 +42,7 @@ public class BBSDAOImpl implements BBSDAO {
 
 	@Override
 	public List<HashMap> eventOne(int code) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return sql.selectList(NAMESPACE+".eventOne", code);
 	}
 
@@ -112,6 +112,16 @@ public class BBSDAOImpl implements BBSDAO {
 	public int notiCnt(int reciever) throws Exception {
 		
 		return sql.selectOne(NAMESPACE+ ".notiCnt", reciever);
+	}
+
+	@Override
+	public void deleteNoti(int bbsctt_code) throws Exception {
+		sql.delete(NAMESPACE+".deleteNoti", bbsctt_code);
+	}
+
+	@Override
+	public void updateNoti(int nctn_code) throws Exception {
+		sql.update(NAMESPACE+".updateNoti", nctn_code);
 	}
 	
 	

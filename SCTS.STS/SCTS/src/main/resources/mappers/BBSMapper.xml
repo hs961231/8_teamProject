@@ -84,6 +84,11 @@
 		delete from bbsctt_writing where bbsctt_code =
 		#{bbsctt_code}
 	</delete>
+	
+	
+	<delete  id="deleteNoti">
+		delete from notification where bbsctt_code = #{bbsctt_code}
+	</delete>
 
 	<select id="listEvent" resultMap="viewCalendar">
 		select bc.bbsctt_code as
@@ -122,7 +127,7 @@
 		e.BBSCTT_CODE = n.bbsctt_code and b.BBSCTT_CODE = e.BBSCTT_CODE
 		and
 		n.reciever = #{reciever}
-		order by 6;
+		order by 6 desc
 	</select>
 
 
@@ -133,7 +138,13 @@
 
 
 	<select id="notiCnt" resultType="int">
-	select count(*) from notification where n_status = 'no' and reciever = #{reciever};
+		select count(*) from notification where n_status = 'no' and reciever = #{reciever};
 	</select>
+	
+	
+	<update id="updateNoti">
+		update notification set n_status = 'yes' where ntcn_code = {ntcn_code}
+	</update>
+	
 
 </mapper>

@@ -58,6 +58,7 @@ public class BBSServiceImpl implements BBSService {
 		dao.deleteEvent(bbsctt_code);
 		dao.deleteBbsctt(bbsctt_code);
 		dao.deleteBbscttWriting(bbsctt_code);
+		dao.deleteNoti(bbsctt_code);
 
 
 	}
@@ -136,6 +137,16 @@ public class BBSServiceImpl implements BBSService {
 	public int notiCnt(int reciever) throws Exception {
 		
 		return dao.notiCnt(reciever);
+	}
+
+	@Override
+	public void deleteNoti(int bbsctt_code) throws Exception {
+		dao.deleteNoti(bbsctt_code);
+	}
+
+	@Override
+	public void updateNoti(int nctn_code) throws Exception {
+		dao.updateNoti(nctn_code);
 	}
 
 

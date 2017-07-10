@@ -12,7 +12,6 @@ import yjc.wdb.scts.bean.EventVO;
 public interface BBSService {
 	
 	public List<HashMap> viewCalendar(int bhf_code) throws Exception;
-	
 	public void insertEvent(JSONObject json) throws Exception;
 	public List<HashMap> eventOne(int code) throws Exception;
 	public void updateEvent(EventVO eventVO, BBScttVO bbscttVO) throws Exception;
@@ -22,6 +21,8 @@ public interface BBSService {
 	public List<HashMap> eventNotification(JSONObject json) throws Exception;
 	public List<HashMap> notification(int reciever) throws Exception;
 	public int notiCnt(int reciever) throws Exception;
+	public void deleteNoti(int bbsctt_code) throws Exception;
+	public void updateNoti(int nctn_code) throws Exception;
 	
 
 }

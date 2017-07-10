@@ -140,6 +140,54 @@
 										noti
 												.append($("<div class='notify-arrow notify-arrow-blue'></div>"));
 
+										$("#notiCnt").text(data.notiCnt);
+
+										var notiCount = data.notiCnt;
+										var notiCnt = parseInt($("#notiCnt")
+												.text());
+
+										if (notiCount > notiCnt) {
+											setTimeout(
+													function() {
+														$(".header")
+																.append(
+																		$("<div id='notiDiv'></div>"));
+														$("#notiDiv").css(
+																"position",
+																"absolute");
+														$("#notiDiv").css(
+																"z-index",
+																"1000");
+														$("#notiDiv").css(
+																"text-align",
+																"center");
+														$("#notiDiv")
+																.css(
+																		"background-color",
+																		"#FAECC5");
+														$("#notiDiv").css(
+																"width",
+																"500px");
+														$("#notiDiv")
+																.html(
+																		"<h3>새로운 알림이 왔습니다.</h3>");
+														$("#notiDiv").css(
+																"color",
+																"black");
+														$("#notiDiv").css(
+																"right",
+																"100px");
+														$("#notiDiv").show();
+													}, 1000);
+
+										}
+
+										setTimeout(function() {
+
+											$("#notiDiv").hide();
+
+										}, 2000);
+
 										if (length <= 0) {
 											noti.append($("<li></li>").append(
 													$("<p></p>").addClass(
@@ -150,37 +198,44 @@
 													$("<p></p>").addClass(
 															"blue").text(
 															"알림이 있습니다.")));
+
+											for (var i = 0; i < length; i++) {
+
+												noti
+														.append($("<li></li>")
+																.attr(
+																		"data-id",
+																		data.result[i].ntcn_code).attr("bbsctt_code", data.result[i].bbsctt_code)
+																.append(
+																		$(
+																				"<a></a>")
+																				.attr(
+																						"href",
+																						"#")
+																				.text(
+																						data.result[i].bbsctt_sj)));
+												$(
+														"li[data-id="
+																+ data.result[i].ntcn_code
+																+ "] a")
+														.append(
+																$(
+																		"<span></span>")
+																		.addClass(
+																				"small italic pull-right")
+																		.text(
+																				data.result[i].dateCha
+																						+ " days"));
+												
+												if(i==5){
+													break;
+												}
+
+											}
+
 										}
-
-										for (var i = 0; i < length; i++) {
-
-											noti
-													.append($("<li></li>")
-															.attr(
-																	"data-id",
-																	data.result[i].bbsctt_code)
-															.append(
-																	$("<a></a>")
-																			.attr(
-																					"href",
-																					"#")
-																			.text(
-																					data.result[i].bbsctt_sj)));
-											$(
-													"li[data-id="
-															+ data.result[i].bbsctt_code
-															+ "] a")
-													.append(
-															$("<span></span>")
-																	.addClass(
-																			"small italic pull-right")
-																	.text(
-																			data.result[i].dateCha
-																					+ " days"));
-
-										}
-
 									}
+
 								});
 					});
 </script>
@@ -259,7 +314,8 @@
 					<!-- alert notification start-->
 					<li id="alert_notificatoin_bar" class="dropdown"><a
 						data-toggle="dropdown" class="dropdown-toggle" href="#"> <i
-							class="icon-bell-l"></i> <span class="badge bg-important">0</span>
+							class="icon-bell-l"></i> <span class="badge bg-important"
+							id="notiCnt">0</span>
 					</a>
 						<ul class="dropdown-menu extended notification">
 							<div class="notify-arrow notify-arrow-blue"></div>
@@ -406,6 +462,33 @@
 				noti
 						.append($("<div class='notify-arrow notify-arrow-blue'></div>"));
 
+				var notiCount = data.notiCnt;
+				var notiCnt = parseInt($("#notiCnt").text());
+
+				if (notiCount > notiCnt) {
+					setTimeout(function() {
+						$(".header").append($("<div id='notiDiv'></div>"));
+						$("#notiDiv").css("position", "absolute");
+						$("#notiDiv").css("z-index", "1000");
+						$("#notiDiv").css("text-align", "center");
+						$("#notiDiv").css("background-color", "#FAECC5");
+						$("#notiDiv").css("width", "500px");
+						$("#notiDiv").html("<h3>새로운 알림이 왔습니다.</h3>");
+						$("#notiDiv").css("color", "black");
+						$("#notiDiv").css("right", "100px");
+						$("#notiDiv").show();
+					}, 1000);
+
+				}
+
+				setTimeout(function() {
+
+					$("#notiDiv").hide();
+
+				}, 2000);
+
+				$("#notiCnt").text(data.notiCnt);
+
 				if (length <= 0) {
 					noti.append($("<li></li>").append(
 							$("<p></p>").addClass("blue").text("알림이 없습니다.")));
@@ -417,14 +500,22 @@
 				for (var i = 0; i < length; i++) {
 
 					noti.append($("<li></li>").attr("data-id",
-							data.eventNotification[i].bbsctt_code).append(
+							data.eventNotification[i].ntcn_code).attr("bbsctt_code", data.eventNotification[i].bbsctt_code).append(
 							$("<a></a>").attr("href", "#").text(
 									data.eventNotification[i].bbsctt_sj)));
-					$("li[data-id=" + data.eventNotification[i].bbsctt_code + "] a")
-							.append(
-									$("<span></span>").addClass(
-											"small italic pull-right").text(
-											data.eventNotification[i].dateCha + " days"));
+					$(
+							"li[data-id="
+									+ data.eventNotification[i].ntcn_code
+									+ "] a").append(
+							$("<span></span>").addClass(
+									"small italic pull-right")
+									.text(
+											data.eventNotification[i].dateCha
+													+ " days"));
+					
+					if(i==5){
+						break;
+					}
 
 				}
 			}
