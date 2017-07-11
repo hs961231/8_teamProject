@@ -72,12 +72,14 @@
 	<!-- 오늘 방문자 수 계산 -->
 	<select id="selectTodayVisitCnt" resultType="int">
 		select
-		count(DISTINCT user_id)
+		count(DISTINCT c.user_id)
 		from
-		course
+		course c, tile t, beacon b
 		where
-		date(COURS_PASNG_TIME) >=
+		date(c.COURS_PASNG_TIME) >=
 		date(subdate(now(), INTERVAL 0 DAY))
+		and t.TILE_CODE = c.TILE_CODE and b.BEACON_CODE = t.BEACON_CODE
+		and b.BHF_CODE = #{bhf_code};
 	</select>
 	
 	<select id="tileTodayVisitCnt" resultType="int">
@@ -104,9 +106,11 @@
 		from
 		(select
 		count(DISTINCT user_id) as count
-		from course
-		group by
-		date_format(COURS_PASNG_TIME, '%Y-%m-%d')) result;
+		from course c, tile t, beacon b
+		where t.TILE_CODE = c.TILE_CODE and b.BEACON_CODE = t.BEACON_CODE
+		and b.BHF_CODE = 1 and 
+		date_format(COURS_PASNG_TIME, '%Y-%m') = date_format(now(), '%Y-%m')
+		) result;
 	</select>
 
 	<select id="probability" resultType="java.util.HashMap">
@@ -159,15 +163,17 @@
 		(C.tile_visit / T.total_visit) * 100 AS probability, C.user_sexdstn AS user_sexdstn
 		FROM
 		(SELECT COUNT(course.user_id) AS tile_visit, user.USER_SEXDSTN as
-		user_sexdstn FROM course, user
+		user_sexdstn FROM course, user, tile, beacon
 		WHERE course.user_id = user.user_id AND DATE(course.COURS_PASNG_TIME) >=
-		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY))
+		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)) and tile.TILE_CODE = course.tile_code and beacon.BEACON_CODE = tile.BEACON_CODE
+		and beacon.bhf_code = #{bhf_code}
 		group by user.USER_SEXDSTN
 		) C,
 		(SELECT COUNT(user_id) AS total_visit
-		FROM course
+		FROM course, tile, beacon
 		WHERE DATE(course.COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL
-		#{day} DAY))) T;
+		#{day} DAY)) and tile.TILE_CODE = course.tile_code and beacon.BEACON_CODE = tile.BEACON_CODE
+		and beacon.bhf_code = #{bhf_code}) T;
 
 
 	</select>
@@ -178,14 +184,17 @@
 		FROM
 		(SELECT COUNT(course.user_id) AS tile_visit, floor((year(curDate()) -
 		date_format(USER_BRTHDY, '%Y') +
-		1)/10) as agegroup FROM course, user
+		1)/10) as agegroup FROM course, user, tile, beacon
 		WHERE course.user_id = user.user_id AND DATE(COURS_PASNG_TIME) >=
-		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY))
+		DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)) and tile.TILE_CODE = course.tile_code and beacon.BEACON_CODE = tile.BEACON_CODE
+		and beacon.bhf_code = #{bhf_code}
 		group by agegroup
 		) C,
 		(SELECT COUNT(user_id) AS total_visit
-		FROM course
-		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY)))
+		FROM course, tile, beacon
+		WHERE DATE(COURS_PASNG_TIME) >= DATE(SUBDATE(CURDATE(), INTERVAL #{day} DAY))
+		and tile.TILE_CODE = course.tile_code and beacon.BEACON_CODE = tile.BEACON_CODE
+		and beacon.bhf_code = #{bhf_code})
 		T;
 
 	</select>
