@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +77,7 @@ public class BBSServiceImpl implements BBSService {
 
 	@Transactional
 	@Override
-	public List<HashMap> eventNotification(JSONObject json) throws Exception {
+	public JSONObject eventNotification(JSONObject json) throws Exception {
 
 		int sender = Integer.parseInt(json.get("sender").toString());
 		int reciever = Integer.parseInt(json.get("reciever").toString());
@@ -84,48 +85,69 @@ public class BBSServiceImpl implements BBSService {
 		List<HashMap> list = dao.eventNotification(sender);
 		List<HashMap> list2 = dao.notification(reciever);
 
-		if(list2.isEmpty()){
-			HashMap map = new HashMap();
-			map.put("bbsctt_code", 0);
-			list2.add(map);
-		}
+		if(list2 != null){
 
-		int count = 0;
+			int count = 0;
 
-		for(int i = 0; i < list.size(); i++){
+			for(int i = 0; i < list.size(); i++){
 
-			count = 0;
+				count = 0;
 
-			for(int j = 0; j < list2.size(); j++){
+				for(int j = 0; j < list2.size(); j++){
 
-				if(list.get(i).get("bbsctt_code").toString().equals(list2.get(j).get("bbsctt_code").toString())){
 
-					System.out.println(list.get(i).get("bbsctt_code").toString()+" 같아요");
-					count++;
+					if(reciever == Integer.parseInt(list2.get(j).get("reciever").toString())){
+						if(list.get(i).get("bbsctt_code").toString().equals(list2.get(j).get("bbsctt_code").toString())){
+
+
+							System.out.println(list.get(i).get("bbsctt_code").toString()+" 같아요");
+							count++;
+
+						}
+					}
+
+
+				}
+
+				if(count <= 0){
+
+					JSONObject obj = new JSONObject();
+					obj.put("sender", sender);
+					obj.put("reciever", reciever);
+					obj.put("bbsctt_code", list.get(i).get("bbsctt_code"));
+					System.out.println(list.get(i).get("bbsctt_code").toString()+ " 같지않음");
+					dao.insertNoti(obj);
 
 				}
 
 
 			}
-			
-			if(count <= 0){
-				
-				JSONObject obj = new JSONObject();
-				obj.put("sender", sender);
-				obj.put("reciever", reciever);
-				obj.put("bbsctt_code", list.get(i).get("bbsctt_code"));
-				System.out.println(list.get(i).get("bbsctt_code").toString()+ " 같지않음");
-				dao.insertNoti(obj);
-				
-			}
-
-			
 		}
-
 
 		List<HashMap> list3 = dao.notification(reciever);
 
-		return list3; 
+
+		JSONArray jArray = new JSONArray();
+
+		for(int i = 0; i < list3.size(); i++){
+			JSONObject json2 = new JSONObject();
+			json2.put("sender", list3.get(i).get("sender"));
+			json2.put("reciever", list3.get(i).get("reciever"));
+			json2.put("bbsctt_code", list3.get(i).get("bbsctt_code"));
+			json2.put("dateCha", list3.get(i).get("dateCha"));
+			json2.put("ntcn_code", list3.get(i).get("ntcn_code"));
+			json2.put("bbsctt_sj", list3.get(i).get("bbsctt_sj"));
+			jArray.add(json2);
+		}
+
+		int notiCnt = dao.notiCnt(reciever);
+
+		JSONObject result = new JSONObject();
+		result.put("eventNotification", jArray);
+		result.put("notiCnt", notiCnt);
+
+
+		return result; 
 	}
 
 	@Override
@@ -135,7 +157,7 @@ public class BBSServiceImpl implements BBSService {
 
 	@Override
 	public int notiCnt(int reciever) throws Exception {
-		
+
 		return dao.notiCnt(reciever);
 	}
 
@@ -147,6 +169,13 @@ public class BBSServiceImpl implements BBSService {
 	@Override
 	public void updateNoti(int nctn_code) throws Exception {
 		dao.updateNoti(nctn_code);
+	}
+
+	@Transactional
+	@Override
+	public List<HashMap> notiEventDetail(int nctn_code, int code) throws Exception {
+		dao.updateNoti(nctn_code);
+		return dao.eventOne(code);
 	}
 
 

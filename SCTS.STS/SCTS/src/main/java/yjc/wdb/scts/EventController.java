@@ -245,5 +245,39 @@ public class EventController {
 			return json.toString();
 		}
 		
+		
+		
+		@RequestMapping(value="notiEventDetail", method=RequestMethod.GET
+				,produces = "text/plain; charset=UTF-8")
+		public @ResponseBody String notiEventDetail(int nctn_code, int bbsctt_code, int reciever) throws Exception{
+			
+			List<HashMap> list = bbsService.notiEventDetail(nctn_code, bbsctt_code);
+			
+			JSONObject notiJson;
+			JSONArray notiArray = new JSONArray();
+			
+			int notiCnt = bbsService.notiCnt(reciever);
+			
+			for(int i=0; i < list.size(); i++){
+				
+				notiJson = new JSONObject();
+				
+				notiJson.put("bbsctt_code", list.get(i).get("bbsctt_code").toString());
+				notiJson.put("bbsctt_sj", list.get(i).get("bbsctt_sj"));
+				notiJson.put("bbsctt_cn", list.get(i).get("bbsctt_cn"));
+				notiJson.put("event_begin_de", list.get(i).get("event_begin_de").toString());
+				notiJson.put("event_end_de", list.get(i).get("event_end_de").toString());
+				
+				notiArray.add(notiJson);
+				
+			}
+			 
+			JSONObject json = new JSONObject();
+			json.put("result", notiArray);
+			json.put("notiCnt", notiCnt);
+			
+			
+			return json.toString();
+		}
 
 }
