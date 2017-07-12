@@ -19,9 +19,9 @@ public class CourseServiceImpl implements CourseService {
 	private CourseDAO dao;
 
 	@Override
-	public int selectTodayVisitCnt() throws Exception {
+	public int selectTodayVisitCnt(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.selectTodayVisitCnt();
+		return dao.selectTodayVisitCnt(bhf_code);
 	}
 
 	@Override
@@ -49,9 +49,9 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public int monthAvgVisitor() throws Exception {
+	public int monthAvgVisitor(int bhf_code) throws Exception {
 		
-		return dao.monthAvgVisitor();
+		return dao.monthAvgVisitor(bhf_code);
 	}
 
 	@Override

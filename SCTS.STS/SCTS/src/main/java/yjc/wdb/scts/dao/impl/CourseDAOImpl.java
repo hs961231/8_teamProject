@@ -22,9 +22,9 @@ public class CourseDAOImpl implements CourseDAO {
 	private SqlSession sqlSession;
 	
 	@Override
-	public int selectTodayVisitCnt() throws Exception {
+	public int selectTodayVisitCnt(int bhf_code) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE + ".selectTodayVisitCnt");
+		return sqlSession.selectOne(NAMESPACE + ".selectTodayVisitCnt", bhf_code);
 	}
 
 	@Override
@@ -52,9 +52,9 @@ public class CourseDAOImpl implements CourseDAO {
 	}
 
 	@Override
-	public int monthAvgVisitor() throws Exception {
+	public int monthAvgVisitor(int bhf_code) throws Exception {
 		
-		return sqlSession.selectOne(NAMESPACE+".monthAvgVisitor");
+		return sqlSession.selectOne(NAMESPACE+".monthAvgVisitor", bhf_code);
 	}
 
 	@Override

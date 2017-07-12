@@ -60,14 +60,12 @@ public class RealTimeSocket extends TextWebSocketHandler{
 
 
 		JSONObject result = new JSONObject();
-		int totalCount = courseDAO.selectTodayVisitCnt();
+		int totalCount = courseDAO.selectTodayVisitCnt(bhf_code);
 		int totalSales = billDAO.todaySales(bhf_code);
 		
-		int monthAvgVisitor = courseDAO.monthAvgVisitor();
+		int monthAvgVisitor = courseDAO.monthAvgVisitor(bhf_code);
 		int monthTotalSales = billDAO.monthTotalSales(bhf_code);
 		
-		System.out.println("∏≈√‚ : " + totalCount + " " + totalSales +" " + monthAvgVisitor + " " +  monthTotalSales);
-
 		result.put("todayCount", totalCount);
 		result.put("todaySales", totalSales);
 		result.put("monthAvgVisitor", monthAvgVisitor);
