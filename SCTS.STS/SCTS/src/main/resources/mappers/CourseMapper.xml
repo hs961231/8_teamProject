@@ -108,7 +108,7 @@
 		count(DISTINCT user_id) as count
 		from course c, tile t, beacon b
 		where t.TILE_CODE = c.TILE_CODE and b.BEACON_CODE = t.BEACON_CODE
-		and b.BHF_CODE = 1 and 
+		and b.BHF_CODE = #{bhf_code} and 
 		date_format(COURS_PASNG_TIME, '%Y-%m') = date_format(now(), '%Y-%m')
 		) result;
 	</select>
