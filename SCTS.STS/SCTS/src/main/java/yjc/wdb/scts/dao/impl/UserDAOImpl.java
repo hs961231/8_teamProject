@@ -1,5 +1,7 @@
 package yjc.wdb.scts.dao.impl;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -44,7 +46,7 @@ private static String namespace ="yjc.wdb.mapper.UserMapper";
 	}
 
 	@Override
-	public String knowUserBranch(String user_id) throws Exception {
+	public Map<String, String> knowUserBranch(String user_id) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+".knowUserBranch", user_id);
 	}

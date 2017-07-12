@@ -3,6 +3,7 @@ package yjc.wdb.scts.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import yjc.wdb.scts.bean.BillVO;
 
@@ -26,7 +27,7 @@ public interface BillDAO {
 	public int todaySales(int bhf_code) throws Exception;
 	public int monthTotalSales(int bhf_code) throws Exception;
 
-	public void insertBill(String user_id) throws Exception;
+	public void insertBill(Map<String, String> map) throws Exception;
 	public void updateTotamt() throws Exception;
 	
 }

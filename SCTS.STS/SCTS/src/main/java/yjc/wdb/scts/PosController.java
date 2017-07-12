@@ -63,7 +63,7 @@ public class PosController {
 	
 	@RequestMapping(value="payment", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> payment(@RequestBody JSONObject json) throws Exception{
+	public ResponseEntity<String> payment(@RequestBody JSONObject json, HttpSession session) throws Exception{
 		System.out.println("페이먼트 결제로 왔음");
 		System.out.println(json);
 		try {
@@ -83,7 +83,12 @@ public class PosController {
 			int stprc = Integer.parseInt(map.get("stprc").toString());		// 결제 금액
 			String setle_mth_nm = map.get("setle_mth_nm").toString();	// 결제 수단 이름
 			
-			billService.payment(user_id, stprc, setle_mth_nm, goodsList);
+			Map<String, String> billMap = new HashMap<String, String>();
+			String bhf_code = (String) session.getAttribute("bhf_code");
+			billMap.put("user_id", user_id);
+			billMap.put("bhf_code", bhf_code);
+			
+			billService.payment(billMap, stprc, setle_mth_nm, goodsList);
 
 			System.out.println("결제정보 삽입 완료");
 		} catch (Exception e) {

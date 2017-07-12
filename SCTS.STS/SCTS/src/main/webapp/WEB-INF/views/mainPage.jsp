@@ -311,7 +311,7 @@
 			</div>
 
 			<!--logo start-->
-			<a href="mainPage" class="logo">Team8 <span class="lite">3MS</span></a>
+			<a href="mainPage" class="logo">Team8 3MS <span class="lite">${ bhf_nm } 지점</span></a>
 			<!--logo end-->
 
 			<div class="nav search-row" id="top_menu">

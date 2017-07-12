@@ -3,6 +3,7 @@ package yjc.wdb.scts;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.BeaconVO;
 import yjc.wdb.scts.bean.GoodsVO;
@@ -83,19 +86,37 @@ public class HomeController {
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
 	public String loginPost(UserVO user, 
-							HttpServletRequest request, HttpSession session) throws Exception{
+							HttpServletRequest request, HttpSession session) throws Exception {
 		int chk = userService.loginUser(user);
-		String branch = userService.knowUserBranch(user.getUser_id());
+		Map<String, String> branch = userService.knowUserBranch(user.getUser_id());
 
-		if(chk == 0)
-			return "error";
+		Map<String, String> map = new HashMap<String, String>();
+
+		System.out.println(chk + "    " + branch);
+		if(chk == 0) {
+			map.put("status", "error");
+		}
 		else if(chk == 1) {
 			session.setAttribute("user_id", user.getUser_id());
-			session.setAttribute("bhf_code", branch);
-			return "success";
+			session.setAttribute("bhf_code", branch.get("BHF_CODE"));
+			session.setAttribute("bhf_nm", branch.get("BHF_NM"));
+
+			map.put("status", "success");
+			map.put("location", "mainPage");
+			if( branch.equals("1") ) {
+				// 본사 페이지 이동시  밑에 있는 "본사페이지"에 해당하는 부분에다가 주소를 넣어주면됨
+				// 맵핑 꼭 해놓고 해야지 됨.
+				// 위에 있는 mainPage 처럼 맵핑 시켜놓고 해당부분에 해당 맵핑된 주소만 넣어주면 됨.
+				map.put("location", "bonsaPage");
+			}
 		}
-		else
-			return "error";
+		else {
+			map.put("status", "error");
+		}
+
+		String str = new Gson().toJson(map);
+		
+		return str;
 	}
 	
 	// 초기 화면 표시용 메인 페이지
@@ -114,7 +135,8 @@ public class HomeController {
 		model.addAttribute("tileList", tileList);
 
 		// 매장에 등록되어 있는 도면 모델에 저장시켜서 넘김
-		int bhf_code = Integer.parseInt((String) session.getAttribute("bhf_code"));
+		//int bhf_code = Integer.parseInt((String) session.getAttribute("bhf_code"));
+		int bhf_code = (Integer) session.getAttribute("bhf_code");
 		int countStory = floor_informationService.selectCountStory(bhf_code);
 		model.addAttribute("countStory", countStory);
 		
@@ -136,7 +158,7 @@ public class HomeController {
 		List<HashMap<String, String>> tileList = tileService.selectTileListUp();
 		model.addAttribute("tileList", tileList);
 
-		int bhf_code = Integer.parseInt((String) session.getAttribute("bhf_code"));	// 임시로 테스트 위해서 여기서 만들어줌
+		int bhf_code = (Integer) session.getAttribute("bhf_code");	// 임시로 테스트 위해서 여기서 만들어줌
 		List<BeaconVO> beaconList = beaconService.selectAllBeaconList(bhf_code);
 		model.addAttribute("beaconList", beaconList);
 		

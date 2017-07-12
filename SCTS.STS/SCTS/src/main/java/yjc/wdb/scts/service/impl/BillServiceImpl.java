@@ -135,12 +135,12 @@ public class BillServiceImpl implements BillService {
 
 	@Override
 	@Transactional
-	public void payment(String user_id, int stprc, String setle_mth_nm, List<HashMap<String, String>> goodsList)
+	public void payment(Map<String, String> billMap, int stprc, String setle_mth_nm, List<HashMap<String, String>> goodsList)
 			throws Exception {
 		// TODO Auto-generated method stub
 
 		// 새로운 계산서 생성
-		dao.insertBill(user_id);
+		dao.insertBill(billMap);
 
 		/*******************************************/
 		// 구매 물품 리스트를 맵에다가 삽입
