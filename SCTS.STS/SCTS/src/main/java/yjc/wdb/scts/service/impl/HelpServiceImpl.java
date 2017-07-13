@@ -28,13 +28,13 @@ public class HelpServiceImpl implements HelpService {
 	}
 
 	@Override
-	public void deleteHelp(Integer bno) throws Exception {
-		dao.deleteHelp(bno);
+	public void deleteHelp(Integer bbsctt_code) throws Exception {
+		dao.deleteHelp(bbsctt_code);
 	}
 
 	@Override
-	public HelpVO readHelp(Integer bno) throws Exception {
-		return dao.readHelp(bno);
+	public HelpVO readHelp(Integer bbsctt_code) throws Exception {
+		return dao.readHelp(bbsctt_code);
 	}
 
 	@Override
@@ -54,14 +54,22 @@ public class HelpServiceImpl implements HelpService {
 
 	@Override
 	public List<HelpVO> listSearch(PageVO cri) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.listSearch(cri);
 	}
 
 	@Override
 	public int countSearch(PageVO cri) throws Exception {
-		// TODO Auto-generated method stub
 		return dao.countSearch(cri);
+	}
+
+	@Override
+	public void createHelp2(HelpVO vo) throws Exception {
+		dao.createHelp2(vo);
+	}
+
+	@Override
+	public void updateHelp2(HelpVO vo) throws Exception {
+		dao.updateHelp2(vo);
 	}
 
 

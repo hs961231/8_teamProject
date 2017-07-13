@@ -48,26 +48,32 @@
 						aria-hidden="true"></i></a>
 				</div>
 			</div>
-			<section class="panel" style="overflow: auto; height: 450px;">
 					<table class="table table-hover">
 						<tr>
 							<th>글 번호</th>
 							<th>제목</th>
-							<th>등록날짜</th>
+							<th>지점</th>
+							<th>분류</th>
 							<th>등록자</th>
+							<th>등록날짜</th>
+							<th>조회수</th>
 						</tr>
 						<c:forEach items="${list }" var="helpList">
+						<c:if test="${bhf_code == helpList.bhf_code }">
 							<tr>
-								<td>${helpList.bno }</td>
+								<td>${helpList.bbsctt_code }</td>
 								<td><a
-									href='readPage${pageMaker.makeSearch(pageMaker.cri.page)}&bno=${helpList.bno}&msg=${msg}'>${helpList.title }</a></td>
-								<td>${helpList.regidate }</td>
-								<td><span class="badge bg-red">${helpList.writer }</span></td>
+									href='readPage${pageMaker.makeSearch(pageMaker.cri.page)}&bbsctt_code=${helpList.bbsctt_code}&msg=${msg}'>${helpList.bbsctt_sj }</a></td>
+								<td>${helpList.bhf_code }</td>
+								<td>${helpList.bbsctgry_code }</td>
+								<td>${helpList.user_id }</td>
+								<td>${helpList.bbsctt_rgsde }</td>
+								<td><span class="badge bg-red">${helpList.bbsctt_rdcnt }</span></td>
 							</tr>
+						</c:if>
 						</c:forEach>
 					</table>
 			
-			</section>
 			</form>
 		</div>
 	</div>

@@ -64,15 +64,15 @@
 			<input type="hidden" name="searchType" value="${cri.searchType }"> <!-- 여기서 히든으로 넣어주냐 안 넣어주냐에 따라 주소창에 넘겨주는 값이 달라짐. -->
 			<input type="hidden" name="keyword" value="${cri.keyword }">
 			<div class="wrap">
-				<label for="Bno">Bno : </label><input type="text" name="bno" value="${helpVO.bno }" readonly="readonly">
+				<label for="bbsctt_code">글 번호 : </label><input type="text" name="bbsctt_code" value="${helpVO.bbsctt_code }" readonly="readonly">
 				<div id="editor-content">
 					<div id="editor-title">
-						<textarea class="title-area textarea" name="title">${helpVO.title }</textarea>
+						<textarea class="title-area textarea" name="bbsctt_sj">${helpVO.bbsctt_sj }</textarea>
 					</div>
 					<div id="editor-textArea">
-						<textarea class="content-area textarea" autofocus name="content">${helpVO.content }</textarea>
+						<textarea class="content-area textarea" autofocus name="bbsctt_cn">${helpVO.bbsctt_cn }</textarea>
 					</div>
-					<label for="writer">Writer : </label><input type="text" name="writer" value="${helpVO.writer }" readonly="readonly">
+					<label for="user_id">작성자 : </label><input type="text" name="user_id" value="${helpVO.user_id }" readonly="readonly">
 				</div>
 			<div class="editor-footer">
 				<button type="submit" class="btn btn-primary">저장</button>
