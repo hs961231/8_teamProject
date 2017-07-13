@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.estimote.sdk.SystemRequirementsChecker;
 import com.estimote.sdk.repackaged.gson_v2_3_1.com.google.gson.GsonBuilder;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private String user_id;          // 입력된 아이디
     private String user_pw;          // 입력된 비밀번호
     SharedPreferences sp;            // 세션 유지하기위한 preference
+    private String token;
 
     final String TAG = "디버깅";
 
@@ -96,11 +98,19 @@ public class MainActivity extends AppCompatActivity {
                 user_pw_input = (EditText) findViewById(R.id.userPw);
                 user_pw = user_pw_input.getText().toString();
 
+                FirebaseInstanceId.getInstance().getToken();
+
+                token = FirebaseInstanceId.getInstance().getToken();
+                Log.d("FCM_Token", token);
+
+
 
                 JSONObject  jsonObject = new JSONObject();
                 try {
                     jsonObject.put("user_id", user_id);
                     jsonObject.put("user_pw", user_pw);
+                    jsonObject.put("token", token);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
