@@ -193,35 +193,6 @@ public class HomeController {
 		return "redirect:mainPage";
 	}
 
-	// 상품 리스트
-	@RequestMapping(value="product_List", method=RequestMethod.GET)
-	public String product_List(@ModelAttribute("cri") PageVO cri, HttpServletRequest request, HttpSession session, Model model) throws Exception {
-		String ContentPage = "product_List";
-
-		model.addAttribute("main_content", ContentPage);
-		
-		List<GoodsVO> GoodsList = goodsService.selectPageList(cri);
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(goodsService.countSearch(cri));
-		
-		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("GoodsList", GoodsList);
-		
-		return "mainPage";
-	}
-
-	// 상품 등록 폼 호출
-	@RequestMapping(value="product_Register", method=RequestMethod.GET)
-	public String product_Register(HttpServletRequest request, HttpSession session, Model model) {
-		String ContentPage = "product_Register";
-
-		model.addAttribute("main_content", ContentPage);
-		
-
-		return "mainPage";
-	}
-
 	
 	// 매출관리
 	@RequestMapping(value="sales_Management", method=RequestMethod.GET)

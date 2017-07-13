@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import yjc.wdb.scts.bean.GoodsVO;
+import yjc.wdb.scts.bean.PageMaker;
+import yjc.wdb.scts.bean.PageVO;
 import yjc.wdb.scts.service.GoodsService;
 import yjc.wdb.scts.util.MediaUtils;
 import yjc.wdb.scts.util.UploadFileUtils;
@@ -40,18 +43,21 @@ public class ProductController {
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 
-	// 상품 리스트
-	@RequestMapping(value = "product_List", method = RequestMethod.GET)
-	public String product_List(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-	
-		String ContentPage = "product_List";
-		model.addAttribute("main_content", ContentPage);
+	   // 상품 리스트
+	   @RequestMapping(value = "product_List", method = RequestMethod.GET)
+	   public String product_List(@ModelAttribute("cri") PageVO cri, HttpServletRequest request, HttpSession session, Model model) throws Exception {
+	   
+	      String ContentPage = "product_List";
+	      model.addAttribute("main_content", ContentPage);
 
-		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
-		model.addAttribute("GoodsList", GoodsList);
+	      List<GoodsVO> GoodsList = goodsService.selectPageList(cri);
+	      PageMaker pageMaker = new PageMaker();
+	      pageMaker.setCri(cri);
+	      pageMaker.setTotalCount(goodsService.countSearch(cri));
+	      model.addAttribute("GoodsList", GoodsList);
 
-		return "mainPage";
-	}
+	      return "mainPage";
+	   }
 
 	// 상품 등록 폼 호출
 	@RequestMapping(value = "product_Register", method = RequestMethod.GET)
