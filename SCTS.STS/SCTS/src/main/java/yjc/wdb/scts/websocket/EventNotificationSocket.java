@@ -26,7 +26,7 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 	private static Logger logger = LoggerFactory.getLogger(MainSocket.class);
 	
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
-	private List<HashMap> eventNotification;
+	private JSONObject eventNotification;
 
 	@Inject
 	private BBSService bbsService;
@@ -53,34 +53,14 @@ public class EventNotificationSocket extends TextWebSocketHandler{
 		JSONParser jsonp = new JSONParser();
 		JSONObject obj = null;
 		obj = (JSONObject) jsonp.parse(message.getPayload());
-		
-		int reciever = Integer.parseInt(obj.get("reciever").toString());
-		
-		eventNotification = bbsService.eventNotification(obj);
+
+		eventNotification = (JSONObject) bbsService.eventNotification(obj);
 		
 		System.out.println(eventNotification.toString());
 		
-		JSONArray jArray = new JSONArray();
-		
-		for(int i = 0; i < eventNotification.size(); i++){
-			JSONObject json = new JSONObject();
-			json.put("sender", eventNotification.get(i).get("sender"));
-			json.put("reciever", eventNotification.get(i).get("reciever"));
-			json.put("bbsctt_code", eventNotification.get(i).get("bbsctt_code"));
-			json.put("dateCha", eventNotification.get(i).get("dateCha"));
-			json.put("ntcn_code", eventNotification.get(i).get("ntcn_code"));
-			json.put("bbsctt_sj", eventNotification.get(i).get("bbsctt_sj"));
-			jArray.add(json);
-		}
-
-		int notiCnt = bbsService.notiCnt(reciever);
-		
-		JSONObject result = new JSONObject();
-		result.put("eventNotification", jArray);
-		result.put("notiCnt", notiCnt);
 		
 		for(WebSocketSession sess : sessionList){
-			sess.sendMessage(new TextMessage(result.toString()));
+			sess.sendMessage(new TextMessage(eventNotification.toString()));
 		}
 	
 	}

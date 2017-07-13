@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: WOO
 Build-Jdk: 1.8.0_121
+=======
+Built-By: bon
+Build-Jdk: 1.8.0_131
+>>>>>>> origin/master
 Created-By: Maven Integration for Eclipse
 

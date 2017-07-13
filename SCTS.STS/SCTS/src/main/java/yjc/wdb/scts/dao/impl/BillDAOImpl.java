@@ -185,9 +185,9 @@ public class BillDAOImpl implements BillDAO {
 
 
 	@Override
-	public void insertBill(String user_id) throws Exception {
+	public void insertBill(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
-		sql.insert(NAMESPACE + ".insertBill", user_id);
+		sql.insert(NAMESPACE + ".insertBill", map);
 	}
 
 	@Override

@@ -30,13 +30,13 @@ public class HelpDAOImpl implements HelpDAO {
 	}
 
 	@Override
-	public void deleteHelp(Integer bno) throws Exception {
-		sql.delete(namespace +".deleteHelp", bno);
+	public void deleteHelp(Integer bbsctt_code) throws Exception {
+		sql.delete(namespace +".deleteHelp", bbsctt_code);
 	}
 
 	@Override
-	public HelpVO readHelp(Integer bno) throws Exception {
-		return sql.selectOne(namespace+".readHelp", bno);
+	public HelpVO readHelp(Integer bbsctt_code) throws Exception {
+		return sql.selectOne(namespace+".readHelp", bbsctt_code);
 	}
 
 	@Override
@@ -68,6 +68,16 @@ public class HelpDAOImpl implements HelpDAO {
 	@Override
 	public int countSearch(PageVO cri) throws Exception {
 		return sql.selectOne(namespace + ".countSearch", cri);
+	}
+
+	@Override
+	public void createHelp2(HelpVO vo) throws Exception {
+		sql.insert(namespace+".insertHelp2",vo);
+	}
+
+	@Override
+	public void updateHelp2(HelpVO vo) throws Exception {
+		sql.update(namespace+".updateHelp2",vo);
 	}
 
 }

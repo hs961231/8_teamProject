@@ -40,9 +40,16 @@
 		where user_id = #{user_id}
 	</select>
 
-	<select id="knowUserBranch" resultType="String">
-		select dp.BHF_CODE from department_position dp, employee_position ep where
-		dp.DEPT_CODE = ep.DEPT_CODE and ep.USER_ID = #{user_id};
+	<select id="knowUserBranch" resultType="java.util.HashMap">
+select
+	dp.BHF_CODE,
+	bo.BHF_NM
+from
+	(select USER_ID, DEPT_CODE from employee_position where USER_ID = #{user_id} ) ep,
+	department_position dp,
+	branch_office bo
+where
+	dp.DEPT_CODE = ep.DEPT_CODE and dp.BHF_CODE = bo.bhf_code;
 	</select>
 
 

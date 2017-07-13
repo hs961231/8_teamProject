@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<script>
+$(document).ready(function(){
+		var user = "${user_id}";
+		var bhf = "${bhf_code}";
+});
+</script>
 <div class="row">
-
 	<div class="col-lg-12">
 	<form class="navbar-form"><!-- 여기의 name과 vo의 이름과 일치하는 곳에 입력. -->
 		<h3 class="page-header">

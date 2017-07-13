@@ -101,10 +101,12 @@
 					user_id : user_id,
 					user_password : user_pw
 				},
+				dataType: "json",
 				success: function(data){
-					if(data == "success"){
+					if(data.status == "success"){
 						
-						self.location = "mainPage";
+						//self.location = "mainPage";
+						self.location = data.location;
 					}else{
 						alert("아이디나 비밀번호가 틀렸습니다.");
 						$("#user_id").focus();

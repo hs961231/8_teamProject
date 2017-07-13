@@ -18,11 +18,12 @@ public interface BBSService {
 	public void updateDropEvent(EventVO eventVO) throws Exception;
 	public void deleteEvent(int bbsctt_code) throws Exception;
 	public List<HashMap> listEvent(String date1, String date2) throws Exception;
-	public List<HashMap> eventNotification(JSONObject json) throws Exception;
+	public JSONObject eventNotification(JSONObject json) throws Exception;
 	public List<HashMap> notification(int reciever) throws Exception;
 	public int notiCnt(int reciever) throws Exception;
 	public void deleteNoti(int bbsctt_code) throws Exception;
 	public void updateNoti(int nctn_code) throws Exception;
+	public List<HashMap> notiEventDetail(int nctn_code, int code) throws Exception;
 	
 
 }

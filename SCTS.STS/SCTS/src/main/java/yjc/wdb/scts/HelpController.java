@@ -56,11 +56,14 @@ public class HelpController {
 	}
 	
 	@RequestMapping(value="readPage", method=RequestMethod.GET)
-	public String readPage(@RequestParam("bno") int bno, @ModelAttribute("cri") PageVO cri, Model model)throws Exception{
+	public String readPage(@RequestParam("bbsctt_code") int bbsctt_code, @ModelAttribute("cri") PageVO cri, HelpVO vo, Model model)throws Exception{
 		String ContentPage = "help_Read";
 		
+		System.out.println("여기는 리드 페이지 "+bbsctt_code);
+		System.out.println("그리고 "+ vo.getBbsctt_code());
+		
 		model.addAttribute("msg", cri.isMsg());
-		model.addAttribute(helpService.readHelp(bno));
+		model.addAttribute(helpService.readHelp(bbsctt_code));
 		model.addAttribute("main_content", ContentPage);
 		return "mainPage";
 	}
@@ -95,9 +98,9 @@ public class HelpController {
 	}
 
 	@RequestMapping(value="updateHelp", method=RequestMethod.GET)
-	public String updateHelpGET(@RequestParam ("bno") int bno, @ModelAttribute("cri") PageVO cri, RedirectAttributes rttr, Model model) throws Exception{
+	public String updateHelpGET(@RequestParam ("bbsctt_code") int bbsctt_code, @ModelAttribute("cri") PageVO cri, RedirectAttributes rttr, Model model) throws Exception{
 		String ContentPage = "help_Update";
-
+		System.out.println("업데이트헬프 "+bbsctt_code);
 		
 		rttr.addAttribute("page", cri.getPage());
 		rttr.addAttribute("perPageNum", cri.getPerPageNum());
@@ -105,7 +108,7 @@ public class HelpController {
 		rttr.addAttribute("keyword", cri.getKeyword());
 		
 		model.addAttribute("msg", cri.isMsg());
-		model.addAttribute(helpService.readHelp(bno));
+		model.addAttribute(helpService.readHelp(bbsctt_code));
 		model.addAttribute("main_content", ContentPage);
 		
 		return "mainPage";
@@ -125,7 +128,7 @@ public class HelpController {
 	}
 	
 	@RequestMapping(value="deleteHelp", method=RequestMethod.GET)
-	public String deleteHelpGet(@RequestParam("bno") int bno,@ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model) throws Exception{
+	public String deleteHelpGet(@RequestParam("bbsctt_code") int bbsctt_code,@ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model) throws Exception{
 		model.addAttribute("msg", cri.isMsg());
 		
 		rttr.addAttribute("page", cri.getPage());
@@ -137,8 +140,10 @@ public class HelpController {
 	}
 	
 	@RequestMapping(value="deleteHelp", method=RequestMethod.POST)
-	public String deleteHelpPost(@RequestParam("bno") int bno,@ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model) throws Exception{
-		helpService.deleteHelp(bno);
+	public String deleteHelpPost(@RequestParam("bbsctt_code") int bbsctt_code, @ModelAttribute("cri") PageVO cri , RedirectAttributes rttr, Model model) throws Exception{
+		
+		System.out.println("del help다");
+		helpService.deleteHelp(bbsctt_code);
 		
 		model.addAttribute("msg", cri.isMsg());
 		rttr.addAttribute("page", cri.getPage());

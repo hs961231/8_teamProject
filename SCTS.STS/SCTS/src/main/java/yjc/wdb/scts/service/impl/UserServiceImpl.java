@@ -1,5 +1,7 @@
 package yjc.wdb.scts.service.impl;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public String knowUserBranch(String user_id) throws Exception {
+	public Map<String, String> knowUserBranch(String user_id) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.knowUserBranch(user_id);
 	}

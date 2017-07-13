@@ -29,6 +29,7 @@
 						class="fa fa-plus" aria-hidden="true" id="productBtn"></i></a>
 				</div>
 			</div>
+<<<<<<< HEAD
 			<section class="panel col-lg-12"
 				style="overflow: scroll; height: 600px;">
 				<table class="table table-striped table-advance table-hover">
@@ -39,11 +40,22 @@
 							<th style="text-align: center;"><i class="icon_calendar"></i>
 								카테고리번호</th>
 							<!-- <th style="text-align: center;"><i class="icon_mail_alt"></i>
+=======
+					<table class="table table-striped table-advance table-hover" >
+						<tbody>
+							<tr>
+								<th style="text-align: center;"><i class="icon_profile"></i>
+									상품번호</th>
+								<th style="text-align: center;"><i class="icon_calendar"></i>
+									카테고리번호</th>
+								<!-- <th style="text-align: center;"><i class="icon_mail_alt"></i>
+>>>>>>> origin/master
 									Category_name</th> -->
 							<th style="text-align: center;"><i class="icon_pin_alt"></i>
 								상품이름</th>
 							<!-- <th style="text-align: center;"><i class="icon_pin_alt"></i>
 									Product_Amount</th> -->
+<<<<<<< HEAD
 							<th style="text-align: center;"><i class="icon_pin_alt"></i>
 								상품가격</th>
 						</tr>
@@ -62,6 +74,24 @@
 					</tbody>
 				</table>
 			</section>
+=======
+								<th style="text-align: center;"><i class="icon_pin_alt"></i>
+									상품가격</th>
+							</tr>
+							<c:forEach items="${ GoodsList }" var="vo">
+								<tr>
+									<td style="text-align: center;">${ vo.goods_code }</td>
+									<td style="text-align: center;">${ vo.detailctgry_code }</td>
+									<%-- <td style="text-align: center;"><a href="${vo.goods_code}"
+										class="code">이름출력 아직 안됨</a></td> --%>
+									<td style="text-align: center;">${ vo.goods_nm }</td>
+									<!-- <td style="text-align: center;">상품수량 아직 안됨</td> -->
+									<td style="text-align: center;">${ vo.goods_pc }</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+>>>>>>> origin/master
 		</div>
 	</div>
 </div>
@@ -153,11 +183,36 @@
 	</div>
 </div> -->
 
+<<<<<<< HEAD
 
 <script>	
 	var pageForm = $("#pageForm");
 
 	$(".code").on("click",function() {
+=======
+<div class="text-center">
+	<ul class="pagination">
+		<c:if test="${pageMaker.prev }">
+			<li><a href="product_List?page=${pageMaker.makeSearch(pageMaker.startPage -1)}">&laquo;</a></li>
+		</c:if>
+
+		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+			var="idx">
+			<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+				<a href="product_List${pageMaker.makeSearch(idx)}">${idx}</a>
+			</li>
+		</c:forEach>
+		<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+			<li><a href="product_List${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+		</c:if>
+	</ul>
+</div>
+
+<script>
+	var pageForm = $("#pageForm");
+	
+	$(".code").on("click",function(){
+>>>>>>> origin/master
 		event.preventDefault();
 		var goods_code = $(this).attr("href");
 		var bhf_code = 1;
@@ -181,7 +236,10 @@
 
 	window.onclick = function(event) {
 		if (event.target == registerModal) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 			registerModal.style.display = "none";
 		}
 	}

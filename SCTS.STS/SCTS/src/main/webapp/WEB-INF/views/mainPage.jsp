@@ -113,6 +113,12 @@
 <!-- webSocket -->
 <script src="resources/customjs/sockjs.js"></script>
 
+<style>
+#detailEvent{
+	display : none;
+}
+</style>
+
 <script>
 	$(document)
 			.ready(
@@ -237,7 +243,56 @@
 									}
 
 								});
-					});
+						
+						
+						$(document).on("click", ".notification li", function(){
+							
+							var nctn_code = $(this).attr("data-id");
+							
+							var bbsctt_code = $(this).attr("bbsctt_code");
+							
+							$.ajax({
+								
+								url : "notiEventDetail",
+								type : "GET",
+								data : {
+									nctn_code : nctn_code,
+									bbsctt_code : bbsctt_code,
+									reciever : bhf_code
+								},
+								dataType : "json",
+								success : function(data){
+									
+					
+									var length = data.result.length;
+									
+									$("#notiCnt").text(data.notiCnt);
+								
+									
+									for(var i=0; i < length; i++){
+										$("#detailEvent #bbsctt_sj").text(data.result[i].bbsctt_sj);
+										$("#detailEvent #event_begin_de").text(data.result[i].event_begin_de);
+										$("#detailEvent #event_end_de").text(data.result[i].event_begin_de);
+										$("#detailEvent #bbsctt_cn").text(data.result[i].bbsctt_cn);
+										
+									}
+									
+									
+									$("#detailEvent").modal();
+									
+								}
+								
+							});
+							
+						});	
+						
+						
+						
+						$(".closeModal").click(function(){
+							$(".modal-layout").modal('hide');
+						});
+						
+});
 </script>
 
 </head>
@@ -256,7 +311,7 @@
 			</div>
 
 			<!--logo start-->
-			<a href="mainPage" class="logo">Team8 <span class="lite">3MS</span></a>
+			<a href="mainPage" class="logo">Team8 3MS <span class="lite">${ bhf_nm } 지점</span></a>
 			<!--logo end-->
 
 			<div class="nav search-row" id="top_menu">
@@ -342,11 +397,6 @@
 
 
 
-
-
-
-
-
 					<!-- user login dropdown start-->
 					<li class="dropdown"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#"> <span class="profile-ava">
@@ -379,11 +429,34 @@
 		</header>
 		<!--header end-->
 
+
+
 		<!--sidebar start-->
 		<aside>
+	<c:choose>
+		  <c:when test="${bhf_code == 0}">
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
+					<li><a class="" href="adSales_Management">매출 관리</a></li>
+
+					<li><a class="" href="adCoupon_Management"> <i
+							class="icon_piechart"></i> <span>쿠폰 관리</span>
+
+					</a></li>
+
+					<li><a class="" href="adHelp_List"> <i
+							class="fa fa-question"></i> <span>문의 사항</span>
+					</a></li>
+
+				</ul>
+				<!-- sidebar menu end-->
+			</div>
+		 </c:when>
+		 
+		 <c:when test="${bhf_code != 0}"> 
+		<div id="sidebar" class="nav-collapse ">
+			<ul class="sidebar-menu">
 					<li class="active"><a class="" href="mainPage"> <i
 							class="icon_house_alt"></i> <span>Dashboard</span>
 					</a></li>
@@ -401,7 +474,7 @@
 					<li><a class="" href="event_Management"> <i
 							class="icon_genius"></i> <span>이벤트 관리</span>
 					</a></li>
-
+					
 					<li><a class="" href="coupon_Management"> <i
 							class="icon_piechart"></i> <span>쿠폰 관리</span>
 
@@ -416,12 +489,11 @@
 							class="fa fa-question"></i> <span>문의 사항</span>
 					</a></li>
 
-
-
-
 				</ul>
-				<!-- sidebar menu end-->
 			</div>
+			</c:when>
+			</c:choose>
+				<!-- sidebar menu end-->
 		</aside>
 		<!--sidebar end-->
 
@@ -442,6 +514,66 @@
 
 	</section>
 	<!-- container section start -->
+	
+<div id="detailEvent" class="modal-layout"
+	style="width: 55%; height: 310px">
+	<div>
+		<div class="col-lg-12">
+			<section class="panel">
+				<header class="panel-heading"> 이벤트 </header>
+				<div class="panel-body">
+					<div class="form">
+						<div class="form-group">
+							<label for="name" class="control-label col-lg-3">이벤트명 <span
+								class="required">*</span>
+							</label> 
+							<div id="bbsctt_sj"></div>
+
+						</div>
+
+						<div class="form-group ">
+
+							<label for="price" class="control-label col-lg-3"> 이벤트
+								시작일자 <span class="required">*</span>
+							</label>
+							<div id="event_begin_de"></div>
+						</div>
+
+						<div class="form-group ">
+
+							<label for="amount" class="control-label col-lg-3"> 이벤트
+								종료일자 <span class="required">*</span>
+							</label> 
+							<div id="event_end_de"></div>
+
+
+						</div>
+
+
+						<div class="form-group ">
+							<label for="ccomment" class="control-label col-lg-3">이벤트
+								설명</label>
+
+							<div id="bbsctt_cn"></div>
+
+						</div>
+
+						<div class="form-group">
+							<div class="col-lg-offset-2 col-lg-10">
+								<button class="btn btn-default closeModal">닫기</button>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+	
+	
+	
 	<script>
 		var eventSocket = new SockJS("/scts/event-ws");
 

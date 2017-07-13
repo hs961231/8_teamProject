@@ -8,9 +8,7 @@ body {
 	background: white;
 }
 
-#registerEvent {
-	display: none;
-}
+
 </style>
 <script>
 
@@ -135,6 +133,7 @@ body {
 						$.ajax({
 							type : "GET",
 							url : "updateDropEvent",
+							async : false,
 							data : {
 
 								bbsctt_code : code,
@@ -148,6 +147,8 @@ body {
 						$('#calendar').fullCalendar('removeEvents');
 
 						viewCalendar(bhf_code);
+						
+						sendNoti();
 
 					}
 
@@ -185,6 +186,7 @@ body {
 							"Content-Type" : "application/json",
 							"X-HTTP-Method-Override" : "GET"
 						},
+						async : false,
 						data : {
 
 							bbsctt_code : code,
@@ -279,6 +281,7 @@ body {
 					"Content-Type" : "application/json",
 					"X-HTTP-Method-Override" : "POST"
 				},
+				async : false,
 				data : JSON.stringify({
 
 					bbsctt_sj : title,
@@ -541,19 +544,7 @@ body {
 					</div>
 
 				</div>
+			</section>
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
