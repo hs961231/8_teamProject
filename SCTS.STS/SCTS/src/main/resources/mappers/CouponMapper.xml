@@ -39,8 +39,8 @@
 	</select>
 	
 	<!-- 물품 적용에 들어갈 쿠폰 코드 가져오기 -->
-	<select id="selectCode" resultType="CouponVO">
-		select MAX(coupon_code)
+	<select id="selectCode" resultType="int">
+		select MAX(coupon_code) as max_code
 		from coupon
 	</select>
 	

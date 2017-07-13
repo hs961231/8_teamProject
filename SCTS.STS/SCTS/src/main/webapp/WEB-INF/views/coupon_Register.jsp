@@ -16,7 +16,7 @@
 		<!-- page start -->
 		<div class="row">
 			<div class="col-lg-12">
-				<section class="panel" style="width: 60%;">
+				<section class="panel" style="width:60%;">
 					<header class="panel-heading"> 쿠폰 등록</header>
 					<div class="panel-body">
 						<div class="form">
@@ -29,6 +29,7 @@
 									<div class="col-lg-3">
 										<input class="form-control" id="coupon_name" name="coupon_nm"
 											type="text" style="width: 100%;" required />
+										<input type="hidden" id="codes" value="${max_code}">
 									</div>
 
 									<label for="coupon_insert" class="control-label col-lg-2">적용
@@ -66,8 +67,6 @@
 												<option>유제품</option>
 											</select>
 										</div>
-										<a class="btn btn-primary" href="#"><i
-											class="icon_check_alt2"></i></a>
 									</div>
 
 									<div id="p_div">
@@ -76,7 +75,8 @@
 										</label>
 										<div class="col-lg-3">
 											<input type="text" id="selectGoods" class="form-control"
-												style="width: 100%;">
+												style="width: 100%;" readonly="readonly">
+											<input type="hidden" id="selectGcode">
 										</div>
 									</div>
 								</div>
@@ -94,7 +94,7 @@
 										갯수<span class="required">*</span>
 									</label>
 									<div class="col-lg-3">
-										<input type="text" id="coupon_co" class="form-control"
+										<input type="text" id="coupon_co" name="coupon_co" class="form-control"
 											style="width: 100%;">
 									</div>
 								</div>
@@ -138,7 +138,6 @@
 					<div class="panel-body">
 						<div class="form">
 							<input type="text" id="search" class="form-control">
-							<input type="hidden" id="coupon_code" value="${coupon_code.coupon_code}">
 							<button type="submit" id="searching" class="btn btn-default">검색</button>
 							<div class="form-group" style="overflow: scroll; height: 300px;">
 								<table class="table table-striped table-advance table-hover">

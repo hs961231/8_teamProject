@@ -15,6 +15,6 @@ public interface CouponDAO {
 	public void delCouponBasket(Coupon_holdVO coupon_holdVO) throws Exception;
 	public CouponVO selectSendAndroidCoupon() throws Exception;
 	public CouponVO selectCouponOne(int coupon_code) throws Exception;
-	public CouponVO selectCode() throws Exception;
+	public int selectCode() throws Exception;
 	
 }

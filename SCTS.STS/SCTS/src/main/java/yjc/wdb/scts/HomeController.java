@@ -168,56 +168,7 @@ public class HomeController {
 		return "redirect:mainPage";
 	}
 
-	// 상품 리스트
-	@RequestMapping(value="product_List", method=RequestMethod.GET)
-	public String product_List(HttpServletRequest request, HttpSession session, Model model) throws Exception {
-		String ContentPage = "product_List";
-
-		model.addAttribute("main_content", ContentPage);
-		
-		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
 	
-		model.addAttribute("GoodsList", GoodsList);
-		
-		return "mainPage";
-	}
-
-	// 상품 등록 폼 호출
-	@RequestMapping(value="product_Register", method=RequestMethod.GET)
-	public String product_Register(HttpServletRequest request, HttpSession session, Model model) {
-		String ContentPage = "product_Register";
-
-		model.addAttribute("main_content", ContentPage);
-		
-
-		return "mainPage";
-	}
-	
-	//상품등록 처리
-	@RequestMapping(value="product_Register", method=RequestMethod.POST)
-	public String product_RegisterPost(GoodsVO vo) throws Exception{
-		
-		System.out.println("GoodsVO 정보 : " + vo.getDetailctgry_code() + "  상품명 : " + vo.getGoods_nm());
-		
-		goodsService.insertGoods(vo);
-		
-
-		return "redirect:product_List";
-	}
-	
-	// 상품 정보
-	@RequestMapping(value="product_Info", method=RequestMethod.GET)
-	public String product_Info(HttpServletRequest request, HttpSession session, Model model, @RequestParam int product_id) throws Exception {
-		String ContentPage = "product_Info";
-
-		model.addAttribute("main_content", ContentPage);
-
-		GoodsVO goods = goodsService.selectGoodsOne(product_id);
-		
-		model.addAttribute("goods", goods);
-		
-		return "mainPage";
-	}
 	
 	
 	// 매출관리

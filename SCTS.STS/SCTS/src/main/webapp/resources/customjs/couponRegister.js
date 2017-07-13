@@ -39,7 +39,7 @@ $("#searching").on("click", function(){
 				for(var i=0; i<length; i++) {
 //					alert('hello3');
 					var gname = data.result[i].goods_nm+"";
-					var goods_code = data.result[i].goods_code+"";
+					var gcode = data.result[i].goods_code+"";
 
 					
 					var products = $("<tr class='product'></tr>");
@@ -51,30 +51,23 @@ $("#searching").on("click", function(){
 					products.appendTo($("#productList"));
 					
 					$(".checked").on("click",function(){
-//						alert('체크됐지롱!')
-//						$("#selectGoods").val(gname);
-						$("#selectGoods").val(goods_code);
+//						alert('체크됐지롱!');
+						$("#selectGoods").val(gname);
+						$("#selectGcode").val(gcode);
 						
-						var goods_code=$("#selectGoods").val();
-						var coupon_code = $("#searching").val();
+						var coupon_code = parseInt($("#coupon_code").val())+1;
+						var goods_code = $("#selectGcode").val();
 						var coupon_co = $("#coupon_co").val();
-						
-					
-						
-						$("#couponSave").on("click",function(){
-							
-							$.ajax({
-								type:post,
-								url:insertCoupon,
-								data:{
-									coupon_code:coupon_code,
-									goods_code:goods_code,
-									coupon_co:coupon_co
-								}
-							});
-							
-						});
 
+						$.ajax({
+							type:"post",
+							url:"insertCoupon",
+							data:{
+								coupon_code:coupon_code,
+								goods_code:goods_code,
+								coupon_co:coupon_co
+							}
+						});
 					});
 						
 					

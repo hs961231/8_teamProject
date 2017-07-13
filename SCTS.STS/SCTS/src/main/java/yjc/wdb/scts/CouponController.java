@@ -104,12 +104,11 @@ public class CouponController {
 		
 		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
 		model.addAttribute("GoodsList", GoodsList);
+
+		int coupon_max_code = couponService.selectCode();
+		model.addAttribute("max_code",coupon_max_code);
 		
-		CouponVO coupon_code = couponService.selectCode();
-		model.addAttribute("coupon_code",coupon_code);
-		
-		CouponVO coupon_max_code = couponService.selectCode();
-		model.addAttribute("coupon_code",coupon_max_code);
+		logger.info("code:"+coupon_max_code);
 		
 		return "mainPage";
 	}

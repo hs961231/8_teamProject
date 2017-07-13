@@ -75,7 +75,7 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
-	public CouponVO selectCode() throws Exception {
+	public int selectCode() throws Exception {
 		// TODO Auto-generated method stub
 		return dao.selectCode();
 	}

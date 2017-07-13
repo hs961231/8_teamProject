@@ -83,7 +83,7 @@ public class CouponDAOImpl implements CouponDAO{
 	}
 
 	@Override
-	public CouponVO selectCode() throws Exception {
+	public int selectCode() throws Exception {
 		// TODO Auto-generated method stub
 		return sql.selectOne(NAMESPACE+".selectCode");
 	}

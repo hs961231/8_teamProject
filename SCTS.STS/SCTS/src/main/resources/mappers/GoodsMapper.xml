@@ -8,15 +8,16 @@
 
 <insert id="insertGoods">
 insert into goods
-	(GOODS_NM, GOODS_PC, GOODS_DC, DETAILCTGRY_CODE)
-values (#{goods_nm}, #{goods_pc}, #{goods_dc}, #{detailctgry_code})
+	(GOODS_NM, GOODS_PC, GOODS_DC, DETAILCTGRY_CODE, GOODS_IMAGE)
+values (#{goods_nm}, #{goods_pc}, #{goods_dc}, #{detailctgry_code}, #{goods_image})
 </insert>
 
 <select id="selectGoodsList" resultType="GoodsVO">
-select
-	*
-from
-	goods
+	<!-- select sg.bhf_code, g.goods_nm, g.goods_pc, g.detailctgry_code
+	from goods g, supply_goods sg
+	where sg.bhf_code == #{bhf_code} -->
+	select * 
+	from goods
 </select>
 
 <select id="likeGoodsList" resultType="GoodsVO">
@@ -29,6 +30,7 @@ from
 	like concat
 	('%',#{goodsName},'%')
 </select>
+
 <select id="selectGoodsOne" resultType="GoodsVO">
 select
 	*

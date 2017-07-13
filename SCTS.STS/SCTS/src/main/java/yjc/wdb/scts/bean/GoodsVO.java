@@ -7,9 +7,16 @@ public class GoodsVO {
 	private String	goods_dc;
 	private int		detailctgry_code;
 	private String 	goods_flpth;
+	private String goods_image;
 	
 	public String getGoods_flpth() {
 		return goods_flpth;
+	}
+	public String getGoods_image() {
+		return goods_image;
+	}
+	public void setGoods_image(String goods_image) {
+		this.goods_image = goods_image;
 	}
 	public void setGoods_flpth(String goods_flpth) {
 		this.goods_flpth = goods_flpth;
