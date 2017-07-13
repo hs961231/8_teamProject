@@ -19,6 +19,19 @@ from
 	goods
 </select>
 
+<select id="selectPageGoods" resultType="GoodsVO">
+select
+	*
+from
+	goods
+limit #{pageStart}, #{perPageNum} 
+</select>
+
+<select id="countSearch" resultType="int">
+		select count(goods_code)
+		from goods
+</select>
+
 <select id="likeGoodsList" resultType="GoodsVO">
 	select
 		*

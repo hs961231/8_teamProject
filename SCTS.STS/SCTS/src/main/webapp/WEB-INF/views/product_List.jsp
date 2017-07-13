@@ -30,7 +30,6 @@
 						class="fa fa-plus" aria-hidden="true" id="productBtn"></i></a>
 				</div>
 			</div>
-			<section class="panel col-lg-12" style="overflow:scroll; height: 600px;">
 					<table class="table table-striped table-advance table-hover" >
 						<tbody>
 							<tr>
@@ -47,7 +46,6 @@
 								<th style="text-align: center;"><i class="icon_pin_alt"></i>
 									상품가격</th>
 							</tr>
-
 							<c:forEach items="${ GoodsList }" var="vo">
 								<tr>
 									<td style="text-align: center;">${ vo.goods_code }</td>
@@ -61,7 +59,6 @@
 							</c:forEach>
 						</tbody>
 					</table>
-			</section>
 		</div>
 	</div>
 </div>
@@ -152,10 +149,27 @@
 </div>
 </div>
 
+<div class="text-center">
+	<ul class="pagination">
+		<c:if test="${pageMaker.prev }">
+			<li><a href="product_List?page=${pageMaker.makeSearch(pageMaker.startPage -1)}">&laquo;</a></li>
+		</c:if>
+
+		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}"
+			var="idx">
+			<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
+				<a href="product_List${pageMaker.makeSearch(idx)}">${idx}</a>
+			</li>
+		</c:forEach>
+		<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+			<li><a href="product_List${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a></li>
+		</c:if>
+	</ul>
+</div>
+
 <script>
-
 	var pageForm = $("#pageForm");
-
+	
 	$(".code").on("click",function(){
 		event.preventDefault();
 		var goods_code = $(this).attr("href");
@@ -177,7 +191,6 @@
 	
 	window.onclick = function(event) {
 		if (event.target == registerModal) {
-			
 			registerModal.style.display = "none";
 		}
 	}

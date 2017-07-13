@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,8 @@ import com.google.gson.Gson;
 
 import yjc.wdb.scts.bean.BeaconVO;
 import yjc.wdb.scts.bean.GoodsVO;
+import yjc.wdb.scts.bean.PageMaker;
+import yjc.wdb.scts.bean.PageVO;
 import yjc.wdb.scts.bean.TileVO;
 import yjc.wdb.scts.bean.UserVO;
 import yjc.wdb.scts.service.BBSService;
@@ -192,13 +195,17 @@ public class HomeController {
 
 	// 상품 리스트
 	@RequestMapping(value="product_List", method=RequestMethod.GET)
-	public String product_List(HttpServletRequest request, HttpSession session, Model model) throws Exception {
+	public String product_List(@ModelAttribute("cri") PageVO cri, HttpServletRequest request, HttpSession session, Model model) throws Exception {
 		String ContentPage = "product_List";
 
 		model.addAttribute("main_content", ContentPage);
 		
-		List<GoodsVO> GoodsList = goodsService.selectGoodsList();
-	
+		List<GoodsVO> GoodsList = goodsService.selectPageList(cri);
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(goodsService.countSearch(cri));
+		
+		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("GoodsList", GoodsList);
 		
 		return "mainPage";
@@ -252,8 +259,33 @@ public class HomeController {
 		return "mainPage";
 	}
 	
+	//////////////////////////////////////// 관리자 //////////////////////////
+	@RequestMapping(value="adSales_Management", method=RequestMethod.GET)
+	public String adSales(HttpServletRequest request, HttpSession session, Model model) {
+		String ContentPage = "adSales_Management";
+
+		model.addAttribute("main_content", ContentPage);
+
+		return "mainPage";
+	}
 	
+	@RequestMapping(value="adCoupon_Management", method=RequestMethod.GET)
+	public String adCoupon(HttpServletRequest request, HttpSession session, Model model) {
+		String ContentPage = "adCoupon_Management";
+
+		model.addAttribute("main_content", ContentPage);
+
+		return "mainPage";
+	}
 	
+	@RequestMapping(value="adHelp_List", method=RequestMethod.GET)
+	public String adHelp(HttpServletRequest request, HttpSession session, Model model) {
+		String ContentPage = "adHelp_List";
+
+		model.addAttribute("main_content", ContentPage);
+
+		return "mainPage";
+	}
 	
 	/////////////////////////////////////////// 문의 사항 //////////////////////////
 	

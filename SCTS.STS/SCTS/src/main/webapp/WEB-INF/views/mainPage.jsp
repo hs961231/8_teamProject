@@ -397,11 +397,6 @@
 
 
 
-
-
-
-
-
 					<!-- user login dropdown start-->
 					<li class="dropdown"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#"> <span class="profile-ava">
@@ -434,11 +429,34 @@
 		</header>
 		<!--header end-->
 
+
+
 		<!--sidebar start-->
 		<aside>
+	<c:choose>
+		  <c:when test="${bhf_code == 0}">
 			<div id="sidebar" class="nav-collapse ">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
+					<li><a class="" href="adSales_Management">매출 관리</a></li>
+
+					<li><a class="" href="adCoupon_Management"> <i
+							class="icon_piechart"></i> <span>쿠폰 관리</span>
+
+					</a></li>
+
+					<li><a class="" href="adHelp_List"> <i
+							class="fa fa-question"></i> <span>문의 사항</span>
+					</a></li>
+
+				</ul>
+				<!-- sidebar menu end-->
+			</div>
+		 </c:when>
+		 
+		 <c:when test="${bhf_code != 0}"> 
+		<div id="sidebar" class="nav-collapse ">
+			<ul class="sidebar-menu">
 					<li class="active"><a class="" href="mainPage"> <i
 							class="icon_house_alt"></i> <span>Dashboard</span>
 					</a></li>
@@ -456,7 +474,7 @@
 					<li><a class="" href="event_Management"> <i
 							class="icon_genius"></i> <span>이벤트 관리</span>
 					</a></li>
-
+					
 					<li><a class="" href="coupon_Management"> <i
 							class="icon_piechart"></i> <span>쿠폰 관리</span>
 
@@ -471,12 +489,11 @@
 							class="fa fa-question"></i> <span>문의 사항</span>
 					</a></li>
 
-
-
-
 				</ul>
-				<!-- sidebar menu end-->
 			</div>
+			</c:when>
+			</c:choose>
+				<!-- sidebar menu end-->
 		</aside>
 		<!--sidebar end-->
 
