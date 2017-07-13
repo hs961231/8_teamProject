@@ -193,8 +193,6 @@ public class HomeController {
 		return "redirect:mainPage";
 	}
 
-<<<<<<< HEAD
-=======
 	// 상품 리스트
 	@RequestMapping(value="product_List", method=RequestMethod.GET)
 	public String product_List(@ModelAttribute("cri") PageVO cri, HttpServletRequest request, HttpSession session, Model model) throws Exception {
@@ -223,9 +221,7 @@ public class HomeController {
 
 		return "mainPage";
 	}
->>>>>>> origin/master
-	
-	
+
 	
 	// 매출관리
 	@RequestMapping(value="sales_Management", method=RequestMethod.GET)
